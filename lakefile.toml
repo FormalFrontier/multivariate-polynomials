@@ -1,0 +1,15 @@
+name = "multivariate-polynomials"
+version = "0.1.0"
+defaultTargets = ["MultivariatePolynomials", "MultivariatePolynomialsTests"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "83abb3e776bdefcbc447a1e44d0debe4010039e5"
+
+[[lean_lib]]
+name = "MultivariatePolynomials"
+
+[[lean_lib]]
+name = "MultivariatePolynomialsTests"
+roots = ["Test.IdealOfVars", "Test.Axioms", "Test.LeafImport", "Test.ReadmeExample"]

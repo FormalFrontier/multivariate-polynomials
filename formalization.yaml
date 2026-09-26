@@ -1,0 +1,67 @@
+version: "v0.4"
+
+project:
+  name: Multivariate Polynomials
+  description: >-
+    Non-finite generation of the ideal of all variables of a multivariate
+    polynomial semiring with infinitely many variables and nontrivial coefficients.
+  authors:
+    - Formal Frontier Agents
+  license: Apache-2.0
+
+sources:
+  - title: "A non-finitely-generated variable ideal: finite-support proof exposition"
+    authors:
+      - Formal Frontier Agents
+    id: "FormalFrontier/source-vakil-foag@8051ce71598ae2a4822807b5af51e7c543a4b518:expositions/exercise-6-7-e-non-finitely-generated-ideal.md"
+    type: original-proof
+    relationship: adapts
+    note: >-
+      Reviewed project-authored mathematical plan for the stronger semiring and
+      infinite-variable statement; the Lean proof expression was authored
+      separately in multivariate-polynomials commit a96209d0f59d5b8e7f3d3833318aff4ca77edad7.
+  - title: "The Rising Sea: Foundations of Algebraic Geometry"
+    authors:
+      - Ravi Vakil
+    type: book
+    location: "October 21, 2025 draft, Exercise 6.7.E, PDF page 199"
+    relationship: background
+    note: >-
+      Motivates a short-exact-sequence example; this formalization proves only
+      the general non-finite-generation lemma, not the whole sequence statement.
+
+status:
+  scope: >-
+    One public idealOfVars_not_fg theorem under CommSemiring, Nontrivial and
+    Infinite assumptions; private-by-module generic, concrete, unequal-universe
+    and exact README client theorems compiled by the default test target.
+    No short-exact-sequence API or source-coverage completion claim.
+  main_results:
+    - declaration: MvPolynomial.idealOfVars_not_fg
+      file: MultivariatePolynomials/IdealOfVars.lean
+
+automation:
+  methods:
+    - method: agent
+      tool_setup: >-
+        Formal Frontier Hive Tasks using Lean, Lake, mathlib, and independent
+        agent review of the earlier proof and module-system candidates.
+  notes: >-
+    AI-assisted agents developed the mathematical plan, Lean proof, tests and
+    readiness documentation; model identities and resource usage are not asserted.
+
+review:
+  status: "Revision-specific independent review and release decisions are recorded externally"
+  notes: >-
+    This metadata describes the artifact and does not itself certify a commit,
+    release acceptance, publication or source completion. Exact review records
+    bind mathematical semantics, proof checks, documentation, rights and inputs.
+
+acknowledgements: >-
+  Formalization Worker B authored the reviewed finite-support exposition;
+  Formalization Worker A authored the original Lean theorem and test clients
+  and subsequently the module assembly and readiness candidate. Atlas supplied
+  setup, interface direction, integration and release assembly. The bounded
+  Markdown adapter/tests derive from Atlas's toric, minimal and integral adapters
+  and ultimately Anchor's ideal-completion recipe, with exact origins in README.
+  Mathlib supplies foundational APIs; native doc-gen4 supplies display records.

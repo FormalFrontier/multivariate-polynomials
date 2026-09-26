@@ -1,0 +1,38 @@
+{
+  "analyzed_source_revision": "35e72ff648fc5d73ffa4232ed2b1971cb61891fd",
+  "api_sha256": "3683ee0fa8ecdaf34f72317b6c89388834a22a42364d008d6edb40c9ac05b0df",
+  "docgen_revision": "97d4ecdfc8e09e7f511724c25e303d448de6a3db",
+  "format": 1,
+  "generator": "scripts/generate_api.py",
+  "inputs": {
+    "MultivariatePolynomials.lean": "0bfcf50e5f5d2734463e6d8aeba02f4172805f6e7817d15bcfded3af418b440c",
+    "MultivariatePolynomials/IdealOfVars.lean": "a2ed891cfc12cd4fa32344f86324a9c656dbd829b4ac537f85e2e6cb20bdb342",
+    "Test/Axioms.lean": "7b802149d387335a8aed71646d893cdfa2ce82b5bf013f5907292d059bdbce58",
+    "Test/IdealOfVars.lean": "a96631bc67728f804d660e8cb57d894ee299d0efaca977830fb848ff163b9fe2",
+    "Test/LeafImport.lean": "62991dda25455c3c565e1b89b425d5331f9393e6a2cd3411ae8d4f3a28d29321",
+    "Test/ReadmeExample.lean": "d26177b4dcac174ca7c2e3527743c7f0ad8acc3df65b8cbe3b57cbc45bca308c",
+    "lake-manifest.json": "4e9b3121c81b720344d5e158acc337ce1aef1ebe97110115fc59d7291adbe353",
+    "lakefile.toml": "6d889f00312196fcae5cf0dfc76d73617a00bbef6a72bbd03c5fc4c8563cbefd",
+    "lean-toolchain": "8190e75a201741065fe508b28955dd64dd72d090babe5f70ce6848879d68ae88"
+  },
+  "modules": [
+    "MultivariatePolynomials.IdealOfVars",
+    "MultivariatePolynomials",
+    "Test.IdealOfVars",
+    "Test.Axioms",
+    "Test.LeafImport",
+    "Test.ReadmeExample"
+  ],
+  "native_record_sha256": {
+    "MultivariatePolynomials": "3440520a1b4650e9c4c699aecd36ca222600ce67edcd121cf1f8753688502f11",
+    "MultivariatePolynomials.IdealOfVars": "bb410e44bdd471ea8de4ef99777bba582bca6952056d4a290207c1d66741a9d6",
+    "Test.Axioms": "0bba9a0fe2b019b55849918f57065f47ae82fbb0d9b81dd5a6f1348003658da2",
+    "Test.IdealOfVars": "bb8c71b8f5f08bd429369b6468c1d8bcdf4ceb7d994186fc8b91c6f39a983af7",
+    "Test.LeafImport": "de74f3ce561d7a354fc1e537f19f88c6cdc39ba99c112285cf5b5bbca18b38fd",
+    "Test.ReadmeExample": "0b67588a968b2c891974828a1994b89e10cd26f74f4967ff9e247cc2dd21fc0f"
+  },
+  "proof_certification": false,
+  "public_declarations": [
+    "MvPolynomial.idealOfVars_not_fg"
+  ]
+}
