@@ -3,8 +3,10 @@ version: "v0.4"
 project:
   name: Multivariate Polynomials
   description: >-
-    Non-finite generation of the ideal of all variables of a multivariate
-    polynomial semiring with infinitely many variables and nontrivial coefficients.
+    Non-finite generation of the ideal of all variables over a nontrivial
+    commutative semiring with infinitely many variables, and weighted and
+    ordinary homogeneous multivariate-polynomial evaluation scaling laws
+    over arbitrary commutative semirings.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -32,13 +34,21 @@ sources:
 
 status:
   scope: >-
-    One public idealOfVars_not_fg theorem under CommSemiring, Nontrivial and
-    Infinite assumptions; private-by-module generic, concrete, unequal-universe
-    and exact README client theorems compiled by the default test target.
-    No short-exact-sequence API or source-coverage completion claim.
+    Three public theorems: idealOfVars_not_fg under CommSemiring, Nontrivial
+    and Infinite assumptions; eval₂Hom_scaleVariables for weighted homogeneous
+    polynomials over arbitrary commutative coefficient/target semirings; and
+    eval₂Hom_mul_left for ordinary homogeneous polynomials with the same
+    generality. The coefficient homomorphism remains fixed. Generic, concrete,
+    unequal-universe and exact README ideal clients and three direct-import
+    homogeneous-evaluation examples are registered under the default test
+    target. No short-exact-sequence API or source-coverage completion claim.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
+    - declaration: MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables
+      file: MultivariatePolynomials/HomogeneousEvaluation.lean
+    - declaration: MvPolynomial.IsHomogeneous.eval₂Hom_mul_left
+      file: MultivariatePolynomials/HomogeneousEvaluation.lean
 
 automation:
   methods:
@@ -47,8 +57,11 @@ automation:
         Formal Frontier Hive Tasks using Lean, Lake, mathlib, and independent
         agent review of the earlier proof and module-system candidates.
   notes: >-
-    AI-assisted agents developed the mathematical plan, Lean proof, tests and
-    readiness documentation; model identities and resource usage are not asserted.
+    AI-assisted agents developed the mathematical plan, original Lean proofs,
+    tests and documentation; a separate worker transferred the two accepted
+    incubator theorem/client bodies mechanically into this deliverable. No
+    destination build, audit, acceptance or resource measurement is claimed by
+    this metadata; model identities and resource usage are not asserted.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -64,4 +77,23 @@ acknowledgements: >-
   setup, interface direction, integration and release assembly. The bounded
   Markdown adapter/tests derive from Atlas's toric, minimal and integral adapters
   and ultimately Anchor's ideal-completion recipe, with exact origins in README.
-  Mathlib supplies foundational APIs; native doc-gen4 supplies display records.
+  The separate homogeneous-evaluation proof and client were originally authored
+  by worker-a Task hive-request-f923d2a5cf09f61f2a6257a5fd00f4f975d2e452
+  (UID c0ef99d1-8b7a-49ab-9486-c3c7f0b466d1) and registered by worker-a
+  Task hive-request-66a39f65b1af8f81fa6297f26aa53c5a72f9061b
+  (UID 1b135ea7-ec1e-4d30-a3c7-ea19da1a9e9b); worker-b Tasks
+  hive-request-25ea9ebd48c76209850c18e119552de8ad0c21e9
+  (UID 624f1145-752b-4744-bba9-16e583e5d93a) and
+  hive-request-da266697a8d7e1e21ab29d301c2bb95a87b7d2a2
+  (UID 42b1f06e-6926-4eb2-a705-c9b947ede9c3) reviewed the isolated and
+  registered incubator versions respectively. Worker-a Task
+  hive-request-f04927099fc374c785f5acd5be70e1edc1e0273e
+  (UID b96ae6b9-91c4-4d2f-acb7-a93729d61528) preserved partial destination
+  planning, later completed by Atlas. Worker-a Task
+  hive-request-82cfe6403a917885ec0b3a8facd9dbf7987e77d6
+  (UID 54ba98a5-9146-4c76-ade5-a30660dfaa5a) authored the present transfer;
+  it did not author the original proof or independently review this candidate.
+  Original project files are Apache-2.0 with collective author credit, not an
+  unsupported copyright-owner claim; no source PDF or third-party excerpt is
+  distributed. Mathlib supplies foundational APIs; native doc-gen4 supplied
+  display records only for the archived original six-module API snapshot.

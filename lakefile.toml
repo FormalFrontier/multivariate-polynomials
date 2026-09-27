@@ -12,4 +12,4 @@ name = "MultivariatePolynomials"
 
 [[lean_lib]]
 name = "MultivariatePolynomialsTests"
-roots = ["Test.IdealOfVars", "Test.Axioms", "Test.LeafImport", "Test.ReadmeExample"]
+roots = ["Test.IdealOfVars", "Test.Axioms", "Test.LeafImport", "Test.ReadmeExample", "Test.HomogeneousEvaluation"]

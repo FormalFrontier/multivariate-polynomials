@@ -1,35 +1,49 @@
-# Generated API reference
+# API documentation and historical snapshot
 
-[`API.md`](API.md) covers the one public non-finite-generation theorem, two
-production modules and four private test/example modules. It retains the native
-displayed signature, implicit hypotheses, original docstring and relative source
-links. No JavaScript, fonts, remote styles, source PDF or dependency website ships.
+[`API.md`](API.md) is the current **hand-maintained** public module/result map:
+three producer modules (including the aggregate) and five registered
+test/example modules. It is neither freshly native-generated nor a proof
+certificate. The separate [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md)
+explains the two added mathematical laws and their assumptions.
 
-## Reproduction
+[`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
+original six-module native doc-gen4 output: one public ideal theorem, two
+producer modules and four private test/example modules. The unchanged
+[`api-manifest.json`](api-manifest.json) records its analyzed source revision
+`35e72ff648fc5d73ffa4232ed2b1971cb61891fd`, six native module records,
+input hashes and `api_sha256` of **that archived snapshot**
+(`3683ee0fa8ecdaf34f72317b6c89388834a22a42364d008d6edb40c9ac05b0df`),
+not the current `API.md`. Its old root/lakefile source hashes, module count and
+inventory must not be interpreted as validation of the changed library. Its
+relative source links show matching original line positions only in the original
+six-module checkout.
+The two unchanged [`generate_api.py`](../scripts/generate_api.py) and
+[`test_generate_api.py`](../scripts/test_generate_api.py) scripts are scoped
+only to the old native snapshot. Data-only fixture tests of the old adapter do
+not check the current API, proofs or this promotion.
 
-[`api-manifest.json`](api-manifest.json) identifies the exact analyzed Lean/config
-inputs and native module records by full revision and SHA256. The final artifact
-review binds those inputs, the manifest and generated output to its commit/tree.
-Documentation-only changes do not alter mathematical inputs; source or pin changes
-require fresh native generation and affected checks.
+## Reproducing only the original six-module output
 
-When the analyzed development commit exists, every source/config byte must match
-its actual Git object. In an intentionally parentless release without that object,
-the reproduced manifest must instead equal the release's committed manifest:
-all nine source/config hashes, six native records, inventories, tool revision and
-output hash. Every input must also equal the current committed file. Present wrong
-objects, stale inputs and changed/uncommitted manifests are refused. This binds
-inspected bytes, not provenance or proof checking; it does not promise development
-history is available at GitHub. Use a committed checkout, not a plain no-Git export.
+Use a separate checkout at the exact original official release
+`1caf2e85e7b8d9d9a15f47e96ffd60fbb51d5fda` (same tree as the destination's
+original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
+unmodified analyzed-input revision
+`35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
+adapter's output/check mode on the expanded current checkout: its hard-coded
+six-module inventory and original input hashes cannot describe eight modules.
+Use a committed checkout, not a plain no-Git export; the original contract
+requires the actual Git object or the original manifest with byte-identical
+current inputs in an intentionally parentless release.
 
 Build core-only doc-gen4 separately at
-`97d4ecdfc8e09e7f511724c25e303d448de6a3db`, with its committed manifest and
-Lean `v4.34.0-rc2`, using `lake build doc-gen4`. Do not change this library's
-pins. Fetch its matching mathlib cache and compile all six modules using the
-root README. Use fresh analysis/render directories and a full immutable analyzed
-revision. Repeat `single` for all six modules in `scripts/generate_api.py`, using
-the corresponding module source path. The native SQLite opener requires existing
-directories:
+`97d4ecdfc8e09e7f511724c25e303d448de6a3db`, with its committed manifest
+and Lean `v4.34.0-rc2`. Do not change this library's pins. Fetch matching
+precompiled mathlib caches for each mathlib-dependent build, then compile the
+six original project modules using the historical README in that checkout.
+Use fresh analysis/render directories and the full immutable analyzed revision.
+Repeat `single` for all six modules in the historical
+`scripts/generate_api.py` inventory, using the corresponding source paths.
+The native SQLite opener requires existing directories:
 
 ```sh
 mkdir /tmp/multivariate-analysis /tmp/multivariate-render
@@ -41,27 +55,22 @@ python3 -B scripts/generate_api.py --native-data /tmp/multivariate-render/doc-da
 python3 -B scripts/test_generate_api.py
 ```
 
-Only Markdown and its manifest are distributed. Native source URIs bind the
-analyzed revision; distributed links are checkout-relative. Intermediate HTML,
-SQLite and assets are excluded, not implicitly cleared for redistribution.
+This is historical reproduction guidance, not an instruction to regenerate
+current `API.md` or evidence of a new native run. Only Markdown and the manifest
+were distributed from that workflow; intermediate HTML, SQLite and assets were
+excluded, not implicitly cleared for redistribution. The historical adapter
+requires exactly `MvPolynomial.idealOfVars_not_fg` and six module records with
+theorem kind/origin; it retains native header tokens and module comments with
+bounded normalization and checks input/link drift. It is not a Lean parser,
+native-run authenticator, proof checker or release certificate. Old data-only
+adverse controls do not replace actual native receipts, mathematical review or
+whole-artifact review of a new revision.
 
-## Checks and provenance
-
-This purpose-specific adapter requires six native module records and exactly
-`MvPolynomial.idealOfVars_not_fg` with theorem kind and the correct origin. It
-retains every header token, normalizing whitespace only; module documentation
-comes from each exact simple source module comment. Missing docstrings, malformed
-markup, wrong kinds, unsafe/partial display, source/pin drift and invalid links
-are refused. The adapter is not a Lean parser, native-run authenticator, proof
-checker or release certificate. Data-only adverse controls do not replace actual
-native receipts or independent mathematical and whole-artifact review.
-
-Atlas adapted this renderer and controls from toric-ideals
+Atlas adapted the historical renderer and controls from toric-ideals
 `ab0c7d294a864deb3a6109aab30ebb77ebf5d2cb` (unaccepted when reused),
 minimal-primes `bed9ea5b7d022529b6b9ee1888c81c3f02683aa6`, integral-closure
-`bbc5da98d729c8737c7cef0df2f80c6323584b2e`, and ultimately Anchor's original
+`bbc5da98d729c8737c7cef0df2f80c6323584b2e`, and ultimately Anchor's
 ideal-completion recipe `f0c8c34386109116e4912fb425a8ad15d9dc42a4`.
 Collective credit, actual contributors and Apache-2.0 terms are retained;
-approval is not transferred. Mathematical signatures/docstrings retain the
-library's provenance. Lean, mathlib and doc-gen4 are separately credited tools
-and dependencies, whose implementation and documentation are not copied here.
+approval is not transferred. Lean, mathlib and doc-gen4 are separately credited
+tools and dependencies; their implementations and documentation are not copied.
