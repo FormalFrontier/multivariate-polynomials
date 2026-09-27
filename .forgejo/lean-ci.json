@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "mode": "strict",
+  "projects": [
+    {
+      "path": ".",
+      "targets": [
+        "MultivariatePolynomials",
+        "MultivariatePolynomialsTests"
+      ]
+    }
+  ],
+  "docs_only_paths": []
+}
