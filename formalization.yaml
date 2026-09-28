@@ -9,6 +9,9 @@ project:
     over arbitrary commutative semirings, and structural substitution into
     disjoint variable blocks, with generic nested evaluation, distinct
     one-way and equivalent zero-locus conditions, and conditional nonzeroness.
+    Finite disjoint-block iteration has structural tuple recursion, separate
+    forward and iff vanishing laws, nominal homogeneous degree powers and
+    conditional exact and unbounded attained degrees.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -36,19 +39,24 @@ sources:
 
 status:
   scope: >-
-    Eight selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Nineteen selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
     homomorphism fixed; plus blockSubst, its evaluation law, separate one-way
     and iff zero-locus preservation, and nonzero-of-one-way under Nontrivial and
     Nonempty. Indices in the first four block declarations are arbitrary and
-    coefficients need only CommSemiring. The six default-target clients exercise
+    coefficients need only CommSemiring. The separate iterator has one definition
+    and ten theorems over tuple indices Fin r → ι: zero/successor recursion and
+    evaluations, separate forward-only/iff vanishing, nominal homogeneity d^r,
+    nonzero and exact total degree under Nontrivial, Nonempty and forward
+    vanishing, and degrees attained above each bound when 1 < d. The seven
+    default-target clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
-    and two-block, two-stage, finite-field, empty-index, zero-ring and
-    constant-block boundary cases. No finite-extension existence, unbounded
-    iteration, short exact sequence, norm-forms dependency or source-coverage
-    completion claim.
+    and two-block, two-stage, finite-field, empty-index, zero-ring,
+    constant-block and zero-iteration boundary cases. No base-form or
+    finite-extension existence, all-sufficiently-large degree, short exact
+    sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
@@ -66,6 +74,28 @@ status:
       file: MultivariatePolynomials/BlockSubstitution.lean
     - declaration: MvPolynomial.ne_zero_of_eval_eq_zero_imp
       file: MultivariatePolynomials/BlockSubstitution.lean
+    - declaration: MvPolynomial.iteratedBlockSubst
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_zero
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_succ
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.eval_iteratedBlockSubst_zero
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.eval_iteratedBlockSubst_succ
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.eval_iteratedBlockSubst_eq_zero_imp
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.eval_iteratedBlockSubst_eq_zero_iff
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.isHomogeneous_iteratedBlockSubst
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_ne_zero
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_totalDegree
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.exists_iteratedBlockSubst_totalDegree_gt
+      file: MultivariatePolynomials/IteratedBlockSubstitution.lean
 
 automation:
   methods:
@@ -87,16 +117,28 @@ automation:
     23 private/generated with only the permitted foundational axioms. Fresh
     worker-a review 4514 approved that exact code/API commit, and Beacon
     accepted and protected-integrated it on September 28, 2026. These
-    documentary updates do not claim a new Lean check, separate release
-    acceptance, publication or resource measurement; model identities and
-    resource usage are not asserted.
+    documentary updates do not claim a new Lean check or resource measurement;
+    the block/headline release subsequently reached official commit
+    fb22a0a31ff464de6f82d2f94ac6d37f837eb519 (issue 20/comment 57713)
+    on September 28, 2026. The separate iteration by worker-a Task
+    hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397 (UID
+    580b0679-5109-43e3-8af0-05470fe31187) was independently reviewed and
+    accepted only for isolated readiness at incubator revision
+    c916ced0230520b33e1a519174be4020324708d0. Worker-b Task
+    hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7 (UID
+    f641b493-3b74-49f4-bc2d-bb46824a4fa5) transferred its proof/client
+    tails unchanged to the destination. Earlier native run 740 did not check
+    these new actual origins or roots; revision-specific destination checks,
+    review, acceptance and release are recorded externally, not inferred from
+    this metadata. Model identities and resource usage are not asserted.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
   notes: >-
     This metadata describes the artifact and does not itself certify a commit,
-    release acceptance, publication or source completion. Exact review records
-    bind mathematical semantics, proof checks, documentation, rights and inputs.
+    the enlarged iteration graph, release acceptance, publication or source
+    completion. Exact review records bind mathematical semantics, proof checks,
+    documentation, rights and inputs.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -139,4 +181,16 @@ acknowledgements: >-
   Worker-b Task hive-request-70e6e11667d1a57d588854eb0cc9806dab89b9c1
   (UID d5157618-a9d2-4b99-9a6b-c21ea017878b) prepared the subsequent
   documentation-only release candidate; separate release review, acceptance
-  and publication remain external decisions.
+  and publication remain external decisions for each revision. Separately,
+  worker-a Task hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397
+  (UID 580b0679-5109-43e3-8af0-05470fe31187) authored the finite iteration
+  and private client in isolated incubator commit
+  c916ced0230520b33e1a519174be4020324708d0, with independent isolated
+  review by worker-b Task hive-request-84be7567f0b404e648748670aa8f649cfa7e50f2
+  (UID ee1ca051-b11b-4f72-9044-38e7db3c3770). Worker-b Task
+  hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7 (UID
+  f641b493-3b74-49f4-bc2d-bb46824a4fa5) performed this distinct
+  destination transfer without authoring the original mathematical proof
+  or independently reviewing its relocated library/API. The historical
+  block/headline publication is recorded above; it does not publish the
+  iteration. Beacon handles its separate destination acceptance and release.

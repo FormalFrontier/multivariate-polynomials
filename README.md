@@ -1,13 +1,16 @@
 # Multivariate polynomials
 
-A Lean library with eight selected public declarations about multivariate
+A Lean library with nineteen selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
 over arbitrary commutative
 semirings. It also provides structural substitution into disjoint variable
 blocks, with its evaluation law, distinct one-way and equivalent zero-locus
-preservation, and a conditional nonzeroness theorem. The public ideal theorem
+preservation, and a conditional nonzeroness theorem.
+It also iterates disjoint-block substitution over finite tuples, preserving
+separate zero-locus properties and yielding conditional exact degree powers.
+The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
 
@@ -36,8 +39,19 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   semirings. A separate theorem shows that a polynomial vanishing only at zero
   is nonzero when the coefficient semiring is nontrivial and its variable type
   is nonempty. See the [definition and four theorems](MultivariatePolynomials/BlockSubstitution.lean)
-  and [block-substitution guide](docs/block-substitution.md). No unbounded
-  iteration or finite-extension norm-form construction is claimed.
+  and [block-substitution guide](docs/block-substitution.md). That generic block
+  module and its two-stage client alone make no arbitrary-iteration or
+  finite-extension norm-form claim.
+- **Iterating disjoint blocks.** `MvPolynomial.iteratedBlockSubst p r` starts
+  with the empty-tuple variable and structurally substitutes each earlier
+  iterate into disjoint blocks, giving variables indexed by `Fin r → ι`.
+  Forward-only and iff vanishing conditions propagate separately over any
+  commutative semiring. A homogeneous base of degree `d` gives nominal degree
+  `d ^ r`; with nontrivial coefficients, nonempty indices and forward vanishing,
+  this is the exact total degree. If `1 < d`, attained iterate degrees exceed
+  every bound, not necessarily every sufficiently large integer. See the
+  [iteration producer](MultivariatePolynomials/IteratedBlockSubstitution.lean)
+  and [independent guide](docs/iterated-block-substitution.md).
 
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
@@ -60,8 +74,9 @@ complete short-exact-sequence counterexample that motivated the project.
 Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.IdealOfVars` or
 `import MultivariatePolynomials.HomogeneousEvaluation`, or
-`import MultivariatePolynomials.BlockSubstitution` for the direct theorem or
-definition module. The homogeneous-evaluation leaf exposes
+`import MultivariatePolynomials.BlockSubstitution`, or
+`import MultivariatePolynomials.IteratedBlockSubstitution` for the direct theorem
+or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
 commutative semirings `B`, `R`, a fixed coefficient homomorphism `σ : B →+* R`,
@@ -80,8 +95,11 @@ semiring, and proves `MvPolynomial.eval_blockSubst`, the distinct one-way
 `MvPolynomial.ne_zero_of_eval_eq_zero_imp` under `Nontrivial` coefficients and
 `Nonempty` outer indices only. See the
 [block-substitution guide](docs/block-substitution.md)
-and [ordinary-import boundary client](Test/BlockSubstitution.lean); no
-homogeneous-substitution wrapper or unbounded iteration API is added. The
+and [ordinary-import boundary client](Test/BlockSubstitution.lean); that leaf
+alone adds no homogeneous-substitution wrapper or iteration API. The separate
+[iterator](docs/iterated-block-substitution.md) imports this local block leaf,
+exposes structural/evaluation recursion and conditional homogeneous-degree
+powers, and has its own [private client](Test/IteratedBlockSubstitution.lean). The
 following complete native module is stored verbatim in
 [Test/ReadmeExample.lean](Test/ReadmeExample.lean) and registered in the default
 test target. Its named declarations are private clients, not additional library
@@ -109,8 +127,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all eight selected public
-declarations and ten modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all nineteen selected public
+declarations and twelve Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -133,16 +151,18 @@ lake env lean -DwarningAsError=true Test/IdealOfVars.lean
 lake env lean -DwarningAsError=true Test/LeafImport.lean
 lake env lean -DwarningAsError=true Test/HomogeneousEvaluation.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitution.lean
+lake env lean -DwarningAsError=true Test/IteratedBlockSubstitution.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus three production leaves and six
+The default build includes the aggregate plus four production leaves and seven
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
-root and the literal `Test.BlockSubstitution` test root. Tests are not imported
+root, the literal `Test.BlockSubstitution` test root and the literal
+`Test.IteratedBlockSubstitution` test root. Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
-ordinary, zero-polynomial and disjoint-block clients exercise the
+ordinary, zero-polynomial, disjoint-block and finite-iteration clients exercise the
 intended public imports. `Test/Axioms.lean` prints only the original ideal
-theorem's transitive axioms; it is not a census of the other seven selected
+theorem's transitive axioms; it is not a census of the other eighteen selected
 declarations, any private declaration, or a substitute for the destination's
 independent complete release audit. The historical adapter's data-only fixture tests can be run with
 `python3 -B scripts/test_generate_api.py`; they do not validate the current
@@ -151,7 +171,7 @@ expanded library or regenerate the current API map.
 An ordinary supplementary module check is:
 
 ```sh
-lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution
+lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution
 ```
 
 Historical revision-specific review records retain complete raw/private
@@ -162,7 +182,9 @@ native run 740 on September 28, 2026 built both default targets and audited
 all 31 actual-origin declarations, including 23 private/generated declarations,
 with only the permitted foundational axioms. A fresh independent review
 approved that exact commit; Beacon accepted and integrated it. No new Lean
-check is claimed for this documentation-only release preparation. An ordinary
+check is claimed for that historical documentation-only release preparation;
+run 740 does not audit the added iterator, client, aggregate or seventh test root.
+An ordinary
 module check alone is not a full transitive private-inclusive audit. Headers
 credit the project without inventing a copyright owner; private test modules and intentional
 axiom prints can trigger convention diagnostics. Unavailable or failing lint
@@ -189,7 +211,7 @@ The maximum recorded baseline child-process RSS was **1,279,000 KiB**, measured
 with `RUSAGE_CHILDREN.ru_maxrss`. This is neither aggregate process-group/Pod
 peak memory nor a minimum-memory requirement. These initial measurements are
 historical observations for the original six modules, not measurements or a
-performance claim for the current ten-module library, a hardware-independent
+performance claim for the current twelve-module library, a hardware-independent
 guarantee, a regression comparison or a claimed speedup. Network/cache state,
 hardware and concurrent workload affect results. Configured runtime limits are
 not measured usage. Original documentation generation used a separate pinned
@@ -266,7 +288,19 @@ exact destination code/API; Beacon accepted and protected-integrated that commit
 on September 28, 2026. Worker-b Task
 `hive-request-70e6e11667d1a57d588854eb0cc9806dab89b9c1`
 (UID `d5157618-a9d2-4b99-9a6b-c21ea017878b`) prepared the subsequent
-documentation-only release candidate. The bounded Markdown
+documentation-only release candidate. The completed block/headline release was
+verified at official `public-release` commit
+`fb22a0a31ff464de6f82d2f94ac6d37f837eb519` on September 28, 2026
+(issue 20/comment 57713); it precedes this new iterator transfer.
+The generic-block author is distinct from the original iteration author,
+worker-a Task `hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397`
+(UID `580b0679-5109-43e3-8af0-05470fe31187`), independently reviewed for
+isolated readiness by worker-b Task
+`hive-request-84be7567f0b404e648748670aa8f649cfa7e50f2`
+(UID `ee1ca051-b11b-4f72-9044-38e7db3c3770`). This distinct destination
+transfer is by worker-b Task `hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7`
+(UID `f641b493-3b74-49f4-bc2d-bb46824a4fa5`), not the original proof
+author or the independent destination reviewer. The bounded Markdown
 adapter/tests derive from Atlas's toric
 `ab0c7d294a864deb3a6109aab30ebb77ebf5d2cb`, minimal
 `bed9ea5b7d022529b6b9ee1888c81c3f02683aa6`, integral
@@ -274,8 +308,9 @@ adapter/tests derive from Atlas's toric
 `f0c8c34386109116e4912fb425a8ad15d9dc42a4` recipe. Tool adaptation is
 distinct from mathematical proof authorship; prior approval does not transfer.
 
-Code acceptance does not imply release acceptance or publication. Those separate
-revision-specific decisions are recorded externally; this README and
-[formalization.yaml](formalization.yaml) describe the artifact but do not certify
-the proposed release candidate, verified publication, public visibility or
-source completion. An official consumer uses the exact published release commit.
+The preceding block/headline release does not certify this expanded artifact.
+Code acceptance, official release and verified publication are separate
+revision-specific decisions recorded externally; this README and
+[formalization.yaml](formalization.yaml) do not themselves certify those decisions
+for this transfer, public visibility or source completion. An official consumer
+uses the exact published release commit.

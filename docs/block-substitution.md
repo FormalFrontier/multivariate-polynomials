@@ -26,8 +26,10 @@ For example, substituting `q` into the two separate blocks of `X 0 + X 1`
 evaluates to the sum of the two block evaluations. Repeating the operation
 once more gives a polynomial on `(ι × κ) × υ`; the consumer
 [`Test.BlockSubstitution`](../Test/BlockSubstitution.lean) tests both evaluations
-and the two-stage vanishing implications. This finite example does not provide
-an unbounded iteration construction.
+and the two-stage vanishing implications. This block client itself does not
+provide arbitrary iteration; the separate
+[iterated-block module and guide](iterated-block-substitution.md) define and
+explain finite iteration over disjoint tuple-indexed blocks.
 
 Two preservation statements have **different hypotheses and conclusions**:
 
@@ -72,9 +74,14 @@ stage it was not registered on incubator main. The destination code/API commit
 `0000be8ab382b047dfe93bb43ec2941b625fc9e7` completed both default-target
 native builds and the complete transitive standard-axiom audit in run 740,
 received fresh independent code/API review and was accepted and integrated by
-Beacon on September 28, 2026. Neither that code acceptance nor this guide
-establishes a separately reviewed official deliverable release, verified
-publication, incubator conversion, source correspondence or source coverage.
+Beacon on September 28, 2026. At that earlier code-acceptance checkpoint,
+neither the acceptance nor this guide established a separately reviewed
+official deliverable release or verified publication. The block/headline
+release was subsequently completed at official commit
+`fb22a0a31ff464de6f82d2f94ac6d37f837eb519` (issue 20/comment 57713)
+on September 28, 2026. Neither the historical code review nor this guide
+establishes incubator conversion, source correspondence or source coverage;
+the separate iterator has its own destination acceptance and release path.
 
 Responsible maintainer and destination integration owner: Beacon. Original
 contributor: worker-b Hive Task

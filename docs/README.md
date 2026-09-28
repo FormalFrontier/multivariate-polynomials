@@ -1,12 +1,14 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-four producer modules (including the aggregate), six registered
-test/example modules and eight selected public declarations. It is neither
+five producer modules (including the aggregate), seven registered
+test/example modules and nineteen selected public declarations. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
-[block-substitution guide](block-substitution.md) covers the new standalone API.
+[block-substitution guide](block-substitution.md) covers generic blocks, while
+the [finite-iteration guide](iterated-block-substitution.md) explains the
+separate tuple-indexed iterator and its conditional degree powers.
 
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two
@@ -32,7 +34,7 @@ original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
 unmodified analyzed-input revision
 `35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
 adapter's output/check mode on the expanded current checkout: its hard-coded
-six-module inventory and original input hashes cannot describe ten modules.
+six-module inventory and original input hashes cannot describe twelve modules.
 Use a committed checkout, not a plain no-Git export; the original contract
 requires the actual Git object or the original manifest with byte-identical
 current inputs in an intentionally parentless release.
