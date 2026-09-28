@@ -6,7 +6,9 @@ project:
     Non-finite generation of the ideal of all variables over a nontrivial
     commutative semiring with infinitely many variables, and weighted and
     ordinary homogeneous multivariate-polynomial evaluation scaling laws
-    over arbitrary commutative semirings.
+    over arbitrary commutative semirings, and structural substitution into
+    disjoint variable blocks, with generic nested evaluation, distinct
+    one-way and equivalent zero-locus conditions, and conditional nonzeroness.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -34,14 +36,19 @@ sources:
 
 status:
   scope: >-
-    Three public theorems: idealOfVars_not_fg under CommSemiring, Nontrivial
-    and Infinite assumptions; eval₂Hom_scaleVariables for weighted homogeneous
-    polynomials over arbitrary commutative coefficient/target semirings; and
-    eval₂Hom_mul_left for ordinary homogeneous polynomials with the same
-    generality. The coefficient homomorphism remains fixed. Generic, concrete,
-    unequal-universe and exact README ideal clients and three direct-import
-    homogeneous-evaluation examples are registered under the default test
-    target. No short-exact-sequence API or source-coverage completion claim.
+    Eight selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
+    homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
+    polynomials over arbitrary commutative semirings, with the coefficient
+    homomorphism fixed; plus blockSubst, its evaluation law, separate one-way
+    and iff zero-locus preservation, and nonzero-of-one-way under Nontrivial and
+    Nonempty. Indices in the first four block declarations are arbitrary and
+    coefficients need only CommSemiring. The six default-target clients exercise
+    generic, unequal-universe and README ideal use, homogeneous evaluation,
+    and two-block, two-stage, finite-field, empty-index, zero-ring and
+    constant-block boundary cases. No finite-extension existence, unbounded
+    iteration, short exact sequence, norm-forms dependency or source-coverage
+    completion claim.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
@@ -49,6 +56,16 @@ status:
       file: MultivariatePolynomials/HomogeneousEvaluation.lean
     - declaration: MvPolynomial.IsHomogeneous.eval₂Hom_mul_left
       file: MultivariatePolynomials/HomogeneousEvaluation.lean
+    - declaration: MvPolynomial.blockSubst
+      file: MultivariatePolynomials/BlockSubstitution.lean
+    - declaration: MvPolynomial.eval_blockSubst
+      file: MultivariatePolynomials/BlockSubstitution.lean
+    - declaration: MvPolynomial.eval_blockSubst_eq_zero_imp
+      file: MultivariatePolynomials/BlockSubstitution.lean
+    - declaration: MvPolynomial.eval_blockSubst_eq_zero_iff
+      file: MultivariatePolynomials/BlockSubstitution.lean
+    - declaration: MvPolynomial.ne_zero_of_eval_eq_zero_imp
+      file: MultivariatePolynomials/BlockSubstitution.lean
 
 automation:
   methods:
@@ -59,9 +76,20 @@ automation:
   notes: >-
     AI-assisted agents developed the mathematical plan, original Lean proofs,
     tests and documentation; a separate worker transferred the two accepted
-    incubator theorem/client bodies mechanically into this deliverable. No
-    destination build, audit, acceptance or resource measurement is claimed by
-    this metadata; model identities and resource usage are not asserted.
+    incubator theorem/client bodies mechanically into this deliverable. The
+    separate disjoint-block proof/client bodies were accepted only in isolated
+    incubator scope; worker-b Task
+    hive-request-54ffdbad98fe154f75224b39e0f7a253b50fde7c (UID
+    11eb8d82-791b-41fe-a9bf-e15eea2ba73a) transferred them under Beacon's
+    contribution-specific responsibility. For destination code/API commit
+    0000be8ab382b047dfe93bb43ec2941b625fc9e7, native run 740 built both
+    default targets and audited all 31 actual-origin declarations including
+    23 private/generated with only the permitted foundational axioms. Fresh
+    worker-a review 4514 approved that exact code/API commit, and Beacon
+    accepted and protected-integrated it on September 28, 2026. These
+    documentary updates do not claim a new Lean check, separate release
+    acceptance, publication or resource measurement; model identities and
+    resource usage are not asserted.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -97,3 +125,18 @@ acknowledgements: >-
   unsupported copyright-owner claim; no source PDF or third-party excerpt is
   distributed. Mathlib supplies foundational APIs; native doc-gen4 supplied
   display records only for the archived original six-module API snapshot.
+  The isolated block-substitution producer and private client were authored by
+  worker-b Task hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03
+  (UID 0068e189-b29d-4cf7-9b0c-63cb34dab472) and independently reviewed in
+  isolated scope; worker-b Task
+  hive-request-54ffdbad98fe154f75224b39e0f7a253b50fde7c (UID
+  11eb8d82-791b-41fe-a9bf-e15eea2ba73a) performed this distinct destination
+  transfer. Atlas's previous integration credit is historical; Beacon owns
+  review, acceptance, integration and separate release for this contribution.
+  Fresh worker-a Task hive-request-446f2cfe616e290ac265715dbd9879143a7dda4c
+  (UID aa259428-f3d3-4e77-b017-91fa3c1d15de) independently reviewed the
+  destination code/API; Beacon accepted and integrated it on September 28, 2026.
+  Worker-b Task hive-request-70e6e11667d1a57d588854eb0cc9806dab89b9c1
+  (UID d5157618-a9d2-4b99-9a6b-c21ea017878b) prepared the subsequent
+  documentation-only release candidate; separate release review, acceptance
+  and publication remain external decisions.
