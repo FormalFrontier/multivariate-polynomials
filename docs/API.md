@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all nineteen selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all twenty-six selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -160,17 +160,70 @@ each bound, **not** every sufficiently large degree. The private client checks
 zero steps, finite fields, empty indices, zero rings, a forward-only constant
 and conditional cardinality powers. No base polynomial is constructed.
 
+## `MultivariatePolynomials.BlockSubstitutionLaws`
+
+[Producer](../MultivariatePolynomials/BlockSubstitutionLaws.lean),
+[standalone guide](block-substitution-laws.md), and
+[eight-theorem private client](../Test/BlockSubstitutionLaws.lean). Import this
+leaf directly or import the aggregate. With arbitrary `{I : Type u}`,
+`{J : Type v}`, `{K : Type w}`, `{L : Type x}`, `{R : Type t}` and
+`[CommSemiring R]`, the following seven declarations are a **manual**
+statement map, not a native signature print:
+
+```lean
+theorem MvPolynomial.rename_blockSubst (f : I → K) (g : J → L)
+    (p : MvPolynomial I R) (q : MvPolynomial J R) :
+    rename (Prod.map f g) (blockSubst p q) =
+      blockSubst (rename f p) (rename g q)
+
+theorem MvPolynomial.blockSubst_assoc (p : MvPolynomial I R)
+    (q : MvPolynomial J R) (r : MvPolynomial K R) :
+    rename (Equiv.prodAssoc I J K) (blockSubst (blockSubst p q) r) =
+      blockSubst p (blockSubst q r)
+
+theorem MvPolynomial.blockSubst_X_left (p : MvPolynomial I R) :
+    rename (Prod.snd : PUnit × I → I) (blockSubst (X PUnit.unit) p) = p
+
+theorem MvPolynomial.blockSubst_X_right (p : MvPolynomial I R) :
+    rename (Prod.fst : I × PUnit → I) (blockSubst p (X PUnit.unit)) = p
+
+theorem MvPolynomial.iteratedBlockSubst_one (p : MvPolynomial I R) :
+    iteratedBlockSubst p 1 = rename (fun i : I => Fin.cons i Fin.elim0) p
+
+theorem MvPolynomial.iteratedBlockSubst_add (p : MvPolynomial I R) (m n : ℕ) :
+    iteratedBlockSubst p (m + n) =
+      rename (fun pair : (Fin m → I) × (Fin n → I) =>
+        Fin.append pair.1 pair.2)
+        (blockSubst (iteratedBlockSubst p m) (iteratedBlockSubst p n))
+
+theorem MvPolynomial.iteratedBlockSubst_snoc (p : MvPolynomial I R) (m : ℕ) :
+    iteratedBlockSubst p (m + 1) =
+      rename (fun pair : (Fin m → I) × I => Fin.snoc pair.1 pair.2)
+        (blockSubst (iteratedBlockSubst p m) p)
+```
+
+`rename_blockSubst` permits noninjective maps. Associativity uses the forward
+product associator, and the unit laws erase a single `PUnit` index. The word
+laws include zero lengths and preserve positions under the required `Fin`
+casts: the additive decomposition is not merely an equality of cardinalities,
+and the snoc successor is different from the iterator's cons recursion.
+No theorem in this leaf requires a field, nontrivial coefficient semiring,
+nonempty index type, degree or homogeneity premise. The private client tests
+finite-field constants, mixed/empty indices, noninjective maps and a zero ring;
+it does not restrict the arbitrary-commutative-semiring statements.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all four leaves.
-Seven test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all five leaves.
+Eight test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
 [README ideal example](../Test/ReadmeExample.lean),
 [direct homogeneous-evaluation client](../Test/HomogeneousEvaluation.lean),
-[direct block-substitution client](../Test/BlockSubstitution.lean), and
-[direct finite-iteration client](../Test/IteratedBlockSubstitution.lean).
-The tests are not re-exported as production API. These five production plus
-seven test modules total twelve Lean modules; a private-inclusive transitive
+[direct block-substitution client](../Test/BlockSubstitution.lean),
+[direct finite-iteration client](../Test/IteratedBlockSubstitution.lean), and
+[structural-law client](../Test/BlockSubstitutionLaws.lean).
+The tests are not re-exported as production API. These six production plus
+eight test modules total fourteen Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.

@@ -11,7 +11,9 @@ project:
     one-way and equivalent zero-locus conditions, and conditional nonzeroness.
     Finite disjoint-block iteration has structural tuple recursion, separate
     forward and iff vanishing laws, nominal homogeneous degree powers and
-    conditional exact and unbounded attained degrees.
+    conditional exact and unbounded attained degrees. Structural laws add
+    arbitrary renaming, forward association, singleton units and finite-word
+    iteration addition and opposite successor over commutative semirings.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -36,10 +38,22 @@ sources:
     note: >-
       Motivates a short-exact-sequence example; this formalization proves only
       the general non-finite-generation lemma, not the whole sequence statement.
+  - title: "Structural block substitution and the two iteration orders"
+    authors:
+      - Beacon
+    id: "FormalFrontier/source-nsw@f48d95396b6395f5248afdac7892379362eb50f5:expositions/block-substitution-associativity-and-iteration.md"
+    type: original-proof
+    relationship: adapts
+    note: >-
+      Project-authored structural mathematical argument, independently
+      reviewed in source-nsw at 1c5de16e1f81e9d2ce9f9bc534d03dcd4780f5c1;
+      the independent original Lean laws/client author is the worker-b Task
+      named below. Neither exposition nor abstract API certifies source
+      numbering, normicity or source coverage.
 
 status:
   scope: >-
-    Nineteen selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Twenty-six selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -51,10 +65,15 @@ status:
     evaluations, separate forward-only/iff vanishing, nominal homogeneity d^r,
     nonzero and exact total degree under Nontrivial, Nonempty and forward
     vanishing, and degrees attained above each bound when 1 < d. The seven
+    new structural laws cover arbitrary (including noninjective) variable
+    renamings, forward three-block association, single-variable PUnit units,
+    one iteration, additive iteration by Fin.append and opposite succession
+    by Fin.snoc under arbitrary CommSemiring, without extra hypotheses. Eight
     default-target clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
-    constant-block and zero-iteration boundary cases. No base-form or
+    constant-block, zero-iteration, mixed/empty-index, noninjective-map and
+    zero-ring structural-law boundary cases. No base-form or
     finite-extension existence, all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
@@ -96,6 +115,20 @@ status:
       file: MultivariatePolynomials/IteratedBlockSubstitution.lean
     - declaration: MvPolynomial.exists_iteratedBlockSubst_totalDegree_gt
       file: MultivariatePolynomials/IteratedBlockSubstitution.lean
+    - declaration: MvPolynomial.rename_blockSubst
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.blockSubst_assoc
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.blockSubst_X_left
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.blockSubst_X_right
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_one
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_add
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.iteratedBlockSubst_snoc
+      file: MultivariatePolynomials/BlockSubstitutionLaws.lean
 
 automation:
   methods:
@@ -130,15 +163,37 @@ automation:
     tails unchanged to the destination. Earlier native run 740 did not check
     these new actual origins or roots; revision-specific destination checks,
     review, acceptance and release are recorded externally, not inferred from
-    this metadata. Model identities and resource usage are not asserted.
+    this metadata. The prior iterator publication is complete at official
+    ec4906268f2a65a54e320ce9f3f44562e9d78c1e, with the same tree as this
+    laws transfer's destination parent. The isolated laws donor
+    b21228137f1cb0b644817628a3cc29c696b6156f has focused build/axiom
+    evidence 56b0bb6dd7645635589e3999068e136a2d7e6cb7 and independent
+    review 52304b237d071945221c80a19f94b7a4c5c84202, accepted only for
+    isolated readiness by Beacon. The new destination aggregate/client graph
+    passed destination native CI run 866 for both default targets and all 89
+    actual-origin declarations across fourteen modules, including 56 private
+    and generated declarations, with only the permitted foundational axioms.
+    Fresh worker-a Task hive-request-32a5395f2a6b985f54aec6698f4988e3d00b81bf
+    (UID f02d75a9-fc5e-4044-ac63-a130c00c09e8) independently reviewed
+    exact destination commit 5179b6042154397e09c9047e24fb42dddc07ae15;
+    Beacon accepted and protected-integrated that code/API in PR 26 on
+    September 28, 2026. The distinct official release and GitHub publication
+    require separate revision-specific decisions outside this metadata.
+    This documentary release preparation claims no new Lean execution,
+    model identity or measured resource usage.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
   notes: >-
-    This metadata describes the artifact and does not itself certify a commit,
-    the enlarged iteration graph, release acceptance, publication or source
-    completion. Exact review records bind mathematical semantics, proof checks,
-    documentation, rights and inputs.
+    This metadata describes the artifact but does not itself certify release,
+    publication or source completion. The prior iterator publication is
+    complete. For the enlarged laws graph at exact destination commit
+    5179b6042154397e09c9047e24fb42dddc07ae15, native run 866 supplied
+    complete private-inclusive build and axiom evidence; fresh independent
+    review bacb7cb13e1ef0d82c7599027015976dfa42f76a and Beacon's PR 26
+    acceptance preceded protected-main integration on September 28, 2026.
+    Release-specific artifact, rights, history and publication decisions
+    remain separately recorded outside this metadata.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -192,5 +247,26 @@ acknowledgements: >-
   f641b493-3b74-49f4-bc2d-bb46824a4fa5) performed this distinct
   destination transfer without authoring the original mathematical proof
   or independently reviewing its relocated library/API. The historical
-  block/headline publication is recorded above; it does not publish the
-  iteration. Beacon handles its separate destination acceptance and release.
+  block/headline publication is recorded above; it did not itself publish the
+  iteration. The separate iterator subsequently reached official release
+  ec4906268f2a65a54e320ce9f3f44562e9d78c1e. Beacon authored the
+  independently reviewed structural original-proof exposition in source-nsw
+  at f48d95396b6395f5248afdac7892379362eb50f5; this is distinct from
+  Lean authorship. Original structural-law Lean proof, eight-theorem client
+  and guide author: worker-b Task
+  hive-request-b3d4d6e3a78dc53efdabae39dcafd0f770d8c0c4 (UID
+  12c22dfd-831c-4fa3-a82a-d6e0a88a8a5d). Independent isolated reviewer:
+  worker-a Task hive-request-5339696c0801c8c4c337968b42b2a76948620960
+  (UID fa2d543e-66c2-4b91-a0a5-fb735cee82a2), exact review
+  52304b237d071945221c80a19f94b7a4c5c84202. This distinct destination
+  transfer is by worker-b Task hive-request-dcfc7155e1b8f1e339a4db2a5f323981d29793e3
+  (UID 50067b60-ca63-4a90-bbcf-6e81453fd6a1); it is not an independent
+  destination review. Fresh independent destination reviewer: worker-a Task
+  hive-request-32a5395f2a6b985f54aec6698f4988e3d00b81bf (UID
+  f02d75a9-fc5e-4044-ac63-a130c00c09e8), reviewing exact code/API commit
+  5179b6042154397e09c9047e24fb42dddc07ae15 at
+  bacb7cb13e1ef0d82c7599027015976dfa42f76a. Beacon accepted and
+  protected-integrated the code/API in PR 26 on September 28, 2026. Separate
+  release preparer: worker-b Task hive-request-8f84e6612202ac883d6b0bbd46bbd1ee4a5c7d49
+  (UID fa2f833c-131c-4cc7-acc0-99d96bb5a71c). Beacon retains official
+  release acceptance, promotion and publication responsibility.

@@ -29,7 +29,10 @@ once more gives a polynomial on `(ι × κ) × υ`; the consumer
 and the two-stage vanishing implications. This block client itself does not
 provide arbitrary iteration; the separate
 [iterated-block module and guide](iterated-block-substitution.md) define and
-explain finite iteration over disjoint tuple-indexed blocks.
+explain finite iteration over disjoint tuple-indexed blocks. The separate
+[structural-law guide](block-substitution-laws.md) gives renaming, forward
+associativity, singleton units and the iterator's word-concatenation laws;
+none of these is asserted by this generic leaf alone.
 
 Two preservation statements have **different hypotheses and conclusions**:
 
@@ -81,7 +84,13 @@ release was subsequently completed at official commit
 `fb22a0a31ff464de6f82d2f94ac6d37f837eb519` (issue 20/comment 57713)
 on September 28, 2026. Neither the historical code review nor this guide
 establishes incubator conversion, source correspondence or source coverage;
-the separate iterator has its own destination acceptance and release path.
+the separate iterator's later official publication is recorded in its own
+[guide](iterated-block-substitution.md). The newly transferred structural laws
+passed complete destination native CI checks (run 866), independent review
+and Beacon's protected-main code/API acceptance at commit
+`5179b6042154397e09c9047e24fb42dddc07ae15` on September 28, 2026;
+separate release and publication decisions are recorded externally, not
+certified by this generic-block guide.
 
 Responsible maintainer and destination integration owner: Beacon. Original
 contributor: worker-b Hive Task

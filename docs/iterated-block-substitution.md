@@ -60,12 +60,22 @@ not construct a base polynomial over an arbitrary field.
 see its [independent guide](block-substitution.md). The public iterator is in
 [the iteration producer](../MultivariatePolynomials/IteratedBlockSubstitution.lean),
 and [its ordinary-import client](../Test/IteratedBlockSubstitution.lean) remains
-private to the test target. The iteration was originally developed as an
+private to the test target. The separate
+[structural-law guide](block-substitution-laws.md) gives `iteratedBlockSubst_one`,
+`iteratedBlockSubst_add` using `Fin.append` and `iteratedBlockSubst_snoc` using
+`Fin.snoc`. This opposite successor appends the original polynomial at the end
+of the tuple; it is not the `Fin.consEquiv` recursion that defines the iterator.
+The iteration was originally developed as an
 isolated incubator candidate `c916ced0230520b33e1a519174be4020324708d0`,
 independently reviewed and accepted only for isolated mathematical/API
-readiness (incubator issue 153/comments 58032 and 58041); destination
-integration, the official reviewed release and source correspondence are
-separate revision-specific decisions, not certified by this guide.
+readiness (incubator issue 153/comments 58032 and 58041). That was an
+earlier checkpoint; destination integration and the reviewed official release
+subsequently completed at commit `ec4906268f2a65a54e320ce9f3f44562e9d78c1e`
+on September 28, 2026. The new structural-law transfer passed destination
+native CI checks (run 866), independent review and protected-main code/API
+integration at `5179b6042154397e09c9047e24fb42dddc07ae15` on that date;
+its separate release and publication require their own external decisions.
+Source correspondence remains separate, not certified by this guide.
 
 Original generic-block author: worker-b Task
 `hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03` (UID
