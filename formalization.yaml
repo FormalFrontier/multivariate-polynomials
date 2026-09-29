@@ -14,6 +14,8 @@ project:
     conditional exact and unbounded attained degrees. Structural laws add
     arbitrary renaming, forward association, singleton units and finite-word
     iteration addition and opposite successor over commutative semirings.
+    Exact total degree of substitution into disjoint variable blocks holds
+    for arbitrary inputs under CommSemiring and NoZeroDivisors coefficients.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -50,10 +52,25 @@ sources:
       the independent original Lean laws/client author is the worker-b Task
       named below. Neither exposition nor abstract API certifies source
       numbering, normicity or source coverage.
+  - title: "Exact total degree of substitution into disjoint blocks"
+    authors:
+      - Formalization Worker B
+    id: "FormalFrontier/source-nsw@a3ba053e256de1663a1f3aeab3992c2b4926e47c:expositions/disjoint-block-substitution-degree.md"
+    type: original-proof
+    relationship: adapts
+    note: >-
+      Project-authored finite-support argument by worker-b Task
+      hive-request-3c4641402d975104f58edb18cad1b23576fe3290
+      (UID 9ce64724-ad64-4d6c-bcff-e5fdda140ab2), independently reviewed
+      by worker-a Task hive-request-afd4e4d0b14d6ae62a54a94781d4a181786acb67
+      (UID 8953458b-d7d1-43dd-b355-298a674ee989) at source-nsw revision
+      f0a7e35d5b45348306d07c0119c42593ff68cd63. Distinct from the
+      isolated Lean proof and its later destination transfer; not source
+      numbering, normicity or accepted formalization coverage.
 
 status:
   scope: >-
-    Twenty-six selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Twenty-seven selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -68,12 +85,17 @@ status:
     new structural laws cover arbitrary (including noninjective) variable
     renamings, forward three-block association, single-variable PUnit units,
     one iteration, additive iteration by Fin.append and opposite succession
-    by Fin.snoc under arbitrary CommSemiring, without extra hypotheses. Eight
-    default-target clients exercise
+    by Fin.snoc under arbitrary CommSemiring, without extra hypotheses. One
+    additional exact total-degree theorem for disjoint-block substitution
+    holds under CommSemiring and NoZeroDivisors alone for arbitrary zero,
+    constant and nonhomogeneous polynomials and arbitrary index types; it
+    asserts no general substitution injectivity. Nine default-target clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
     constant-block, zero-iteration, mixed/empty-index, noninjective-map and
-    zero-ring structural-law boundary cases. No base-form or
+    zero-ring structural-law boundary cases, plus exact-degree zero,
+    constant, unequal/empty-index, finite-field and trivial-ring cases.
+    No base-form or
     finite-extension existence, all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
@@ -129,6 +151,8 @@ status:
       file: MultivariatePolynomials/BlockSubstitutionLaws.lean
     - declaration: MvPolynomial.iteratedBlockSubst_snoc
       file: MultivariatePolynomials/BlockSubstitutionLaws.lean
+    - declaration: MvPolynomial.totalDegree_blockSubst
+      file: MultivariatePolynomials/BlockSubstitutionDegree.lean
 
 automation:
   methods:
@@ -177,10 +201,32 @@ automation:
     (UID f02d75a9-fc5e-4044-ac63-a130c00c09e8) independently reviewed
     exact destination commit 5179b6042154397e09c9047e24fb42dddc07ae15;
     Beacon accepted and protected-integrated that code/API in PR 26 on
-    September 28, 2026. The distinct official release and GitHub publication
-    require separate revision-specific decisions outside this metadata.
-    This documentary release preparation claims no new Lean execution,
+    September 28, 2026. The distinct official release and verified private
+    GitHub publication subsequently completed on September 28, 2026 at
+    1c31276aaca1db501950e8bb178981f7ce1acaad (PR 27/comment 59908).
+    That documentary release preparation claimed no new Lean execution,
     model identity or measured resource usage.
+    The separately accepted isolated degree donor at incubator
+    f1411fc45c46dd90521b08212f3057ac0b7fe6ec has matching-cache,
+    warning-fatal scoped producer/client builds and complete 23-origin
+    permitted-three axiom evidence in its evidence-only child
+    8d8322a7ecf12c75c5806ce80dc181cd2c13332f; independent review at
+    33e3b280c47208ea4f3dcfbed62f063885ccfa2b applies only to that donor.
+    Its proof/client bodies are transferred to the destination by worker-b
+    Task hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd (UID
+    c9cbe957-98d8-4679-a26a-ed417bcaf65f). Earlier native run 866 applies
+    only to the fourteen-module laws graph. Native run 923 on September 29,
+    2026 fetched the matching cache, built both roots and checked all 112
+    actual-origin declarations across sixteen modules, including 77 private
+    declarations, with transitive axioms restricted to the permitted three.
+    Fresh worker-a Task hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d
+    (UID b333f69a-1e1a-421a-b47e-bcc7ff670df4) independently reviewed
+    exact code/API commit a298692e9515cd264f64b1650d916e7325f22dae;
+    Beacon accepted and protected-integrated it in PR 30 on September 29,
+    2026. This static release-readiness preparation by worker-b Task
+    hive-request-545ac40599943c4846985bcbecc9773af7867eb4 (UID
+    f1111607-8c9c-40cd-a138-8b0dc8737447) runs no new Lean and is not
+    an independent release review or official publication.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -194,6 +240,18 @@ review:
     acceptance preceded protected-main integration on September 28, 2026.
     Release-specific artifact, rights, history and publication decisions
     remain separately recorded outside this metadata.
+    The structural-law predecessor was subsequently published in official
+    release 1c31276aaca1db501950e8bb178981f7ce1acaad, whose tree matches
+    destination parent bcd674413e1c2e4770a0335b4b75951f5431763c. The
+    new degree leaf and module-enabled client were subsequently reviewed
+    at exact a298692e9515cd264f64b1650d916e7325f22dae by worker-a
+    Task hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d (UID
+    b333f69a-1e1a-421a-b47e-bcc7ff670df4), with both-root native 923
+    build and private-inclusive standard-axiom evidence. Beacon accepted
+    and protected-integrated that code/API in PR 30 on September 29, 2026.
+    Release review, acceptance, promotion and GitHub publication remain
+    separate revision-specific external decisions, not inferred here.
+    No source-formalization decision is made here.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -270,3 +328,29 @@ acknowledgements: >-
   release preparer: worker-b Task hive-request-8f84e6612202ac883d6b0bbd46bbd1ee4a5c7d49
   (UID fa2f833c-131c-4cc7-acc0-99d96bb5a71c). Beacon retains official
   release acceptance, promotion and publication responsibility.
+  The exact-degree mathematical exposition was authored by worker-b Task
+  hive-request-3c4641402d975104f58edb18cad1b23576fe3290 (UID
+  9ce64724-ad64-4d6c-bcff-e5fdda140ab2) and independently reviewed by
+  worker-a Task hive-request-afd4e4d0b14d6ae62a54a94781d4a181786acb67
+  (UID 8953458b-d7d1-43dd-b355-298a674ee989) at source-nsw revision
+  f0a7e35d5b45348306d07c0119c42593ff68cd63. Original isolated Lean
+  author: worker-b Task hive-request-c655e17355d47e3745bfb5dfa4546c236c22cf1e
+  (UID e8bed61b-ec43-4ac5-867e-419700dd255f), donor
+  f1411fc45c46dd90521b08212f3057ac0b7fe6ec; independent isolated
+  reviewer: worker-a Task hive-request-bfc0fe61efd6f58c7ce26960de4f23a296580865
+  (UID 4beea86a-1ca9-48e5-9cd8-654fca6d049a), review
+  33e3b280c47208ea4f3dcfbed62f063885ccfa2b. Beacon accepted that
+  isolated code/API only in incubator #180/comment 60665. This destination
+  transfer is by worker-b Task hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd
+  (UID c9cbe957-98d8-4679-a26a-ed417bcaf65f), not original proof
+  authorship or independent destination review. Worker-a Task
+  hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d (UID
+  b333f69a-1e1a-421a-b47e-bcc7ff670df4) independently reviewed exact
+  destination code/API commit a298692e9515cd264f64b1650d916e7325f22dae;
+  Beacon accepted and protected-integrated it on September 29, 2026.
+  Static release-readiness preparer worker-b Task
+  hive-request-545ac40599943c4846985bcbecc9773af7867eb4 (UID
+  f1111607-8c9c-40cd-a138-8b0dc8737447) did not author the proof,
+  independently review this candidate or accept its official release.
+  No unsupported rights-holder claim, imported source asset or new library
+  dependency is introduced.

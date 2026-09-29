@@ -1,6 +1,6 @@
 # Multivariate polynomials
 
-A Lean library with twenty-six selected public declarations about multivariate
+A Lean library with twenty-seven selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
@@ -12,6 +12,8 @@ It also iterates disjoint-block substitution over finite tuples, preserving
 separate zero-locus properties and yielding conditional exact degree powers.
 Structural laws relate block substitution to arbitrary renaming, forward
 association, singleton units and finite-word concatenation of iterates.
+Exact total degree of disjoint-block substitution holds for arbitrary input
+polynomials over commutative semirings without zero divisors.
 The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
@@ -63,6 +65,15 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   [laws producer](MultivariatePolynomials/BlockSubstitutionLaws.lean),
   [guide](docs/block-substitution-laws.md) and
   [eight-theorem private client](Test/BlockSubstitutionLaws.lean).
+- **Exact degree of disjoint-block substitution.** For arbitrary variable
+  types and polynomials over `[CommSemiring R] [NoZeroDivisors R]`,
+  `(MvPolynomial.blockSubst p q).totalDegree = p.totalDegree * q.totalDegree`.
+  Zero, constants, unequal or empty indices and nonhomogeneous inputs need no
+  extra hypotheses. Import
+  `MultivariatePolynomials.BlockSubstitutionDegree` directly or use the
+  aggregate; see the [proof](MultivariatePolynomials/BlockSubstitutionDegree.lean),
+  [standalone guide](docs/block-substitution-degree.md) and
+  [ordinary-import client](Test/BlockSubstitutionDegree.lean).
 
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
@@ -87,7 +98,8 @@ Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.HomogeneousEvaluation`, or
 `import MultivariatePolynomials.BlockSubstitution`, or
 `import MultivariatePolynomials.IteratedBlockSubstitution`, or
-`import MultivariatePolynomials.BlockSubstitutionLaws` for the direct theorem
+`import MultivariatePolynomials.BlockSubstitutionLaws` or
+`import MultivariatePolynomials.BlockSubstitutionDegree` for the direct theorem
 or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
@@ -115,7 +127,12 @@ powers, and has its own [private client](Test/IteratedBlockSubstitution.lean). T
 new [structural-law leaf](docs/block-substitution-laws.md) publicly imports the
 iterator and supplies renaming, associativity, units and iteration laws; its
 [ordinary-import client](Test/BlockSubstitutionLaws.lean) exercises seven
-public laws through eight private theorems. The
+public laws through eight private theorems. The independent
+`BlockSubstitutionDegree` leaf adds exact total degree under only
+`[CommSemiring R] [NoZeroDivisors R]`; its
+[ordinary-import client](Test/BlockSubstitutionDegree.lean) checks zero,
+constants, trivial coefficients, empty and unequal indices, and nonhomogeneous
+examples. The
 following complete native module is stored verbatim in
 [Test/ReadmeExample.lean](Test/ReadmeExample.lean) and registered in the default
 test target. Its named declarations are private clients, not additional library
@@ -143,8 +160,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all twenty-six selected public
-declarations and fourteen Lean modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all twenty-seven selected public
+declarations and sixteen Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -169,19 +186,21 @@ lake env lean -DwarningAsError=true Test/HomogeneousEvaluation.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitution.lean
 lake env lean -DwarningAsError=true Test/IteratedBlockSubstitution.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionLaws.lean
+lake env lean -DwarningAsError=true Test/BlockSubstitutionDegree.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus five production leaves and eight
+The default build includes the aggregate plus six production leaves and nine
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
 root, the literal `Test.BlockSubstitution` test root and the literal
 `Test.IteratedBlockSubstitution` test root and the literal
-`Test.BlockSubstitutionLaws` test root. Tests are not imported
+`Test.BlockSubstitutionLaws` test root and the literal
+`Test.BlockSubstitutionDegree` test root. Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
-ordinary, zero-polynomial, disjoint-block, finite-iteration and structural-law
-clients exercise the
+ordinary, zero-polynomial, disjoint-block, finite-iteration, structural-law and
+exact-degree clients exercise the
 intended public imports. `Test/Axioms.lean` prints only the original ideal
-theorem's transitive axioms; it is not a census of the other twenty-five selected
+theorem's transitive axioms; it is not a census of the other twenty-six selected
 declarations, any private declaration, or a substitute for the destination's
 independent complete release audit. The historical adapter's data-only fixture tests can be run with
 `python3 -B scripts/test_generate_api.py`; they do not validate the current
@@ -190,7 +209,7 @@ expanded library or regenerate the current API map.
 An ordinary supplementary module check is:
 
 ```sh
-lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws
+lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials.BlockSubstitutionDegree MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws Test.BlockSubstitutionDegree
 ```
 
 Historical revision-specific review records retain complete raw/private
@@ -218,8 +237,24 @@ destination graph. For exact destination code/API commit
 fourteen modules, including 56 private/generated declarations, with only the
 permitted foundational axioms. Fresh worker-a review approved that commit;
 Beacon accepted and protected-integrated it on September 28, 2026 (PR #26).
-Separate release review, protected promotion and verified GitHub publication
-are revision-specific decisions recorded outside this README.
+Separate release review, protected promotion and verified private GitHub
+publication subsequently completed at official commit
+`1c31276aaca1db501950e8bb178981f7ce1acaad` on September 28, 2026.
+Native run 866 applies only to that fourteen-module laws graph, not this new
+sixteen-module aggregate/client. The accepted isolated degree donor has separate
+matching-cache, scoped-build and transitive standard-axiom evidence; neither
+that record nor native run 866 certifies the new destination roots. Native
+run 923 on September 29, 2026 fetched the matching cache before successfully
+building both destination targets and audited all 112 actual-origin declarations
+across sixteen modules, including 77 private declarations, with only the
+permitted foundational axioms. Fresh worker-a review approved exact code/API
+commit `a298692e9515cd264f64b1650d916e7325f22dae`; Beacon accepted and
+protected-integrated it in PR #30 on September 29, 2026. Separate release
+review, acceptance, promotion and verified GitHub publication are recorded
+outside this README; this code acceptance does not establish them. The
+predecessor's official release at
+`1c31276aaca1db501950e8bb178981f7ce1acaad` has the same tree as this
+accepted commit's destination parent `bcd674413e1c2e4770a0335b4b75951f5431763c`.
 
 ### Measured build baseline
 
@@ -242,7 +277,7 @@ The maximum recorded baseline child-process RSS was **1,279,000 KiB**, measured
 with `RUSAGE_CHILDREN.ru_maxrss`. This is neither aggregate process-group/Pod
 peak memory nor a minimum-memory requirement. These initial measurements are
 historical observations for the original six modules, not measurements or a
-performance claim for the current fourteen-module library, a hardware-independent
+performance claim for the later fourteen-module library, a hardware-independent
 guarantee, a regression comparison or a claimed speedup. Network/cache state,
 hardware and concurrent workload affect results. Configured runtime limits are
 not measured usage. Original documentation generation used a separate pinned
@@ -254,6 +289,12 @@ September 28, 2026 took **171 seconds** from 20:42:20 to 20:45:11 UTC for
 the *whole workflow*, including cache setup, builds and the axiom audit. This
 runner-specific observation is not project-only build time or measured peak
 memory, and it is not directly comparable to the six-module author baseline.
+
+For the sixteen-module degree graph, Forgejo CI run 923 on September 29, 2026
+took **182 seconds** from 00:37:37 to 00:40:39 UTC for its *whole workflow*,
+including matching-cache setup, both-root build and private-inclusive axiom
+audit. This runner-specific observation is not project-only build time or a
+peak-memory measurement, benchmark comparison or claimed speedup.
 
 ## Sources, contributors and license
 
@@ -370,7 +411,40 @@ release preparation is by worker-b Task
 release acceptance, promotion and publication decisions.
 
 The preceding block/headline and iterator publications did not certify the
-expanded laws graph; its exact-C code/API acceptance is recorded above. This
-README and [formalization.yaml](formalization.yaml) do not themselves certify
-a separate laws release, GitHub publication, public visibility or source
-completion. An official consumer uses the exact published release commit.
+expanded laws graph at the time. Its separately reviewed release subsequently
+reached official commit `1c31276aaca1db501950e8bb178981f7ce1acaad`;
+the associated private GitHub publication is recorded in PR #27/comment 59908.
+This README and [formalization.yaml](formalization.yaml) do not themselves
+certify public visibility, the new degree release or source completion. An
+official consumer uses the exact published release commit.
+
+The exact-degree mathematical argument was authored by worker-b Hive Task
+`hive-request-3c4641402d975104f58edb18cad1b23576fe3290` (UID
+`9ce64724-ad64-4d6c-bcff-e5fdda140ab2`) in
+`FormalFrontier/source-nsw@a3ba053e256de1663a1f3aeab3992c2b4926e47c:
+expositions/disjoint-block-substitution-degree.md`; worker-a Task
+`hive-request-afd4e4d0b14d6ae62a54a94781d4a181786acb67` (UID
+`8953458b-d7d1-43dd-b355-298a674ee989`) independently reviewed that
+mathematics at `f0a7e35d5b45348306d07c0119c42593ff68cd63`. Original
+Lean proof, client and guide: worker-b Task
+`hive-request-c655e17355d47e3745bfb5dfa4546c236c22cf1e` (UID
+`e8bed61b-ec43-4ac5-867e-419700dd255f`), isolated donor
+`FormalFrontier/incubator@f1411fc45c46dd90521b08212f3057ac0b7fe6ec`,
+reviewed by worker-a Task
+`hive-request-bfc0fe61efd6f58c7ce26960de4f23a296580865` (UID
+`4beea86a-1ca9-48e5-9cd8-654fca6d049a`) at
+`33e3b280c47208ea4f3dcfbed62f063885ccfa2b`, and accepted only for
+isolated code/API scope by Beacon in incubator issue #180/comment 60665.
+This distinct destination transfer, not original proof authorship or an
+independent destination review, is by worker-b Task
+`hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd` (UID
+`c9cbe957-98d8-4679-a26a-ed417bcaf65f`). Fresh worker-a Task
+`hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d` (UID
+`b333f69a-1e1a-421a-b47e-bcc7ff670df4`) independently reviewed exact
+destination code/API commit `a298692e9515cd264f64b1650d916e7325f22dae`;
+Beacon accepted and protected-integrated it in PR #30 on September 29, 2026.
+This static release-readiness preparation is by worker-b Task
+`hive-request-545ac40599943c4846985bcbecc9773af7867eb4` (UID
+`f1111607-8c9c-40cd-a138-8b0dc8737447`), not original mathematical
+authorship, an independent release review or release acceptance. Official
+degree publication and source correspondence remain separate decisions.

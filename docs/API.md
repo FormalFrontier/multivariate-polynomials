@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all twenty-six selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all twenty-seven selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -90,8 +90,9 @@ each input's full equivalence. The separate nonzero theorem alone adds
 `[Nontrivial R] [Nonempty ι]`. Empty indices and zero rings remain valid for
 the first four declarations. This generic block leaf alone adds no homogeneous
 degree or arbitrary-iteration theorem: its private client reuses mathlib's
-homogeneity and nonzero-conditional total-degree results. The separate iterator
-below provides finite iteration and degree-power theorems.
+homogeneity and nonzero-conditional total-degree results. The separate degree
+leaf below proves exact degree for arbitrary inputs; the iterator provides
+finite iteration and conditional degree-power theorems.
 
 ## `MultivariatePolynomials.IteratedBlockSubstitution`
 
@@ -212,18 +213,39 @@ nonempty index type, degree or homogeneity premise. The private client tests
 finite-field constants, mixed/empty indices, noninjective maps and a zero ring;
 it does not restrict the arbitrary-commutative-semiring statements.
 
+## `MultivariatePolynomials.BlockSubstitutionDegree`
+
+[Producer](../MultivariatePolynomials/BlockSubstitutionDegree.lean),
+[standalone guide](block-substitution-degree.md) and
+[ordinary-import client](../Test/BlockSubstitutionDegree.lean). With arbitrary
+`{I : Type u}`, `{J : Type v}`, `{R : Type w}`, `[CommSemiring R]` and
+`[NoZeroDivisors R]`, the one new public theorem is (manual statement map,
+not a native Lean signature print):
+
+```lean
+theorem MvPolynomial.totalDegree_blockSubst
+    (p : MvPolynomial I R) (q : MvPolynomial J R) :
+    (blockSubst p q).totalDegree = p.totalDegree * q.totalDegree
+```
+
+This equality needs no separate `Nontrivial`, nonzero-polynomial, homogeneous,
+positive-degree, field, additive-cancellation or finite/nonempty-index premise;
+it includes zeros and constants. It does not claim substitution injectivity.
+The proof's auxiliary degree and block-profile facts are private, not new API.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all five leaves.
-Eight test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all six leaves.
+Nine test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
 [README ideal example](../Test/ReadmeExample.lean),
 [direct homogeneous-evaluation client](../Test/HomogeneousEvaluation.lean),
 [direct block-substitution client](../Test/BlockSubstitution.lean),
-[direct finite-iteration client](../Test/IteratedBlockSubstitution.lean), and
-[structural-law client](../Test/BlockSubstitutionLaws.lean).
-The tests are not re-exported as production API. These six production plus
-eight test modules total fourteen Lean modules; a private-inclusive transitive
+[direct finite-iteration client](../Test/IteratedBlockSubstitution.lean),
+[structural-law client](../Test/BlockSubstitutionLaws.lean), and
+[exact-degree client](../Test/BlockSubstitutionDegree.lean).
+The tests are not re-exported as production API. These seven production plus
+nine test modules total sixteen Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.
