@@ -18,6 +18,8 @@ project:
     for arbitrary inputs under CommSemiring and NoZeroDivisors coefficients.
     Native polynomial-parameter interchange preserves a homogeneous multivariate
     label in each coefficient over arbitrary commutative semirings.
+    Arbitrary coefficient-linear functionals commute with multivariate-polynomial
+    evaluation at base-valued points via the native additive coefficient map.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -79,10 +81,22 @@ sources:
       Independently reviewed mathematical interpretation at source-nsw issue
       #112; the new destination theorem stands alone and this source-specific
       exposition supplies neither a library dependency nor source coverage.
+  - title: "Polynomial equations in finite-basis coordinates"
+    authors:
+      - Beacon
+    id: "FormalFrontier/source-nsw@8dac6b7744339ec6e9313003b53982d839cb93d4:expositions/finite-basis-polynomial-coordinate-expansion.md"
+    type: original-proof
+    relationship: background
+    note: >-
+      Independently reviewed mathematical finite-basis coordinate exposition
+      (source-nsw review d62fa7308095968d551a08223c76274ba836a5b4).
+      It motivated the separate abstract linear-evaluation bridge but is not
+      a Lean dependency, proof of full basis reconstruction or descent,
+      certificate of the full source theorem, or accepted source coverage.
 
 status:
   scope: >-
-    Twenty-eight selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Twenty-nine selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -107,15 +121,22 @@ status:
     without a domain, field, finiteness or nontriviality premise. T has weight
     zero and zero coefficients retain any label; no actual-degree equality,
     multiplicative coefficient map, nonzero recovery or finite-basis descent
-    is claimed. Ten default-target clients exercise
+    is claimed. The independent linear-coefficient-evaluation theorem
+    commutes an arbitrary R-linear S-to-R coefficient functional with
+    evaluation at points valued in R using native AddMonoidAlgebra.map, without
+    multiplicativity, finite bases/variables, injectivity, field, domain or
+    nontriviality assumptions. It gives no full coordinate reconstruction,
+    homogeneity, descent, common-zero or source theorem. Eleven default-target
+    clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
     constant-block, zero-iteration, mixed/empty-index, noninjective-map and
     zero-ring structural-law boundary cases, plus exact-degree zero,
     constant, unequal/empty-index, finite-field and trivial-ring cases,
     plus polynomial-parameter substitution, zero, degree zero, bound zero,
-    ZMod 1 and ZMod 6. No base-form or finite-extension existence,
-    all-sufficiently-large degree, short exact
+    ZMod 1 and ZMod 6, plus basis coordinates, a genuinely nonmultiplicative
+    Nat-pair sum, zero-map and Empty linear-evaluation cases. No base-form
+    or finite-extension existence, all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
@@ -174,6 +195,8 @@ status:
       file: MultivariatePolynomials/BlockSubstitutionDegree.lean
     - declaration: MvPolynomial.IsHomogeneous.coeff_polynomial_interchange
       file: MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean
+    - declaration: MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
+      file: MultivariatePolynomials/LinearCoefficientEvaluation.lean
 
 automation:
   methods:
@@ -285,6 +308,32 @@ automation:
     hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5 (UID
     e43cd759-475e-4c61-9c5d-0b9eae171d49), not an original proof author,
     independent release reviewer or release acceptor.
+    The coefficient predecessor subsequently reached separately reviewed
+    official public release 330f46ba71e3230c4eec5f8d17c6b10927cf6dbe,
+    matching accepted main d4f916bd5821a15e43e4f20aaefe07fa706bb147
+    by complete tree 917433eda8758d77242ca5020c26f1bd829bbe6a;
+    Beacon verified private GitHub publication on September 29, 2026 in
+    incubator issue #195/comment 62471. The separate isolated linear-evaluation
+    donor 960964368c62af2bedd331c6798eccdab3636424 was author-checked
+    only for its focused producer/client and seven actual-origin transitive
+    standard-three axioms (report 081e00927bb8cfa24cbca23818eaa4f53d1fb9b0;
+    cache success author-reported, not archived raw cache stdout), then
+    independently reviewed in 004806390540e3930cf57cf78eb121bb2c1bd759
+    and accepted only in isolated scope by Beacon at incubator #196/comment
+    62346. At the initial code-only static-transfer snapshot on September 29,
+    2026, before native run 1002 or destination review, this twenty-module
+    candidate required its own both-default-target/full private-inclusive
+    native build and axiom evidence, fresh exact-candidate review, acceptance
+    and separate official publication. Later revision-specific decisions are
+    recorded externally at PR 38 and incubator issue 196; native run 994 and
+    isolated checks do not certify the enlarged graph.
+    The enlarged destination graph passed native run 1002 at code commit
+    752bdd058deaf81c745d4b82332ee8d862ddb2ba: both default targets built,
+    and all 134 actual-origin declarations in twenty modules, including 97
+    private declarations, had transitive axioms among propext, Classical.choice
+    and Quot.sound. Exact main successor d996f56195589eb9a3a388b3e2e916eacd8cfeeb
+    changes dated documentation only and passed native run 1003. These are
+    code-graph checks, not release acceptance or a source-coverage decision.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -328,6 +377,29 @@ review:
     release review, acceptance, promotion and verified GitHub publication
     remain external candidate-specific decisions. No source-formalization
     decision is made here.
+    The coefficient predecessor subsequently reached verified official
+    publication at 330f46ba71e3230c4eec5f8d17c6b10927cf6dbe on
+    September 29, 2026 (incubator #195/comment 62471). This new
+    linear-evaluation destination transfer from isolated accepted incubator
+    donor 960964368c62af2bedd331c6798eccdab3636424 has only the donor's
+    scoped evidence and independent isolated review
+    004806390540e3930cf57cf78eb121bb2c1bd759. At the initial code-only
+    static-transfer snapshot on September 29, 2026, before native run 1002
+    or destination review, new-graph native checks, fresh author-distinct
+    destination review, maintainer acceptance, protected integration and
+    separately verified official release remained open. Later decisions
+    belong in PR 38 and incubator issue 196; review.status refers to
+    external decisions only and this metadata proves no source coverage.
+    Fresh worker-a Task hive-request-39df4fea46b27720dedf033b446ba4ac94e2d235
+    (UID 6bf86da8-ab7e-4ac4-a832-cd2f7fb2f3e8) independently approved
+    exact main successor d996f56195589eb9a3a388b3e2e916eacd8cfeeb in
+    report 9f28eacf997e768da3af91bf2824024810d268cc and PR 38/native
+    review 4848. Beacon accepted and protected-integrated the code/API in
+    PR 38 on September 29, 2026 at 08:18:43 UTC. At that code-integration
+    snapshot, separate release review, release acceptance, promotion and
+    verified publication remained pending; later revision-specific decisions
+    belong in PR 39 and incubator issue 196, not to this dated snapshot;
+    code acceptance alone does not establish them or source completion.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -450,3 +522,27 @@ acknowledgements: >-
   (UID e43cd759-475e-4c61-9c5d-0b9eae171d49) prepared the subsequent
   static coefficient release-readiness documentation; this does not confer
   original mathematical authorship or independent release acceptance.
+  For the distinct linear-coefficient evaluation result, worker-b Task
+  hive-request-e0e5d4898e89eb2ea5c8cb7b88a53638dc6a3130 (UID
+  0aa6aebb-1fc5-41d4-9aea-c44e7f941221) authored the research probe;
+  worker-b Task hive-request-1e84b7dbd24453b4c56079d2af61fc9a6c164c79
+  (UID 1cfcdc7e-2006-4a03-8da1-e73d97d820c1) authored the isolated
+  producer, client and guide at incubator 960964368c62af2bedd331c6798eccdab3636424.
+  Worker-a Task hive-request-e76c950e3a979d10e409fb4b0cd2e71972deca44
+  (UID bae49ddb-8977-4562-bc3c-a3947c3de5c2) independently reviewed
+  the exact donor at 004806390540e3930cf57cf78eb121bb2c1bd759;
+  Beacon accepted only isolated scope in incubator #196/comment 62346.
+  Beacon's separately reviewed source-nsw finite-basis-coordinate exposition
+  at 8dac6b7744339ec6e9313003b53982d839cb93d4 is background, not
+  the theorem's Lean proof or source coverage. The present mechanical
+  destination transfer by formalization-worker-b Task
+  hive-request-59885bc6e40d66807f5e417d29e18f3ec497405f (UID
+  65442cf3-e7a6-4314-8ad9-107a116d4df2) is not original proof
+  authorship, independent destination review, acceptance or publication.
+  Atlas agreed to the affected existing-library API in incubator #196/comment
+  62374; Beacon retains destination checks, fresh review, acceptance,
+  protected integration, separate release and source-coverage decisions.
+  The subsequent static release-readiness documentation is by
+  formalization-worker-b Task hive-request-22d6061a1d4098d03a837f79783c36552c554bb6
+  (UID d4bc5e89-cd8d-4ec4-bdd5-64bc5b038bf6); this is neither original
+  proof authorship nor independent release review, acceptance or publication.

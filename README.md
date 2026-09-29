@@ -1,6 +1,6 @@
 # Multivariate polynomials
 
-A Lean library with twenty-eight selected public declarations about multivariate
+A Lean library with twenty-nine selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
@@ -16,6 +16,8 @@ Exact total degree of disjoint-block substitution holds for arbitrary input
 polynomials over commutative semirings without zero divisors.
 Extracting any polynomial-parameter coefficient via native interchange
 preserves a multivariate homogeneous label over any commutative semiring.
+An arbitrary coefficient-linear functional commutes with multivariate-polynomial
+evaluation at points valued in the base semiring via the native additive map.
 The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
@@ -86,6 +88,17 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   [theorem](MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean),
   [standalone guide](docs/polynomial-coefficient-homogeneity.md) and
   [finite-parameter substitution client](Test/PolynomialCoefficientHomogeneity.lean).
+- **Evaluation through a linear coefficient functional.** For a commutative
+  semiring algebra `S` over `R`, an arbitrary `R`-linear map `lambda : S →ₗ[R] R`
+  commutes with evaluation at base-valued points `y : V → R` after applying
+  mathlib's native additive coefficient map to the polynomial. The functional
+  need not be multiplicative: the ordinary-import client checks a genuinely
+  nonmultiplicative sum map on `ℕ × ℕ`, a basis coordinate, the zero map and
+  empty variables. No finite basis, field, domain or nontriviality is required.
+  See the [producer](MultivariatePolynomials/LinearCoefficientEvaluation.lean),
+  [standalone guide](docs/linear-coefficient-evaluation.md) and
+  [ordinary-import client](Test/LinearCoefficientEvaluation.lean). This does
+  not reconstruct basis-coordinate polynomials or prove a full source theorem.
 
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
@@ -112,7 +125,8 @@ Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.IteratedBlockSubstitution`, or
 `import MultivariatePolynomials.BlockSubstitutionLaws` or
 `import MultivariatePolynomials.BlockSubstitutionDegree` or
-`import MultivariatePolynomials.PolynomialCoefficientHomogeneity` for a direct
+`import MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
+`import MultivariatePolynomials.LinearCoefficientEvaluation` for a direct
 theorem or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
@@ -152,7 +166,14 @@ multivariate label in each coefficient of a polynomial parameter. Its
 native `IsHomogeneous.eval₂` to finite polynomial-parameter substitutions,
 then extracts coefficients, and tests zero, degree zero, bound zero, `ZMod 1`
 and `ZMod 6`. No coefficient-extraction ring homomorphism, actual-degree
-equality or finite-basis descent follows. The
+equality or finite-basis descent follows. The separate
+`LinearCoefficientEvaluation` leaf applies any `R`-linear functional
+`S →ₗ[R] R` to evaluation at points in `R` through mathlib's native
+`AddMonoidAlgebra.map`; it does not require a coefficient ring homomorphism.
+Its [ordinary-import client](Test/LinearCoefficientEvaluation.lean) exercises
+basis coordinates, a genuinely nonmultiplicative Nat-pair sum, zero and
+empty-variable cases; see the [standalone guide](docs/linear-coefficient-evaluation.md).
+The
 following complete native module is stored verbatim in
 [Test/ReadmeExample.lean](Test/ReadmeExample.lean) and registered in the default
 test target. Its named declarations are private clients, not additional library
@@ -180,8 +201,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all twenty-eight selected public
-declarations and eighteen Lean modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all twenty-nine selected public
+declarations and twenty Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -208,21 +229,24 @@ lake env lean -DwarningAsError=true Test/IteratedBlockSubstitution.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionLaws.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionDegree.lean
 lake env lean -DwarningAsError=true Test/PolynomialCoefficientHomogeneity.lean
+lake env lean -DwarningAsError=true Test/LinearCoefficientEvaluation.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus seven production leaves and ten
+The default build includes the aggregate plus eight production leaves and eleven
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
 root, the literal `Test.BlockSubstitution` test root and the literal
 `Test.IteratedBlockSubstitution` test root and the literal
 `Test.BlockSubstitutionLaws` test root and the literal
 `Test.BlockSubstitutionDegree` test root and the literal
-`Test.PolynomialCoefficientHomogeneity` test root. Tests are not imported
+`Test.PolynomialCoefficientHomogeneity` test root and the literal
+`Test.LinearCoefficientEvaluation` test root. Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
 ordinary, zero-polynomial, disjoint-block, finite-iteration, structural-law and
-exact-degree and polynomial-coefficient-homogeneity clients exercise the
+exact-degree, polynomial-coefficient-homogeneity and linear-coefficient-evaluation
+clients exercise the
 intended public imports. `Test/Axioms.lean` prints only the original ideal
-theorem's transitive axioms; it is not a census of the other twenty-seven selected
+theorem's transitive axioms; it is not a census of the other twenty-eight selected
 declarations, any private declaration, or a substitute for the destination's
 independent complete release audit. The historical adapter's data-only fixture tests can be run with
 `python3 -B scripts/test_generate_api.py`; they do not validate the current
@@ -231,7 +255,7 @@ expanded library or regenerate the current API map.
 An ordinary supplementary module check is:
 
 ```sh
-lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials.BlockSubstitutionDegree MultivariatePolynomials.PolynomialCoefficientHomogeneity MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws Test.BlockSubstitutionDegree Test.PolynomialCoefficientHomogeneity
+lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials.BlockSubstitutionDegree MultivariatePolynomials.PolynomialCoefficientHomogeneity MultivariatePolynomials.LinearCoefficientEvaluation MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws Test.BlockSubstitutionDegree Test.PolynomialCoefficientHomogeneity Test.LinearCoefficientEvaluation
 ```
 
 Historical revision-specific review records retain complete raw/private
@@ -302,6 +326,44 @@ and PR #34/native review 4838. Beacon accepted and protected-integrated the
 code/API in PR #34/comment 62345 on September 29, 2026. This does not accept
 the separate release, establish verified coefficient publication or decide
 source coverage; those are external, revision-specific decisions.
+
+The later reviewed coefficient release **did** complete on September 29, 2026:
+accepted main/release-prep `d4f916bd5821a15e43e4f20aaefe07fa706bb147`
+and official public release `330f46ba71e3230c4eec5f8d17c6b10927cf6dbe`
+share tree `917433eda8758d77242ca5020c26f1bd829bbe6a`; Beacon verified
+publication at incubator issue #195/comment 62471. That completed predecessor
+does not include this newly added linear-coefficient leaf. Its isolated donor
+`FormalFrontier/incubator@960964368c62af2bedd331c6798eccdab3636424`
+has scoped checks and independent isolated review only (incubator issue #196/
+comments 62336 and 62346). At the initial code-only static-transfer snapshot
+on September 29, 2026, before native run 1002 or destination review, this
+twenty-module addition required its own both-target, private-inclusive native
+check, fresh independent exact-candidate review, maintainer acceptance,
+protected integration and a separately verified official release. Subsequent
+revision-specific decisions belong in PR #38 and incubator issue #196, not
+this preparation snapshot. Neither predecessor's native run 994 nor the
+isolated donor's checks certify the new destination graph or source coverage.
+
+At the release-readiness snapshot following code integration on September 29,
+2026, before separate release review, the evidence was as follows. This is a
+dated preparation record; later release decisions belong to PR #39 and
+incubator issue #196, not to this snapshot.
+The new linear-evaluation graph subsequently passed native CI run 1002 on
+September 29, 2026 at exact code commit
+`752bdd058deaf81c745d4b82332ee8d862ddb2ba`: both default targets built
+and all 134 actual-origin declarations across twenty modules, including 97
+private declarations, had transitive axioms among `propext`,
+`Classical.choice` and `Quot.sound`. Exact accepted main commit
+`d996f56195589eb9a3a388b3e2e916eacd8cfeeb` changes only dated
+documentation from that checked graph and has its own successful native CI
+run 1003. Fresh worker-a review of that exact main commit is recorded in
+`9f28eacf997e768da3af91bf2824024810d268cc` and PR #38; Beacon accepted
+and protected-integrated the code/API at 08:18:43 UTC on September 29, 2026.
+This is **code integration, not the separate release**: independent release
+review, release acceptance, protected promotion and verified private GitHub
+publication of the linear-evaluation addition remained pending at that snapshot. The coefficient
+predecessor's official release `330f46ba71e3230c4eec5f8d17c6b10927cf6dbe`
+does not include the new leaf, and none of these checks decides source coverage.
 
 ### Measured build baseline
 
@@ -519,3 +581,32 @@ formalization-worker-b Task
 `hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5` (UID
 `e43cd759-475e-4c61-9c5d-0b9eae171d49`); it is neither original proof
 authorship nor independent release review, acceptance or publication.
+
+For the distinct linear-coefficient result, original isolated proof, client and
+guide author: `formalization-worker-b` Hive Task
+`hive-request-1e84b7dbd24453b4c56079d2af61fc9a6c164c79` (UID
+`1cfcdc7e-2006-4a03-8da1-e73d97d820c1`); earlier native probe author:
+`formalization-worker-b` Hive Task
+`hive-request-e0e5d4898e89eb2ea5c8cb7b88a53638dc6a3130` (UID
+`0aa6aebb-1fc5-41d4-9aea-c44e7f941221`). The independent isolated
+review is `formalization-worker-a` Task
+`hive-request-e76c950e3a979d10e409fb4b0cd2e71972deca44` (UID
+`bae49ddb-8977-4562-bc3c-a3947c3de5c2`), exact review
+`004806390540e3930cf57cf78eb121bb2c1bd759`; Beacon's isolated acceptance
+is incubator issue #196/comment 62346. Beacon authored the separately reviewed
+source-nsw finite-basis exposition at
+`8dac6b7744339ec6e9313003b53982d839cb93d4` (review
+`d62fa7308095968d551a08223c76274ba836a5b4`); it is background, not a
+library dependency or formalization of the full source theorem. This static
+destination transfer is by `formalization-worker-b` Hive Task
+`hive-request-59885bc6e40d66807f5e417d29e18f3ec497405f` (UID
+`65442cf3-e7a6-4314-8ad9-107a116d4df2`), not the original proof author
+or independent destination reviewer. Beacon owns new-graph checks, exact-head
+review, acceptance, protected integration and subsequent official publication;
+Atlas agreed to the unchanged affected-library scope in incubator issue #196/
+comment 62374. No new copyright holder or source asset is introduced.
+The subsequent static linear-evaluation release-readiness preparation is by
+`formalization-worker-b` Hive Task
+`hive-request-22d6061a1d4098d03a837f79783c36552c554bb6` (UID
+`d4bc5e89-cd8d-4ec4-bdd5-64bc5b038bf6`), not original proof authorship,
+independent release review, release acceptance or publication.

@@ -1,8 +1,8 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-eight producer modules (including the aggregate), ten registered
-test/example modules and twenty-eight selected public declarations across eighteen
+nine producer modules (including the aggregate), eleven registered
+test/example modules and twenty-nine selected public declarations across twenty
 Lean modules. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
@@ -19,6 +19,10 @@ The [polynomial-coefficient-homogeneity guide](polynomial-coefficient-homogeneit
 explains the homogeneous-label preservation theorem, finite-parameter client,
 and weight-zero limitation; this added leaf is likewise not part of the
 archived native snapshot.
+The [linear-coefficient-evaluation guide](linear-coefficient-evaluation.md)
+explains the base-valued point and linear (not multiplicative) coefficient-map
+assumptions, ordinary-import clients and its revision-specific lifecycle;
+this new leaf is also absent from the archived native snapshot.
 
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two
@@ -44,7 +48,7 @@ original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
 unmodified analyzed-input revision
 `35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
 adapter's output/check mode on the expanded current checkout: its hard-coded
-six-module inventory and original input hashes cannot describe eighteen modules.
+six-module inventory and original input hashes cannot describe twenty modules.
 Use a committed checkout, not a plain no-Git export; the original contract
 requires the actual Git object or the original manifest with byte-identical
 current inputs in an intentionally parentless release.

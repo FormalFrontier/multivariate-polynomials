@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all twenty-eight selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all twenty-nine selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -256,10 +256,34 @@ multivariate variables. Zero coefficients satisfy every label. No finiteness,
 domain, field, nontriviality or actual-degree-equality premise is required.
 The interchange helpers are private, not additional public definitions.
 
+## `MultivariatePolynomials.LinearCoefficientEvaluation`
+
+[Producer](../MultivariatePolynomials/LinearCoefficientEvaluation.lean),
+[standalone guide](linear-coefficient-evaluation.md) and
+[ordinary-import client](../Test/LinearCoefficientEvaluation.lean).
+With arbitrary universes for `{R : Type u}`, `{S : Type v}` and `{V : Type w}`,
+`[CommSemiring R]`, `[CommSemiring S]`, `[Algebra R S]`, the sole public theorem is
+(manual statement map, not a native Lean signature print):
+
+```lean
+theorem MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
+    (lambda : S →ₗ[R] R) (F : MvPolynomial V S) (y : V → R) :
+    lambda (MvPolynomial.eval (algebraMap R S ∘ y) F) =
+      MvPolynomial.eval y (AddMonoidAlgebra.map lambda.toAddMonoidHom F)
+```
+
+The evaluation point is valued in the **base semiring `R`**, not arbitrary `S`.
+The map `lambda` is only linear, not a ring homomorphism or necessarily
+multiplicative; `AddMonoidAlgebra.map` is mathlib's native additive map.
+There is no finite-variable/basis, field, domain, nontriviality or injectivity
+assumption. The basis-coordinate, nonmultiplicative Nat-pair sum, zero-map and
+`Empty` clients do not reconstruct polynomials from coordinates, preserve
+homogeneous labels or prove a common-zero or full source theorem.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all seven leaves.
-Ten test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all eight leaves.
+Eleven test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
@@ -267,9 +291,10 @@ Ten test/example modules are registered as literal roots under
 [direct homogeneous-evaluation client](../Test/HomogeneousEvaluation.lean),
 [direct block-substitution client](../Test/BlockSubstitution.lean),
 [direct finite-iteration client](../Test/IteratedBlockSubstitution.lean),
-[structural-law client](../Test/BlockSubstitutionLaws.lean), and
-[exact-degree client](../Test/BlockSubstitutionDegree.lean), and
-[coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean).
-The tests are not re-exported as production API. These eight production plus
-ten test modules total eighteen Lean modules; a private-inclusive transitive
+[structural-law client](../Test/BlockSubstitutionLaws.lean),
+[exact-degree client](../Test/BlockSubstitutionDegree.lean),
+[coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean), and
+[linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean).
+The tests are not re-exported as production API. These nine production plus
+eleven test modules total twenty Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.

@@ -11,6 +11,7 @@ public import MultivariatePolynomials.IteratedBlockSubstitution
 public import MultivariatePolynomials.BlockSubstitutionLaws
 public import MultivariatePolynomials.BlockSubstitutionDegree
 public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
+public import MultivariatePolynomials.LinearCoefficientEvaluation
 
 /-!
 # Multivariate polynomials
@@ -22,6 +23,8 @@ under no-zero-divisors coefficients and finite iteration
 through tuple-indexed disjoint blocks and structural laws for renaming,
 associativity, units and concatenation of iteration words. Extracting a polynomial
 parameter coefficient via native interchange preserves each homogeneous label.
+An arbitrary coefficient-linear map commutes with evaluation at base-semiring-valued
+points via the native additive coefficient map, without a multiplicativity premise.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
@@ -29,6 +32,7 @@ Import the corresponding
 `MultivariatePolynomials.IteratedBlockSubstitution` or
 `MultivariatePolynomials.BlockSubstitutionLaws` or
 `MultivariatePolynomials.BlockSubstitutionDegree` or
-`MultivariatePolynomials.PolynomialCoefficientHomogeneity` leaf directly when only one
+`MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
+`MultivariatePolynomials.LinearCoefficientEvaluation` leaf directly when only one
 is needed. Test modules are deliberately not re-exported.
 -/
