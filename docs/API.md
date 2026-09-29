@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all twenty-seven selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all twenty-eight selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -233,10 +233,33 @@ positive-degree, field, additive-cancellation or finite/nonempty-index premise;
 it includes zeros and constants. It does not claim substitution injectivity.
 The proof's auxiliary degree and block-profile facts are private, not new API.
 
+## `MultivariatePolynomials.PolynomialCoefficientHomogeneity`
+
+[Producer](../MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean),
+[standalone guide](polynomial-coefficient-homogeneity.md), and
+[ordinary-import finite-parameter client](../Test/PolynomialCoefficientHomogeneity.lean).
+For arbitrary `{R σ : Type*}` and `[CommSemiring R]`, with `R[X]` denoting
+`Polynomial R`, the one public theorem is (manual statement map, not a native
+Lean signature print):
+
+```lean
+theorem MvPolynomial.IsHomogeneous.coeff_polynomial_interchange
+    (p : MvPolynomial σ R[X]) (degree index : ℕ)
+    (hp : p.IsHomogeneous degree) :
+    ((((MvPolynomial.optionEquivRight R σ).symm.trans
+      (MvPolynomial.optionEquivLeft R σ)) p).coeff index).IsHomogeneous degree
+```
+
+The native interchange places the polynomial parameter in a separate
+weight-zero variable: each coefficient retains the *label* `degree` in the
+multivariate variables. Zero coefficients satisfy every label. No finiteness,
+domain, field, nontriviality or actual-degree-equality premise is required.
+The interchange helpers are private, not additional public definitions.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all six leaves.
-Nine test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all seven leaves.
+Ten test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
@@ -245,7 +268,8 @@ Nine test/example modules are registered as literal roots under
 [direct block-substitution client](../Test/BlockSubstitution.lean),
 [direct finite-iteration client](../Test/IteratedBlockSubstitution.lean),
 [structural-law client](../Test/BlockSubstitutionLaws.lean), and
-[exact-degree client](../Test/BlockSubstitutionDegree.lean).
-The tests are not re-exported as production API. These seven production plus
-nine test modules total sixteen Lean modules; a private-inclusive transitive
+[exact-degree client](../Test/BlockSubstitutionDegree.lean), and
+[coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean).
+The tests are not re-exported as production API. These eight production plus
+ten test modules total eighteen Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.

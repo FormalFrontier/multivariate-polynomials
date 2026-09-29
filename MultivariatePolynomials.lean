@@ -10,6 +10,7 @@ public import MultivariatePolynomials.BlockSubstitution
 public import MultivariatePolynomials.IteratedBlockSubstitution
 public import MultivariatePolynomials.BlockSubstitutionLaws
 public import MultivariatePolynomials.BlockSubstitutionDegree
+public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 
 /-!
 # Multivariate polynomials
@@ -19,12 +20,15 @@ homogeneous-polynomial evaluation scaling laws, and disjoint-block polynomial
 substitution and its evaluation and zero-locus laws, including exact total degree
 under no-zero-divisors coefficients and finite iteration
 through tuple-indexed disjoint blocks and structural laws for renaming,
-associativity, units and concatenation of iteration words. Import the corresponding
+associativity, units and concatenation of iteration words. Extracting a polynomial
+parameter coefficient via native interchange preserves each homogeneous label.
+Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
 `MultivariatePolynomials.BlockSubstitution`,
 `MultivariatePolynomials.IteratedBlockSubstitution` or
 `MultivariatePolynomials.BlockSubstitutionLaws` or
-`MultivariatePolynomials.BlockSubstitutionDegree` leaf directly when only one
+`MultivariatePolynomials.BlockSubstitutionDegree` or
+`MultivariatePolynomials.PolynomialCoefficientHomogeneity` leaf directly when only one
 is needed. Test modules are deliberately not re-exported.
 -/

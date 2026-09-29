@@ -1,6 +1,6 @@
 # Multivariate polynomials
 
-A Lean library with twenty-seven selected public declarations about multivariate
+A Lean library with twenty-eight selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
@@ -14,6 +14,8 @@ Structural laws relate block substitution to arbitrary renaming, forward
 association, singleton units and finite-word concatenation of iterates.
 Exact total degree of disjoint-block substitution holds for arbitrary input
 polynomials over commutative semirings without zero divisors.
+Extracting any polynomial-parameter coefficient via native interchange
+preserves a multivariate homogeneous label over any commutative semiring.
 The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
@@ -74,6 +76,16 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   aggregate; see the [proof](MultivariatePolynomials/BlockSubstitutionDegree.lean),
   [standalone guide](docs/block-substitution-degree.md) and
   [ordinary-import client](Test/BlockSubstitutionDegree.lean).
+- **Homogeneity of polynomial coefficients.** If a multivariate polynomial
+  over `R[X]` is homogeneous of label `d`, interchanging the polynomial
+  parameter and multivariate variables and extracting *any* parameter
+  coefficient retains label `d`. This holds over every commutative semiring,
+  including zero and zero-divisor examples, with no finite-variable, field or
+  nontriviality assumption. The parameter has weight zero; zero coefficients
+  retain every label. No actual total-degree equality is asserted. See the
+  [theorem](MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean),
+  [standalone guide](docs/polynomial-coefficient-homogeneity.md) and
+  [finite-parameter substitution client](Test/PolynomialCoefficientHomogeneity.lean).
 
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
@@ -99,8 +111,9 @@ Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.BlockSubstitution`, or
 `import MultivariatePolynomials.IteratedBlockSubstitution`, or
 `import MultivariatePolynomials.BlockSubstitutionLaws` or
-`import MultivariatePolynomials.BlockSubstitutionDegree` for the direct theorem
-or definition module. The homogeneous-evaluation leaf exposes
+`import MultivariatePolynomials.BlockSubstitutionDegree` or
+`import MultivariatePolynomials.PolynomialCoefficientHomogeneity` for a direct
+theorem or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
 commutative semirings `B`, `R`, a fixed coefficient homomorphism `σ : B →+* R`,
@@ -132,7 +145,14 @@ public laws through eight private theorems. The independent
 `[CommSemiring R] [NoZeroDivisors R]`; its
 [ordinary-import client](Test/BlockSubstitutionDegree.lean) checks zero,
 constants, trivial coefficients, empty and unequal indices, and nonhomogeneous
-examples. The
+examples. The independent `PolynomialCoefficientHomogeneity` leaf uses mathlib's native
+`optionEquivRight.symm.trans optionEquivLeft` to retain a homogeneous
+multivariate label in each coefficient of a polynomial parameter. Its
+[ordinary-import client](Test/PolynomialCoefficientHomogeneity.lean) applies
+native `IsHomogeneous.eval₂` to finite polynomial-parameter substitutions,
+then extracts coefficients, and tests zero, degree zero, bound zero, `ZMod 1`
+and `ZMod 6`. No coefficient-extraction ring homomorphism, actual-degree
+equality or finite-basis descent follows. The
 following complete native module is stored verbatim in
 [Test/ReadmeExample.lean](Test/ReadmeExample.lean) and registered in the default
 test target. Its named declarations are private clients, not additional library
@@ -160,8 +180,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all twenty-seven selected public
-declarations and sixteen Lean modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all twenty-eight selected public
+declarations and eighteen Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -187,20 +207,22 @@ lake env lean -DwarningAsError=true Test/BlockSubstitution.lean
 lake env lean -DwarningAsError=true Test/IteratedBlockSubstitution.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionLaws.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionDegree.lean
+lake env lean -DwarningAsError=true Test/PolynomialCoefficientHomogeneity.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus six production leaves and nine
+The default build includes the aggregate plus seven production leaves and ten
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
 root, the literal `Test.BlockSubstitution` test root and the literal
 `Test.IteratedBlockSubstitution` test root and the literal
 `Test.BlockSubstitutionLaws` test root and the literal
-`Test.BlockSubstitutionDegree` test root. Tests are not imported
+`Test.BlockSubstitutionDegree` test root and the literal
+`Test.PolynomialCoefficientHomogeneity` test root. Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
 ordinary, zero-polynomial, disjoint-block, finite-iteration, structural-law and
-exact-degree clients exercise the
+exact-degree and polynomial-coefficient-homogeneity clients exercise the
 intended public imports. `Test/Axioms.lean` prints only the original ideal
-theorem's transitive axioms; it is not a census of the other twenty-six selected
+theorem's transitive axioms; it is not a census of the other twenty-seven selected
 declarations, any private declaration, or a substitute for the destination's
 independent complete release audit. The historical adapter's data-only fixture tests can be run with
 `python3 -B scripts/test_generate_api.py`; they do not validate the current
@@ -209,7 +231,7 @@ expanded library or regenerate the current API map.
 An ordinary supplementary module check is:
 
 ```sh
-lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials.BlockSubstitutionDegree MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws Test.BlockSubstitutionDegree
+lake env leanchecker --verbose MultivariatePolynomials.IdealOfVars MultivariatePolynomials.HomogeneousEvaluation MultivariatePolynomials.BlockSubstitution MultivariatePolynomials.IteratedBlockSubstitution MultivariatePolynomials.BlockSubstitutionLaws MultivariatePolynomials.BlockSubstitutionDegree MultivariatePolynomials.PolynomialCoefficientHomogeneity MultivariatePolynomials Test.IdealOfVars Test.Axioms Test.LeafImport Test.ReadmeExample Test.HomogeneousEvaluation Test.BlockSubstitution Test.IteratedBlockSubstitution Test.BlockSubstitutionLaws Test.BlockSubstitutionDegree Test.PolynomialCoefficientHomogeneity
 ```
 
 Historical revision-specific review records retain complete raw/private
@@ -240,8 +262,8 @@ Beacon accepted and protected-integrated it on September 28, 2026 (PR #26).
 Separate release review, protected promotion and verified private GitHub
 publication subsequently completed at official commit
 `1c31276aaca1db501950e8bb178981f7ce1acaad` on September 28, 2026.
-Native run 866 applies only to that fourteen-module laws graph, not this new
-sixteen-module aggregate/client. The accepted isolated degree donor has separate
+Native run 866 applies only to that fourteen-module laws graph, not the
+subsequent sixteen-module degree aggregate/client. The accepted isolated degree donor has separate
 matching-cache, scoped-build and transitive standard-axiom evidence; neither
 that record nor native run 866 certifies the new destination roots. Native
 run 923 on September 29, 2026 fetched the matching cache before successfully
@@ -250,11 +272,36 @@ across sixteen modules, including 77 private declarations, with only the
 permitted foundational axioms. Fresh worker-a review approved exact code/API
 commit `a298692e9515cd264f64b1650d916e7325f22dae`; Beacon accepted and
 protected-integrated it in PR #30 on September 29, 2026. Separate release
-review, acceptance, promotion and verified GitHub publication are recorded
-outside this README; this code acceptance does not establish them. The
-predecessor's official release at
+review, acceptance, promotion and verified private GitHub publication completed
+on September 29, 2026 at official `public-release` commit
+`8e3e98f44149616af0fef869ef041b2350e61178` (PR #31/comment 60947).
+This later publication, not the preceding code acceptance alone, establishes
+the release. The predecessor's official release at
 `1c31276aaca1db501950e8bb178981f7ce1acaad` has the same tree as this
 accepted commit's destination parent `bcd674413e1c2e4770a0335b4b75951f5431763c`.
+
+The exact-degree predecessor's official `public-release` commit
+`8e3e98f44149616af0fef869ef041b2350e61178` has the same tree as this
+coefficient-homogeneity candidate's destination parent
+`7e60cb00b05cb46c6a636d3cec7be7280c3880f0`; that publication is
+complete. Accepted isolated coefficient-homogeneity donor
+`e5c756838bb3d454bfdd6cf83aa3e4146554b760` has separate scoped
+producer/client matching-cache, warning-fatal and private-inclusive
+standard-axiom evidence at `0aa15e0b5433e4471fcb8803e1756221c03d873e`,
+and independent review `bcb348fabccda2692785b2f41283ea7e823f98ef`.
+Neither its isolated evidence nor native run 923 certifies this eighteen-module
+destination candidate. Native run 994/UI25 on September 29, 2026 successfully
+built both default targets at exact destination commit
+`6e74a6874269bd340775a4b6d6ff9facf118fce3` and audited all 127 actual-origin
+declarations across eighteen modules, including 91 private declarations, with
+only the permitted foundational axioms (incubator issue #195/comment 62294).
+Fresh worker-a Task `hive-request-4f49b2d86e2f5399552c92df167b0dd8766fac02`
+(UID `1a57e9b8-ba94-49ec-ae8b-295709051759`) independently approved that
+exact code/API candidate at review `558e6f1e0dab8081d1aa24bc18c3c33be8e8dc93`
+and PR #34/native review 4838. Beacon accepted and protected-integrated the
+code/API in PR #34/comment 62345 on September 29, 2026. This does not accept
+the separate release, establish verified coefficient publication or decide
+source coverage; those are external, revision-specific decisions.
 
 ### Measured build baseline
 
@@ -448,3 +495,27 @@ This static release-readiness preparation is by worker-b Task
 `f1111607-8c9c-40cd-a138-8b0dc8737447`), not original mathematical
 authorship, an independent release review or release acceptance. Official
 degree publication and source correspondence remain separate decisions.
+
+The polynomial-coefficient-homogeneity proof and client were originally
+authored in isolated incubator commit
+`e5c756838bb3d454bfdd6cf83aa3e4146554b760` by worker-b Task
+`hive-request-35ae3e5f432d81c2ab9b9ffc5cf35185702d8590` (UID
+`368216ac-2105-4165-9a38-ef1c5c72e807`), after the native probe by
+worker-b Task `hive-request-5f7de283751dacfb71124e88a895d681f2d82b67`
+(UID `9e51bb9e-d6f0-4407-a73b-d277ee8afd78`). Worker-a Task
+`hive-request-d91b835baed2bddb31bd4e5e4809f1948084c296` (UID
+`f9e28345-0411-4bdc-9c82-1b347209fc6c`) independently reviewed the
+isolated donor at `bcb348fabccda2692785b2f41283ea7e823f98ef`;
+Beacon accepted that isolated scope in incubator issue #195/comment 62204.
+This distinct transfer is by formalization-worker-b Task
+`hive-request-9214c009238fd6c0c6b9be23a591519a5c2de117` (UID
+`9b3a6959-ad8e-4db6-8103-efe641aeeaab`), not original proof authorship,
+independent destination review or integration. Beacon owns destination
+checks, review, acceptance, integration and publication; Atlas agreed to the
+unchanged affected-library scope at incubator issue #195/comment 62211.
+No new copyright-holder claim, source PDF or library dependency is introduced.
+The subsequent static coefficient release-readiness preparation is by
+formalization-worker-b Task
+`hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5` (UID
+`e43cd759-475e-4c61-9c5d-0b9eae171d49`); it is neither original proof
+authorship nor independent release review, acceptance or publication.

@@ -16,6 +16,8 @@ project:
     iteration addition and opposite successor over commutative semirings.
     Exact total degree of substitution into disjoint variable blocks holds
     for arbitrary inputs under CommSemiring and NoZeroDivisors coefficients.
+    Native polynomial-parameter interchange preserves a homogeneous multivariate
+    label in each coefficient over arbitrary commutative semirings.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -67,10 +69,20 @@ sources:
       f0a7e35d5b45348306d07c0119c42593ff68cd63. Distinct from the
       isolated Lean proof and its later destination transfer; not source
       numbering, normicity or accepted formalization coverage.
+  - title: "Polynomial-parameter coefficients of homogeneous multivariate polynomials"
+    authors:
+      - Formal Frontier Agents
+    id: "FormalFrontier/source-nsw@9650c0c53808ade3dc957f301ee50e3a23a4071b:expositions/polynomial-parameter-coefficients.md"
+    type: original-proof
+    relationship: background
+    note: >-
+      Independently reviewed mathematical interpretation at source-nsw issue
+      #112; the new destination theorem stands alone and this source-specific
+      exposition supplies neither a library dependency nor source coverage.
 
 status:
   scope: >-
-    Twenty-seven selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Twenty-eight selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -89,14 +101,21 @@ status:
     additional exact total-degree theorem for disjoint-block substitution
     holds under CommSemiring and NoZeroDivisors alone for arbitrary zero,
     constant and nonhomogeneous polynomials and arbitrary index types; it
-    asserts no general substitution injectivity. Nine default-target clients exercise
+    asserts no general substitution injectivity. The polynomial-coefficient
+    interchange theorem retains the original homogeneous multivariate label
+    after extracting any polynomial-parameter coefficient under CommSemiring,
+    without a domain, field, finiteness or nontriviality premise. T has weight
+    zero and zero coefficients retain any label; no actual-degree equality,
+    multiplicative coefficient map, nonzero recovery or finite-basis descent
+    is claimed. Ten default-target clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
     constant-block, zero-iteration, mixed/empty-index, noninjective-map and
     zero-ring structural-law boundary cases, plus exact-degree zero,
-    constant, unequal/empty-index, finite-field and trivial-ring cases.
-    No base-form or
-    finite-extension existence, all-sufficiently-large degree, short exact
+    constant, unequal/empty-index, finite-field and trivial-ring cases,
+    plus polynomial-parameter substitution, zero, degree zero, bound zero,
+    ZMod 1 and ZMod 6. No base-form or finite-extension existence,
+    all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
@@ -153,6 +172,8 @@ status:
       file: MultivariatePolynomials/BlockSubstitutionLaws.lean
     - declaration: MvPolynomial.totalDegree_blockSubst
       file: MultivariatePolynomials/BlockSubstitutionDegree.lean
+    - declaration: MvPolynomial.IsHomogeneous.coeff_polynomial_interchange
+      file: MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean
 
 automation:
   methods:
@@ -227,6 +248,43 @@ automation:
     hive-request-545ac40599943c4846985bcbecc9773af7867eb4 (UID
     f1111607-8c9c-40cd-a138-8b0dc8737447) runs no new Lean and is not
     an independent release review or official publication.
+    The degree predecessor reached the separately verified official public-release
+    commit 8e3e98f44149616af0fef869ef041b2350e61178, which has the same
+    tree as destination parent 7e60cb00b05cb46c6a636d3cec7be7280c3880f0.
+    This distinct coefficient-homogeneity transfer by formalization-worker-b
+    Task hive-request-9214c009238fd6c0c6b9be23a591519a5c2de117
+    (UID 9b3a6959-ad8e-4db6-8103-efe641aeeaab) preserves the proof/client
+    bodies from isolated incubator donor e5c756838bb3d454bfdd6cf83aa3e4146554b760
+    except collective/SPDX headers and its client import. That donor was authored
+    by worker-b Task hive-request-35ae3e5f432d81c2ab9b9ffc5cf35185702d8590
+    (UID 368216ac-2105-4165-9a38-ef1c5c72e807), based on worker-b probe
+    32ac38b114a272e25da0d76e241112b0006ae57b by Task
+    hive-request-5f7de283751dacfb71124e88a895d681f2d82b67 (UID
+    9e51bb9e-d6f0-4407-a73b-d277ee8afd78). Its evidence-only child
+    0aa15e0b5433e4471fcb8803e1756221c03d873e documents scoped
+    matching-cache, warning-fatal producer/client builds and complete
+    actual-origin standard-three transitive audit. Worker-a Task
+    hive-request-d91b835baed2bddb31bd4e5e4809f1948084c296 (UID
+    f9e28345-0411-4bdc-9c82-1b347209fc6c) independently reviewed the
+    isolated donor in bcb348fabccda2692785b2f41283ea7e823f98ef; Beacon
+    accepted only that isolated scope in incubator issue #195/comment 62204.
+    Its checks do not certify the new destination aggregate/client graph.
+    Native destination run 994/UI25 on September 29, 2026 built both default
+    targets at exact commit 6e74a6874269bd340775a4b6d6ff9facf118fce3 and
+    checked 127 actual-origin declarations across eighteen modules, including
+    91 private declarations, with transitive axioms restricted to the permitted
+    three. Fresh worker-a Task hive-request-4f49b2d86e2f5399552c92df167b0dd8766fac02
+    (UID 1a57e9b8-ba94-49ec-ae8b-295709051759) independently approved
+    exact code/API commit 6e74a6874269bd340775a4b6d6ff9facf118fce3
+    in review 558e6f1e0dab8081d1aa24bc18c3c33be8e8dc93
+    and PR 34/native review 4838. Beacon accepted and protected-integrated
+    that code/API in PR 34/comment 62345 on September 29, 2026; separate
+    release review, acceptance and verified publication remain external
+    candidate-specific decisions. The static coefficient release-readiness
+    preparer is formalization-worker-b Task
+    hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5 (UID
+    e43cd759-475e-4c61-9c5d-0b9eae171d49), not an original proof author,
+    independent release reviewer or release acceptor.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -249,9 +307,27 @@ review:
     b333f69a-1e1a-421a-b47e-bcc7ff670df4), with both-root native 923
     build and private-inclusive standard-axiom evidence. Beacon accepted
     and protected-integrated that code/API in PR 30 on September 29, 2026.
-    Release review, acceptance, promotion and GitHub publication remain
-    separate revision-specific external decisions, not inferred here.
-    No source-formalization decision is made here.
+    Separate release review, acceptance, promotion and verified private
+    GitHub publication completed on September 29, 2026 at official commit
+    8e3e98f44149616af0fef869ef041b2350e61178 (PR 31/comment 60947),
+    rather than following from code acceptance alone.
+    The degree predecessor's official publication is separately complete at
+    8e3e98f44149616af0fef869ef041b2350e61178. For this new coefficient
+    transfer, isolated review bcb348fabccda2692785b2f41283ea7e823f98ef
+    and scoped evidence child 0aa15e0b5433e4471fcb8803e1756221c03d873e
+    apply only to incubator donor e5c756838bb3d454bfdd6cf83aa3e4146554b760;
+    they do not approve the destination. Native run 994/UI25 passed both
+    default targets and audited all 127 actual origins, including 91 private
+    declarations across eighteen modules, with only the standard three
+    foundational axioms at exact commit 6e74a6874269bd340775a4b6d6ff9facf118fce3.
+    Fresh worker-a Task hive-request-4f49b2d86e2f5399552c92df167b0dd8766fac02
+    (UID 1a57e9b8-ba94-49ec-ae8b-295709051759) independently approved
+    that code/API candidate in review 558e6f1e0dab8081d1aa24bc18c3c33be8e8dc93
+    and PR 34/native review 4838. Beacon accepted and protected-integrated
+    the code/API in PR 34/comment 62345 on September 29, 2026. Separate
+    release review, acceptance, promotion and verified GitHub publication
+    remain external candidate-specific decisions. No source-formalization
+    decision is made here.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -354,3 +430,23 @@ acknowledgements: >-
   independently review this candidate or accept its official release.
   No unsupported rights-holder claim, imported source asset or new library
   dependency is introduced.
+  For the separate polynomial-coefficient bridge, worker-b Task
+  hive-request-5f7de283751dacfb71124e88a895d681f2d82b67 (UID
+  9e51bb9e-d6f0-4407-a73b-d277ee8afd78) contributed the native probe;
+  worker-b Task hive-request-35ae3e5f432d81c2ab9b9ffc5cf35185702d8590
+  (UID 368216ac-2105-4165-9a38-ef1c5c72e807) authored the isolated
+  proof/client and guide at e5c756838bb3d454bfdd6cf83aa3e4146554b760;
+  worker-a Task hive-request-d91b835baed2bddb31bd4e5e4809f1948084c296
+  (UID f9e28345-0411-4bdc-9c82-1b347209fc6c) independently reviewed
+  that isolated code at bcb348fabccda2692785b2f41283ea7e823f98ef.
+  Beacon accepted that donor only in incubator issue #195/comment 62204;
+  Atlas agreed to this destination scope at comment 62211. This mechanical
+  destination transfer by formalization-worker-b Task
+  hive-request-9214c009238fd6c0c6b9be23a591519a5c2de117 (UID
+  9b3a6959-ad8e-4db6-8103-efe641aeeaab) is neither original proof
+  authorship nor independent destination review. Beacon owns destination
+  acceptance, protected integration and the subsequent reviewed release.
+  Formalization-worker-b Task hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5
+  (UID e43cd759-475e-4c61-9c5d-0b9eae171d49) prepared the subsequent
+  static coefficient release-readiness documentation; this does not confer
+  original mathematical authorship or independent release acceptance.
