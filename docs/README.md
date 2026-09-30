@@ -1,9 +1,9 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-ten producer modules (including the aggregate), twelve registered
-test/example modules and thirty-eight selected public declarations across
-twenty-two Lean modules. It is neither
+eleven producer modules (including the aggregate), thirteen registered
+test/example modules and thirty-nine selected public declarations across
+twenty-four Lean modules. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
@@ -29,6 +29,11 @@ quotient and remainder maps, componentwise leading-cone avoidance, coefficient
 ideal preservation, ordinary-import clients and the limits of noncanonical choice.
 This new leaf is likewise absent from the archived native snapshot.
 
+The [monic-lift guide](monic-lift.md) describes the existential surjective
+coefficient lift with literal leading-exponent equality, its zero-ring case,
+ordinary-import clients and contributor credit; it is absent from the archived
+native snapshot.
+
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two
 producer modules and four private test/example modules. The unchanged
@@ -53,7 +58,7 @@ original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
 unmodified analyzed-input revision
 `35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
 adapter's output/check mode on the expanded current checkout: its hard-coded
-six-module inventory and original input hashes cannot describe twenty-two modules.
+six-module inventory and original input hashes cannot describe twenty-four modules.
 Use a committed checkout, not a plain no-Git export; the original contract
 requires the actual Git object or the original manifest with byte-identical
 current inputs in an intentionally parentless release.

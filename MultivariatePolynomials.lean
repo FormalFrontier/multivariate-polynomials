@@ -13,6 +13,7 @@ public import MultivariatePolynomials.BlockSubstitutionDegree
 public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 public import MultivariatePolynomials.LinearCoefficientEvaluation
 public import MultivariatePolynomials.LinearDivision
+public import MultivariatePolynomials.MonicLift
 
 /-!
 # Multivariate polynomials
@@ -28,6 +29,8 @@ An arbitrary coefficient-linear map commutes with evaluation at base-semiring-va
 points via the native additive coefficient map, without a multiplicativity premise.
 Fixed choice-dependent linear polynomial division by a family with unit leading
 coefficients gives reduced remainders and preserves every coefficient ideal.
+Surjective coefficient maps admit monic multivariate-polynomial lifts that
+preserve the literal leading exponent, including over the zero ring.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
@@ -37,6 +40,7 @@ Import the corresponding
 `MultivariatePolynomials.BlockSubstitutionDegree` or
 `MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
 `MultivariatePolynomials.LinearCoefficientEvaluation` or
-`MultivariatePolynomials.LinearDivision` leaf directly when only one
+`MultivariatePolynomials.LinearDivision` or
+`MultivariatePolynomials.MonicLift` leaf directly when only one
 is needed. Test modules are deliberately not re-exported.
 -/

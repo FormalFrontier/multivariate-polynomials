@@ -23,6 +23,8 @@ project:
     Fixed choice-dependent R-linear quotient and reduced-remainder operators
     for arbitrary polynomial divisor families with unit leading coefficients
     over a commutative ring preserve every coefficient ideal.
+    Monic multivariate polynomials lift along surjective coefficient maps
+    with literal leading-exponent equality over arbitrary commutative rings.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -99,7 +101,7 @@ sources:
 
 status:
   scope: >-
-    Thirty-eight selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Thirty-nine selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -139,7 +141,11 @@ status:
     coefficient-ideal lemma has no division hypothesis. Six further producer
     helpers remain public, but not selected results. No canonical or unique
     division maps, Gröbner, field, domain, finite-variable/family or
-    restricted-series claim is made. Twelve default-target
+    restricted-series claim is made. The additional monic-lift theorem for
+    arbitrary variables and commutative rings needs a surjective coefficient
+    homomorphism and monic target, not injectivity, a field, a domain or blanket
+    nontriviality; it preserves the literal leading exponent even for a zero
+    target. The lift is existential, not canonical. Thirteen default-target
     clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
@@ -150,7 +156,8 @@ status:
     ZMod 1 and ZMod 6, plus basis coordinates, a genuinely nonmultiplicative
     Nat-pair sum, zero-map and Empty linear-evaluation cases, plus generic,
     finite/empty-family, zero-input/zero-ring, reduced-input and nonzero
-    proper ZMod 4 ideal linear-division clients. No base-form
+    proper ZMod 4 ideal linear-division clients, plus generic, noninjective
+    quotient, empty-variable and zero target/source monic-lift clients. No base-form
     or finite-extension existence, all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
@@ -230,6 +237,8 @@ status:
       file: MultivariatePolynomials/LinearDivision.lean
     - declaration: MonomialOrder.linearDivision_quotient_of_reduced
       file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.exists_monic_lift
+      file: MultivariatePolynomials/MonicLift.lean
 
 automation:
   methods:
@@ -462,6 +471,13 @@ review:
     on September 30, 2026 at 09:05:39 UTC. This is code acceptance, not
     independent review, acceptance or publication of this subsequent release
     candidate; source correspondence remains a separate decision.
+    The standalone monic-lift proof/client at incubator donor
+    87c17b5ef96a160ba529b91614f855557e9ac875 was accepted only in that
+    isolated scope, with review 25b23d504d5d6a90425047b2a963173eef45997e.
+    Its transfer into the independent multivariate-polynomials library does
+    not inherit destination review, proof-integrity evidence or source coverage;
+    those decisions apply to exact destination revisions and are recorded
+    separately. This metadata makes no new computational claim.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -632,3 +648,14 @@ acknowledgements: >-
   coordinated destination checks, independent review, acceptance and protected
   integration and owns separate official-release decisions. Neither the
   transfer nor donor acceptance proves source coverage or restricted-series division.
+  For the distinct monic multivariate lift, formalization-worker-a Task
+  hive-request-d6fce06836f6d0616fa346aefcb0fce624ff4179 (UID
+  36d7b5fe-6197-4ebf-a607-6d2c14f9cc1b) authored the isolated original
+  theorem and five clients at 87c17b5ef96a160ba529b91614f855557e9ac875.
+  Formalization-worker-b Task hive-request-640f5bb2b009debb5c2ecd319193e7d1cca7be3c
+  (UID 0c3b0f16-7177-4852-a5f9-57d43c013bb8) transferred the proof/client
+  unchanged apart from the conventional file header and client import/namespace;
+  it did not author the proof, independently review destination acceptance or
+  make a release decision. Riccardo Brasca's univariate analogue and Antoine
+  Chambert-Loir's MonomialOrder infrastructure in mathlib (Apache-2.0)
+  informed the construction; neither supplies a multivariate theorem here.

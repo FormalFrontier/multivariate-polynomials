@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all thirty-eight selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all thirty-nine selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -354,10 +354,34 @@ indices or restricted-series division. Eight private client theorems cover
 generic and finite families, an empty family, zero input, the zero ring,
 the nonzero proper ideal `(2)` in `ZMod 4`, and reduced input.
 
+## `MultivariatePolynomials.MonicLift`
+
+[Producer](../MultivariatePolynomials/MonicLift.lean),
+[standalone guide](monic-lift.md), and
+[ordinary-import private client](../Test/MonicLift.lean). For arbitrary
+`{σ R S : Type*}`, `[CommRing R]`, `[CommRing S]`, a monomial order
+`m : MonomialOrder σ`, surjective coefficient homomorphism `φ : R →+* S`,
+`p : MvPolynomial σ S` and `hp : m.Monic p`, the one selected public theorem is
+(a manual statement, not native Lean output):
+
+```lean
+theorem MonomialOrder.exists_monic_lift (m : MonomialOrder σ) (φ : R →+* S)
+    (hφ : Function.Surjective φ) (p : MvPolynomial σ S) (hp : m.Monic p) :
+    ∃ q : MvPolynomial σ R,
+      MvPolynomial.map φ q = p ∧ m.Monic q ∧ m.degree q = m.degree p
+```
+
+Degree equality is literal in `σ →₀ ℕ`, not just monomial-order equivalence.
+The nontrivial-target proof agrees on actual supports; the zero-target proof
+takes `q = 1` and does not assert support equality. No finiteness, injectivity,
+field, domain or unconditional nontriviality is required. The existential
+choice is not canonical. Five private client theorems cover generic use,
+a noninjective quotient, empty variables and zero target/source rings.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all nine leaves.
-Twelve test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all ten leaves.
+Thirteen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
@@ -369,7 +393,8 @@ Twelve test/example modules are registered as literal roots under
 [exact-degree client](../Test/BlockSubstitutionDegree.lean),
 [coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean), and
 [linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean), and
-[linear-division client](../Test/LinearDivision.lean).
-The tests are not re-exported as production API. These ten production plus
-twelve test modules total twenty-two Lean modules; a private-inclusive transitive
+[linear-division client](../Test/LinearDivision.lean), and
+[monic-lift client](../Test/MonicLift.lean).
+The tests are not re-exported as production API. These eleven production plus
+thirteen test modules total twenty-four Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.

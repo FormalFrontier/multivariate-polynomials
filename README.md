@@ -1,6 +1,6 @@
 # Multivariate polynomials
 
-A Lean library with thirty-eight selected public declarations about multivariate
+A Lean library with thirty-nine selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
@@ -21,6 +21,8 @@ evaluation at points valued in the base semiring via the native additive map.
 Fixed choice-dependent linear quotient and reduced-remainder operators for
 arbitrary divisor families with unit leading coefficients preserve every
 coefficient ideal over a commutative ring.
+Every monic multivariate polynomial lifts along a surjective coefficient map
+to a monic polynomial with the same literal leading exponent.
 The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
@@ -115,6 +117,16 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   [standalone guide](docs/linear-division.md) and
   [private client](Test/LinearDivision.lean).
 
+- **Monic lifts under surjective coefficient maps.** For arbitrary variables
+  and commutative coefficient rings, `MonomialOrder.exists_monic_lift` lifts a
+  monic target polynomial while preserving its image and literal monomial-order
+  degree, even for a zero target. No injectivity, field, domain or finite-variable
+  assumption is required; the lift is noncanonical. Import
+  `MultivariatePolynomials.MonicLift` directly; see its
+  [producer](MultivariatePolynomials/MonicLift.lean),
+  [standalone guide](docs/monic-lift.md) and
+  [ordinary-import client](Test/MonicLift.lean).
+
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
 finite-variable ideal theorem belongs to mathlib, not this library.
@@ -142,7 +154,8 @@ Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.BlockSubstitutionDegree` or
 `import MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
 `import MultivariatePolynomials.LinearCoefficientEvaluation` or
-`import MultivariatePolynomials.LinearDivision` for a direct
+`import MultivariatePolynomials.LinearDivision` or
+`import MultivariatePolynomials.MonicLift` for a direct
 theorem or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
@@ -217,8 +230,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all thirty-eight selected public
-declarations and twenty-two Lean modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all thirty-nine selected public
+declarations and twenty-four Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -247,17 +260,19 @@ lake env lean -DwarningAsError=true Test/BlockSubstitutionDegree.lean
 lake env lean -DwarningAsError=true Test/PolynomialCoefficientHomogeneity.lean
 lake env lean -DwarningAsError=true Test/LinearCoefficientEvaluation.lean
 lake env lean -DwarningAsError=true Test/LinearDivision.lean
+lake env lean -DwarningAsError=true Test/MonicLift.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus nine production leaves and twelve
+The default build includes the aggregate plus ten production leaves and thirteen
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
 root, the literal `Test.BlockSubstitution` test root and the literal
 `Test.IteratedBlockSubstitution` test root and the literal
 `Test.BlockSubstitutionLaws` test root and the literal
 `Test.BlockSubstitutionDegree` test root and the literal
 `Test.PolynomialCoefficientHomogeneity` test root and the literal
-`Test.LinearCoefficientEvaluation` and `Test.LinearDivision` test roots.
+`Test.LinearCoefficientEvaluation`, `Test.LinearDivision` and `Test.MonicLift`
+test roots.
 Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
 ordinary, zero-polynomial, disjoint-block, finite-iteration, structural-law and
@@ -423,7 +438,7 @@ including matching-cache setup, both-root build and private-inclusive axiom
 audit. This runner-specific observation is not project-only build time or a
 peak-memory measurement, benchmark comparison or claimed speedup.
 
-For the current twenty-two-module graph, successful Forgejo CI run 1335 on
+For the then-current twenty-two-module graph, successful Forgejo CI run 1335 on
 September 30, 2026 took **208 seconds** from 08:56:45 to 09:00:13 UTC for the
 *whole workflow*, including dependency setup, matching-cache retrieval, both
 default-target build and private-inclusive axiom audit. In that runner the
@@ -435,6 +450,35 @@ sum is not the whole workflow time. These are observations of that CI run,
 not cold-build, peak-memory or disk measurements, hardware-independent
 estimates, or regression or speedup claims. Fetch the matching cache before
 building as directed above.
+
+### Expected cost for this 24-module version
+
+For the eleven production and thirteen test/example modules in this checkout
+(Lean `v4.34.0-rc2`, mathlib `83abb3e776bdefcbc447a1e44d0debe4010039e5`,
+nine resolved packages), two September 30, 2026 CI runs measured **16.967**
+and **19.234 seconds** for the build of both default targets *after* fetching
+the matching precompiled mathlib cache (39.349 and 41.061 seconds, respectively).
+Their complete workflows, including setup, cache verification and the
+private-inclusive axiom audit, took **229** and **240 seconds**; a separate
+same-version contribution workflow took **249 seconds**. On a comparable CI
+runner with the matching cache available, plan for roughly **20–30 seconds**
+for the two-target project build and **4–5 minutes** for the complete workflow.
+Those ranges are planning estimates, not hardware-independent guarantees or
+full mathlib source-build times; slower hosts, network/cache conditions and
+concurrent load can increase them.
+
+For resource planning, allow **about 8 GiB of available RAM** and **several GiB
+of free disk** for the pinned dependencies, precompiled mathlib cache and build
+outputs, with modest build concurrency. This is a conservative planning
+allowance, **not a measured minimum or a current peak**: the earlier six-module
+maximum child-process RSS above is neither total memory use nor a measurement
+of this 24-module workload, and current aggregate peak RAM and disk use were
+not recorded. `LEAN_NUM_THREADS=1` sets Lean's runtime task-worker count to one;
+it is not a whole-build process-count limit, a RAM cap, or a guarantee that the
+planning allowance is sufficient. The pinned Lake does not use `LAKE_JOBS`;
+its presence in the historical measurements above records an environment setting,
+not an effective concurrency control. The CI timings above do not estimate
+build time with a single runtime worker.
 
 ## Sources, contributors and license
 
