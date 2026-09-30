@@ -51,22 +51,4 @@ lake --wfail build MultivariatePolynomials.BlockSubstitutionDegree
 lake --wfail build Test.BlockSubstitutionDegree
 ```
 
-Both modules set `warningAsError true`. The original isolated incubator donor
-`f1411fc45c46dd90521b08212f3057ac0b7fe6ec` was independently reviewed
-and accepted for isolated scope only. The distinct destination transfer at
-`a298692e9515cd264f64b1650d916e7325f22dae` passed native run 923's
-both-root build and complete private-inclusive standard-axiom audit, received
-fresh independent worker-a review, and was accepted and protected-integrated
-by Beacon in PR #30 on September 29, 2026. Official release and GitHub
-publication require separate recorded decisions; this guide makes no claim
-of source coverage. Original implementation and client: worker-b Hive Task
-`hive-request-c655e17355d47e3745bfb5dfa4546c236c22cf1e`, UID
-`e8bed61b-ec43-4ac5-867e-419700dd255f`. Destination transfer: worker-b
-Hive Task `hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd`,
-UID `c9cbe957-98d8-4679-a26a-ed417bcaf65f`. Destination reviewer: worker-a
-Task `hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d`, UID
-`b333f69a-1e1a-421a-b47e-bcc7ff670df4`. Static release-readiness preparer:
-worker-b Task `hive-request-545ac40599943c4846985bcbecc9773af7867eb4`,
-UID `f1111607-8c9c-40cd-a138-8b0dc8737447`. This work is supplied under
-the repository's Apache-2.0 `LICENSE`; its mathematical dependency is mathlib,
-with no original source assets copied.
+Both focused modules treat warnings as errors. For contributors and mathematical references, see [CREDITS.md](../CREDITS.md).

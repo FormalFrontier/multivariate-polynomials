@@ -70,39 +70,4 @@ no duplicate homogeneous-substitution or variable-scaling theorem.
 
 The implementation uses mathlib's `eval₂Hom_bind₁` and
 `eval_rename_prod_mk`; its only declared producer dependency is mathlib.
-The original isolated incubator contribution at
-`65119111a365a3b28bf5803e64a4a1c880948d6d` was independently reviewed
-and accepted for **isolated readiness only** on September 28, 2026; at that
-stage it was not registered on incubator main. The destination code/API commit
-`0000be8ab382b047dfe93bb43ec2941b625fc9e7` completed both default-target
-native builds and the complete transitive standard-axiom audit in run 740,
-received fresh independent code/API review and was accepted and integrated by
-Beacon on September 28, 2026. At that earlier code-acceptance checkpoint,
-neither the acceptance nor this guide established a separately reviewed
-official deliverable release or verified publication. The block/headline
-release was subsequently completed at official commit
-`fb22a0a31ff464de6f82d2f94ac6d37f837eb519` (issue 20/comment 57713)
-on September 28, 2026. Neither the historical code review nor this guide
-establishes incubator conversion, source correspondence or source coverage;
-the separate iterator's later official publication is recorded in its own
-[guide](iterated-block-substitution.md). The newly transferred structural laws
-passed complete destination native CI checks (run 866), independent review
-and Beacon's protected-main code/API acceptance at commit
-`5179b6042154397e09c9047e24fb42dddc07ae15` on September 28, 2026;
-separate release and publication decisions are recorded externally, not
-certified by this generic-block guide.
-
-Responsible maintainer and destination integration owner: Beacon. Original
-contributor: worker-b Hive Task
-`hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03`
-(UID `0068e189-b29d-4cf7-9b0c-63cb34dab472`). Destination transfer:
-worker-b Hive Task
-`hive-request-54ffdbad98fe154f75224b39e0f7a253b50fde7c`
-(UID `11eb8d82-791b-41fe-a9bf-e15eea2ba73a`). Independent destination
-reviewer: worker-a Hive Task
-`hive-request-446f2cfe616e290ac265715dbd9879143a7dda4c`
-(UID `aa259428-f3d3-4e77-b017-91fa3c1d15de`). Documentation-only release
-preparer: worker-b Hive Task
-`hive-request-70e6e11667d1a57d588854eb0cc9806dab89b9c1`
-(UID `d5157618-a9d2-4b99-9a6b-c21ea017878b`). The unchanged Lean toolchain
-is `v4.34.0-rc2`, with mathlib `83abb3e776bdefcbc447a1e44d0debe4010039e5`.
+The separately developed [iteration](iterated-block-substitution.md) and [structural laws](block-substitution-laws.md) have their own guides. Project authorship and mathlib credit appear in [CREDITS.md](../CREDITS.md).

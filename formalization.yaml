@@ -3,28 +3,11 @@ version: "v0.4"
 project:
   name: Multivariate Polynomials
   description: >-
-    Non-finite generation of the ideal of all variables over a nontrivial
-    commutative semiring with infinitely many variables, and weighted and
-    ordinary homogeneous multivariate-polynomial evaluation scaling laws
-    over arbitrary commutative semirings, and structural substitution into
-    disjoint variable blocks, with generic nested evaluation, distinct
-    one-way and equivalent zero-locus conditions, and conditional nonzeroness.
-    Finite disjoint-block iteration has structural tuple recursion, separate
-    forward and iff vanishing laws, nominal homogeneous degree powers and
-    conditional exact and unbounded attained degrees. Structural laws add
-    arbitrary renaming, forward association, singleton units and finite-word
-    iteration addition and opposite successor over commutative semirings.
-    Exact total degree of substitution into disjoint variable blocks holds
-    for arbitrary inputs under CommSemiring and NoZeroDivisors coefficients.
-    Native polynomial-parameter interchange preserves a homogeneous multivariate
-    label in each coefficient over arbitrary commutative semirings.
-    Arbitrary coefficient-linear functionals commute with multivariate-polynomial
-    evaluation at base-valued points via the native additive coefficient map.
-    Fixed choice-dependent R-linear quotient and reduced-remainder operators
-    for arbitrary polynomial divisor families with unit leading coefficients
-    over a commutative ring preserve every coefficient ideal.
-    Monic multivariate polynomials lift along surjective coefficient maps
-    with literal leading-exponent equality over arbitrary commutative rings.
+    Reusable multivariate-polynomial results on infinite-variable ideals,
+    homogeneous evaluation, disjoint-block substitution and its iteration,
+    degree, coefficient extraction and linear evaluation, chosen linear
+    division, and existential monic lifts. See README.md and docs/API.md
+    for precise hypotheses and limitations.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -33,13 +16,12 @@ sources:
   - title: "A non-finitely-generated variable ideal: finite-support proof exposition"
     authors:
       - Formal Frontier Agents
-    id: "FormalFrontier/source-vakil-foag@8051ce71598ae2a4822807b5af51e7c543a4b518:expositions/exercise-6-7-e-non-finitely-generated-ideal.md"
     type: original-proof
     relationship: adapts
     note: >-
-      Reviewed project-authored mathematical plan for the stronger semiring and
-      infinite-variable statement; the Lean proof expression was authored
-      separately in multivariate-polynomials commit a96209d0f59d5b8e7f3d3833318aff4ca77edad7.
+      Project-authored finite-support argument; the independent library proof
+      concerns only the variable ideal, not the full motivating exact sequence.
+      A proof outline appears in README.md.
   - title: "The Rising Sea: Foundations of Algebraic Geometry"
     authors:
       - Ravi Vakil
@@ -47,119 +29,61 @@ sources:
     location: "October 21, 2025 draft, Exercise 6.7.E, PDF page 199"
     relationship: background
     note: >-
-      Motivates a short-exact-sequence example; this formalization proves only
-      the general non-finite-generation lemma, not the whole sequence statement.
+      Motivation for the variable-ideal result, not a claim that the entire
+      exercise or its short exact sequence has been formalized here.
   - title: "Structural block substitution and the two iteration orders"
     authors:
       - Beacon
-    id: "FormalFrontier/source-nsw@f48d95396b6395f5248afdac7892379362eb50f5:expositions/block-substitution-associativity-and-iteration.md"
     type: original-proof
     relationship: adapts
     note: >-
-      Project-authored structural mathematical argument, independently
-      reviewed in source-nsw at 1c5de16e1f81e9d2ce9f9bc534d03dcd4780f5c1;
-      the independent original Lean laws/client author is the worker-b Task
-      named below. Neither exposition nor abstract API certifies source
-      numbering, normicity or source coverage.
+      Project-authored mathematical exposition motivating the separate
+      structural laws; see docs/block-substitution-laws.md. The Lean laws
+      were developed separately, not copied from the exposition.
   - title: "Exact total degree of substitution into disjoint blocks"
     authors:
-      - Formalization Worker B
-    id: "FormalFrontier/source-nsw@a3ba053e256de1663a1f3aeab3992c2b4926e47c:expositions/disjoint-block-substitution-degree.md"
+      - Formal Frontier Agents
     type: original-proof
     relationship: adapts
     note: >-
-      Project-authored finite-support argument by worker-b Task
-      hive-request-3c4641402d975104f58edb18cad1b23576fe3290
-      (UID 9ce64724-ad64-4d6c-bcff-e5fdda140ab2), independently reviewed
-      by worker-a Task hive-request-afd4e4d0b14d6ae62a54a94781d4a181786acb67
-      (UID 8953458b-d7d1-43dd-b355-298a674ee989) at source-nsw revision
-      f0a7e35d5b45348306d07c0119c42593ff68cd63. Distinct from the
-      isolated Lean proof and its later destination transfer; not source
-      numbering, normicity or accepted formalization coverage.
+      Project-authored finite-support argument supporting the no-zero-divisors
+      degree result; see docs/block-substitution-degree.md.
   - title: "Polynomial-parameter coefficients of homogeneous multivariate polynomials"
     authors:
       - Formal Frontier Agents
-    id: "FormalFrontier/source-nsw@9650c0c53808ade3dc957f301ee50e3a23a4071b:expositions/polynomial-parameter-coefficients.md"
     type: original-proof
     relationship: background
     note: >-
-      Independently reviewed mathematical interpretation at source-nsw issue
-      #112; the new destination theorem stands alone and this source-specific
-      exposition supplies neither a library dependency nor source coverage.
+      Project-authored mathematical interpretation; the library theorem
+      preserves a homogeneous label, not equality of actual degrees.
   - title: "Polynomial equations in finite-basis coordinates"
     authors:
       - Beacon
-    id: "FormalFrontier/source-nsw@8dac6b7744339ec6e9313003b53982d839cb93d4:expositions/finite-basis-polynomial-coordinate-expansion.md"
     type: original-proof
     relationship: background
     note: >-
-      Independently reviewed mathematical finite-basis coordinate exposition
-      (source-nsw review d62fa7308095968d551a08223c76274ba836a5b4).
-      It motivated the separate abstract linear-evaluation bridge but is not
-      a Lean dependency, proof of full basis reconstruction or descent,
-      certificate of the full source theorem, or accepted source coverage.
+      Project-authored background exposition, not a Lean dependency or proof
+      of full coordinate reconstruction or source-specific descent.
 
 status:
   scope: >-
-    Thirty-nine selected public declarations: idealOfVars_not_fg under CommSemiring,
-    Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
-    homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
-    polynomials over arbitrary commutative semirings, with the coefficient
-    homomorphism fixed; plus blockSubst, its evaluation law, separate one-way
-    and iff zero-locus preservation, and nonzero-of-one-way under Nontrivial and
-    Nonempty. Indices in the first four block declarations are arbitrary and
-    coefficients need only CommSemiring. The separate iterator has one definition
-    and ten theorems over tuple indices Fin r → ι: zero/successor recursion and
-    evaluations, separate forward-only/iff vanishing, nominal homogeneity d^r,
-    nonzero and exact total degree under Nontrivial, Nonempty and forward
-    vanishing, and degrees attained above each bound when 1 < d. The seven
-    new structural laws cover arbitrary (including noninjective) variable
-    renamings, forward three-block association, single-variable PUnit units,
-    one iteration, additive iteration by Fin.append and opposite succession
-    by Fin.snoc under arbitrary CommSemiring, without extra hypotheses. One
-    additional exact total-degree theorem for disjoint-block substitution
-    holds under CommSemiring and NoZeroDivisors alone for arbitrary zero,
-    constant and nonhomogeneous polynomials and arbitrary index types; it
-    asserts no general substitution injectivity. The polynomial-coefficient
-    interchange theorem retains the original homogeneous multivariate label
-    after extracting any polynomial-parameter coefficient under CommSemiring,
-    without a domain, field, finiteness or nontriviality premise. T has weight
-    zero and zero coefficients retain any label; no actual-degree equality,
-    multiplicative coefficient map, nonzero recovery or finite-basis descent
-    is claimed. The independent linear-coefficient-evaluation theorem
-    commutes an arbitrary R-linear S-to-R coefficient functional with
-    evaluation at points valued in R using native AddMonoidAlgebra.map, without
-    multiplicativity, finite bases/variables, injectivity, field, domain or
-    nontriviality assumptions. It gives no full coordinate reconstruction,
-    homogeneity, descent, common-zero or source theorem. The nine selected
-    fixed-linear-division results for arbitrary variables, divisor families
-    and CommRing coefficients require unit leading coefficients: chosen
-    R-linear quotient/remainder maps reconstruct every input, avoid all
-    leading cones in the remainder's actual componentwise exponent support,
-    preserve every coefficient ideal (also in each quotient coordinate),
-    and fix reduced inputs with zero quotient. The general R-linear-map
-    coefficient-ideal lemma has no division hypothesis. Six further producer
-    helpers remain public, but not selected results. No canonical or unique
-    division maps, Gröbner, field, domain, finite-variable/family or
-    restricted-series claim is made. The additional monic-lift theorem for
-    arbitrary variables and commutative rings needs a surjective coefficient
-    homomorphism and monic target, not injectivity, a field, a domain or blanket
-    nontriviality; it preserves the literal leading exponent even for a zero
-    target. The lift is existential, not canonical. Thirteen default-target
-    clients exercise
-    generic, unequal-universe and README ideal use, homogeneous evaluation,
-    and two-block, two-stage, finite-field, empty-index, zero-ring,
-    constant-block, zero-iteration, mixed/empty-index, noninjective-map and
-    zero-ring structural-law boundary cases, plus exact-degree zero,
-    constant, unequal/empty-index, finite-field and trivial-ring cases,
-    plus polynomial-parameter substitution, zero, degree zero, bound zero,
-    ZMod 1 and ZMod 6, plus basis coordinates, a genuinely nonmultiplicative
-    Nat-pair sum, zero-map and Empty linear-evaluation cases, plus generic,
-    finite/empty-family, zero-input/zero-ring, reduced-input and nonzero
-    proper ZMod 4 ideal linear-division clients, plus generic, noninjective
-    quotient, empty-variable and zero target/source monic-lift clients. No base-form
-    or finite-extension existence, all-sufficiently-large degree, short exact
-    sequence, norm-forms dependency or source-coverage completion claim.
+    Thirty-nine selected public declarations over the eleven producer modules:
+    non-finite generation of the variable ideal for Nontrivial CommSemiring
+    coefficients and Infinite variables; scaling under arbitrary CommSemiring
+    with fixed coefficient homomorphism; disjoint-block substitution with
+    distinct forward-only and iff vanishing; structural renaming, association,
+    units and iteration over CommSemiring; conditional attained iteration
+    degree powers (not all large degrees); arbitrary-input exact degree under
+    NoZeroDivisors; polynomial-parameter coefficient extraction preserving
+    homogeneous labels; linear coefficient maps commuting with evaluation at
+    base-valued points; chosen linear division over CommRing with unit leading
+    coefficients, cone avoidance and preservation of all coefficient ideals;
+    and existential monic lifts under surjective coefficient maps for arbitrary
+    variables and CommRings, including the zero target. Division also exposes
+    six public helpers beyond the selected results. No canonical division,
+    Groebner assertion, general base-form construction, multiplicative linear
+    functional, or source-specific completion is claimed. See README.md and
+    docs/API.md for the detailed module map and guides.
   main_results:
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
@@ -244,418 +168,20 @@ automation:
   methods:
     - method: agent
       tool_setup: >-
-        Formal Frontier Hive Tasks using Lean, Lake, mathlib, and independent
-        agent review of the earlier proof and module-system candidates.
+        Formal Frontier AI agents used Lean, Lake and mathlib for proof
+        development, examples and documentation, with independent review.
   notes: >-
-    AI-assisted agents developed the mathematical plan, original Lean proofs,
-    tests and documentation; a separate worker transferred the two accepted
-    incubator theorem/client bodies mechanically into this deliverable. The
-    separate disjoint-block proof/client bodies were accepted only in isolated
-    incubator scope; worker-b Task
-    hive-request-54ffdbad98fe154f75224b39e0f7a253b50fde7c (UID
-    11eb8d82-791b-41fe-a9bf-e15eea2ba73a) transferred them under Beacon's
-    contribution-specific responsibility. For destination code/API commit
-    0000be8ab382b047dfe93bb43ec2941b625fc9e7, native run 740 built both
-    default targets and audited all 31 actual-origin declarations including
-    23 private/generated with only the permitted foundational axioms. Fresh
-    worker-a review 4514 approved that exact code/API commit, and Beacon
-    accepted and protected-integrated it on September 28, 2026. These
-    documentary updates do not claim a new Lean check or resource measurement;
-    the block/headline release subsequently reached official commit
-    fb22a0a31ff464de6f82d2f94ac6d37f837eb519 (issue 20/comment 57713)
-    on September 28, 2026. The separate iteration by worker-a Task
-    hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397 (UID
-    580b0679-5109-43e3-8af0-05470fe31187) was independently reviewed and
-    accepted only for isolated readiness at incubator revision
-    c916ced0230520b33e1a519174be4020324708d0. Worker-b Task
-    hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7 (UID
-    f641b493-3b74-49f4-bc2d-bb46824a4fa5) transferred its proof/client
-    tails unchanged to the destination. Earlier native run 740 did not check
-    these new actual origins or roots; revision-specific destination checks,
-    review, acceptance and release are recorded externally, not inferred from
-    this metadata. The prior iterator publication is complete at official
-    ec4906268f2a65a54e320ce9f3f44562e9d78c1e, with the same tree as this
-    laws transfer's destination parent. The isolated laws donor
-    b21228137f1cb0b644817628a3cc29c696b6156f has focused build/axiom
-    evidence 56b0bb6dd7645635589e3999068e136a2d7e6cb7 and independent
-    review 52304b237d071945221c80a19f94b7a4c5c84202, accepted only for
-    isolated readiness by Beacon. The new destination aggregate/client graph
-    passed destination native CI run 866 for both default targets and all 89
-    actual-origin declarations across fourteen modules, including 56 private
-    and generated declarations, with only the permitted foundational axioms.
-    Fresh worker-a Task hive-request-32a5395f2a6b985f54aec6698f4988e3d00b81bf
-    (UID f02d75a9-fc5e-4044-ac63-a130c00c09e8) independently reviewed
-    exact destination commit 5179b6042154397e09c9047e24fb42dddc07ae15;
-    Beacon accepted and protected-integrated that code/API in PR 26 on
-    September 28, 2026. The distinct official release and verified private
-    GitHub publication subsequently completed on September 28, 2026 at
-    1c31276aaca1db501950e8bb178981f7ce1acaad (PR 27/comment 59908).
-    That documentary release preparation claimed no new Lean execution,
-    model identity or measured resource usage.
-    The separately accepted isolated degree donor at incubator
-    f1411fc45c46dd90521b08212f3057ac0b7fe6ec has matching-cache,
-    warning-fatal scoped producer/client builds and complete 23-origin
-    permitted-three axiom evidence in its evidence-only child
-    8d8322a7ecf12c75c5806ce80dc181cd2c13332f; independent review at
-    33e3b280c47208ea4f3dcfbed62f063885ccfa2b applies only to that donor.
-    Its proof/client bodies are transferred to the destination by worker-b
-    Task hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd (UID
-    c9cbe957-98d8-4679-a26a-ed417bcaf65f). Earlier native run 866 applies
-    only to the fourteen-module laws graph. Native run 923 on September 29,
-    2026 fetched the matching cache, built both roots and checked all 112
-    actual-origin declarations across sixteen modules, including 77 private
-    declarations, with transitive axioms restricted to the permitted three.
-    Fresh worker-a Task hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d
-    (UID b333f69a-1e1a-421a-b47e-bcc7ff670df4) independently reviewed
-    exact code/API commit a298692e9515cd264f64b1650d916e7325f22dae;
-    Beacon accepted and protected-integrated it in PR 30 on September 29,
-    2026. This static release-readiness preparation by worker-b Task
-    hive-request-545ac40599943c4846985bcbecc9773af7867eb4 (UID
-    f1111607-8c9c-40cd-a138-8b0dc8737447) runs no new Lean and is not
-    an independent release review or official publication.
-    The degree predecessor reached the separately verified official public-release
-    commit 8e3e98f44149616af0fef869ef041b2350e61178, which has the same
-    tree as destination parent 7e60cb00b05cb46c6a636d3cec7be7280c3880f0.
-    This distinct coefficient-homogeneity transfer by formalization-worker-b
-    Task hive-request-9214c009238fd6c0c6b9be23a591519a5c2de117
-    (UID 9b3a6959-ad8e-4db6-8103-efe641aeeaab) preserves the proof/client
-    bodies from isolated incubator donor e5c756838bb3d454bfdd6cf83aa3e4146554b760
-    except collective/SPDX headers and its client import. That donor was authored
-    by worker-b Task hive-request-35ae3e5f432d81c2ab9b9ffc5cf35185702d8590
-    (UID 368216ac-2105-4165-9a38-ef1c5c72e807), based on worker-b probe
-    32ac38b114a272e25da0d76e241112b0006ae57b by Task
-    hive-request-5f7de283751dacfb71124e88a895d681f2d82b67 (UID
-    9e51bb9e-d6f0-4407-a73b-d277ee8afd78). Its evidence-only child
-    0aa15e0b5433e4471fcb8803e1756221c03d873e documents scoped
-    matching-cache, warning-fatal producer/client builds and complete
-    actual-origin standard-three transitive audit. Worker-a Task
-    hive-request-d91b835baed2bddb31bd4e5e4809f1948084c296 (UID
-    f9e28345-0411-4bdc-9c82-1b347209fc6c) independently reviewed the
-    isolated donor in bcb348fabccda2692785b2f41283ea7e823f98ef; Beacon
-    accepted only that isolated scope in incubator issue #195/comment 62204.
-    Its checks do not certify the new destination aggregate/client graph.
-    Native destination run 994/UI25 on September 29, 2026 built both default
-    targets at exact commit 6e74a6874269bd340775a4b6d6ff9facf118fce3 and
-    checked 127 actual-origin declarations across eighteen modules, including
-    91 private declarations, with transitive axioms restricted to the permitted
-    three. Fresh worker-a Task hive-request-4f49b2d86e2f5399552c92df167b0dd8766fac02
-    (UID 1a57e9b8-ba94-49ec-ae8b-295709051759) independently approved
-    exact code/API commit 6e74a6874269bd340775a4b6d6ff9facf118fce3
-    in review 558e6f1e0dab8081d1aa24bc18c3c33be8e8dc93
-    and PR 34/native review 4838. Beacon accepted and protected-integrated
-    that code/API in PR 34/comment 62345 on September 29, 2026; separate
-    release review, acceptance and verified publication remain external
-    candidate-specific decisions. The static coefficient release-readiness
-    preparer is formalization-worker-b Task
-    hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5 (UID
-    e43cd759-475e-4c61-9c5d-0b9eae171d49), not an original proof author,
-    independent release reviewer or release acceptor.
-    The coefficient predecessor subsequently reached separately reviewed
-    official public release 330f46ba71e3230c4eec5f8d17c6b10927cf6dbe,
-    matching accepted main d4f916bd5821a15e43e4f20aaefe07fa706bb147
-    by complete tree 917433eda8758d77242ca5020c26f1bd829bbe6a;
-    Beacon verified private GitHub publication on September 29, 2026 in
-    incubator issue #195/comment 62471. The separate isolated linear-evaluation
-    donor 960964368c62af2bedd331c6798eccdab3636424 was author-checked
-    only for its focused producer/client and seven actual-origin transitive
-    standard-three axioms (report 081e00927bb8cfa24cbca23818eaa4f53d1fb9b0;
-    cache success author-reported, not archived raw cache stdout), then
-    independently reviewed in 004806390540e3930cf57cf78eb121bb2c1bd759
-    and accepted only in isolated scope by Beacon at incubator #196/comment
-    62346. At the initial code-only static-transfer snapshot on September 29,
-    2026, before native run 1002 or destination review, this twenty-module
-    candidate required its own both-default-target/full private-inclusive
-    native build and axiom evidence, fresh exact-candidate review, acceptance
-    and separate official publication. Later revision-specific decisions are
-    recorded externally at PR 38 and incubator issue 196; native run 994 and
-    isolated checks do not certify the enlarged graph.
-    The enlarged destination graph passed native run 1002 at code commit
-    752bdd058deaf81c745d4b82332ee8d862ddb2ba: both default targets built,
-    and all 134 actual-origin declarations in twenty modules, including 97
-    private declarations, had transitive axioms among propext, Classical.choice
-    and Quot.sound. Exact main successor d996f56195589eb9a3a388b3e2e916eacd8cfeeb
-    changes dated documentation only and passed native run 1003. These are
-    code-graph checks, not release acceptance or a source-coverage decision.
-    The fixed-division producer is byte-identical to accepted incubator
-    dd83b2ff0e22e8296fec1bfc90aa21ae2c30f681; its private client adapts
-    only the import and namespace. This transfer makes no claim that donor
-    checks certify the destination graph. Destination both-target build and
-    complete private-inclusive transitive standard-axiom checks were open at
-    preparation on 2026-09-30. Later revision-specific check and acceptance
-    decisions are recorded externally in the owning PR and incubator issue 287.
-    Subsequently, exact destination main a888e8b150961703b5f5e3bbe962b87e7570260c
-    passed original native CI run 1335: matching-cache setup, both default
-    targets, and transitive standard-three axioms for all 173 actual-origin
-    declarations in 22 modules, including 106 private/generated declarations.
-    The native check and earlier donor check are distinct. This does not certify
-    this documentation-only release successor or source coverage.
+    Some original Lean proofs and clients were first developed in the shared
+    incubator and transferred mechanically into this deliverable; transfer
+    is not independent mathematical authorship. Detailed working provenance
+    and review evidence are held in the project's owning records. The shipped
+    mathematics, dependencies and selected results are documented here.
 
 review:
-  status: "Revision-specific independent review and release decisions are recorded externally"
+  status: "Lean results independently reviewed"
   notes: >-
-    This metadata describes the artifact but does not itself certify release,
-    publication or source completion. The prior iterator publication is
-    complete. For the enlarged laws graph at exact destination commit
-    5179b6042154397e09c9047e24fb42dddc07ae15, native run 866 supplied
-    complete private-inclusive build and axiom evidence; fresh independent
-    review bacb7cb13e1ef0d82c7599027015976dfa42f76a and Beacon's PR 26
-    acceptance preceded protected-main integration on September 28, 2026.
-    Release-specific artifact, rights, history and publication decisions
-    remain separately recorded outside this metadata.
-    The structural-law predecessor was subsequently published in official
-    release 1c31276aaca1db501950e8bb178981f7ce1acaad, whose tree matches
-    destination parent bcd674413e1c2e4770a0335b4b75951f5431763c. The
-    new degree leaf and module-enabled client were subsequently reviewed
-    at exact a298692e9515cd264f64b1650d916e7325f22dae by worker-a
-    Task hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d (UID
-    b333f69a-1e1a-421a-b47e-bcc7ff670df4), with both-root native 923
-    build and private-inclusive standard-axiom evidence. Beacon accepted
-    and protected-integrated that code/API in PR 30 on September 29, 2026.
-    Separate release review, acceptance, promotion and verified private
-    GitHub publication completed on September 29, 2026 at official commit
-    8e3e98f44149616af0fef869ef041b2350e61178 (PR 31/comment 60947),
-    rather than following from code acceptance alone.
-    The degree predecessor's official publication is separately complete at
-    8e3e98f44149616af0fef869ef041b2350e61178. For this new coefficient
-    transfer, isolated review bcb348fabccda2692785b2f41283ea7e823f98ef
-    and scoped evidence child 0aa15e0b5433e4471fcb8803e1756221c03d873e
-    apply only to incubator donor e5c756838bb3d454bfdd6cf83aa3e4146554b760;
-    they do not approve the destination. Native run 994/UI25 passed both
-    default targets and audited all 127 actual origins, including 91 private
-    declarations across eighteen modules, with only the standard three
-    foundational axioms at exact commit 6e74a6874269bd340775a4b6d6ff9facf118fce3.
-    Fresh worker-a Task hive-request-4f49b2d86e2f5399552c92df167b0dd8766fac02
-    (UID 1a57e9b8-ba94-49ec-ae8b-295709051759) independently approved
-    that code/API candidate in review 558e6f1e0dab8081d1aa24bc18c3c33be8e8dc93
-    and PR 34/native review 4838. Beacon accepted and protected-integrated
-    the code/API in PR 34/comment 62345 on September 29, 2026. Separate
-    release review, acceptance, promotion and verified GitHub publication
-    remain external candidate-specific decisions. No source-formalization
-    decision is made here.
-    The coefficient predecessor subsequently reached verified official
-    publication at 330f46ba71e3230c4eec5f8d17c6b10927cf6dbe on
-    September 29, 2026 (incubator #195/comment 62471). This new
-    linear-evaluation destination transfer from isolated accepted incubator
-    donor 960964368c62af2bedd331c6798eccdab3636424 has only the donor's
-    scoped evidence and independent isolated review
-    004806390540e3930cf57cf78eb121bb2c1bd759. At the initial code-only
-    static-transfer snapshot on September 29, 2026, before native run 1002
-    or destination review, new-graph native checks, fresh author-distinct
-    destination review, maintainer acceptance, protected integration and
-    separately verified official release remained open. Later decisions
-    belong in PR 38 and incubator issue 196; review.status refers to
-    external decisions only and this metadata proves no source coverage.
-    Fresh worker-a Task hive-request-39df4fea46b27720dedf033b446ba4ac94e2d235
-    (UID 6bf86da8-ab7e-4ac4-a832-cd2f7fb2f3e8) independently approved
-    exact main successor d996f56195589eb9a3a388b3e2e916eacd8cfeeb in
-    report 9f28eacf997e768da3af91bf2824024810d268cc and PR 38/native
-    review 4848. Beacon accepted and protected-integrated the code/API in
-    PR 38 on September 29, 2026 at 08:18:43 UTC. At that code-integration
-    snapshot, separate release review, release acceptance, promotion and
-    verified publication remained pending; later revision-specific decisions
-    belong in PR 39 and incubator issue 196, not to this dated snapshot;
-    code acceptance alone does not establish them or source completion.
-    At preparation on 2026-09-30, the fixed-linear-division transfer was an
-    unreviewed destination candidate based on incubator
-    dd83b2ff0e22e8296fec1bfc90aa21ae2c30f681;
-    fresh destination mathematical/API/documentation/provenance review,
-    applicable checks, maintainer acceptance and separate official publication
-    were open. Later revision-specific decisions are recorded externally in
-    the owning PR and incubator issue 287. Its accepted donor review does not
-    approve this destination, and this metadata establishes no source coverage.
-    Fresh worker-b Task hive-request-ad616097c90f8a93ee8cdae813c9fd700d572535
-    (UID 7227c624-20f3-4900-afd1-bb9bf18cbb27) independently approved the
-    exact destination contribution a888e8b150961703b5f5e3bbe962b87e7570260c
-    in review 248fa369723f3d7abed06bf85cbfb615557c01ce and native review
-    5270. Anchor accepted it and protected-integrated that exact main commit
-    on September 30, 2026 at 09:05:39 UTC. This is code acceptance, not
-    independent review, acceptance or publication of this subsequent release
-    candidate; source correspondence remains a separate decision.
-    The standalone monic-lift proof/client at incubator donor
-    87c17b5ef96a160ba529b91614f855557e9ac875 was accepted only in that
-    isolated scope, with review 25b23d504d5d6a90425047b2a963173eef45997e.
-    Its transfer into the independent multivariate-polynomials library does
-    not inherit destination review, proof-integrity evidence or source coverage;
-    those decisions apply to exact destination revisions and are recorded
-    separately. This metadata makes no new computational claim.
-
-acknowledgements: >-
-  Formalization Worker B authored the reviewed finite-support exposition;
-  Formalization Worker A authored the original Lean theorem and test clients
-  and subsequently the module assembly and readiness candidate. Atlas supplied
-  setup, interface direction, integration and release assembly. The bounded
-  Markdown adapter/tests derive from Atlas's toric, minimal and integral adapters
-  and ultimately Anchor's ideal-completion recipe, with exact origins in README.
-  The separate homogeneous-evaluation proof and client were originally authored
-  by worker-a Task hive-request-f923d2a5cf09f61f2a6257a5fd00f4f975d2e452
-  (UID c0ef99d1-8b7a-49ab-9486-c3c7f0b466d1) and registered by worker-a
-  Task hive-request-66a39f65b1af8f81fa6297f26aa53c5a72f9061b
-  (UID 1b135ea7-ec1e-4d30-a3c7-ea19da1a9e9b); worker-b Tasks
-  hive-request-25ea9ebd48c76209850c18e119552de8ad0c21e9
-  (UID 624f1145-752b-4744-bba9-16e583e5d93a) and
-  hive-request-da266697a8d7e1e21ab29d301c2bb95a87b7d2a2
-  (UID 42b1f06e-6926-4eb2-a705-c9b947ede9c3) reviewed the isolated and
-  registered incubator versions respectively. Worker-a Task
-  hive-request-f04927099fc374c785f5acd5be70e1edc1e0273e
-  (UID b96ae6b9-91c4-4d2f-acb7-a93729d61528) preserved partial destination
-  planning, later completed by Atlas. Worker-a Task
-  hive-request-82cfe6403a917885ec0b3a8facd9dbf7987e77d6
-  (UID 54ba98a5-9146-4c76-ade5-a30660dfaa5a) authored the present transfer;
-  it did not author the original proof or independently review this candidate.
-  Original project files are Apache-2.0 with collective author credit, not an
-  unsupported copyright-owner claim; no source PDF or third-party excerpt is
-  distributed. Mathlib supplies foundational APIs; native doc-gen4 supplied
-  display records only for the archived original six-module API snapshot.
-  The isolated block-substitution producer and private client were authored by
-  worker-b Task hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03
-  (UID 0068e189-b29d-4cf7-9b0c-63cb34dab472) and independently reviewed in
-  isolated scope; worker-b Task
-  hive-request-54ffdbad98fe154f75224b39e0f7a253b50fde7c (UID
-  11eb8d82-791b-41fe-a9bf-e15eea2ba73a) performed this distinct destination
-  transfer. Atlas's previous integration credit is historical; Beacon owns
-  review, acceptance, integration and separate release for this contribution.
-  Fresh worker-a Task hive-request-446f2cfe616e290ac265715dbd9879143a7dda4c
-  (UID aa259428-f3d3-4e77-b017-91fa3c1d15de) independently reviewed the
-  destination code/API; Beacon accepted and integrated it on September 28, 2026.
-  Worker-b Task hive-request-70e6e11667d1a57d588854eb0cc9806dab89b9c1
-  (UID d5157618-a9d2-4b99-9a6b-c21ea017878b) prepared the subsequent
-  documentation-only release candidate; separate release review, acceptance
-  and publication remain external decisions for each revision. Separately,
-  worker-a Task hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397
-  (UID 580b0679-5109-43e3-8af0-05470fe31187) authored the finite iteration
-  and private client in isolated incubator commit
-  c916ced0230520b33e1a519174be4020324708d0, with independent isolated
-  review by worker-b Task hive-request-84be7567f0b404e648748670aa8f649cfa7e50f2
-  (UID ee1ca051-b11b-4f72-9044-38e7db3c3770). Worker-b Task
-  hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7 (UID
-  f641b493-3b74-49f4-bc2d-bb46824a4fa5) performed this distinct
-  destination transfer without authoring the original mathematical proof
-  or independently reviewing its relocated library/API. The historical
-  block/headline publication is recorded above; it did not itself publish the
-  iteration. The separate iterator subsequently reached official release
-  ec4906268f2a65a54e320ce9f3f44562e9d78c1e. Beacon authored the
-  independently reviewed structural original-proof exposition in source-nsw
-  at f48d95396b6395f5248afdac7892379362eb50f5; this is distinct from
-  Lean authorship. Original structural-law Lean proof, eight-theorem client
-  and guide author: worker-b Task
-  hive-request-b3d4d6e3a78dc53efdabae39dcafd0f770d8c0c4 (UID
-  12c22dfd-831c-4fa3-a82a-d6e0a88a8a5d). Independent isolated reviewer:
-  worker-a Task hive-request-5339696c0801c8c4c337968b42b2a76948620960
-  (UID fa2d543e-66c2-4b91-a0a5-fb735cee82a2), exact review
-  52304b237d071945221c80a19f94b7a4c5c84202. This distinct destination
-  transfer is by worker-b Task hive-request-dcfc7155e1b8f1e339a4db2a5f323981d29793e3
-  (UID 50067b60-ca63-4a90-bbcf-6e81453fd6a1); it is not an independent
-  destination review. Fresh independent destination reviewer: worker-a Task
-  hive-request-32a5395f2a6b985f54aec6698f4988e3d00b81bf (UID
-  f02d75a9-fc5e-4044-ac63-a130c00c09e8), reviewing exact code/API commit
-  5179b6042154397e09c9047e24fb42dddc07ae15 at
-  bacb7cb13e1ef0d82c7599027015976dfa42f76a. Beacon accepted and
-  protected-integrated the code/API in PR 26 on September 28, 2026. Separate
-  release preparer: worker-b Task hive-request-8f84e6612202ac883d6b0bbd46bbd1ee4a5c7d49
-  (UID fa2f833c-131c-4cc7-acc0-99d96bb5a71c). Beacon retains official
-  release acceptance, promotion and publication responsibility.
-  The exact-degree mathematical exposition was authored by worker-b Task
-  hive-request-3c4641402d975104f58edb18cad1b23576fe3290 (UID
-  9ce64724-ad64-4d6c-bcff-e5fdda140ab2) and independently reviewed by
-  worker-a Task hive-request-afd4e4d0b14d6ae62a54a94781d4a181786acb67
-  (UID 8953458b-d7d1-43dd-b355-298a674ee989) at source-nsw revision
-  f0a7e35d5b45348306d07c0119c42593ff68cd63. Original isolated Lean
-  author: worker-b Task hive-request-c655e17355d47e3745bfb5dfa4546c236c22cf1e
-  (UID e8bed61b-ec43-4ac5-867e-419700dd255f), donor
-  f1411fc45c46dd90521b08212f3057ac0b7fe6ec; independent isolated
-  reviewer: worker-a Task hive-request-bfc0fe61efd6f58c7ce26960de4f23a296580865
-  (UID 4beea86a-1ca9-48e5-9cd8-654fca6d049a), review
-  33e3b280c47208ea4f3dcfbed62f063885ccfa2b. Beacon accepted that
-  isolated code/API only in incubator #180/comment 60665. This destination
-  transfer is by worker-b Task hive-request-2568fec3a496ab8d743f4b71ca03e04f1e3dfcfd
-  (UID c9cbe957-98d8-4679-a26a-ed417bcaf65f), not original proof
-  authorship or independent destination review. Worker-a Task
-  hive-request-259a8fa2891a9f2ccb3b7768e6a5e3721e4f2b7d (UID
-  b333f69a-1e1a-421a-b47e-bcc7ff670df4) independently reviewed exact
-  destination code/API commit a298692e9515cd264f64b1650d916e7325f22dae;
-  Beacon accepted and protected-integrated it on September 29, 2026.
-  Static release-readiness preparer worker-b Task
-  hive-request-545ac40599943c4846985bcbecc9773af7867eb4 (UID
-  f1111607-8c9c-40cd-a138-8b0dc8737447) did not author the proof,
-  independently review this candidate or accept its official release.
-  No unsupported rights-holder claim, imported source asset or new library
-  dependency is introduced.
-  For the separate polynomial-coefficient bridge, worker-b Task
-  hive-request-5f7de283751dacfb71124e88a895d681f2d82b67 (UID
-  9e51bb9e-d6f0-4407-a73b-d277ee8afd78) contributed the native probe;
-  worker-b Task hive-request-35ae3e5f432d81c2ab9b9ffc5cf35185702d8590
-  (UID 368216ac-2105-4165-9a38-ef1c5c72e807) authored the isolated
-  proof/client and guide at e5c756838bb3d454bfdd6cf83aa3e4146554b760;
-  worker-a Task hive-request-d91b835baed2bddb31bd4e5e4809f1948084c296
-  (UID f9e28345-0411-4bdc-9c82-1b347209fc6c) independently reviewed
-  that isolated code at bcb348fabccda2692785b2f41283ea7e823f98ef.
-  Beacon accepted that donor only in incubator issue #195/comment 62204;
-  Atlas agreed to this destination scope at comment 62211. This mechanical
-  destination transfer by formalization-worker-b Task
-  hive-request-9214c009238fd6c0c6b9be23a591519a5c2de117 (UID
-  9b3a6959-ad8e-4db6-8103-efe641aeeaab) is neither original proof
-  authorship nor independent destination review. Beacon owns destination
-  acceptance, protected integration and the subsequent reviewed release.
-  Formalization-worker-b Task hive-request-7597826593b11e7296f06dea2eed7512fbaa96d5
-  (UID e43cd759-475e-4c61-9c5d-0b9eae171d49) prepared the subsequent
-  static coefficient release-readiness documentation; this does not confer
-  original mathematical authorship or independent release acceptance.
-  For the distinct linear-coefficient evaluation result, worker-b Task
-  hive-request-e0e5d4898e89eb2ea5c8cb7b88a53638dc6a3130 (UID
-  0aa6aebb-1fc5-41d4-9aea-c44e7f941221) authored the research probe;
-  worker-b Task hive-request-1e84b7dbd24453b4c56079d2af61fc9a6c164c79
-  (UID 1cfcdc7e-2006-4a03-8da1-e73d97d820c1) authored the isolated
-  producer, client and guide at incubator 960964368c62af2bedd331c6798eccdab3636424.
-  Worker-a Task hive-request-e76c950e3a979d10e409fb4b0cd2e71972deca44
-  (UID bae49ddb-8977-4562-bc3c-a3947c3de5c2) independently reviewed
-  the exact donor at 004806390540e3930cf57cf78eb121bb2c1bd759;
-  Beacon accepted only isolated scope in incubator #196/comment 62346.
-  Beacon's separately reviewed source-nsw finite-basis-coordinate exposition
-  at 8dac6b7744339ec6e9313003b53982d839cb93d4 is background, not
-  the theorem's Lean proof or source coverage. The present mechanical
-  destination transfer by formalization-worker-b Task
-  hive-request-59885bc6e40d66807f5e417d29e18f3ec497405f (UID
-  65442cf3-e7a6-4314-8ad9-107a116d4df2) is not original proof
-  authorship, independent destination review, acceptance or publication.
-  Atlas agreed to the affected existing-library API in incubator #196/comment
-  62374; Beacon retains destination checks, fresh review, acceptance,
-  protected integration, separate release and source-coverage decisions.
-  The subsequent static release-readiness documentation is by
-  formalization-worker-b Task hive-request-22d6061a1d4098d03a837f79783c36552c554bb6
-  (UID d4bc5e89-cd8d-4ec4-bdd5-64bc5b038bf6); this is neither original
-  proof authorship nor independent release review, acceptance or publication.
-  For fixed linear division, worker-a Task
-  hive-request-8f572d0acbd2a67fa6928136f1d95e308310f068 (UID
-  c2ca9eef-6f30-47f8-aa69-03b5696b517b) authored the basis selection,
-  R-linear maps, proofs and eight private clients; worker-a Task
-  hive-request-c1398e69c939502c9cd691c5b69a7aded3986119 (UID
-  2ee8b752-3803-4e73-a0eb-3d627aa580a9) registered the accepted
-  incubator parent and worker-b Task
-  hive-request-825f4191bc7b3fcd6dcf31cb48420d298e4cf453 (UID
-  aeb09a2a-10e3-4d4e-8a32-5937cddc10bb) independently reviewed that
-  registration. This mechanical destination transfer by worker-a Task
-  hive-request-772ece32afda1e31f8c3de2e02d6c7256caf6d9a (UID
-  ea8efe5e-6df5-41bf-b22d-31de778e6e83) does not confer mathematical
-  authorship or independent destination review. Fresh worker-b Task
-  hive-request-ad616097c90f8a93ee8cdae813c9fd700d572535 (UID
-  7227c624-20f3-4900-afd1-bb9bf18cbb27) independently reviewed the
-  destination contribution. This release-readiness prose preparation by
-  worker-b Task hive-request-867223de674743b071d87ad5faa17b041566cef4
-  (UID 97793ad1-3b38-4a57-9218-334704c1f315) is not proof authorship,
-  independent release review or release acceptance. Mathlib's MonomialOrder.div
-  is credited to Antoine Chambert-Loir; Finsupp.linearCombination, coeffsIn
-  and supporting infrastructure remain mathlib contributors' work. Anchor
-  coordinated destination checks, independent review, acceptance and protected
-  integration and owns separate official-release decisions. Neither the
-  transfer nor donor acceptance proves source coverage or restricted-series division.
-  For the distinct monic multivariate lift, formalization-worker-a Task
-  hive-request-d6fce06836f6d0616fa346aefcb0fce624ff4179 (UID
-  36d7b5fe-6197-4ebf-a607-6d2c14f9cc1b) authored the isolated original
-  theorem and five clients at 87c17b5ef96a160ba529b91614f855557e9ac875.
-  Formalization-worker-b Task hive-request-640f5bb2b009debb5c2ecd319193e7d1cca7be3c
-  (UID 0c3b0f16-7177-4852-a5f9-57d43c013bb8) transferred the proof/client
-  unchanged apart from the conventional file header and client import/namespace;
-  it did not author the proof, independently review destination acceptance or
-  make a release decision. Riccardo Brasca's univariate analogue and Antoine
-  Chambert-Loir's MonomialOrder infrastructure in mathlib (Apache-2.0)
-  informed the construction; neither supplies a multivariate theorem here.
+    The Lean graph has successful builds and a transitive standard-axiom audit,
+    including private declarations. Documentation, metadata, attribution review
+    and CI evidence apply to exact revisions and are recorded in the repository's
+    corresponding pull requests. This metadata does not itself certify source
+    correspondence or completion.

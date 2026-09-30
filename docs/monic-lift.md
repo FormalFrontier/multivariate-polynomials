@@ -37,15 +37,4 @@ LEAN_NUM_THREADS=2 lake --wfail build MultivariatePolynomials.MonicLift
 LEAN_NUM_THREADS=2 lake --wfail build Test.MonicLift
 ```
 
-The original multivariate proof and five clients are by formalization-worker-a,
-Hive Task `hive-request-d6fce06836f6d0616fa346aefcb0fce624ff4179`
-(UID `36d7b5fe-6197-4ebf-a607-6d2c14f9cc1b`). Its isolated donor is
-`87c17b5ef96a160ba529b91614f855557e9ac875` (Apache-2.0); this
-destination transfer is by formalization-worker-b, Hive Task
-`hive-request-640f5bb2b009debb5c2ecd319193e7d1cca7be3c`
-(UID `0c3b0f16-7177-4852-a5f9-57d43c013bb8`), not a new proof.
-Riccardo Brasca's univariate `Polynomial.lifts_and_natDegree_eq_and_monic`
-and Antoine Chambert-Loir's `MonomialOrder` infrastructure in mathlib
-(Apache-2.0) informed the construction; the univariate theorem is **not**
-presented as a multivariate result. This guide claims neither independent
-destination review nor source-specific correspondence.
+Riccardo Brasca’s mathlib `Polynomial.lifts_and_natDegree_eq_and_monic` is a univariate analogue; Antoine Chambert-Loir’s `MonomialOrder` infrastructure also informs this distinct project proof. See [CREDITS.md](../CREDITS.md).

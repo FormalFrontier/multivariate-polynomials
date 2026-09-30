@@ -12,7 +12,7 @@ the [finite-iteration guide](iterated-block-substitution.md) explains the
 separate tuple-indexed iterator and its conditional degree powers. The
 [structural-law guide](block-substitution-laws.md) covers associative, unit,
 renaming and finite-word concatenation laws over arbitrary commutative semirings.
-The [exact-degree guide](block-substitution-degree.md) describes the new
+The [exact-degree guide](block-substitution-degree.md) describes the
 no-zero-divisors theorem, its arbitrary-input boundary cases and direct-import
 client; it is not part of the archived native snapshot.
 The [polynomial-coefficient-homogeneity guide](polynomial-coefficient-homogeneity.md)
@@ -21,13 +21,13 @@ and weight-zero limitation; this added leaf is likewise not part of the
 archived native snapshot.
 The [linear-coefficient-evaluation guide](linear-coefficient-evaluation.md)
 explains the base-valued point and linear (not multiplicative) coefficient-map
-assumptions, ordinary-import clients and its revision-specific lifecycle;
-this new leaf is also absent from the archived native snapshot.
+assumptions and ordinary-import clients; this leaf is also absent from the
+archived native snapshot.
 
 The [fixed linear-division guide](linear-division.md) describes chosen linear
 quotient and remainder maps, componentwise leading-cone avoidance, coefficient
 ideal preservation, ordinary-import clients and the limits of noncanonical choice.
-This new leaf is likewise absent from the archived native snapshot.
+This leaf is likewise absent from the archived native snapshot.
 
 The [monic-lift guide](monic-lift.md) describes the existential surjective
 coefficient lift with literal leading-exponent equality, its zero-ring case,
@@ -45,10 +45,11 @@ not the current `API.md`. Its old root/lakefile source hashes, module count and
 inventory must not be interpreted as validation of the changed library. Its
 relative source links show matching original line positions only in the original
 six-module checkout.
-The two unchanged [`generate_api.py`](../scripts/generate_api.py) and
-[`test_generate_api.py`](../scripts/test_generate_api.py) scripts are scoped
-only to the old native snapshot. Data-only fixture tests of the old adapter do
-not check the current API, proofs or this promotion.
+The [`generate_api.py`](../scripts/generate_api.py) and
+[`test_generate_api.py`](../scripts/test_generate_api.py) scripts retain the
+original executable behavior and historical six-module contracts (only their
+provenance comments were simplified). Data-only fixture tests of the old
+adapter do not check the current API or proofs.
 
 ## Reproducing only the original six-module output
 
@@ -94,11 +95,8 @@ native-run authenticator, proof checker or release certificate. Old data-only
 adverse controls do not replace actual native receipts, mathematical review or
 whole-artifact review of a new revision.
 
-Atlas adapted the historical renderer and controls from toric-ideals
-`ab0c7d294a864deb3a6109aab30ebb77ebf5d2cb` (unaccepted when reused),
-minimal-primes `bed9ea5b7d022529b6b9ee1888c81c3f02683aa6`, integral-closure
-`bbc5da98d729c8737c7cef0df2f80c6323584b2e`, and ultimately Anchor's
-ideal-completion recipe `f0c8c34386109116e4912fb425a8ad15d9dc42a4`.
-Collective credit, actual contributors and Apache-2.0 terms are retained;
-approval is not transferred. Lean, mathlib and doc-gen4 are separately credited
-tools and dependencies; their implementations and documentation are not copied.
+Atlas adapted the archived renderer and tests from earlier project adapters,
+including Anchor's documentation approach. This is historical tooling for the
+six-module snapshot only; no external Lean proof, doc-gen implementation or
+undistributed native artifacts are included. Lean, mathlib and doc-gen4 retain
+their own authorship and licenses. See [CREDITS.md](../CREDITS.md).

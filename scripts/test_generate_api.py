@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Authors: Formal Frontier Agents
-# Adapted by Atlas from toric-ideals ab0c7d29 (unaccepted when reused),
-# minimal-primes bed9ea5b, integral-closure bbc5da98, and Anchor's
-# ideal-completion f0c8c343. Approval does not transfer between artifacts.
+# Historical six-module adapter tests adapted by Atlas from earlier project
+# adapters, including Anchor's documentation approach.
 """Data-only adapter controls; they do not authenticate native Lean records."""
 import copy
 import json

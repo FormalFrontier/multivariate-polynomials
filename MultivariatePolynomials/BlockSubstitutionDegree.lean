@@ -14,9 +14,6 @@ public import Mathlib.RingTheory.MvPolynomial.Homogeneous
 The public theorem covers arbitrary polynomial and index types, including zero and
 constant inputs, over commutative semirings without zero divisors.
 
-Original contribution: worker-b Hive Task
-`hive-request-c655e17355d47e3745bfb5dfa4546c236c22cf1e`,
-UID `e8bed61b-ec43-4ac5-867e-419700dd255f`.
 -/
 
 @[expose] public section

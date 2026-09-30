@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 # Authors: Formal Frontier Agents
-# Adapted by Atlas from toric-ideals ab0c7d29 (unaccepted when reused),
-# minimal-primes bed9ea5b, integral-closure bbc5da98, and Anchor's
-# ideal-completion f0c8c343. Approval does not transfer between artifacts.
+# Historical six-module API adapter adapted by Atlas from earlier project
+# adapters, including Anchor's documentation approach.
 """Bounded multivariate-polynomials Markdown adapter for native doc-gen4 records.
 
 Retains complete displayed types, module comments, docstrings and relative source

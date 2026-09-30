@@ -52,25 +52,4 @@ LEAN_NUM_THREADS=2 lake build MultivariatePolynomials.LinearDivision
 LEAN_NUM_THREADS=2 lake build MultivariatePolynomialsTests
 ```
 
-The producer is transferred unchanged from the reviewed incubator revision
-`dd83b2ff0e22e8296fec1bfc90aa21ae2c30f681` (original isolated donor
-`c5f1df76f937c4998dd32fc6ae0927d228228841`) at pinned Lean
-`v4.34.0-rc2` and mathlib `83abb3e776bdefcbc447a1e44d0debe4010039e5`.
-Its earlier acceptance does not establish acceptance or publication of this
-destination module. Source-specific correspondence is tracked separately:
-this library claims neither complete coverage of any source nor
-restricted-series division.
-
-Provenance: the reused mathlib `MonomialOrder.div` algorithm is by Antoine
-Chambert-Loir; native `Finsupp.linearCombination`, `coeffsIn` and associated
-mathlib infrastructure are credited to their mathlib contributors. The
-basis-witness selection, its `R`-linear extension, proofs and clients were
-authored by formalization-worker-a, Hive Task
-`hive-request-8f572d0acbd2a67fa6928136f1d95e308310f068` (UID
-`c2ca9eef-6f30-47f8-aa69-03b5696b517b`). Registration into the accepted
-incubator parent was by worker-a Task
-`hive-request-c1398e69c939502c9cd691c5b69a7aded3986119` (UID
-`2ee8b752-3803-4e73-a0eb-3d627aa580a9`) and independently reviewed by
-worker-b Task `hive-request-825f4191bc7b3fcd6dcf31cb48420d298e4cf453`
-(UID `aeb09a2a-10e3-4d4e-8a32-5937cddc10bb`). The present transfer is
-mechanical, not new mathematical authorship or independent destination review.
+Mathlib’s `MonomialOrder.div` infrastructure is credited to Antoine Chambert-Loir. The fixed linear-map construction and its clients are original project work, not new authorship by mechanical transfer. See [CREDITS.md](../CREDITS.md).

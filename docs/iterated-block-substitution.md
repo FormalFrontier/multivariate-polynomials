@@ -65,24 +65,4 @@ private to the test target. The separate
 `iteratedBlockSubst_add` using `Fin.append` and `iteratedBlockSubst_snoc` using
 `Fin.snoc`. This opposite successor appends the original polynomial at the end
 of the tuple; it is not the `Fin.consEquiv` recursion that defines the iterator.
-The iteration was originally developed as an
-isolated incubator candidate `c916ced0230520b33e1a519174be4020324708d0`,
-independently reviewed and accepted only for isolated mathematical/API
-readiness (incubator issue 153/comments 58032 and 58041). That was an
-earlier checkpoint; destination integration and the reviewed official release
-subsequently completed at commit `ec4906268f2a65a54e320ce9f3f44562e9d78c1e`
-on September 28, 2026. The new structural-law transfer passed destination
-native CI checks (run 866), independent review and protected-main code/API
-integration at `5179b6042154397e09c9047e24fb42dddc07ae15` on that date;
-its separate release and publication require their own external decisions.
-Source correspondence remains separate, not certified by this guide.
-
-Original generic-block author: worker-b Task
-`hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03` (UID
-`0068e189-b29d-4cf7-9b0c-63cb34dab472`). Original finite-iteration
-contributor: worker-a Task `hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397`
-(UID `580b0679-5109-43e3-8af0-05470fe31187`). Destination transfer:
-worker-b Task `hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7`
-(UID `f641b493-3b74-49f4-bc2d-bb46824a4fa5`). Collective project authorship
-and Apache-2.0 terms are retained. This guide does not construct a base form,
-assert all sufficiently large degrees, or claim source coverage.
+The generic-block and iteration results are distinct original project contributions; mechanical transfer does not constitute a new proof. See [CREDITS.md](../CREDITS.md).

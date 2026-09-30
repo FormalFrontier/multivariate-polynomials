@@ -13,11 +13,7 @@ set_option warningAsError true
 /-!
 # Ordinary-import structural-law clients
 
-Eight private checks by original worker-b Hive Task
-`hive-request-b3d4d6e3a78dc53efdabae39dcafd0f770d8c0c4` (UID
-`12c22dfd-831c-4fa3-a82a-d6e0a88a8a5d`), transferred by worker-b Hive Task
-`hive-request-dcfc7155e1b8f1e339a4db2a5f323981d29793e3` (UID
-`50067b60-ca63-4a90-bbcf-6e81453fd6a1`).
+Eight private ordinary-import checks exercise these laws.
 -/
 
 namespace BlockSubstitutionLawsClient

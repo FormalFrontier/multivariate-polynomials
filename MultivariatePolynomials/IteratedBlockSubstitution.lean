@@ -19,13 +19,6 @@ indices of `p`. Zero iterations yield the empty-tuple variable; a successor
 substitutes the preceding iterate into disjoint blocks and renames by
 `Fin.consEquiv`. Import this module directly or use `MultivariatePolynomials`.
 
-The original generic block operation is by worker-b Task
-`hive-request-7b6e0f04fc7e294c99c77638da5d6abb97b4be03` (UID
-`0068e189-b29d-4cf7-9b0c-63cb34dab472`). Finite iteration is by worker-a
-Task `hive-request-48b8f568eaec9f747a0528cb5fe8ae07ff507397` (UID
-`580b0679-5109-43e3-8af0-05470fe31187`). This destination transfer is by
-worker-b Task `hive-request-2deb4fea21bdf1e8bfd734175d5bf8c681d288c7`
-(UID `f641b493-3b74-49f4-bc2d-bb46824a4fa5`).
 -/
 
 @[expose] public section

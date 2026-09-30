@@ -396,5 +396,4 @@ Thirteen test/example modules are registered as literal roots under
 [linear-division client](../Test/LinearDivision.lean), and
 [monic-lift client](../Test/MonicLift.lean).
 The tests are not re-exported as production API. These eleven production plus
-thirteen test modules total twenty-four Lean modules; a private-inclusive transitive
-standard-axiom audit remains a separate revision-specific acceptance gate.
+thirteen test modules total twenty-four Lean modules.
