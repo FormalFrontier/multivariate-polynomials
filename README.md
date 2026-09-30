@@ -1,6 +1,6 @@
 # Multivariate polynomials
 
-A Lean library with twenty-nine selected public declarations about multivariate
+A Lean library with thirty-eight selected public declarations about multivariate
 polynomials. It proves non-finite generation of the variable ideal over a
 nontrivial commutative semiring with infinitely many variables, and two
 evaluation scaling laws for weighted and ordinary homogeneous polynomials
@@ -18,6 +18,9 @@ Extracting any polynomial-parameter coefficient via native interchange
 preserves a multivariate homogeneous label over any commutative semiring.
 An arbitrary coefficient-linear functional commutes with multivariate-polynomial
 evaluation at points valued in the base semiring via the native additive map.
+Fixed choice-dependent linear quotient and reduced-remainder operators for
+arbitrary divisor families with unit leading coefficients preserve every
+coefficient ideal over a commutative ring.
 The public ideal theorem
 `MvPolynomial.idealOfVars_not_fg` is the negative companion to mathlib's
 finite-variable theorem `MvPolynomial.idealOfVars_fg`.
@@ -100,6 +103,18 @@ finite-variable theorem `MvPolynomial.idealOfVars_fg`.
   [ordinary-import client](Test/LinearCoefficientEvaluation.lean). This does
   not reconstruct basis-coordinate polynomials or prove a full source theorem.
 
+- **Fixed linear polynomial division (nine selected results).** For any variable and divisor-index types,
+  commutative ring and family with unit leading coefficients, fixed `R`-linear
+  quotient and remainder maps reconstruct the input; the remainder's actual
+  exponents avoid every leading cone in componentwise exponent order. Every
+  coefficient ideal is preserved, including in each quotient coordinate, and
+  reduced inputs have identity remainder and zero quotient. The choices need
+  not be unique or canonical; no Gröbner-basis, domain or finite-variable
+  hypothesis is needed. Import `MultivariatePolynomials.LinearDivision` directly;
+  see its [producer](MultivariatePolynomials/LinearDivision.lean),
+  [standalone guide](docs/linear-division.md) and
+  [private client](Test/LinearDivision.lean).
+
 These interfaces are developed here on top of mathlib's polynomial, ideal,
 homogeneity and general substitution infrastructure. In particular, the
 finite-variable ideal theorem belongs to mathlib, not this library.
@@ -126,7 +141,8 @@ Use `import MultivariatePolynomials` for the aggregate interface, or
 `import MultivariatePolynomials.BlockSubstitutionLaws` or
 `import MultivariatePolynomials.BlockSubstitutionDegree` or
 `import MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
-`import MultivariatePolynomials.LinearCoefficientEvaluation` for a direct
+`import MultivariatePolynomials.LinearCoefficientEvaluation` or
+`import MultivariatePolynomials.LinearDivision` for a direct
 theorem or definition module. The homogeneous-evaluation leaf exposes
 `MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables` and
 `MvPolynomial.IsHomogeneous.eval₂Hom_mul_left`: given arbitrary indices `ι`,
@@ -201,8 +217,8 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
-The [current API map](docs/API.md) describes all twenty-nine selected public
-declarations and twenty Lean modules; it is hand-maintained, not a fresh native
+The [current API map](docs/API.md) describes all thirty-eight selected public
+declarations and twenty-two Lean modules; it is hand-maintained, not a fresh native
 rendering or proof certificate. The original
 [six-module native API snapshot](docs/API-initial-snapshot.md)
 and its unchanged [manifest](docs/api-manifest.json) remain archived. The
@@ -230,23 +246,25 @@ lake env lean -DwarningAsError=true Test/BlockSubstitutionLaws.lean
 lake env lean -DwarningAsError=true Test/BlockSubstitutionDegree.lean
 lake env lean -DwarningAsError=true Test/PolynomialCoefficientHomogeneity.lean
 lake env lean -DwarningAsError=true Test/LinearCoefficientEvaluation.lean
+lake env lean -DwarningAsError=true Test/LinearDivision.lean
 lake env lean Test/Axioms.lean
 ```
 
-The default build includes the aggregate plus eight production leaves and eleven
+The default build includes the aggregate plus nine production leaves and twelve
 test/example modules, including the literal `Test.HomogeneousEvaluation` test
 root, the literal `Test.BlockSubstitution` test root and the literal
 `Test.IteratedBlockSubstitution` test root and the literal
 `Test.BlockSubstitutionLaws` test root and the literal
 `Test.BlockSubstitutionDegree` test root and the literal
 `Test.PolynomialCoefficientHomogeneity` test root and the literal
-`Test.LinearCoefficientEvaluation` test root. Tests are not imported
+`Test.LinearCoefficientEvaluation` and `Test.LinearDivision` test roots.
+Tests are not imported
 by the public aggregate. Generic, rational, unequal-universe, weighted,
 ordinary, zero-polynomial, disjoint-block, finite-iteration, structural-law and
-exact-degree, polynomial-coefficient-homogeneity and linear-coefficient-evaluation
-clients exercise the
-intended public imports. `Test/Axioms.lean` prints only the original ideal
-theorem's transitive axioms; it is not a census of the other twenty-eight selected
+exact-degree, polynomial-coefficient-homogeneity, linear-coefficient-evaluation
+and linear-division clients exercise the intended public imports.
+`Test/Axioms.lean` prints only the original ideal
+theorem's transitive axioms; it is not a census of the other thirty-seven selected
 declarations, any private declaration, or a substitute for the destination's
 independent complete release audit. The historical adapter's data-only fixture tests can be run with
 `python3 -B scripts/test_generate_api.py`; they do not validate the current
@@ -404,6 +422,19 @@ took **182 seconds** from 00:37:37 to 00:40:39 UTC for its *whole workflow*,
 including matching-cache setup, both-root build and private-inclusive axiom
 audit. This runner-specific observation is not project-only build time or a
 peak-memory measurement, benchmark comparison or claimed speedup.
+
+For the current twenty-two-module graph, successful Forgejo CI run 1335 on
+September 30, 2026 took **208 seconds** from 08:56:45 to 09:00:13 UTC for the
+*whole workflow*, including dependency setup, matching-cache retrieval, both
+default-target build and private-inclusive axiom audit. In that runner the
+matching mathlib cache fetch took **36.916 seconds**, subsequent no-build cache
+verification **6.487 seconds**, and the build of `MultivariatePolynomials` and
+`MultivariatePolynomialsTests` **15.856 seconds** (1708 Lake jobs). The 22
+separate module axiom-audit command receipts sum to **104.329 seconds**; that
+sum is not the whole workflow time. These are observations of that CI run,
+not cold-build, peak-memory or disk measurements, hardware-independent
+estimates, or regression or speedup claims. Fetch the matching cache before
+building as directed above.
 
 ## Sources, contributors and license
 

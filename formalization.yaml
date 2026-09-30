@@ -20,6 +20,9 @@ project:
     label in each coefficient over arbitrary commutative semirings.
     Arbitrary coefficient-linear functionals commute with multivariate-polynomial
     evaluation at base-valued points via the native additive coefficient map.
+    Fixed choice-dependent R-linear quotient and reduced-remainder operators
+    for arbitrary polynomial divisor families with unit leading coefficients
+    over a commutative ring preserve every coefficient ideal.
   authors:
     - Formal Frontier Agents
   license: Apache-2.0
@@ -96,7 +99,7 @@ sources:
 
 status:
   scope: >-
-    Twenty-nine selected public declarations: idealOfVars_not_fg under CommSemiring,
+    Thirty-eight selected public declarations: idealOfVars_not_fg under CommSemiring,
     Nontrivial and Infinite assumptions; eval₂Hom_scaleVariables for weighted
     homogeneous polynomials and eval₂Hom_mul_left for ordinary homogeneous
     polynomials over arbitrary commutative semirings, with the coefficient
@@ -126,7 +129,17 @@ status:
     evaluation at points valued in R using native AddMonoidAlgebra.map, without
     multiplicativity, finite bases/variables, injectivity, field, domain or
     nontriviality assumptions. It gives no full coordinate reconstruction,
-    homogeneity, descent, common-zero or source theorem. Eleven default-target
+    homogeneity, descent, common-zero or source theorem. The nine selected
+    fixed-linear-division results for arbitrary variables, divisor families
+    and CommRing coefficients require unit leading coefficients: chosen
+    R-linear quotient/remainder maps reconstruct every input, avoid all
+    leading cones in the remainder's actual componentwise exponent support,
+    preserve every coefficient ideal (also in each quotient coordinate),
+    and fix reduced inputs with zero quotient. The general R-linear-map
+    coefficient-ideal lemma has no division hypothesis. Six further producer
+    helpers remain public, but not selected results. No canonical or unique
+    division maps, Gröbner, field, domain, finite-variable/family or
+    restricted-series claim is made. Twelve default-target
     clients exercise
     generic, unequal-universe and README ideal use, homogeneous evaluation,
     and two-block, two-stage, finite-field, empty-index, zero-ring,
@@ -135,7 +148,9 @@ status:
     constant, unequal/empty-index, finite-field and trivial-ring cases,
     plus polynomial-parameter substitution, zero, degree zero, bound zero,
     ZMod 1 and ZMod 6, plus basis coordinates, a genuinely nonmultiplicative
-    Nat-pair sum, zero-map and Empty linear-evaluation cases. No base-form
+    Nat-pair sum, zero-map and Empty linear-evaluation cases, plus generic,
+    finite/empty-family, zero-input/zero-ring, reduced-input and nonzero
+    proper ZMod 4 ideal linear-division clients. No base-form
     or finite-extension existence, all-sufficiently-large degree, short exact
     sequence, norm-forms dependency or source-coverage completion claim.
   main_results:
@@ -197,6 +212,24 @@ status:
       file: MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean
     - declaration: MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
       file: MultivariatePolynomials/LinearCoefficientEvaluation.lean
+    - declaration: MonomialOrder.linearDivisionQuotient
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivisionRemainder
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_decomposition
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_remainder_support
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearMap_preserves_coeffsIn
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_remainder_coeffsIn
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_quotient_coeffsIn
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_remainder_of_reduced
+      file: MultivariatePolynomials/LinearDivision.lean
+    - declaration: MonomialOrder.linearDivision_quotient_of_reduced
+      file: MultivariatePolynomials/LinearDivision.lean
 
 automation:
   methods:
@@ -334,6 +367,19 @@ automation:
     and Quot.sound. Exact main successor d996f56195589eb9a3a388b3e2e916eacd8cfeeb
     changes dated documentation only and passed native run 1003. These are
     code-graph checks, not release acceptance or a source-coverage decision.
+    The fixed-division producer is byte-identical to accepted incubator
+    dd83b2ff0e22e8296fec1bfc90aa21ae2c30f681; its private client adapts
+    only the import and namespace. This transfer makes no claim that donor
+    checks certify the destination graph. Destination both-target build and
+    complete private-inclusive transitive standard-axiom checks were open at
+    preparation on 2026-09-30. Later revision-specific check and acceptance
+    decisions are recorded externally in the owning PR and incubator issue 287.
+    Subsequently, exact destination main a888e8b150961703b5f5e3bbe962b87e7570260c
+    passed original native CI run 1335: matching-cache setup, both default
+    targets, and transitive standard-three axioms for all 173 actual-origin
+    declarations in 22 modules, including 106 private/generated declarations.
+    The native check and earlier donor check are distinct. This does not certify
+    this documentation-only release successor or source coverage.
 
 review:
   status: "Revision-specific independent review and release decisions are recorded externally"
@@ -400,6 +446,22 @@ review:
     verified publication remained pending; later revision-specific decisions
     belong in PR 39 and incubator issue 196, not to this dated snapshot;
     code acceptance alone does not establish them or source completion.
+    At preparation on 2026-09-30, the fixed-linear-division transfer was an
+    unreviewed destination candidate based on incubator
+    dd83b2ff0e22e8296fec1bfc90aa21ae2c30f681;
+    fresh destination mathematical/API/documentation/provenance review,
+    applicable checks, maintainer acceptance and separate official publication
+    were open. Later revision-specific decisions are recorded externally in
+    the owning PR and incubator issue 287. Its accepted donor review does not
+    approve this destination, and this metadata establishes no source coverage.
+    Fresh worker-b Task hive-request-ad616097c90f8a93ee8cdae813c9fd700d572535
+    (UID 7227c624-20f3-4900-afd1-bb9bf18cbb27) independently approved the
+    exact destination contribution a888e8b150961703b5f5e3bbe962b87e7570260c
+    in review 248fa369723f3d7abed06bf85cbfb615557c01ce and native review
+    5270. Anchor accepted it and protected-integrated that exact main commit
+    on September 30, 2026 at 09:05:39 UTC. This is code acceptance, not
+    independent review, acceptance or publication of this subsequent release
+    candidate; source correspondence remains a separate decision.
 
 acknowledgements: >-
   Formalization Worker B authored the reviewed finite-support exposition;
@@ -546,3 +608,27 @@ acknowledgements: >-
   formalization-worker-b Task hive-request-22d6061a1d4098d03a837f79783c36552c554bb6
   (UID d4bc5e89-cd8d-4ec4-bdd5-64bc5b038bf6); this is neither original
   proof authorship nor independent release review, acceptance or publication.
+  For fixed linear division, worker-a Task
+  hive-request-8f572d0acbd2a67fa6928136f1d95e308310f068 (UID
+  c2ca9eef-6f30-47f8-aa69-03b5696b517b) authored the basis selection,
+  R-linear maps, proofs and eight private clients; worker-a Task
+  hive-request-c1398e69c939502c9cd691c5b69a7aded3986119 (UID
+  2ee8b752-3803-4e73-a0eb-3d627aa580a9) registered the accepted
+  incubator parent and worker-b Task
+  hive-request-825f4191bc7b3fcd6dcf31cb48420d298e4cf453 (UID
+  aeb09a2a-10e3-4d4e-8a32-5937cddc10bb) independently reviewed that
+  registration. This mechanical destination transfer by worker-a Task
+  hive-request-772ece32afda1e31f8c3de2e02d6c7256caf6d9a (UID
+  ea8efe5e-6df5-41bf-b22d-31de778e6e83) does not confer mathematical
+  authorship or independent destination review. Fresh worker-b Task
+  hive-request-ad616097c90f8a93ee8cdae813c9fd700d572535 (UID
+  7227c624-20f3-4900-afd1-bb9bf18cbb27) independently reviewed the
+  destination contribution. This release-readiness prose preparation by
+  worker-b Task hive-request-867223de674743b071d87ad5faa17b041566cef4
+  (UID 97793ad1-3b38-4a57-9218-334704c1f315) is not proof authorship,
+  independent release review or release acceptance. Mathlib's MonomialOrder.div
+  is credited to Antoine Chambert-Loir; Finsupp.linearCombination, coeffsIn
+  and supporting infrastructure remain mathlib contributors' work. Anchor
+  coordinated destination checks, independent review, acceptance and protected
+  integration and owns separate official-release decisions. Neither the
+  transfer nor donor acceptance proves source coverage or restricted-series division.

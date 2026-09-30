@@ -12,6 +12,7 @@ public import MultivariatePolynomials.BlockSubstitutionLaws
 public import MultivariatePolynomials.BlockSubstitutionDegree
 public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 public import MultivariatePolynomials.LinearCoefficientEvaluation
+public import MultivariatePolynomials.LinearDivision
 
 /-!
 # Multivariate polynomials
@@ -25,6 +26,8 @@ associativity, units and concatenation of iteration words. Extracting a polynomi
 parameter coefficient via native interchange preserves each homogeneous label.
 An arbitrary coefficient-linear map commutes with evaluation at base-semiring-valued
 points via the native additive coefficient map, without a multiplicativity premise.
+Fixed choice-dependent linear polynomial division by a family with unit leading
+coefficients gives reduced remainders and preserves every coefficient ideal.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
@@ -33,6 +36,7 @@ Import the corresponding
 `MultivariatePolynomials.BlockSubstitutionLaws` or
 `MultivariatePolynomials.BlockSubstitutionDegree` or
 `MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
-`MultivariatePolynomials.LinearCoefficientEvaluation` leaf directly when only one
+`MultivariatePolynomials.LinearCoefficientEvaluation` or
+`MultivariatePolynomials.LinearDivision` leaf directly when only one
 is needed. Test modules are deliberately not re-exported.
 -/

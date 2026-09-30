@@ -1,9 +1,9 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-nine producer modules (including the aggregate), eleven registered
-test/example modules and twenty-nine selected public declarations across twenty
-Lean modules. It is neither
+ten producer modules (including the aggregate), twelve registered
+test/example modules and thirty-eight selected public declarations across
+twenty-two Lean modules. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
@@ -23,6 +23,11 @@ The [linear-coefficient-evaluation guide](linear-coefficient-evaluation.md)
 explains the base-valued point and linear (not multiplicative) coefficient-map
 assumptions, ordinary-import clients and its revision-specific lifecycle;
 this new leaf is also absent from the archived native snapshot.
+
+The [fixed linear-division guide](linear-division.md) describes chosen linear
+quotient and remainder maps, componentwise leading-cone avoidance, coefficient
+ideal preservation, ordinary-import clients and the limits of noncanonical choice.
+This new leaf is likewise absent from the archived native snapshot.
 
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two
@@ -48,7 +53,7 @@ original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
 unmodified analyzed-input revision
 `35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
 adapter's output/check mode on the expanded current checkout: its hard-coded
-six-module inventory and original input hashes cannot describe twenty modules.
+six-module inventory and original input hashes cannot describe twenty-two modules.
 Use a committed checkout, not a plain no-Git export; the original contract
 requires the actual Git object or the original manifest with byte-identical
 current inputs in an intentionally parentless release.

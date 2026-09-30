@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all twenty-nine selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all thirty-eight selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -280,10 +280,84 @@ assumption. The basis-coordinate, nonmultiplicative Nat-pair sum, zero-map and
 `Empty` clients do not reconstruct polynomials from coordinates, preserve
 homogeneous labels or prove a common-zero or full source theorem.
 
+## `MultivariatePolynomials.LinearDivision`
+
+[Producer](../MultivariatePolynomials/LinearDivision.lean),
+[standalone guide](linear-division.md), and
+[ordinary-import private client](../Test/LinearDivision.lean). For arbitrary
+variable and family-index types `{σ ι R : Type*}`, `[CommRing R]`,
+`m : MonomialOrder σ`, `b : ι → MvPolynomial σ R` and
+`hb : ∀ i, IsUnit (m.leadingCoeff (b i))`, the nine selected public results
+are (manual statements under these types, not native Lean output):
+
+```lean
+noncomputable def MonomialOrder.linearDivisionQuotient (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i))) :
+    MvPolynomial σ R →ₗ[R] (ι →₀ MvPolynomial σ R)
+
+noncomputable def MonomialOrder.linearDivisionRemainder (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i))) :
+    MvPolynomial σ R →ₗ[R] MvPolynomial σ R
+
+theorem MonomialOrder.linearDivision_decomposition (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (p : MvPolynomial σ R) :
+    p = Finsupp.linearCombination (MvPolynomial σ R) b (linearDivisionQuotient m b hb p) +
+      linearDivisionRemainder m b hb p
+
+theorem MonomialOrder.linearDivision_remainder_support (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (p : MvPolynomial σ R) :
+    ∀ α ∈ (linearDivisionRemainder m b hb p).support,
+      ∀ i, ¬ m.degree (b i) ≤ α
+
+theorem MonomialOrder.linearMap_preserves_coeffsIn (J : Ideal R)
+    (F : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (p : MvPolynomial σ R) (hp : p ∈ coeffsIn σ (J : Submodule R R)) :
+    F p ∈ coeffsIn σ (J : Submodule R R)
+
+theorem MonomialOrder.linearDivision_remainder_coeffsIn (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (J : Ideal R) (p : MvPolynomial σ R)
+    (hp : p ∈ coeffsIn σ (J : Submodule R R)) :
+    linearDivisionRemainder m b hb p ∈ coeffsIn σ (J : Submodule R R)
+
+theorem MonomialOrder.linearDivision_quotient_coeffsIn (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (J : Ideal R) (p : MvPolynomial σ R)
+    (hp : p ∈ coeffsIn σ (J : Submodule R R)) (i : ι) :
+    (linearDivisionQuotient m b hb p) i ∈ coeffsIn σ (J : Submodule R R)
+
+theorem MonomialOrder.linearDivision_remainder_of_reduced (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (p : MvPolynomial σ R) (hp : ∀ α ∈ p.support, ∀ i, ¬ m.degree (b i) ≤ α) :
+    linearDivisionRemainder m b hb p = p
+
+theorem MonomialOrder.linearDivision_quotient_of_reduced (m : MonomialOrder σ)
+    (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
+    (p : MvPolynomial σ R) (hp : ∀ α ∈ p.support, ∀ i, ¬ m.degree (b i) ≤ α) :
+    linearDivisionQuotient m b hb p = 0
+```
+
+The *six additional public helpers*, not extra selected results or private
+theorems, are `MonomialOrder.basisDivision`, `monomial_eq_smul_one`,
+`linearDivisionQuotient_monomial`, `linearDivisionRemainder_monomial`,
+`reducedSubmodule` and `basisDivision_reduced`. Quotients are finitely
+supported in the divisor-family index; the reconstruction weights are
+polynomials, while the chosen operators are linear over `R`.
+The remainder's **actual** support avoids leading cones in *componentwise*
+exponent order, not the monomial-order comparison. The ideal laws apply to
+every `J : Ideal R` (in particular `J ^ n`) and every quotient coordinate.
+The fixed choice of basis-monomial witnesses does not give uniqueness or
+canonical independence, a Gröbner basis, a field/domain premise, finite
+indices or restricted-series division. Eight private client theorems cover
+generic and finite families, an empty family, zero input, the zero ring,
+the nonzero proper ideal `(2)` in `ZMod 4`, and reduced input.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all eight leaves.
-Eleven test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all nine leaves.
+Twelve test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
@@ -294,7 +368,8 @@ Eleven test/example modules are registered as literal roots under
 [structural-law client](../Test/BlockSubstitutionLaws.lean),
 [exact-degree client](../Test/BlockSubstitutionDegree.lean),
 [coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean), and
-[linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean).
-The tests are not re-exported as production API. These nine production plus
-eleven test modules total twenty Lean modules; a private-inclusive transitive
+[linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean), and
+[linear-division client](../Test/LinearDivision.lean).
+The tests are not re-exported as production API. These ten production plus
+twelve test modules total twenty-two Lean modules; a private-inclusive transitive
 standard-axiom audit remains a separate revision-specific acceptance gate.
