@@ -2,12 +2,13 @@
 
 This Lean library provides reusable results about variable ideals, homogeneous
 evaluation, substitution into disjoint blocks, coefficient extraction, linear
-evaluation and division, and monic lifts. It builds on mathlib and has no other
+evaluation and division, monic lifts and first-variable lexicographic degrees.
+It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) lists **39 selected public declarations**
-across 11 producer modules (including the aggregate); fixed linear division has
-six additional public helpers. The project also registers 13 test/example modules.
+[hand-maintained API map](docs/API.md) lists **42 selected public declarations**
+across 12 producer modules (including the aggregate); fixed linear division has
+six additional public helpers. The project also registers 14 test/example modules.
 
 ## Headline results
 
@@ -69,6 +70,14 @@ six additional public helpers. The project also registers 13 test/example module
   `q = 1`. No injectivity, finite-variable or blanket nontriviality condition
   is needed. See the [lift guide](docs/monic-lift.md).
 
+- **A scalar top first-variable coefficient fixes the maximum lex monomial.**
+  [`MonomialOrder.lex_degree_of_finSuccEquiv_scalar_top`](MultivariatePolynomials/FirstVariableLex.lean)
+  works over any commutative semiring when the separated polynomial has natural
+  degree `d` and its degree-`d` coefficient is a nonzero scalar. The `Fin 0`
+  tail and `d = 0` are included. A distinct [pointwise cone lemma](MultivariatePolynomials/FirstVariableLex.lean)
+  characterizes exponents above the pure first-variable monomial; it is not a
+  lexicographic inequality. See the [lex guide](docs/first-variable-lex.md).
+
 These results are mathematical interfaces, not source-coverage certifications.
 The [API map](docs/API.md) gives declaration names, modules and hypotheses;
 [documentation navigation](docs/README.md) links each focused guide and
@@ -78,7 +87,8 @@ explains the archived six-module native API snapshot.
 
 The aggregate import exposes the current producer modules; direct imports such
 as `MultivariatePolynomials.IdealOfVars`,
-`MultivariatePolynomials.LinearDivision` and `MultivariatePolynomials.MonicLift`
+`MultivariatePolynomials.LinearDivision`, `MultivariatePolynomials.MonicLift`
+and `MultivariatePolynomials.FirstVariableLex`
 work independently. For example, the following is checked in
 [`Test/ReadmeExample.lean`](Test/ReadmeExample.lean):
 
@@ -112,7 +122,7 @@ workflow are *planning estimates*, not guaranteed timings. Allow about 8 GiB
 available RAM and several GiB free disk as *planning allowances*, not measured
 minima or current aggregate peaks; host and concurrent load matter. These
 figures do not describe a full mathlib source rebuild. The archived six-module
-snapshot's child-process RSS does not measure the current 24-module aggregate.
+snapshot's child-process RSS does not measure the current 26-module aggregate.
 
 ## Credits and license
 

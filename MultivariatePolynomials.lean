@@ -14,6 +14,7 @@ public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 public import MultivariatePolynomials.LinearCoefficientEvaluation
 public import MultivariatePolynomials.LinearDivision
 public import MultivariatePolynomials.MonicLift
+public import MultivariatePolynomials.FirstVariableLex
 
 /-!
 # Multivariate polynomials
@@ -31,6 +32,8 @@ Fixed choice-dependent linear polynomial division by a family with unit leading
 coefficients gives reduced remainders and preserves every coefficient ideal.
 Surjective coefficient maps admit monic multivariate-polynomial lifts that
 preserve the literal leading exponent, including over the zero ring.
+A nonzero scalar top coefficient of the first-variable polynomial fixes its
+maximum lexicographic exponent over any commutative semiring.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
@@ -41,6 +44,7 @@ Import the corresponding
 `MultivariatePolynomials.PolynomialCoefficientHomogeneity` or
 `MultivariatePolynomials.LinearCoefficientEvaluation` or
 `MultivariatePolynomials.LinearDivision` or
-`MultivariatePolynomials.MonicLift` leaf directly when only one
+`MultivariatePolynomials.MonicLift` or
+`MultivariatePolynomials.FirstVariableLex` leaf directly when only one
 is needed. Test modules are deliberately not re-exported.
 -/

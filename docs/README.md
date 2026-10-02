@@ -1,9 +1,9 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-eleven producer modules (including the aggregate), thirteen registered
-test/example modules and thirty-nine selected public declarations across
-twenty-four Lean modules. It is neither
+twelve producer modules (including the aggregate), fourteen registered
+test/example modules and forty-two selected public declarations across
+twenty-six Lean modules. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
@@ -28,6 +28,10 @@ The [fixed linear-division guide](linear-division.md) describes chosen linear
 quotient and remainder maps, componentwise leading-cone avoidance, coefficient
 ideal preservation, ordinary-import clients and the limits of noncanonical choice.
 This leaf is likewise absent from the archived native snapshot.
+
+The [first-variable lex guide](first-variable-lex.md) distinguishes maximum
+lexicographic degree from the componentwise first-exponent cone and gives
+semiring and boundary clients; it is absent from the archived native snapshot.
 
 The [monic-lift guide](monic-lift.md) describes the existential surjective
 coefficient lift with literal leading-exponent equality, its zero-ring case,

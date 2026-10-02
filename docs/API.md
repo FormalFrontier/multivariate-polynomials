@@ -2,7 +2,7 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all thirty-nine selected declarations, or the named leaf for one
+`MultivariatePolynomials` for all forty-two selected declarations, or the named leaf for one
 family. [README](../README.md) explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
@@ -378,10 +378,40 @@ field, domain or unconditional nontriviality is required. The existential
 choice is not canonical. Five private client theorems cover generic use,
 a noninjective quotient, empty variables and zero target/source rings.
 
+## `MultivariatePolynomials.FirstVariableLex`
+
+[Producer](../MultivariatePolynomials/FirstVariableLex.lean),
+[guide](first-variable-lex.md), and
+[ordinary-import private client](../Test/FirstVariableLex.lean). The three
+selected public theorems concern the usual `Fin` order and pointwise order on
+exponents (the latter is separate from the monomial order):
+
+```lean
+Finsupp.cons_zero_le_cons_iff (β : Fin n →₀ ℕ) :
+    ((0 : Fin n →₀ ℕ).cons d) ≤ β.cons i ↔ d ≤ i
+
+MonomialOrder.lex_le_cons_zero_of_le (β : Fin n →₀ ℕ)
+    (hi : i ≤ d) (heq : i = d → β = 0) :
+    β.cons i ≼[MonomialOrder.lex] (0 : Fin n →₀ ℕ).cons d
+
+MonomialOrder.lex_degree_of_finSuccEquiv_scalar_top [CommSemiring K]
+    (n d : ℕ) (p : MvPolynomial (Fin (n + 1)) K) (c : K)
+    (hdegree : (MvPolynomial.finSuccEquiv K n p).natDegree = d)
+    (htop : (MvPolynomial.finSuccEquiv K n p).coeff d = MvPolynomial.C c)
+    (hc : c ≠ 0) :
+    (MonomialOrder.lex : MonomialOrder (Fin (n + 1))).degree p =
+      (0 : Fin n →₀ ℕ).cons d
+```
+
+The scalar-top condition rules out extra tail exponents at the maximal first
+degree; a nonzero scalar ensures that the pure first-variable exponent belongs
+to the support. The coefficient ring need not have subtraction. `Fin 0` and
+degree zero are valid, and the client includes a non-scalar-top boundary.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all ten leaves.
-Thirteen test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all eleven leaves.
+Fourteen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
 [selected ideal-only axiom print](../Test/Axioms.lean),
 [direct ideal clients](../Test/LeafImport.lean),
@@ -394,6 +424,7 @@ Thirteen test/example modules are registered as literal roots under
 [coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean), and
 [linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean), and
 [linear-division client](../Test/LinearDivision.lean), and
-[monic-lift client](../Test/MonicLift.lean).
-The tests are not re-exported as production API. These eleven production plus
-thirteen test modules total twenty-four Lean modules.
+[monic-lift client](../Test/MonicLift.lean), and
+[first-variable lex client](../Test/FirstVariableLex.lean).
+The tests are not re-exported as production API. These twelve production plus
+fourteen test modules total twenty-six Lean modules.

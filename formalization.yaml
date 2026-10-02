@@ -6,7 +6,8 @@ project:
     Reusable multivariate-polynomial results on infinite-variable ideals,
     homogeneous evaluation, disjoint-block substitution and its iteration,
     degree, coefficient extraction and linear evaluation, chosen linear
-    division, and existential monic lifts. See README.md and docs/API.md
+    division, existential monic lifts and scalar-top first-variable lex degree.
+    See README.md and docs/API.md
     for precise hypotheses and limitations.
   authors:
     - Formal Frontier Agents
@@ -67,7 +68,7 @@ sources:
 
 status:
   scope: >-
-    Thirty-nine selected public declarations over the eleven producer modules:
+    Forty-two selected public declarations over the twelve producer modules:
     non-finite generation of the variable ideal for Nontrivial CommSemiring
     coefficients and Infinite variables; scaling under arbitrary CommSemiring
     with fixed coefficient homomorphism; disjoint-block substitution with
@@ -78,8 +79,10 @@ status:
     homogeneous labels; linear coefficient maps commuting with evaluation at
     base-valued points; chosen linear division over CommRing with unit leading
     coefficients, cone avoidance and preservation of all coefficient ideals;
-    and existential monic lifts under surjective coefficient maps for arbitrary
-    variables and CommRings, including the zero target. Division also exposes
+    scalar-top first-variable maximum lex degree over CommSemiring and pointwise
+    first-variable exponent cones; and existential monic lifts under surjective
+    coefficient maps for arbitrary variables and CommRings, including the zero
+    target. Division also exposes
     six public helpers beyond the selected results. No canonical division,
     Groebner assertion, general base-form construction, multiplicative linear
     functional, or source-specific completion is claimed. See README.md and
@@ -163,6 +166,12 @@ status:
       file: MultivariatePolynomials/LinearDivision.lean
     - declaration: MonomialOrder.exists_monic_lift
       file: MultivariatePolynomials/MonicLift.lean
+    - declaration: Finsupp.cons_zero_le_cons_iff
+      file: MultivariatePolynomials/FirstVariableLex.lean
+    - declaration: MonomialOrder.lex_le_cons_zero_of_le
+      file: MultivariatePolynomials/FirstVariableLex.lean
+    - declaration: MonomialOrder.lex_degree_of_finSuccEquiv_scalar_top
+      file: MultivariatePolynomials/FirstVariableLex.lean
 
 automation:
   methods:
@@ -171,17 +180,14 @@ automation:
         Formal Frontier AI agents used Lean, Lake and mathlib for proof
         development, examples and documentation, with independent review.
   notes: >-
-    Some original Lean proofs and clients were first developed in the shared
-    incubator and transferred mechanically into this deliverable; transfer
-    is not independent mathematical authorship. Detailed working provenance
-    and review evidence are held in the project's owning records. The shipped
-    mathematics, dependencies and selected results are documented here.
+    Mathlib's polynomial, ideal and finitely supported-function APIs support
+    the degree, coefficient, substitution and division results. Their statements
+    specify the relevant coefficient and order hypotheses.
 
 review:
-  status: "Lean results independently reviewed"
+  status: "Review evidence is revision-specific"
   notes: >-
-    The Lean graph has successful builds and a transitive standard-axiom audit,
-    including private declarations. Documentation, metadata, attribution review
-    and CI evidence apply to exact revisions and are recorded in the repository's
-    corresponding pull requests. This metadata does not itself certify source
-    correspondence or completion.
+    Independent review, builds and axiom audits apply only to the declarations
+    and exact source revisions they cover. This metadata does not certify a
+    successful build or complete standard-axiom audit for every selected result,
+    nor does it establish source-specific correspondence.
