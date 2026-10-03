@@ -37,7 +37,7 @@ coefficient-ring points, which would be insufficient over finite fields. They
 require no finiteness, nonemptiness, nontriviality, field, degree, or
 homogeneity hypothesis; zero polynomials, constants, empty index types,
 zero iterations, and zero semirings are included. The private ordinary-import
-client [`Test.BlockSubstitutionLaws`](../Test/BlockSubstitutionLaws.lean) exercises
+client [`MultivariatePolynomialsTests.BlockSubstitutionLaws`](../MultivariatePolynomialsTests/BlockSubstitutionLaws.lean) exercises
 mixed variable types, noninjective maps and these boundary cases. This abstract
 API by itself establishes no correspondence with a particular source's
 numbered-variable recurrence.

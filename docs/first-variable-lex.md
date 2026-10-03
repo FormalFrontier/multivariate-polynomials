@@ -21,7 +21,7 @@ For **pointwise** comparison of exponents, the separate theorem
 contribute no constraint because their baseline exponent is zero. This is a
 componentwise cone, not a lexicographic upper interval.
 
-The [direct-import examples](../Test/FirstVariableLex.lean) instantiate the
+The [direct-import examples](../MultivariatePolynomialsTests/FirstVariableLex.lean) instantiate the
 result over `ℕ`, including a nonconstant lower slice (`X 0 + X 1`), zero
 degree, and no remaining variables. `X 1` over `Fin 2` illustrates the need
 for the scalar-top condition: its maximum lex exponent has a nonzero tail.

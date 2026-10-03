@@ -2,7 +2,7 @@
 
 Import `MultivariatePolynomials.HomogeneousEvaluation` directly, or import
 `MultivariatePolynomials` for the aggregate public interface. The ordinary-import
-client is [`Test/HomogeneousEvaluation.lean`](../Test/HomogeneousEvaluation.lean);
+client is [`MultivariatePolynomialsTests/HomogeneousEvaluation.lean`](../MultivariatePolynomialsTests/HomogeneousEvaluation.lean);
 neither import requires an incubator or source-repository dependency.
 
 For any index type `ι`, commutative semirings `B`, `R`, unital ring homomorphism

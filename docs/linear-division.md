@@ -38,7 +38,7 @@ chosen maps, Gröbner-basis hypothesis, finite-variable hypothesis, or
 restricted-series division is claimed.
 
 Ordinary-import clients are in
-`Test/LinearDivision.lean`. They exercise
+`MultivariatePolynomialsTests/LinearDivision.lean`. They exercise
 decomposition and literal cone avoidance, linearity, arbitrary coefficient
 ideals (including the nonzero proper ideal `(2)` in `ZMod 4`), a finite family,
 an empty divisor family, zero input, the zero ring, and an already reduced

@@ -48,7 +48,7 @@ elan toolchain install leanprover/lean4:v4.34.0-rc2
 lake exe cache get
 lake --wfail build MultivariatePolynomials MultivariatePolynomialsTests
 lake --wfail build MultivariatePolynomials.BlockSubstitutionDegree
-lake --wfail build Test.BlockSubstitutionDegree
+lake --wfail build MultivariatePolynomialsTests.BlockSubstitutionDegree
 ```
 
 Both focused modules treat warnings as errors. For contributors and mathematical references, see [CREDITS.md](../CREDITS.md).

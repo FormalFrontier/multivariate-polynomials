@@ -54,7 +54,7 @@ coefficient homomorphism on both sides.
 
 [Producer](../MultivariatePolynomials/BlockSubstitution.lean),
 [standalone guide](block-substitution.md), and
-[ordinary-import client](../Test/BlockSubstitution.lean). With arbitrary
+[ordinary-import client](../MultivariatePolynomialsTests/BlockSubstitution.lean). With arbitrary
 `{ι : Type u}`, `{κ : Type v}`, `{R : Type w}` and `[CommSemiring R]`,
 the producer declares one definition and four theorems (the following manual
 display is not a native Lean signature print):
@@ -98,7 +98,7 @@ finite iteration and conditional degree-power theorems.
 
 [Producer](../MultivariatePolynomials/IteratedBlockSubstitution.lean),
 [standalone guide](iterated-block-substitution.md), and
-[ordinary-import private client](../Test/IteratedBlockSubstitution.lean).
+[ordinary-import private client](../MultivariatePolynomialsTests/IteratedBlockSubstitution.lean).
 For arbitrary `{ι : Type u}`, `{R : Type v}` and `[CommSemiring R]`, with
 `p : MvPolynomial ι R`, this is a manual declaration/signature map, not a
 native Lean print:
@@ -165,7 +165,7 @@ and conditional cardinality powers. No base polynomial is constructed.
 
 [Producer](../MultivariatePolynomials/BlockSubstitutionLaws.lean),
 [standalone guide](block-substitution-laws.md), and
-[eight-theorem private client](../Test/BlockSubstitutionLaws.lean). Import this
+[eight-theorem private client](../MultivariatePolynomialsTests/BlockSubstitutionLaws.lean). Import this
 leaf directly or import the aggregate. With arbitrary `{I : Type u}`,
 `{J : Type v}`, `{K : Type w}`, `{L : Type x}`, `{R : Type t}` and
 `[CommSemiring R]`, the following seven declarations are a **manual**
@@ -217,7 +217,7 @@ it does not restrict the arbitrary-commutative-semiring statements.
 
 [Producer](../MultivariatePolynomials/BlockSubstitutionDegree.lean),
 [standalone guide](block-substitution-degree.md) and
-[ordinary-import client](../Test/BlockSubstitutionDegree.lean). With arbitrary
+[ordinary-import client](../MultivariatePolynomialsTests/BlockSubstitutionDegree.lean). With arbitrary
 `{I : Type u}`, `{J : Type v}`, `{R : Type w}`, `[CommSemiring R]` and
 `[NoZeroDivisors R]`, the one new public theorem is (manual statement map,
 not a native Lean signature print):
@@ -237,7 +237,7 @@ The proof's auxiliary degree and block-profile facts are private, not new API.
 
 [Producer](../MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean),
 [standalone guide](polynomial-coefficient-homogeneity.md), and
-[ordinary-import finite-parameter client](../Test/PolynomialCoefficientHomogeneity.lean).
+[ordinary-import finite-parameter client](../MultivariatePolynomialsTests/PolynomialCoefficientHomogeneity.lean).
 For arbitrary `{R σ : Type*}` and `[CommSemiring R]`, with `R[X]` denoting
 `Polynomial R`, the one public theorem is (manual statement map, not a native
 Lean signature print):
@@ -260,7 +260,7 @@ The interchange helpers are private, not additional public definitions.
 
 [Producer](../MultivariatePolynomials/LinearCoefficientEvaluation.lean),
 [standalone guide](linear-coefficient-evaluation.md) and
-[ordinary-import client](../Test/LinearCoefficientEvaluation.lean).
+[ordinary-import client](../MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean).
 With arbitrary universes for `{R : Type u}`, `{S : Type v}` and `{V : Type w}`,
 `[CommSemiring R]`, `[CommSemiring S]`, `[Algebra R S]`, the sole public theorem is
 (manual statement map, not a native Lean signature print):
@@ -284,7 +284,7 @@ homogeneous labels or prove a common-zero or full source theorem.
 
 [Producer](../MultivariatePolynomials/LinearDivision.lean),
 [standalone guide](linear-division.md), and
-[ordinary-import private client](../Test/LinearDivision.lean). For arbitrary
+[ordinary-import private client](../MultivariatePolynomialsTests/LinearDivision.lean). For arbitrary
 variable and family-index types `{σ ι R : Type*}`, `[CommRing R]`,
 `m : MonomialOrder σ`, `b : ι → MvPolynomial σ R` and
 `hb : ∀ i, IsUnit (m.leadingCoeff (b i))`, the nine selected public results
@@ -358,7 +358,7 @@ the nonzero proper ideal `(2)` in `ZMod 4`, and reduced input.
 
 [Producer](../MultivariatePolynomials/MonicLift.lean),
 [standalone guide](monic-lift.md), and
-[ordinary-import private client](../Test/MonicLift.lean). For arbitrary
+[ordinary-import private client](../MultivariatePolynomialsTests/MonicLift.lean). For arbitrary
 `{σ R S : Type*}`, `[CommRing R]`, `[CommRing S]`, a monomial order
 `m : MonomialOrder σ`, surjective coefficient homomorphism `φ : R →+* S`,
 `p : MvPolynomial σ S` and `hp : m.Monic p`, the one selected public theorem is
@@ -382,7 +382,7 @@ a noninjective quotient, empty variables and zero target/source rings.
 
 [Producer](../MultivariatePolynomials/FirstVariableLex.lean),
 [guide](first-variable-lex.md), and
-[ordinary-import private client](../Test/FirstVariableLex.lean). The three
+[ordinary-import private client](../MultivariatePolynomialsTests/FirstVariableLex.lean). The three
 selected public theorems concern the usual `Fin` order and pointwise order on
 exponents (the latter is separate from the monomial order):
 
@@ -412,19 +412,19 @@ degree zero are valid, and the client includes a non-scalar-top boundary.
 
 [Aggregate](../MultivariatePolynomials.lean) publicly imports all eleven leaves.
 Fourteen test/example modules are registered as literal roots under
-`MultivariatePolynomialsTests`: [aggregate ideal client](../Test/IdealOfVars.lean),
-[selected ideal-only axiom print](../Test/Axioms.lean),
-[direct ideal clients](../Test/LeafImport.lean),
-[README ideal example](../Test/ReadmeExample.lean),
-[direct homogeneous-evaluation client](../Test/HomogeneousEvaluation.lean),
-[direct block-substitution client](../Test/BlockSubstitution.lean),
-[direct finite-iteration client](../Test/IteratedBlockSubstitution.lean),
-[structural-law client](../Test/BlockSubstitutionLaws.lean),
-[exact-degree client](../Test/BlockSubstitutionDegree.lean),
-[coefficient-homogeneity client](../Test/PolynomialCoefficientHomogeneity.lean), and
-[linear-coefficient-evaluation client](../Test/LinearCoefficientEvaluation.lean), and
-[linear-division client](../Test/LinearDivision.lean), and
-[monic-lift client](../Test/MonicLift.lean), and
-[first-variable lex client](../Test/FirstVariableLex.lean).
+`MultivariatePolynomialsTests`: [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
+[selected ideal-only axiom print](../MultivariatePolynomialsTests/Axioms.lean),
+[direct ideal clients](../MultivariatePolynomialsTests/LeafImport.lean),
+[README ideal example](../MultivariatePolynomialsTests/ReadmeExample.lean),
+[direct homogeneous-evaluation client](../MultivariatePolynomialsTests/HomogeneousEvaluation.lean),
+[direct block-substitution client](../MultivariatePolynomialsTests/BlockSubstitution.lean),
+[direct finite-iteration client](../MultivariatePolynomialsTests/IteratedBlockSubstitution.lean),
+[structural-law client](../MultivariatePolynomialsTests/BlockSubstitutionLaws.lean),
+[exact-degree client](../MultivariatePolynomialsTests/BlockSubstitutionDegree.lean),
+[coefficient-homogeneity client](../MultivariatePolynomialsTests/PolynomialCoefficientHomogeneity.lean), and
+[linear-coefficient-evaluation client](../MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean), and
+[linear-division client](../MultivariatePolynomialsTests/LinearDivision.lean), and
+[monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
+[first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean).
 The tests are not re-exported as production API. These twelve production plus
 fourteen test modules total twenty-six Lean modules.

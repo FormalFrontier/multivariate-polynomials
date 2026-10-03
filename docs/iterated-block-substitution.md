@@ -48,7 +48,7 @@ assumes `1 < d` and gives, for every `bound : ℕ`, some `r` with
 `bound < (iteratedBlockSubst p r).totalDegree`. It asserts **attained degrees
 beyond every bound**, not that every sufficiently large degree occurs. The
 private ordinary-import client
-`Test.IteratedBlockSubstitution` exercises this
+`MultivariatePolynomialsTests.IteratedBlockSubstitution` exercises this
 with the native finite arity equation
 `Fintype.card (Fin r → ι) = (Fintype.card ι) ^ r`; if the base arity is
 `d ^ m`, the tuple arity is `d ^ (m * r)`, equivalently the iterate's exact
@@ -59,7 +59,7 @@ not construct a base polynomial over an arbitrary field.
 [local generic-block module](../MultivariatePolynomials/BlockSubstitution.lean);
 see its [independent guide](block-substitution.md). The public iterator is in
 [the iteration producer](../MultivariatePolynomials/IteratedBlockSubstitution.lean),
-and [its ordinary-import client](../Test/IteratedBlockSubstitution.lean) remains
+and [its ordinary-import client](../MultivariatePolynomialsTests/IteratedBlockSubstitution.lean) remains
 private to the test target. The separate
 [structural-law guide](block-substitution-laws.md) gives `iteratedBlockSubst_one`,
 `iteratedBlockSubst_add` using `Fin.append` and `iteratedBlockSubst_snoc` using

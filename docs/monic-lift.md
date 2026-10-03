@@ -25,7 +25,7 @@ actual support equality, hence equal degrees and a monic lift. When `S` is the
 zero ring, `p = 1` and taking `q = 1` proves the stated map, monicity and degree
 equalities; **support equality is not asserted** in this branch.
 
-The [ordinary-import client](../Test/MonicLift.lean) covers the generic
+The [ordinary-import client](../MultivariatePolynomialsTests/MonicLift.lean) covers the generic
 interface, a noninjective integer quotient, empty variables, a zero target
 and a zero source. With this repository's pinned Lean toolchain and mathlib
 revision, fetch the matching precompiled cache successfully in the project
@@ -34,7 +34,7 @@ root **before** the focused producer/client commands:
 ```sh
 lake exe cache get
 LEAN_NUM_THREADS=2 lake --wfail build MultivariatePolynomials.MonicLift
-LEAN_NUM_THREADS=2 lake --wfail build Test.MonicLift
+LEAN_NUM_THREADS=2 lake --wfail build MultivariatePolynomialsTests.MonicLift
 ```
 
 Riccardo Brasca’s mathlib `Polynomial.lifts_and_natDegree_eq_and_monic` is a univariate analogue; Antoine Chambert-Loir’s `MonomialOrder` infrastructure also informs this distinct project proof. See [CREDITS.md](../CREDITS.md).

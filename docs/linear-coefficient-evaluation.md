@@ -22,7 +22,7 @@ polynomial, positive-degree or multiplicativity assumption on `lambda`.
 structure is demanded. It is useful, for example, with arbitrary-index
 `Module.Basis.coord` maps, and with the nonmultiplicative sum map
 `(ℕ × ℕ) →ₗ[ℕ] ℕ`. The ordinary-import examples (also a zero map and `Empty`
-variables) are in [`Test/LinearCoefficientEvaluation.lean`](../Test/LinearCoefficientEvaluation.lean).
+variables) are in [`MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean`](../MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean).
 The proof expands the finite monomial sum, transports each monomial's
 base-valued product through `algebraMap R S`, applies linearity to the resulting
 scalar multiplication, and reassembles the native additive map.
@@ -41,7 +41,7 @@ building both default targets and the ordinary-import client:
 ```sh
 lake exe cache get
 lake --wfail build MultivariatePolynomials MultivariatePolynomialsTests
-lake env lean -DwarningAsError=true Test/LinearCoefficientEvaluation.lean
+lake env lean -DwarningAsError=true MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean
 ```
 
 The independent linear-evaluation theorem and clients build on mathlib; a separate project finite-basis exposition is background, not a proof of full coordinate reconstruction. See [CREDITS.md](../CREDITS.md).

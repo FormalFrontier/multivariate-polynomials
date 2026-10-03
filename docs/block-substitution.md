@@ -25,7 +25,7 @@ MvPolynomial.eval x (MvPolynomial.blockSubst p q) =
 For example, substituting `q` into the two separate blocks of `X 0 + X 1`
 evaluates to the sum of the two block evaluations. Repeating the operation
 once more gives a polynomial on `(ι × κ) × υ`; the consumer
-[`Test.BlockSubstitution`](../Test/BlockSubstitution.lean) tests both evaluations
+[`MultivariatePolynomialsTests.BlockSubstitution`](../MultivariatePolynomialsTests/BlockSubstitution.lean) tests both evaluations
 and the two-stage vanishing implications. This block client itself does not
 provide arbitrary iteration; the separate
 [iterated-block module and guide](iterated-block-substitution.md) define and

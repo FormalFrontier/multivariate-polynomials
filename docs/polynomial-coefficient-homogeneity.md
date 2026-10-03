@@ -21,7 +21,7 @@ the coefficient identity after interchange; coefficient extraction is additive,
 not a ring homomorphism.
 
 The ordinary-import client in
-`Test/PolynomialCoefficientHomogeneity.lean` tests a finite
+`MultivariatePolynomialsTests/PolynomialCoefficientHomogeneity.lean` tests a finite
 parameter substitution: for each `i : σ`, replace `X i` by
 `∑ j : Fin (s + 1), C (Polynomial.X ^ j.val) * X (i, j)`.
 The native `IsHomogeneous.eval₂` gives degree `d` for the substituted

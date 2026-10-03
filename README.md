@@ -90,7 +90,7 @@ as `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.LinearDivision`, `MultivariatePolynomials.MonicLift`
 and `MultivariatePolynomials.FirstVariableLex`
 work independently. For example, the following is checked in
-[`Test/ReadmeExample.lean`](Test/ReadmeExample.lean):
+[`MultivariatePolynomialsTests/ReadmeExample.lean`](MultivariatePolynomialsTests/ReadmeExample.lean):
 
 ```lean
 import MultivariatePolynomials.IdealOfVars
