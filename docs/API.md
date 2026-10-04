@@ -2,8 +2,8 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for fifty-five selected declarations, or the named
-leaf for one family. The forty-five selected declarations in the existing
+`MultivariatePolynomials` for fifty-nine selected declarations, or the named
+leaf for one family. The forty-nine selected declarations in the other
 leaves are separate from the ten listed in the localized quotient leaf:
 its evaluation, equivalence and characteristic laws are proved.
 This selection does not count every public helper. [README](../README.md)
@@ -24,6 +24,19 @@ the same span with `MvPolynomial.vanishingIdeal k {x}` without requiring
 algebraic closure or finitely many variables. The kernel equality follows by
 comparing the quotient map with evaluation followed by the constant map;
 membership and the singleton bridge follow from that equality.
+
+`MvPolynomial.ker_aeval_comap` contracts evaluation kernels along polynomial
+algebra homomorphisms, with arbitrary source and target variable types and
+points valued in any commutative coefficient algebra. Over a commutative ring,
+`MvPolynomial.ideal_span_X_sub_C_comap` specializes this to coordinate-difference
+spans, using Mathlib's `MvPolynomial.comap` for the induced point.
+`MvPolynomial.pointToPoint_comap` identifies contraction of the corresponding
+prime with the point obtained by evaluating images of source coordinates, even
+when the points take values in a larger field; `pointToPoint_comap_self` uses
+`MvPolynomial.comap` in the same-field case. The
+[evaluation-naturality clients](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean)
+include a quotient evaluation square requiring vanishing on the target ideal
+and an independent counterexample when vanishing fails.
 
 ## `MultivariatePolynomials.LocalizedCoordinateQuotient`
 
@@ -451,8 +464,9 @@ degree zero are valid, and the client includes a non-scalar-top boundary.
 ## Aggregate and tests
 
 [Aggregate](../MultivariatePolynomials.lean) publicly imports all thirteen leaves.
-Sixteen test/example modules are registered as literal roots under
+Seventeen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
+[evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
 [selected ideal-only axiom print](../MultivariatePolynomialsTests/Axioms.lean),
 [direct ideal clients](../MultivariatePolynomialsTests/LeafImport.lean),
@@ -469,4 +483,4 @@ Sixteen test/example modules are registered as literal roots under
 [first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean), and
 [localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean).
 The tests are not re-exported as production API. These fourteen production plus
-sixteen test modules total thirty Lean modules.
+seventeen test modules total thirty-one Lean modules.

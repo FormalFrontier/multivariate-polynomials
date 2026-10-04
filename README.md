@@ -6,10 +6,10 @@ evaluation and division, monic lifts and first-variable lexicographic degrees.
 It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) lists **55 selected public declarations**
-across 14 production modules (13 leaves and the aggregate): 45 in existing
-completed leaves and ten in the localized-coordinate-quotient leaf. Fixed linear
-division has six additional public helpers. The project registers 16
+[hand-maintained API map](docs/API.md) lists **59 selected public declarations**
+across 14 production modules (13 leaves and the aggregate): 49 in the other
+leaves and ten in the localized-coordinate-quotient leaf. Fixed linear
+division has six additional public helpers. The project registers 17
 test/example modules.
 
 ## Headline results
@@ -20,6 +20,12 @@ test/example modules.
   kernel, with a membership criterion and a bridge to the singleton vanishing
   ideal over any field. The variable type may be infinite or empty, and the
   coefficient ring may have zero divisors or be the zero ring.
+- **Evaluation ideals commute with substitution.** Polynomial algebra
+  homomorphisms contract evaluation kernels to evaluation kernels at the
+  substituted coordinates over any commutative semiring and coefficient algebra.
+  For commutative rings this contracts coordinate-difference ideals; over fields,
+  contraction of the associated prime-spectrum points works also for points
+  valued in a field extension. See the [evaluation-ideal module](MultivariatePolynomials/EvaluationIdeal.lean).
 - **The variable ideal is not finitely generated.** For a nontrivial
   commutative semiring and infinitely many variables,
   [`MvPolynomial.idealOfVars_not_fg`](MultivariatePolynomials/IdealOfVars.lean)

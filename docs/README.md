@@ -1,8 +1,8 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-fourteen production modules (thirteen leaves and the aggregate), sixteen registered
-test/example modules and thirty Lean modules. It catalogs fifty-five
+fourteen production modules (thirteen leaves and the aggregate), seventeen registered
+test/example modules and thirty-one Lean modules. It catalogs fifty-nine
 selected public declarations, including ten in a localized quotient leaf
 with proved evaluation, equivalence and characteristic laws, not every
 public helper. It is neither
