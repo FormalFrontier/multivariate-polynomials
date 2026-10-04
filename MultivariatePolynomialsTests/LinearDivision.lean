@@ -4,7 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.LinearDivision
+public import MultivariatePolynomials.LinearDivision
 import Mathlib.Data.ZMod.Basic
 
 set_option warningAsError true
@@ -60,7 +60,7 @@ private theorem empty_family {σ R : Type*} [CommRing R]
   exact ⟨m.linearDivision_remainder_of_reduced _ _ p hred,
     m.linearDivision_quotient_of_reduced _ _ p hred⟩
 
-private theorem zero_input {σ ι R : Type*} [CommRing R]
+public theorem zero_input {σ ι R : Type*} [CommRing R]
     (m : MonomialOrder σ) (b : ι → MvPolynomial σ R)
     (hb : ∀ i, IsUnit (m.leadingCoeff (b i))) :
     m.linearDivisionQuotient b hb 0 = 0 ∧
@@ -74,7 +74,8 @@ private theorem zero_input {σ ι R : Type*} [CommRing R]
 
 private theorem zero_ring_client (m : MonomialOrder (Fin 2)) :
     m.linearDivisionRemainder (fun _ : Fin 1 => (1 : MvPolynomial (Fin 2) (ZMod 1)))
-      (by intro _; simpa only [m.leadingCoeff_one] using (isUnit_one : IsUnit (1 : ZMod 1))) 0 = 0 := by
+      (by intro _; simpa only [m.leadingCoeff_one] using (isUnit_one : IsUnit (1 : ZMod 1)))
+      0 = 0 := by
   exact (m.linearDivisionRemainder _
     (by intro _; simpa only [m.leadingCoeff_one] using (isUnit_one : IsUnit (1 : ZMod 1)))).map_zero
 
@@ -97,7 +98,8 @@ private theorem mod_four_ideal (m : MonomialOrder (Fin 1)) :
     (∀ i : Fin 1,
       (m.linearDivisionQuotient (fun _ : Fin 1 =>
         (1 : MvPolynomial (Fin 1) (ZMod 4)))
-        (by intro _; simpa only [m.leadingCoeff_one] using (isUnit_one : IsUnit (1 : ZMod 4))) (C 2)) i ∈
+        (by intro _; simpa only [m.leadingCoeff_one] using (isUnit_one : IsUnit (1 : ZMod 4)))
+        (C 2)) i ∈
           coeffsIn (Fin 1) (J : Submodule (ZMod 4) (ZMod 4))) := by
   intro J
   have hb : ∀ i : Fin 1,

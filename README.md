@@ -6,12 +6,19 @@ evaluation and division, monic lifts and first-variable lexicographic degrees.
 It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) lists **42 selected public declarations**
-across 12 producer modules (including the aggregate); fixed linear division has
-six additional public helpers. The project also registers 14 test/example modules.
+[hand-maintained API map](docs/API.md) lists **45 selected public declarations**
+across 13 production modules (12 leaves and the aggregate). Fixed linear
+division has six additional public helpers. The project registers 15
+test/example modules.
 
 ## Headline results
 
+- **Coordinate differences identify evaluation kernels.** The
+  [coordinate-difference ideal](MultivariatePolynomials/EvaluationIdeal.lean)
+  at any point over a commutative ring equals the evaluation
+  kernel, with a membership criterion and a bridge to the singleton vanishing
+  ideal over any field. The variable type may be infinite or empty, and the
+  coefficient ring may have zero divisors or be the zero ring.
 - **The variable ideal is not finitely generated.** For a nontrivial
   commutative semiring and infinitely many variables,
   [`MvPolynomial.idealOfVars_not_fg`](MultivariatePolynomials/IdealOfVars.lean)
@@ -85,6 +92,20 @@ explains the archived six-module native API snapshot.
 
 ## Use and check
 
+To use this library as a dependency, add it to your `lakefile.toml`:
+
+```toml
+[[require]]
+name = "multivariate-polynomials"
+git = "https://github.com/FormalFrontier/multivariate-polynomials.git"
+rev = "main"
+```
+
+GitHub `main` contains only reviewed releases. Lake resolves a release when you
+add or update the dependency; `lake-manifest.json` retains that commit until you
+update again. To pin a particular release, use a full commit from that branch's
+history instead of `main`.
+
 The aggregate import exposes the current producer modules; direct imports such
 as `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.LinearDivision`, `MultivariatePolynomials.MonicLift`
@@ -122,7 +143,7 @@ workflow are *planning estimates*, not guaranteed timings. Allow about 8 GiB
 available RAM and several GiB free disk as *planning allowances*, not measured
 minima or current aggregate peaks; host and concurrent load matter. These
 figures do not describe a full mathlib source rebuild. The archived six-module
-snapshot's child-process RSS does not measure the current 26-module aggregate.
+snapshot's child-process RSS does not measure the current 28-module project.
 
 ## Credits and license
 

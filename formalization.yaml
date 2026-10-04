@@ -4,7 +4,8 @@ project:
   name: Multivariate Polynomials
   description: >-
     Reusable multivariate-polynomial results on infinite-variable ideals,
-    homogeneous evaluation, disjoint-block substitution and its iteration,
+    coordinate-difference evaluation ideals, homogeneous evaluation,
+    disjoint-block substitution and its iteration,
     degree, coefficient extraction and linear evaluation, chosen linear
     division, existential monic lifts and scalar-top first-variable lex degree.
     See README.md and docs/API.md
@@ -68,7 +69,10 @@ sources:
 
 status:
   scope: >-
-    Forty-two selected public declarations over the twelve producer modules:
+    Forty-five selected public declarations over twelve leaves and the
+    aggregate: coordinate-difference ideals equal evaluation kernels over
+    CommRing coefficients for arbitrary variables, with a vanishing membership
+    criterion and a singleton-vanishing-ideal bridge over fields;
     non-finite generation of the variable ideal for Nontrivial CommSemiring
     coefficients and Infinite variables; scaling under arbitrary CommSemiring
     with fixed coefficient homomorphism; disjoint-block substitution with
@@ -88,6 +92,12 @@ status:
     functional, or source-specific completion is claimed. See README.md and
     docs/API.md for the detailed module map and guides.
   main_results:
+    - declaration: MvPolynomial.ideal_span_X_sub_C_eq_ker_eval
+      file: MultivariatePolynomials/EvaluationIdeal.lean
+    - declaration: MvPolynomial.mem_ideal_span_X_sub_C_iff
+      file: MultivariatePolynomials/EvaluationIdeal.lean
+    - declaration: MvPolynomial.ideal_span_X_sub_C_eq_vanishingIdeal_singleton
+      file: MultivariatePolynomials/EvaluationIdeal.lean
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
     - declaration: MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables

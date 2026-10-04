@@ -2,11 +2,26 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all forty-two selected declarations, or the named leaf for one
-family. [README](../README.md) explains how to build the library. The
+`MultivariatePolynomials` for forty-five selected declarations, or the named
+leaf for one family.
+This selection does not count every public helper. [README](../README.md)
+explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
 revision, not this expanded interface.
+
+## `MultivariatePolynomials.EvaluationIdeal`
+
+For arbitrary types of variables `σ` and a commutative ring `R`,
+`MvPolynomial.ideal_span_X_sub_C_eq_ker_eval` identifies the span of
+`X i - C (x i)` for `i : σ` with `RingHom.ker (MvPolynomial.eval x)`.
+`MvPolynomial.mem_ideal_span_X_sub_C_iff` characterizes membership by
+`MvPolynomial.eval x p = 0`. Over any field `k`,
+`MvPolynomial.ideal_span_X_sub_C_eq_vanishingIdeal_singleton` identifies
+the same span with `MvPolynomial.vanishingIdeal k {x}` without requiring
+algebraic closure or finitely many variables. The kernel equality follows by
+comparing the quotient map with evaluation followed by the constant map;
+membership and the singleton bridge follow from that equality.
 
 ## `MultivariatePolynomials.IdealOfVars`
 
@@ -410,9 +425,10 @@ degree zero are valid, and the client includes a non-scalar-top boundary.
 
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all eleven leaves.
-Fourteen test/example modules are registered as literal roots under
-`MultivariatePolynomialsTests`: [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all twelve leaves.
+Fifteen test/example modules are registered as literal roots under
+`MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
+[aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
 [selected ideal-only axiom print](../MultivariatePolynomialsTests/Axioms.lean),
 [direct ideal clients](../MultivariatePolynomialsTests/LeafImport.lean),
 [README ideal example](../MultivariatePolynomialsTests/ReadmeExample.lean),
@@ -426,5 +442,5 @@ Fourteen test/example modules are registered as literal roots under
 [linear-division client](../MultivariatePolynomialsTests/LinearDivision.lean), and
 [monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
 [first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean).
-The tests are not re-exported as production API. These twelve production plus
-fourteen test modules total twenty-six Lean modules.
+The tests are not re-exported as production API. These thirteen production plus
+fifteen test modules total twenty-eight Lean modules.

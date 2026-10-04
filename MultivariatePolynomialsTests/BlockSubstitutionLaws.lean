@@ -4,16 +4,16 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.BlockSubstitutionLaws
+public import MultivariatePolynomials.BlockSubstitutionLaws
 import Mathlib.Algebra.Ring.PUnit
-import Mathlib.Data.ZMod.Basic
+public import Mathlib.Data.ZMod.Basic
 
 set_option warningAsError true
 
 /-!
 # Ordinary-import structural-law clients
 
-Eight private ordinary-import checks exercise these laws.
+Eight ordinary-import checks exercise these laws; the finite-field client is public.
 -/
 
 namespace BlockSubstitutionLawsClient
@@ -58,7 +58,7 @@ private theorem oppositeMixed {I R : Type*} [CommSemiring R]
         (blockSubst (iteratedBlockSubst p m) p) :=
   iteratedBlockSubst_snoc p m
 
-private theorem finiteFieldConstants :
+public theorem finiteFieldConstants :
     iteratedBlockSubst (X (0 : Fin 2) + C 1 : MvPolynomial (Fin 2) (ZMod 2))
         (2 + 1) =
       rename (fun pair : (Fin 2 → Fin 2) × (Fin 1 → Fin 2) =>

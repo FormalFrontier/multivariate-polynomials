@@ -1,9 +1,9 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-twelve producer modules (including the aggregate), fourteen registered
-test/example modules and forty-two selected public declarations across
-twenty-six Lean modules. It is neither
+thirteen production modules (twelve leaves and the aggregate), fifteen registered
+test/example modules and twenty-eight Lean modules. It catalogs forty-five
+selected public declarations, not every public helper. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
@@ -63,7 +63,7 @@ original main `5581825d52b8ef6efe393d18c9232ecbd5d2ac5e`), or at the exact
 unmodified analyzed-input revision
 `35e72ff648fc5d73ffa4232ed2b1971cb61891fd`. Do **not** run the old
 adapter's output/check mode on the expanded current checkout: its hard-coded
-six-module inventory and original input hashes cannot describe twenty-four modules.
+six-module inventory and original input hashes cannot describe the current modules.
 Use a committed checkout, not a plain no-Git export; the original contract
 requires the actual Git object or the original manifest with byte-identical
 current inputs in an intentionally parentless release.

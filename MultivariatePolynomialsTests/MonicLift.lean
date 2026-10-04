@@ -4,9 +4,9 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.MonicLift
+public import MultivariatePolynomials.MonicLift
 import Mathlib.Data.ZMod.Defs
-import Mathlib.RingTheory.Ideal.Quotient.Defs
+public import Mathlib.RingTheory.Ideal.Quotient.Defs
 
 set_option warningAsError true
 
@@ -20,7 +20,7 @@ private theorem client_generic {σ R S : Type*} [CommRing R] [CommRing S]
     ∃ q : MvPolynomial σ R, map φ q = p ∧ m.Monic q ∧ m.degree q = m.degree p :=
   m.exists_monic_lift φ hφ p hp
 
-private theorem client_noninjective_quotient (m : MonomialOrder ℕ) :
+public theorem noninjectiveQuotientLift (m : MonomialOrder ℕ) :
     ∃ q : MvPolynomial ℕ ℤ,
       map (Ideal.Quotient.mk (Ideal.span {(2 : ℤ)})) q =
         X 0 + C (1 : ℤ ⧸ Ideal.span {(2 : ℤ)}) ∧

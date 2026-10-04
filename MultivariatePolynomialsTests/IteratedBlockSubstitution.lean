@@ -4,14 +4,14 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.IteratedBlockSubstitution
+public import MultivariatePolynomials.IteratedBlockSubstitution
 import Mathlib.Algebra.Ring.PUnit
-import Mathlib.Data.ZMod.Basic
+public import Mathlib.Data.ZMod.Basic
 
 set_option warningAsError true
 
 /-!
-# Private clients of finite disjoint-block iteration
+# Clients of finite disjoint-block iteration
 
 -/
 
@@ -104,7 +104,7 @@ private theorem constantForward (r : ℕ) (x : (Fin r → Fin 1) → ZMod 2) :
   intro y hy
   exact (one_ne_zero (by simpa only [eval_C] using hy)).elim
 
-private theorem constantNotIff :
+public theorem constantOneZeroLocusNeSingletonZero :
     ¬ ∀ x : (Fin 1 → Fin 1) → ZMod 2,
       eval x (iteratedBlockSubst (C 1 : MvPolynomial (Fin 1) (ZMod 2)) 1) = 0 ↔
         x = 0 := by

@@ -4,8 +4,8 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.LinearCoefficientEvaluation
-import Mathlib.LinearAlgebra.Basis.Defs
+public import MultivariatePolynomials.LinearCoefficientEvaluation
+public import Mathlib.LinearAlgebra.Basis.Defs
 import Mathlib.LinearAlgebra.Prod
 
 /-! Ordinary-import clients of base-valued linear coefficient evaluation. -/
@@ -19,7 +19,7 @@ universe u v w
 variable {R : Type u} {S : Type v} {V : Type w}
 variable [CommSemiring R] [CommSemiring S] [Algebra R S]
 
-private theorem basis_coordinate_client {J : Type*} (basis : Module.Basis J R S) (j : J)
+public theorem basisCoordinate {J : Type*} (basis : Module.Basis J R S) (j : J)
     (F : MvPolynomial V S) (y : V → R) :
     basis.coord j (MvPolynomial.eval (algebraMap R S ∘ y) F) =
       MvPolynomial.eval y (AddMonoidAlgebra.map (basis.coord j).toAddMonoidHom F) :=

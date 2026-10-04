@@ -4,7 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.BlockSubstitution
+public import MultivariatePolynomials.BlockSubstitution
 import Mathlib.RingTheory.MvPolynomial.Homogeneous
 import Mathlib.Algebra.Ring.PUnit
 import Mathlib.Data.ZMod.Basic
@@ -21,7 +21,7 @@ private theorem twoBlocksStructural {R : Type*} [CommSemiring R]
       rename (Prod.mk (0 : Fin 2)) q + rename (Prod.mk (1 : Fin 2)) q := by
   simp [blockSubst]
 
-private theorem twoBlocks {R : Type*} [CommSemiring R]
+public theorem twoBlocks {R : Type*} [CommSemiring R]
     (q : MvPolynomial (Fin 2) R) (x : Fin 2 × Fin 2 → R) :
     eval x (blockSubst (X (0 : Fin 2) + X 1) q) =
       eval (fun j => x (0, j)) q + eval (fun j => x (1, j)) q := by

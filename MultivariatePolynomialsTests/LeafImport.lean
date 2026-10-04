@@ -4,15 +4,15 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.IdealOfVars
+public import MultivariatePolynomials.IdealOfVars
 
 /-!
 # Direct-leaf clients
 
 Test-only declarations exercise generic and concrete applications via the
 direct theorem import. The unequal-universe client checks that the coefficient
-and variable types need not lie in the same universe. All three declarations
-are private by the module default, even without an explicit `private` keyword.
+and variable types need not lie in the same universe. The concrete client is
+public; the other two are private by the module default.
 -/
 
 universe u v
@@ -22,7 +22,8 @@ theorem leafGeneric (k : Type u) (σ : Type v)
     ¬ (MvPolynomial.idealOfVars σ k).FG :=
   MvPolynomial.idealOfVars_not_fg k σ
 
-theorem leafConcrete : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
+public theorem MultivariatePolynomialsTests.rationalInfiniteVariables :
+    ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 
 theorem leafUnequalUniverses (k : Type) (σ : Type 1)

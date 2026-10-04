@@ -4,14 +4,14 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials
+public import MultivariatePolynomials
 
 /-!
 # Aggregate-import clients
 
-Private-by-module test theorems check the generic semiring/infinite-variable
-interface and its specialization to polynomials over `ℚ` indexed by `ℕ`.
-These are build-checked clients, not additional public API.
+Test theorems check the generic semiring/infinite-variable interface and its
+specialization to polynomials over `ℚ` indexed by `ℕ`. The concrete client is
+public in the test namespace; neither is additional production API.
 -/
 
 private theorem aggregateGeneric (k : Type*) (σ : Type*)
@@ -19,5 +19,6 @@ private theorem aggregateGeneric (k : Type*) (σ : Type*)
     ¬ (MvPolynomial.idealOfVars σ k).FG :=
   MvPolynomial.idealOfVars_not_fg k σ
 
-private theorem aggregateConcrete : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
+public theorem MultivariatePolynomialsTests.idealOfVarsRatNotFG :
+    ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ

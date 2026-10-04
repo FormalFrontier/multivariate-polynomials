@@ -6,7 +6,8 @@
       "path": ".",
       "targets": [
         "MultivariatePolynomials",
-        "MultivariatePolynomialsTests"
+        "MultivariatePolynomialsTests",
+        "MultivariatePolynomialsTests.EvaluationIdeal"
       ]
     }
   ],

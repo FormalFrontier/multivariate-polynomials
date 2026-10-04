@@ -4,7 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.IdealOfVars
+public import MultivariatePolynomials.IdealOfVars
 
 /-! # A generic variable-ideal client and its rational specialization -/
 
@@ -15,5 +15,6 @@ private theorem readmeVariables (k : Type u) (σ : Type v)
     ¬ (MvPolynomial.idealOfVars σ k).FG :=
   MvPolynomial.idealOfVars_not_fg k σ
 
-private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
+public theorem MultivariatePolynomialsTests.rationalVariableIdealNotFG :
+    ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ

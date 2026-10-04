@@ -2,6 +2,12 @@ name = "multivariate-polynomials"
 version = "0.1.0"
 defaultTargets = ["MultivariatePolynomials", "MultivariatePolynomialsTests"]
 
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+weak.linter.style.header = false
+
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
@@ -12,4 +18,4 @@ name = "MultivariatePolynomials"
 
 [[lean_lib]]
 name = "MultivariatePolynomialsTests"
-roots = ["MultivariatePolynomialsTests.IdealOfVars", "MultivariatePolynomialsTests.Axioms", "MultivariatePolynomialsTests.LeafImport", "MultivariatePolynomialsTests.ReadmeExample", "MultivariatePolynomialsTests.HomogeneousEvaluation", "MultivariatePolynomialsTests.BlockSubstitution", "MultivariatePolynomialsTests.IteratedBlockSubstitution", "MultivariatePolynomialsTests.BlockSubstitutionLaws", "MultivariatePolynomialsTests.BlockSubstitutionDegree", "MultivariatePolynomialsTests.PolynomialCoefficientHomogeneity", "MultivariatePolynomialsTests.LinearCoefficientEvaluation", "MultivariatePolynomialsTests.LinearDivision", "MultivariatePolynomialsTests.MonicLift", "MultivariatePolynomialsTests.FirstVariableLex"]
+roots = ["MultivariatePolynomialsTests.IdealOfVars", "MultivariatePolynomialsTests.Axioms", "MultivariatePolynomialsTests.LeafImport", "MultivariatePolynomialsTests.ReadmeExample", "MultivariatePolynomialsTests.HomogeneousEvaluation", "MultivariatePolynomialsTests.BlockSubstitution", "MultivariatePolynomialsTests.IteratedBlockSubstitution", "MultivariatePolynomialsTests.BlockSubstitutionLaws", "MultivariatePolynomialsTests.BlockSubstitutionDegree", "MultivariatePolynomialsTests.PolynomialCoefficientHomogeneity", "MultivariatePolynomialsTests.LinearCoefficientEvaluation", "MultivariatePolynomialsTests.LinearDivision", "MultivariatePolynomialsTests.MonicLift", "MultivariatePolynomialsTests.FirstVariableLex", "MultivariatePolynomialsTests.EvaluationIdeal"]

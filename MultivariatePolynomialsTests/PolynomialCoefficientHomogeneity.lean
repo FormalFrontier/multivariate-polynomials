@@ -4,7 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.PolynomialCoefficientHomogeneity
+public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 import Mathlib.Data.ZMod.Basic
 
 set_option warningAsError true
@@ -57,7 +57,8 @@ example (degree index : ℕ) :
   MvPolynomial.IsHomogeneous.coeff_polynomial_interchange _ degree index
     (MvPolynomial.isHomogeneous_zero (σ := σ) (R := R[X]) degree)
 
-example (p : MvPolynomial σ R[X]) (hp : p.IsHomogeneous 0) (index : ℕ) :
+public theorem homogeneousZeroCoefficient (p : MvPolynomial σ R[X])
+    (hp : p.IsHomogeneous 0) (index : ℕ) :
     ((((MvPolynomial.optionEquivRight R σ).symm.trans
       (MvPolynomial.optionEquivLeft R σ)) p).coeff index).IsHomogeneous 0 :=
   MvPolynomial.IsHomogeneous.coeff_polynomial_interchange p 0 index hp
