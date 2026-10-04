@@ -65,4 +65,5 @@ private to the test target. The separate
 `iteratedBlockSubst_add` using `Fin.append` and `iteratedBlockSubst_snoc` using
 `Fin.snoc`. This opposite successor appends the original polynomial at the end
 of the tuple; it is not the `Fin.consEquiv` recursion that defines the iterator.
-The generic-block and iteration results are distinct original project contributions; mechanical transfer does not constitute a new proof. See [CREDITS.md](../CREDITS.md).
+Generic-block substitution and its word-indexed iteration are distinct original
+project contributions; see [CREDITS.md](../CREDITS.md).

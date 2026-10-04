@@ -2,8 +2,10 @@
 
 This is a hand-maintained map of the current public interface, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for forty-five selected declarations, or the named
-leaf for one family.
+`MultivariatePolynomials` for fifty-five selected declarations, or the named
+leaf for one family. The forty-five selected declarations in the existing
+leaves are separate from the ten listed in the localized quotient leaf:
+its evaluation, equivalence and characteristic laws are proved.
 This selection does not count every public helper. [README](../README.md)
 explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
@@ -22,6 +24,29 @@ the same span with `MvPolynomial.vanishingIdeal k {x}` without requiring
 algebraic closure or finitely many variables. The kernel equality follows by
 comparing the quotient map with evaluation followed by the constant map;
 membership and the singleton bridge follow from that equality.
+
+## `MultivariatePolynomials.LocalizedCoordinateQuotient`
+
+[Producer](../MultivariatePolynomials/LocalizedCoordinateQuotient.lean) and
+[ordinary-import client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean).
+For arbitrary `{R : Type u} [CommRing R] (r : R)`,
+`Polynomial.quotientSpanCMulX_mul_mk_eq_zero_of_eval_zero` states that an
+element represented by a polynomial vanishing at zero is annihilated by the
+image of `r` in `R[X] / ⟨C r * X⟩`. The quotient evaluation map
+`Polynomial.quotientSpanCMulXEval` and its `_mk` law evaluate at zero.
+`Polynomial.quotientSpanCMulXAwayAlgEquiv` points from
+`Localization.Away (algebraMap R (R[X] ⧸ Ideal.span {C r * X}) r)` to
+`Localization.Away r` as an `R`-algebra equivalence. Evaluation at zero
+specifies its action on quotient representatives. Its inverse sends localized
+coefficients to constant-polynomial classes. The two power-denominator laws
+specify both maps on every fraction via `IsLocalization.mk'`, without an
+implicit regularity or nonzero premise. A chosen-inverse law uses
+`IsLocalization.Away.invSelf`; the variable-to-zero law follows from the
+representative law.
+
+The independent nonzero-variable witness in the rational-polynomial client
+does not use the equivalence. The zero, unit, zero-ring, zero-divisor and
+nilpotent boundary examples do not add assumptions to the equivalence statement.
 
 ## `MultivariatePolynomials.IdealOfVars`
 
@@ -425,8 +450,8 @@ degree zero are valid, and the client includes a non-scalar-top boundary.
 
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all twelve leaves.
-Fifteen test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all thirteen leaves.
+Sixteen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
 [selected ideal-only axiom print](../MultivariatePolynomialsTests/Axioms.lean),
@@ -441,6 +466,7 @@ Fifteen test/example modules are registered as literal roots under
 [linear-coefficient-evaluation client](../MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean), and
 [linear-division client](../MultivariatePolynomialsTests/LinearDivision.lean), and
 [monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
-[first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean).
-The tests are not re-exported as production API. These thirteen production plus
-fifteen test modules total twenty-eight Lean modules.
+[first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean), and
+[localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean).
+The tests are not re-exported as production API. These fourteen production plus
+sixteen test modules total thirty Lean modules.

@@ -6,9 +6,10 @@ evaluation and division, monic lifts and first-variable lexicographic degrees.
 It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) lists **45 selected public declarations**
-across 13 production modules (12 leaves and the aggregate). Fixed linear
-division has six additional public helpers. The project registers 15
+[hand-maintained API map](docs/API.md) lists **55 selected public declarations**
+across 14 production modules (13 leaves and the aggregate): 45 in existing
+completed leaves and ten in the localized-coordinate-quotient leaf. Fixed linear
+division has six additional public helpers. The project registers 16
 test/example modules.
 
 ## Headline results
@@ -85,6 +86,16 @@ test/example modules.
   characterizes exponents above the pure first-variable monomial; it is not a
   lexicographic inequality. See the [lex guide](docs/first-variable-lex.md).
 
+The [localized coordinate quotient](MultivariatePolynomials/LocalizedCoordinateQuotient.lean)
+has a coefficient-annihilation kernel law and algebra equivalence from
+the localization of `R[X] / ⟨C r * X⟩` at the image of `r` to `R[1/r]`,
+for any commutative ring and any `r`. Evaluation at zero on the quotient
+and its representative law supply the map; its localization has forward and
+inverse fraction laws, a variable-to-zero law, and a chosen-inverse law. The
+[ordinary-import clients](MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean)
+exercise nonconstant fractions, a separately justified nonzero variable,
+and degenerate coefficient choices.
+
 These results are mathematical interfaces, not source-coverage certifications.
 The [API map](docs/API.md) gives declaration names, modules and hypotheses;
 [documentation navigation](docs/README.md) links each focused guide and
@@ -143,7 +154,7 @@ workflow are *planning estimates*, not guaranteed timings. Allow about 8 GiB
 available RAM and several GiB free disk as *planning allowances*, not measured
 minima or current aggregate peaks; host and concurrent load matter. These
 figures do not describe a full mathlib source rebuild. The archived six-module
-snapshot's child-process RSS does not measure the current 28-module project.
+snapshot's child-process RSS does not measure the current 30-module project.
 
 ## Credits and license
 

@@ -1,9 +1,11 @@
 # API documentation and historical snapshot
 
 [`API.md`](API.md) is the current **hand-maintained** public module/result map:
-thirteen production modules (twelve leaves and the aggregate), fifteen registered
-test/example modules and twenty-eight Lean modules. It catalogs forty-five
-selected public declarations, not every public helper. It is neither
+fourteen production modules (thirteen leaves and the aggregate), sixteen registered
+test/example modules and thirty Lean modules. It catalogs fifty-five
+selected public declarations, including ten in a localized quotient leaf
+with proved evaluation, equivalence and characteristic laws, not every
+public helper. It is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the
@@ -37,6 +39,11 @@ The [monic-lift guide](monic-lift.md) describes the existential surjective
 coefficient lift with literal leading-exponent equality, its zero-ring case,
 ordinary-import clients and contributor credit; it is absent from the archived
 native snapshot.
+
+The [localized coordinate quotient interface](../MultivariatePolynomials/LocalizedCoordinateQuotient.lean)
+in the [API map](API.md) describes the evaluation equivalence and fraction laws,
+along with ordinary-import clients and an independent nonzero-variable witness;
+it is not part of the archived native snapshot.
 
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two

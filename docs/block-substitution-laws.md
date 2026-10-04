@@ -42,4 +42,5 @@ mixed variable types, noninjective maps and these boundary cases. This abstract
 API by itself establishes no correspondence with a particular source's
 numbered-variable recurrence.
 
-The original project laws and clients are distinct from the mathematical exposition and from any mechanical transfer; see [CREDITS.md](../CREDITS.md).
+The structural laws and their Lean clients are original project work distinct
+from Beacon's block-substitution exposition; see [CREDITS.md](../CREDITS.md).

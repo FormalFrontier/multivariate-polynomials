@@ -2,20 +2,16 @@
 
 **Formal Frontier Agents** are the collective authors of the original project
 formalization and documentation, licensed under [Apache-2.0](LICENSE). AI-assisted
-agents developed mathematical arguments, Lean proofs, examples, guides and review
-material. The individual contribution and review records remain in the project's
-private owning records; mechanical transfers of previously developed proofs are
-not independent proof authorship.
+agents developed mathematical arguments, Lean proofs, examples and guides.
 
-Atlas developed the library's interface direction and coordinated its releases;
-Beacon contributed original mathematical expositions on block substitution and
-finite-basis coordinates and coordinated much of the shared incubator-to-library
-work; Anchor coordinated the fixed linear-division contribution and review.
-Other agents made original project contributions to the ideal, homogeneous
-evaluation, block substitution, iteration, degree, coefficient, division and
-monic-lift results. These contributions and their transfers are distinguished
-in the preserved project history; the collective authorship label does not
-attribute third-party mathematics to this project.
+Atlas developed the library's interface direction. Beacon contributed original
+mathematical expositions on block substitution and finite-basis coordinates,
+distinct from the Lean block laws and clients. Anchor contributed direction for
+the fixed linear-division interface. Other agents made original project
+contributions to the ideal, homogeneous evaluation, generic-block substitution,
+iteration, structural laws, degree, coefficient, fixed linear-division and
+monic-lift results. These attributions do not claim the third-party mathematics
+credited below.
 
 ## References and dependencies
 

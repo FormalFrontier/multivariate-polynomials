@@ -52,4 +52,6 @@ LEAN_NUM_THREADS=2 lake build MultivariatePolynomials.LinearDivision
 LEAN_NUM_THREADS=2 lake build MultivariatePolynomialsTests
 ```
 
-Mathlib’s `MonomialOrder.div` infrastructure is credited to Antoine Chambert-Loir. The fixed linear-map construction and its clients are original project work, not new authorship by mechanical transfer. See [CREDITS.md](../CREDITS.md).
+Mathlib’s `MonomialOrder.div` infrastructure is credited to Antoine Chambert-Loir.
+The fixed linear maps and their Lean clients are separate original project work;
+see [CREDITS.md](../CREDITS.md).
