@@ -17,6 +17,7 @@ public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
 public import MultivariatePolynomials.LocalizedCoordinateQuotient
+public import MultivariatePolynomials.WeightOneValuation
 
 /-!
 # Multivariate polynomials
@@ -43,6 +44,8 @@ kernels and coordinate-difference ideals, and carries associated prime-spectrum
 points contravariantly, including field-extension-valued points.
 Evaluation at zero gives an algebra equivalence for the localized
 coordinate quotient by `C r * X`, with representative and fraction laws.
+The subset-weight-one API describes rational-function-field valuations using
+minimum polynomial order, birational coordinates and a full residue field.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`, or
@@ -57,7 +60,8 @@ Import the corresponding
 `MultivariatePolynomials.FirstVariableLex` leaf directly when only one
 is needed. `MultivariatePolynomials.EvaluationIdeal` supplies the
 coordinate-difference statements; `MultivariatePolynomials.LocalizedCoordinateQuotient`
-supplies the localized quotient interface. Test modules are deliberately not re-exported.
+supplies the localized quotient interface, and `MultivariatePolynomials.WeightOneValuation`
+describes subset-weight-one valuations. Test modules are deliberately not re-exported.
 
 ## References
 

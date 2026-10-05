@@ -1,11 +1,8 @@
 # API documentation and historical snapshot
 
-[`API.md`](API.md) is the current **hand-maintained** public module/result map:
-fourteen production modules (thirteen leaves and the aggregate), seventeen registered
-test/example modules and thirty-one Lean modules. It catalogs fifty-nine
-selected public declarations, including ten in a localized quotient leaf
-with proved evaluation, equivalence and characteristic laws, not every
-public helper. It is neither
+[`API.md`](API.md) is the current **hand-maintained** map of selected public
+interfaces, including the localized coordinate quotient and subset-weight-one
+valuation families. It does not catalog every public helper and is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the

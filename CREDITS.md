@@ -31,6 +31,11 @@ credited below.
   APIs used by the newer producers and clients. Its finite-variable ideal
   theorem is not new here. The module-level references name the Mathlib APIs
   underlying the separate project arguments.
+- Stefan Schröer, *A simple proof for Hochster's Theorem*,
+  arXiv:2606.20016v1, §2, supplies the
+  valuation strategy and indirectly credits Y. Ershov's specialization-DVR
+  construction. The pivot-ratio orientation and full-residue calculations use
+  independent repairs; no original text by Ershov was consulted.
 - Riccardo Brasca's mathlib theorem
   `Polynomial.lifts_and_natDegree_eq_and_monic` is a **univariate analogue**
   informing the distinct multivariate

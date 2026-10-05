@@ -1,11 +1,10 @@
 # Public API map
 
-This is a hand-maintained map of the current public interface, **not** freshly
+This is a hand-maintained map of selected public interfaces, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for fifty-nine selected declarations, or the named
-leaf for one family. The forty-nine selected declarations in the other
-leaves are separate from the ten listed in the localized quotient leaf:
-its evaluation, equivalence and characteristic laws are proved.
+`MultivariatePolynomials` for all production families, or the named leaf for
+one family. The localized quotient and weight-one valuation leaves also have
+their evaluation, equivalence and characteristic laws.
 This selection does not count every public helper. [README](../README.md)
 explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
@@ -461,10 +460,34 @@ degree; a nonzero scalar ensures that the pure first-variable exponent belongs
 to the support. The coefficient ring need not have subtraction. `Fin 0` and
 degree zero are valid, and the client includes a non-scalar-top boundary.
 
+## `MultivariatePolynomials.WeightOneValuation`
+
+For any field `k`, variable type `σ`, subset `S : Set σ` and chosen pivot
+`i : S`, `MvPolynomial.weightOneOrder` is the *minimum* subset weight of a
+polynomial (with zero assigned `⊤`), and `weightOneNatOrder` gives its finite
+order when nonzero. `weightOneExpansion` substitutes the pivot by `X`, the
+remaining weighted variables by `X` times independent ratio variables, and
+unweighted variables by coefficient variables. `weightOneCoordinates` proves
+the corresponding birational ring equivalence with a univariate rational
+function field over the rational function field of coefficient variables.
+
+`weightOneValuation` pulls back the `X`-adic valuation. Its polynomial and
+fraction laws use minimum weights and integer subtraction, and it is
+surjective and rank-one discrete. `weightOneUniformizer` is the chosen pivot
+in the valuation ring and generates its maximal ideal. The
+`weightOneCoefficientSection` lifts every rational coefficient, while
+`weightOneResidueEquiv` identifies the *entire* residue field with the
+rational function field in unweighted variables and weighted-variable ratios.
+Its section and generator laws and `weightOneResidueEquiv_div` describe
+equal-order fractions via their initial coefficients. The independent
+[client](../MultivariatePolynomialsTests/WeightOneValuation.lean) checks
+characteristic-independent finite-variable examples, infinite variables,
+and the empty-subset boundary using Mathlib's trivial valuation.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all thirteen leaves.
-Seventeen test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all fourteen leaves.
+Eighteen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
@@ -481,6 +504,7 @@ Seventeen test/example modules are registered as literal roots under
 [linear-division client](../MultivariatePolynomialsTests/LinearDivision.lean), and
 [monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
 [first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean), and
-[localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean).
-The tests are not re-exported as production API. These fourteen production plus
-seventeen test modules total thirty-one Lean modules.
+[localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean), and
+[weight-one valuation client](../MultivariatePolynomialsTests/WeightOneValuation.lean).
+The tests are not re-exported as production API. These fifteen production plus
+eighteen test modules total thirty-three Lean modules.

@@ -2,18 +2,28 @@
 
 This Lean library provides reusable results about variable ideals, homogeneous
 evaluation, substitution into disjoint blocks, coefficient extraction, linear
-evaluation and division, monic lifts and first-variable lexicographic degrees.
+evaluation and division, monic lifts, first-variable lexicographic degrees,
+and subset-weight-one valuations of multivariate function fields.
 It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) lists **59 selected public declarations**
-across 14 production modules (13 leaves and the aggregate): 49 in the other
-leaves and ten in the localized-coordinate-quotient leaf. Fixed linear
-division has six additional public helpers. The project registers 17
-test/example modules.
+[hand-maintained API map](docs/API.md) highlights the public declarations
+across fourteen production leaves and the aggregate, including the
+localized-coordinate-quotient and weight-one-valuation interfaces. The
+project registers eighteen test/example modules.
 
 ## Headline results
 
+- **Subset-weight-one valuations have full rational residue fields.** For any
+  field, any variable type and subset containing a chosen pivot, the
+  [weight-one construction](MultivariatePolynomials/WeightOneValuation.lean)
+  identifies the multivariate function field birationally with a univariate
+  rational function field over the field of unweighted variables and pivot
+  ratios. Minimum subset weight gives a surjective rank-one discrete valuation;
+  its pivot is a uniformizer, and its entire residue field is the rational
+  function field in those unweighted variables and ratios. The equal-order
+  fraction law computes residues from initial coefficients. For the empty
+  subset, the separate trivial valuation has no discrete-valuation claim.
 - **Coordinate differences identify evaluation kernels.** The
   [coordinate-difference ideal](MultivariatePolynomials/EvaluationIdeal.lean)
   at any point over a commutative ring equals the evaluation
@@ -175,6 +185,12 @@ snapshot's child-process RSS does not measure the expanded current project.
   multivariate-polynomial, ideal, homogeneity, substitution, localization,
   monomial-order, and linear-map APIs used throughout the library. The leaf
   modules identify the specific formalized dependencies.
+- Stefan Schröer, *A simple proof for Hochster's Theorem*,
+  arXiv:2606.20016v1, §2, motivates the
+  subset-weight-one valuation on polynomial function fields and indirectly
+  credits Y. Ershov's earlier specialization construction. The rational
+  coordinate and full-residue arguments use independent corrections to the
+  presentation.
 - Riccardo Brasca's Mathlib theorem
   `Polynomial.lifts_and_natDegree_eq_and_monic` is a univariate analogue
   informing the distinct multivariate monic-lift result.
