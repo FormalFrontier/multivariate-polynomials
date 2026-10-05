@@ -13,6 +13,11 @@ public import Mathlib.RingTheory.MvPolynomial.Homogeneous
 Scaling each variable by a power of a common scalar scales the evaluation of a
 weighted homogeneous polynomial by the corresponding power of that scalar.
 The coefficient homomorphism remains unchanged, and the scalar need not be a unit.
+
+## References
+
+* Mathlib, `Mathlib.RingTheory.MvPolynomial.Homogeneous` (weighted homogeneous
+  labels) and `Mathlib.Algebra.MvPolynomial.Eval` (monomial evaluation).
 -/
 
 set_option warningAsError true

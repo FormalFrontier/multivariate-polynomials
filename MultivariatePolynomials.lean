@@ -58,4 +58,9 @@ Import the corresponding
 is needed. `MultivariatePolynomials.EvaluationIdeal` supplies the
 coordinate-difference statements; `MultivariatePolynomials.LocalizedCoordinateQuotient`
 supplies the localized quotient interface. Test modules are deliberately not re-exported.
+
+## References
+
+* See the leaf modules' `## References` sections for the sources and Mathlib
+  APIs behind each result, and the repository README for bibliography.
 -/

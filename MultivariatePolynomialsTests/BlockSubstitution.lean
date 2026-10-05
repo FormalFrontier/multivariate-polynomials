@@ -9,6 +9,18 @@ import Mathlib.RingTheory.MvPolynomial.Homogeneous
 import Mathlib.Algebra.Ring.PUnit
 import Mathlib.Data.ZMod.Basic
 
+/-!
+# Disjoint-block substitution clients
+
+These examples exercise the project's block substitution and Mathlib's
+homogeneity and finite coefficient-ring interfaces.
+
+## References
+
+* `MultivariatePolynomials.BlockSubstitution` and Mathlib,
+  `Mathlib.RingTheory.MvPolynomial.Homogeneous`.
+-/
+
 set_option warningAsError true
 
 namespace BlockSubstitutionClient

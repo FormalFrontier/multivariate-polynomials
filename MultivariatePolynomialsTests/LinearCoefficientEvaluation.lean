@@ -8,7 +8,17 @@ public import MultivariatePolynomials.LinearCoefficientEvaluation
 public import Mathlib.LinearAlgebra.Basis.Defs
 import Mathlib.LinearAlgebra.Prod
 
-/-! Ordinary-import clients of base-valued linear coefficient evaluation. -/
+/-!
+# Base-valued linear coefficient evaluation clients
+
+These examples use coordinate functionals and nonmultiplicative linear maps.
+
+## References
+
+* `MultivariatePolynomials.LinearCoefficientEvaluation`: the additive
+  coefficient-map result; Mathlib, `Mathlib.LinearAlgebra.Basis.Defs`, supplies
+  the basis-coordinate API used by a client.
+-/
 
 set_option warningAsError true
 

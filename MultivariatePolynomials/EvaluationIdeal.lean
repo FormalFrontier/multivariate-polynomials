@@ -17,6 +17,17 @@ evaluation at `x`. Membership is therefore characterized by vanishing at `x`.
 Over a field this ideal also agrees with the singleton `vanishingIdeal`.
 Polynomial substitution contracts evaluation kernels and coordinate-difference
 ideals, and the corresponding field-valued points commute with spectrum comap.
+
+## References
+
+* Ravi Vakil, *The Rising Sea: Foundations of Algebraic Geometry*, §§3.2.5–6
+  and Exercise 3.2.F, for the coordinate-generator setting; Exercise 3.2.P
+  motivates polynomial point substitution. Neither exercise is asserted to
+  state these general arbitrary-ring/variable results or the quotient repair.
+* Mathlib, `Mathlib.RingTheory.MvPolynomial.Ideal` (evaluation and ideal APIs),
+  `Mathlib.RingTheory.Nullstellensatz` (singleton vanishing ideals),
+  `Mathlib.Algebra.MvPolynomial.Comap` (substitution and induced points), and
+  `Mathlib.RingTheory.Spectrum.Prime.RingHom` (prime-spectrum comap).
 -/
 
 @[expose] public section
@@ -28,7 +39,10 @@ universe u v
 variable {R : Type u} {σ : Type v} [CommRing R]
 
 /-- The ideal of coordinate differences at a point is the kernel of evaluation
-at that point, for arbitrary variable types and commutative coefficient rings. -/
+at that point, for arbitrary variable types and commutative coefficient rings.
+Vakil, *The Rising Sea*, Exercise 3.2.F motivates the coordinate generators;
+this arbitrary-ring/variable kernel equality uses Mathlib's polynomial and
+quotient universal-property APIs, not a claimed published proof of this form. -/
 theorem ideal_span_X_sub_C_eq_ker_eval (x : σ → R) :
     Ideal.span (Set.range (fun i : σ => X i - C (x i))) = RingHom.ker (eval x) := by
   let I : Ideal (MvPolynomial σ R) :=
@@ -80,7 +94,8 @@ variable [CommSemiring R] [CommSemiring S] [Algebra R S]
 
 /-- Pulling an evaluation kernel back along a polynomial algebra homomorphism
 evaluates at the images of the source coordinates. The target point may take
-values in a coefficient algebra. -/
+values in a coefficient algebra. Vakil, *The Rising Sea*, Exercise 3.2.P
+motivates point substitution, not this general kernel-comap statement. -/
 theorem ker_aeval_comap (f : MvPolynomial σ R →ₐ[R] MvPolynomial τ R) (x : τ → S) :
     (RingHom.ker (aeval x).toRingHom).comap f.toRingHom =
       RingHom.ker (aeval (fun i => aeval x (f (X i)))).toRingHom := by

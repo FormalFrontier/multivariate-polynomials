@@ -8,6 +8,18 @@ public import MultivariatePolynomials.MonicLift
 import Mathlib.Data.ZMod.Defs
 public import Mathlib.RingTheory.Ideal.Quotient.Defs
 
+/-!
+# Monic-lift clients
+
+The examples test monic lifts under quotients, including the zero ring.
+
+## References
+
+* `MultivariatePolynomials.MonicLift`: the multivariate result and its
+  Riccardo Brasca/Mathlib univariate analogue.
+* Mathlib, `Mathlib.RingTheory.Ideal.Quotient.Defs`: quotient coefficient maps.
+-/
+
 set_option warningAsError true
 
 namespace Test.MonicLift

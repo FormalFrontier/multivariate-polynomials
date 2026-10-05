@@ -15,6 +15,13 @@ The laws compare polynomials by substitution and renaming, rather than by evalua
 at coefficient-ring points. All variable types and the coefficient commutative
 semiring are arbitrary.
 
+## References
+
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Monad`: polynomial bind/rename
+  composition laws used to prove equality of polynomials.
+* `MultivariatePolynomials.IteratedBlockSubstitution`: the tuple-indexed
+  iteration whose concatenation laws are developed here.
+
 -/
 
 @[expose] public section

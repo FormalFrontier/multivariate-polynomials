@@ -14,6 +14,11 @@ set_option warningAsError true
 # Ordinary-import structural-law clients
 
 Eight ordinary-import checks exercise these laws; the finite-field client is public.
+
+## References
+
+* `MultivariatePolynomials.BlockSubstitutionLaws`: structural identities;
+  Mathlib's `Mathlib.Data.ZMod.Basic` supplies a finite-field test case.
 -/
 
 namespace BlockSubstitutionLawsClient

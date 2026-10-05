@@ -19,6 +19,13 @@ indices of `p`. Zero iterations yield the empty-tuple variable; a successor
 substitutes the preceding iterate into disjoint blocks and renames by
 `Fin.consEquiv`. Import this module directly or use `MultivariatePolynomials`.
 
+## References
+
+* `MultivariatePolynomials.BlockSubstitution`: the disjoint-block operation
+  iterated here.
+* Mathlib, `Mathlib.Data.Fin.Tuple.Basic` (`Fin.consEquiv`) and
+  `Mathlib.RingTheory.MvPolynomial.Homogeneous` (homogeneous-degree laws).
+
 -/
 
 @[expose] public section

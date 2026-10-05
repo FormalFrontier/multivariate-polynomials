@@ -7,6 +7,18 @@ module
 public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 import Mathlib.Data.ZMod.Basic
 
+/-!
+# Polynomial-parameter coefficient clients
+
+The examples use homogeneous substitutions with polynomial coefficients.
+
+## References
+
+* `MultivariatePolynomials.PolynomialCoefficientHomogeneity`: coefficient
+  homogeneity using Mathlib's interchange equivalences.
+* Mathlib, `Mathlib.Data.ZMod.Basic`: finite-ring boundary examples.
+-/
+
 set_option warningAsError true
 
 namespace PolynomialCoefficientHomogeneityClient

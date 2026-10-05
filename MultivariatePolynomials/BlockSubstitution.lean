@@ -14,6 +14,11 @@ set_option warningAsError true
 `blockSubst p q` replaces each variable `i` of `p` by a copy of `q` whose
 variables are tagged by `i`. Evaluation therefore first evaluates `q` in each
 block and then evaluates `p` at the resulting values.
+
+## References
+
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Monad`: `bind₁`, `eval₂Hom_bind₁`
+  and renaming; these supply the formalization approach to substitution.
 -/
 
 @[expose] public section

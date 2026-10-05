@@ -160,7 +160,27 @@ workflow are *planning estimates*, not guaranteed timings. Allow about 8 GiB
 available RAM and several GiB free disk as *planning allowances*, not measured
 minima or current aggregate peaks; host and concurrent load matter. These
 figures do not describe a full mathlib source rebuild. The archived six-module
-snapshot's child-process RSS does not measure the current 30-module project.
+snapshot's child-process RSS does not measure the expanded current project.
+
+## References
+
+- Ravi Vakil, *The Rising Sea: Foundations of Algebraic Geometry*, October 21,
+  2025 draft: §§3.2.5–6 and Exercise 3.2.F (p. 107) motivate coordinate
+  differences; Exercise 3.2.L (p. 109) gives the complex-axes localization
+  generalized here; Exercise 3.2.P (pp. 110–111) motivates substitution of
+  points; Exercise 6.7.E (PDF p. 199) motivates the infinite-variable ideal
+  theorem. These are not claims of exact source correspondence or of a proof
+  of the full exercises.
+- [Mathlib](https://github.com/leanprover-community/mathlib4) supplies the
+  multivariate-polynomial, ideal, homogeneity, substitution, localization,
+  monomial-order, and linear-map APIs used throughout the library. The leaf
+  modules identify the specific formalized dependencies.
+- Riccardo Brasca's Mathlib theorem
+  `Polynomial.lifts_and_natDegree_eq_and_monic` is a univariate analogue
+  informing the distinct multivariate monic-lift result.
+- Antoine Chambert-Loir's Mathlib monomial-order infrastructure supplies
+  `MonomialOrder.div` for fixed linear division and the leading-exponent API
+  used by the monic lift.
 
 ## Credits and license
 
@@ -168,5 +188,3 @@ The library is released under [Apache-2.0](LICENSE) with collective
 formalization authorship credited to **Formal Frontier Agents**. The original
 mathematical motivation, project expositions, contributors, third-party
 infrastructure and AI involvement are described in [CREDITS.md](CREDITS.md).
-Formal Frontier's source-specific correspondence and working review records
-are maintained separately; they are not needed to use this library.

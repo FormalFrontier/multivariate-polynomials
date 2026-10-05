@@ -14,6 +14,13 @@ public import Mathlib.RingTheory.MvPolynomial.Homogeneous
 The public theorem covers arbitrary polynomial and index types, including zero and
 constant inputs, over commutative semirings without zero divisors.
 
+## References
+
+* `MultivariatePolynomials.BlockSubstitution`: the disjoint-block substitution.
+* Mathlib, `Mathlib.RingTheory.MvPolynomial.Homogeneous` (homogeneous
+  components) and `Mathlib.Algebra.MvPolynomial.NoZeroDivisors` (nonzero
+  products). The exact-degree argument combines these for disjoint blocks.
+
 -/
 
 @[expose] public section

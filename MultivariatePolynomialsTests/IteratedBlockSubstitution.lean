@@ -13,6 +13,11 @@ set_option warningAsError true
 /-!
 # Clients of finite disjoint-block iteration
 
+## References
+
+* `MultivariatePolynomials.IteratedBlockSubstitution`: the tuple-indexed
+  iterator; Mathlib's `Mathlib.Data.ZMod.Basic` supplies finite coefficient rings.
+
 -/
 
 namespace IteratedBlockSubstitutionClient

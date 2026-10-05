@@ -14,6 +14,15 @@ After inverting the class of `r`, evaluation at zero identifies the quotient
 `R[X] / ⟨C r * X⟩` with the localization of its coefficient ring. The equivalence
 and its representative and fraction laws hold for zero rings, nilpotent elements,
 and zero divisors.
+
+## References
+
+* Ravi Vakil, *The Rising Sea: Foundations of Algebraic Geometry*, Exercise
+  3.2.L (p. 109): localization of the complex coordinate axes. The equivalence
+  here generalizes the example to an arbitrary commutative ring and element.
+* Mathlib, `Mathlib.RingTheory.Polynomial.Quotient` (quotient evaluation) and
+  `Mathlib.RingTheory.Localization.Away.Basic` (localization and fractions).
+  The localization equivalence is a separate project construction.
 -/
 
 @[expose] public section
@@ -55,7 +64,9 @@ noncomputable def quotientSpanCMulXEval (r : R) :
   simp [quotientSpanCMulXEval]
 
 /-- Evaluation at `X = 0` after inverting the image of `r` in `R[X] / ⟨C r * X⟩`.
-The construction does not require `r` to be regular or nonnilpotent. -/
+The construction does not require `r` to be regular or nonnilpotent. This
+generalizes Vakil's complex-coordinate-axes example in *The Rising Sea*,
+Exercise 3.2.L; the abstract ring-level equivalence is not printed there. -/
 noncomputable def quotientSpanCMulXAwayAlgEquiv (r : R) :
     Localization.Away
         (algebraMap R (R[X] ⧸ Ideal.span ({C r * X} : Set R[X])) r)

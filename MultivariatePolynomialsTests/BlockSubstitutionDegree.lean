@@ -10,6 +10,11 @@ import Mathlib.Algebra.Field.ZMod
 /-!
 # Ordinary-import degree regression checks
 
+## References
+
+* `MultivariatePolynomials.BlockSubstitutionDegree`: exact total degree;
+  Mathlib's `Mathlib.Algebra.Field.ZMod` supplies finite coefficient rings.
+
 -/
 
 set_option warningAsError true

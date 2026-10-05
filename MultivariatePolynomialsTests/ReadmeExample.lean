@@ -6,7 +6,14 @@ module
 
 public import MultivariatePolynomials.IdealOfVars
 
-/-! # A generic variable-ideal client and its rational specialization -/
+/-!
+# A generic variable-ideal client and its rational specialization
+
+## References
+
+* `MultivariatePolynomials.IdealOfVars`: non-finite generation; see its
+  references for Vakil's motivation and the Mathlib ideal API.
+-/
 
 universe u v
 

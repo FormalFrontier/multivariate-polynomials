@@ -6,6 +6,17 @@ module
 
 public import MultivariatePolynomials.HomogeneousEvaluation
 
+/-!
+# Homogeneous-evaluation clients
+
+These examples instantiate the weighted and ordinary scaling laws.
+
+## References
+
+* `MultivariatePolynomials.HomogeneousEvaluation`: the scaling theorems and
+  their Mathlib homogeneous-polynomial dependencies.
+-/
+
 set_option warningAsError true
 
 @[expose] public section

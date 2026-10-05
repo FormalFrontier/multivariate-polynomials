@@ -12,6 +12,11 @@ public import MultivariatePolynomials
 Test theorems check the generic semiring/infinite-variable interface and its
 specialization to polynomials over `ℚ` indexed by `ℕ`. The concrete client is
 public in the test namespace; neither is additional production API.
+
+## References
+
+* `MultivariatePolynomials.IdealOfVars`: the theorem motivated by Vakil's
+  Exercise 6.7.E and its Mathlib ideal infrastructure.
 -/
 
 private theorem aggregateGeneric (k : Type*) (σ : Type*)

@@ -16,6 +16,12 @@ theorem supplies a quotient family and a reduced remainder for each basis
 monomial. Choosing these witnesses once, and extending them by linearity, gives
 fixed linear quotient and remainder operators. The witnesses for monomials
 outside all leading cones are chosen to be trivial.
+
+## References
+
+* Mathlib, `Mathlib.RingTheory.MvPolynomial.Groebner`: Antoine Chambert-Loir's
+  `MonomialOrder.div` and reduced-remainder infrastructure. The fixed linear
+  operators are a separate construction from its existential division theorem.
 -/
 
 @[expose] public section
@@ -26,7 +32,8 @@ open MvPolynomial
 
 variable {σ ι R : Type*} [CommRing R]
 
-/-- The chosen witness on a basis monomial, with an explicit trivial reduced branch. -/
+/-- The chosen witness on a basis monomial, with an explicit trivial reduced branch.
+Uses Antoine Chambert-Loir's `MonomialOrder.div` in Mathlib for the nontrivial branch. -/
 noncomputable def basisDivision (m : MonomialOrder σ)
     (b : ι → MvPolynomial σ R) (hb : ∀ i, IsUnit (m.leadingCoeff (b i)))
     (α : σ →₀ ℕ) :

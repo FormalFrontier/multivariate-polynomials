@@ -14,6 +14,12 @@ import Mathlib.Tactic.NormNum
 These examples exercise the evaluation-ideal statements at a nonzero integer
 point, in infinitely many or no variables, over rings with zero divisors or
 only one element, and at a rational point.
+
+## References
+
+* `MultivariatePolynomials.EvaluationIdeal`: coordinate-ideal and singleton
+  vanishing-ideal results; Mathlib's `Mathlib.Data.ZMod.Basic` supplies
+  finite-ring boundary examples.
 -/
 
 private theorem integerNonconstant :

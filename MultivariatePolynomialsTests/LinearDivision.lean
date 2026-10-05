@@ -7,6 +7,18 @@ module
 public import MultivariatePolynomials.LinearDivision
 import Mathlib.Data.ZMod.Basic
 
+/-!
+# Fixed linear-division clients
+
+The examples exercise reduced remainders and preservation of coefficient ideals.
+
+## References
+
+* `MultivariatePolynomials.LinearDivision`: the fixed operators built using
+  Antoine Chambert-Loir's `MonomialOrder.div` in Mathlib.
+* Mathlib, `Mathlib.Data.ZMod.Basic`: finite-ring coefficient-ideal examples.
+-/
+
 set_option warningAsError true
 
 open _root_.MvPolynomial

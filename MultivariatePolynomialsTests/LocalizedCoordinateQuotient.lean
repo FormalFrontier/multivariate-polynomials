@@ -14,6 +14,11 @@ The fraction calculations use the evaluation equivalence and its characteristic 
 The nonzero variable in the unlocalized quotient is proved independently.
 The remaining examples exercise zero, unit, zero-ring, zero-divisor, and
 nilpotent boundaries without requiring a domain or a field in the general API.
+
+## References
+
+* `MultivariatePolynomials.LocalizedCoordinateQuotient`: the project
+  equivalence and its Mathlib polynomial-quotient/localization dependencies.
 -/
 
 namespace MultivariatePolynomialsTests.LocalizedCoordinateQuotient

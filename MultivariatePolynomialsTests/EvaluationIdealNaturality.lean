@@ -15,6 +15,12 @@ import Mathlib.Tactic.NormNum
 These clients use a quadratic substitution between different variable types,
 including an infinite or empty source and coefficients with zero divisors.
 The quotient square descends only at points annihilating the target ideal.
+
+## References
+
+* `MultivariatePolynomials.EvaluationIdeal`: substitution and point contraction.
+* Mathlib, `Mathlib.Data.ZMod.Basic` and `Mathlib.Basic.Real.Basic`: finite-ring
+  and field-extension boundary examples.
 -/
 
 private noncomputable def squareFirst {R : Type*} [CommSemiring R] :

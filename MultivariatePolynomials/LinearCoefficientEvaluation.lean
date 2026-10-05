@@ -12,6 +12,11 @@ public import Mathlib.Algebra.MvPolynomial.Eval
 An `R`-linear map on coefficients commutes with evaluation at points valued in `R`,
 using the native additive map on multivariate polynomials. The coefficient map
 need not preserve multiplication.
+
+## References
+
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Eval`: monomial evaluation and
+  `AddMonoidAlgebra.map` supply the additive coefficient transport.
 -/
 
 public section

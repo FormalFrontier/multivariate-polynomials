@@ -14,6 +14,13 @@ public import Mathlib.Algebra.MvPolynomial.Eval
 
 A surjective coefficient map admits monic polynomial lifts preserving the literal
 leading exponent for any monomial order, including over the zero ring.
+
+## References
+
+* Riccardo Brasca's `Polynomial.lifts_and_natDegree_eq_and_monic` in Mathlib
+  is a univariate analogue informing this distinct multivariate lift.
+* Mathlib, `Mathlib.RingTheory.MvPolynomial.MonomialOrder`: Antoine
+  Chambert-Loir's monomial-order and leading-coefficient infrastructure.
 -/
 
 set_option warningAsError true
@@ -25,7 +32,9 @@ open MvPolynomial
 variable {σ R S : Type*} [CommRing R] [CommRing S]
 
 /-- Lift a monic multivariate polynomial along a surjective coefficient map,
-preserving both its reduction and its leading exponent. -/
+preserving both its reduction and its leading exponent. Riccardo Brasca's
+`Polynomial.lifts_and_natDegree_eq_and_monic` in Mathlib is a univariate
+analogue; this is a separate multivariate proof. -/
 theorem exists_monic_lift (m : MonomialOrder σ) (φ : R →+* S)
     (hφ : Function.Surjective φ) (p : MvPolynomial σ S) (hp : m.Monic p) :
     ∃ q : MvPolynomial σ R, map φ q = p ∧ m.Monic q ∧ m.degree q = m.degree p := by

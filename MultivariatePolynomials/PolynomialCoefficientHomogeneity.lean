@@ -14,6 +14,12 @@ The variables indexed by `σ` keep their homogeneous degree when a polynomial
 coefficient ring `R[X]` is interchanged with the multivariate polynomial ring.
 The polynomial variable has weight zero, and a zero coefficient may carry any
 homogeneous label.
+
+## References
+
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Equiv`: `optionEquivRight` and
+  `optionEquivLeft` interchange the polynomial parameter with multivariate
+  variables; `Mathlib.RingTheory.MvPolynomial.Homogeneous` supplies the labels.
 -/
 
 set_option warningAsError true

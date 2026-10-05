@@ -15,6 +15,11 @@ public import Mathlib.RingTheory.MvPolynomial.MonomialOrder
 A nonzero scalar top coefficient after `MvPolynomial.finSuccEquiv` fixes the
 maximum lexicographic exponent of a multivariate polynomial. The pointwise
 cone above a pure first-variable exponent has a separate description.
+
+## References
+
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Equiv` (`finSuccEquiv`) and
+  `Mathlib.RingTheory.MvPolynomial.MonomialOrder` (lex order and degree).
 -/
 
 set_option warningAsError true

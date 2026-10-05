@@ -12,6 +12,11 @@ import MultivariatePolynomials.FirstVariableLex
 The natural-number clients exercise arbitrary degree, a nonconstant lower
 coefficient slice, zero degree, and the absence of remaining variables.
 The last example shows why the top slice must be scalar.
+
+## References
+
+* `MultivariatePolynomials.FirstVariableLex`: scalar-top lexicographic degree
+  and pointwise exponent comparison.
 -/
 
 set_option warningAsError true
