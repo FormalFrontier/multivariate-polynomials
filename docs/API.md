@@ -4,7 +4,9 @@ This is a hand-maintained map of selected public interfaces, **not** freshly
 generated native documentation, a build record or proof certification. Import
 `MultivariatePolynomials` for all production families, or the named leaf for
 one family. The localized quotient and weight-one valuation leaves also have
-their evaluation, equivalence and characteristic laws.
+their evaluation, equivalence and characteristic laws. The weight-one
+naturality leaf describes embeddings of valuation rings and their full
+residue fields, including independent choices of pivot.
 This selection does not count every public helper. [README](../README.md)
 explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
@@ -484,10 +486,57 @@ equal-order fractions via their initial coefficients. The independent
 characteristic-independent finite-variable examples, infinite variables,
 and the empty-subset boundary using Mathlib's trivial valuation.
 
+## `MultivariatePolynomials.WeightOneNaturality`
+
+[Producer](../MultivariatePolynomials/WeightOneNaturality.lean) and
+[ordinary-import client](../MultivariatePolynomialsTests/WeightOneNaturality.lean).
+Let `e : σ ↪ τ` embed arbitrary variable types and let `g : R →+* A` be an
+injective map of commutative semirings. `weightOnePolynomialMap` maps
+coefficients and renames variables. `weightOneOrder_map` identifies the target
+minimum support weight with the source weight for `e ⁻¹' T`, *including zero*
+(whose order is `⊤`); `weightOneNatOrder_map` gives the corresponding equality
+of finite natural-number orders for all polynomials, including zero. When
+every image variable is outside `T`, a nonzero polynomial image has target
+order zero.
+
+For independent fields `k` and `l`, every field homomorphism `g : k →+* l` and
+embedding `e` induce `weightOneFractionMap` and its polynomial, identity,
+composition and division laws. Given `S : Set σ`, `T : Set τ`,
+`h : ∀ j, e j ∈ T ↔ j ∈ S`, a source pivot `i : S` and *any* target pivot
+`t : T`, `weightOneValuation_map` identifies the two valuations. The restricted
+`weightOneValuationRingMap` is local and respects identity and composition;
+`weightOneResidueMap` acts on the **entire** residue fields, commutes with
+reduction and has corresponding identity and composition laws. Neither
+surjectivity nor finiteness of `e` is required: the target may have additional
+weighted and unweighted variables.
+
+For the aligned target pivot `e i`, `weightOneCoefficientFieldMap` takes
+constants, unweighted generators and pivot-ratio generators to their embedded
+counterparts. `weightOneCoefficientSection_map` and
+`weightOneResidueEquiv_map` commute with this coefficient map. For an arbitrary
+target pivot, `weightOneResidueEquiv_map_changePivot` inserts the coordinate
+equivalence `weightOneCoefficientChangePivot`. This equivalence preserves
+constants and unweighted variables, is the identity at equal pivots, and
+composes across pivot choices. For distinct pivots `t` and `t'`, it sends
+`t'/t` to `(t/t')⁻¹` and `j/t` to `(j/t')/(t/t')` when `j` is distinct from both
+pivots. These ratios are coefficient-field coordinates, not identities of
+their differently indexed polynomial rings.
+
+Under the separate condition `∀ j, e j ∉ T`, only a **target** pivot is needed.
+Each nonzero source fraction has target valuation one, and
+`weightOneZeroResidueMap` embeds the entire source function field into the
+target full residue field. `weightOneZeroResidueMap_coordinates` identifies it
+with `weightOneZeroCoefficientFieldMap` in rational coefficient coordinates.
+An additional weighted target ratio is not in this image; the client exhibits
+the strict `ℚ(z) ⊂ ℚ(z, y/x)` case, a nonconstant `RatFunc.X` coefficient
+extension with no source variables, infinite/proper embeddings and both
+directions of weight-mismatch and noninjective-variable boundaries. No
+surjectivity onto the target residue field is asserted.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all fourteen leaves.
-Eighteen test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all fifteen leaves.
+Nineteen test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
@@ -505,6 +554,7 @@ Eighteen test/example modules are registered as literal roots under
 [monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
 [first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean), and
 [localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean), and
-[weight-one valuation client](../MultivariatePolynomialsTests/WeightOneValuation.lean).
-The tests are not re-exported as production API. These fifteen production plus
-eighteen test modules total thirty-three Lean modules.
+[weight-one valuation client](../MultivariatePolynomialsTests/WeightOneValuation.lean), and
+[weight-one naturality client](../MultivariatePolynomialsTests/WeightOneNaturality.lean).
+The tests are not re-exported as production API. These sixteen production plus
+nineteen test modules total thirty-five Lean modules.

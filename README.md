@@ -3,14 +3,15 @@
 This Lean library provides reusable results about variable ideals, homogeneous
 evaluation, substitution into disjoint blocks, coefficient extraction, linear
 evaluation and division, monic lifts, first-variable lexicographic degrees,
-and subset-weight-one valuations of multivariate function fields.
+and subset-weight-one valuations and their naturality on multivariate
+function fields.
 It builds on mathlib and has no other
 Formal Frontier library dependency. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
 [hand-maintained API map](docs/API.md) highlights the public declarations
-across fourteen production leaves and the aggregate, including the
-localized-coordinate-quotient and weight-one-valuation interfaces. The
-project registers eighteen test/example modules.
+across fifteen production leaves and the aggregate, including the
+localized-coordinate-quotient and weight-one-valuation naturality interfaces.
+The project registers nineteen test/example modules.
 
 ## Headline results
 
@@ -24,6 +25,20 @@ project registers eighteen test/example modules.
   function field in those unweighted variables and ratios. The equal-order
   fraction law computes residues from initial coefficients. For the empty
   subset, the separate trivial valuation has no discrete-valuation claim.
+- **Weight-one valuations and full residues respect embeddings.** An injective
+  coefficient map and variable embedding preserve minimum support weight,
+  including at zero, over arbitrary commutative semirings when source weights
+  are pulled back from target weights. Over fields the induced maps of fraction
+  fields, valuation rings and full residue fields preserve valuations under the
+  exact inverse-image condition on weighted variables. Source and target pivots
+  may differ: the coordinate change fixes constants and unweighted variables
+  and transforms weighted ratios by division by the new pivot ratio. If every
+  source variable maps to an unweighted target variable, the *source function
+  field* instead embeds into the target residue field without a source pivot;
+  an additional weighted target ratio lies outside this image. These results
+  require no finite-variable assumption or surjectivity of the variable
+  embedding. See the [naturality module](MultivariatePolynomials/WeightOneNaturality.lean)
+  and its [examples](MultivariatePolynomialsTests/WeightOneNaturality.lean).
 - **Coordinate differences identify evaluation kernels.** The
   [coordinate-difference ideal](MultivariatePolynomials/EvaluationIdeal.lean)
   at any point over a commutative ring equals the evaluation

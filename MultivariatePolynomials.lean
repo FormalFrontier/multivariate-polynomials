@@ -18,6 +18,7 @@ public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
 public import MultivariatePolynomials.LocalizedCoordinateQuotient
 public import MultivariatePolynomials.WeightOneValuation
+public import MultivariatePolynomials.WeightOneNaturality
 
 /-!
 # Multivariate polynomials

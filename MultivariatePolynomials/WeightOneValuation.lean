@@ -129,6 +129,22 @@ theorem weightOneOrder_eq_natOrder (S : Set σ) {p : MvPolynomial σ R} (hp : p 
     weightOneOrder S p = (weightOneNatOrder S p : ℕ∞) := by
   exact (ENat.natCast_toNat (mt (weightOneOrder_eq_top S p).mp hp)).symm
 
+/-- Every nonzero polynomial has order zero when no variables carry weight. -/
+theorem weightOneOrder_empty_of_ne_zero {p : MvPolynomial σ R} (hp : p ≠ 0) :
+    weightOneOrder (∅ : Set σ) p = 0 := by
+  classical
+  have hnonempty : p.support.Nonempty := by
+    by_contra hempty
+    exact hp (MvPolynomial.support_eq_empty.mp
+      (Finset.not_nonempty_iff_eq_empty.mp hempty))
+  obtain ⟨exponent, hmem⟩ := hnonempty
+  apply le_antisymm
+  · simpa [weightOneOrder, Finsupp.weight_apply] using
+      (Finset.inf_le (f := fun exponent : σ →₀ ℕ =>
+        (Finsupp.weight (fun j => if j ∈ (∅ : Set σ) then (1 : ℕ) else 0)
+          exponent : ℕ∞)) hmem)
+  · exact bot_le
+
 open scoped Classical in
 /-- A variable has order one exactly when it belongs to `S`. -/
 theorem weightOneOrder_X [Nontrivial R] (S : Set σ) (j : σ) :
@@ -759,6 +775,16 @@ theorem weightOneCoefficientSection_val (a : Cw) :
     ((weightOneCoefficientSection S i a : Vw) : K) =
       (weightOneCoordinates S i).symm (RatFunc.C a) := by
   rfl
+
+/-- The coefficient section lifts constants to their original constant functions. -/
+theorem weightOneCoefficientSection_C_val (a : k) :
+    ((weightOneCoefficientSection S i (algebraMap Aw Cw (C a)) : Vw) : K) =
+      algebraMap P K (C a) := by
+  rw [weightOneCoefficientSection_val]
+  apply (weightOneCoordinates S i).injective
+  simpa only [weightOneCoordinates_C, RingEquiv.apply_symm_apply,
+    MvPolynomial.algebraMap_eq] using
+    (congrArg RatFunc.C (IsScalarTower.algebraMap_apply k Aw Cw a)).symm
 
 /-- The section's unweighted generator is the original unweighted variable. -/
 theorem weightOneCoefficientSection_unweighted_val (j : {j : σ // j ∉ S}) :
