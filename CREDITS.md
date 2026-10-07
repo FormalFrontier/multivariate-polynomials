@@ -31,6 +31,9 @@ credited below.
   APIs used by the newer producers and clients. Its finite-variable ideal
   theorem is not new here. The module-level references name the Mathlib APIs
   underlying the separate project arguments.
+- [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
+  supplies the canonical opposite-module and central-scalar instances on the
+  direct sum used in the polynomial point quotient's square-zero extension.
 - Stefan Schröer, *A simple proof for Hochster's Theorem*,
   arXiv:2606.20016v1, §2, supplies the
   valuation strategy and indirectly credits Y. Ershov's specialization-DVR

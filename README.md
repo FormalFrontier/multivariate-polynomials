@@ -4,17 +4,27 @@ This Lean library provides reusable results about variable ideals, homogeneous
 evaluation, substitution into disjoint blocks, coefficient extraction, linear
 evaluation and division, monic lifts, first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
-function fields.
-It builds on mathlib and has no other
-Formal Frontier library dependency. Import `MultivariatePolynomials` for the
+function fields. Polynomial point quotients at pairwise unit-separated points
+are canonically equivalent to square-zero extensions of evaluation modules.
+It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
+for the square-zero action. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-[hand-maintained API map](docs/API.md) highlights the public declarations
-across fifteen production leaves and the aggregate, including the
-localized-coordinate-quotient and weight-one-valuation naturality interfaces.
-The project registers nineteen test/example modules.
+library has seventeen production leaves and twenty-one test/example modules.
+The [hand-maintained API map](docs/API.md) highlights selected public
+declarations, including the localized-coordinate-quotient and
+weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Separated polynomial point quotients are square-zero extensions.** Over
+  any commutative ring, including the zero ring, and any index type, the
+  [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)
+  from the quotient by coordinate squares and point relations is bijective
+  when differences of distinct evaluation points are units. The resulting
+  [polynomial-algebra equivalence](MultivariatePolynomials/PointSquareZeroQuotient.lean)
+  has forward coordinate laws and an inverse law on the evaluation summands;
+  no mixed-product relations are added to the defining ideal. See the
+  [API guide](docs/API.md) for the two modules and their boundary examples.
 - **Subset-weight-one valuations have full rational residue fields.** For any
   field, any variable type and subset containing a chosen pivot, the
   [weight-one construction](MultivariatePolynomials/WeightOneValuation.lean)
@@ -163,7 +173,7 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
 ```
 
 The repository pins Lean `v4.34.0-rc2` and mathlib
-`83abb3e776bdefcbc447a1e44d0debe4010039e5` (nine resolved packages in
+`83abb3e776bdefcbc447a1e44d0debe4010039e5` (ten resolved packages in
 `lake-manifest.json`). Install the pinned toolchain and **successfully fetch
 the matching precompiled mathlib cache before building**:
 
@@ -200,6 +210,9 @@ snapshot's child-process RSS does not measure the expanded current project.
   multivariate-polynomial, ideal, homogeneity, substitution, localization,
   monomial-order, and linear-map APIs used throughout the library. The leaf
   modules identify the specific formalized dependencies.
+- [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
+  supplies the canonical opposite-module and central-scalar action used by the
+  polynomial point quotient's trivial square-zero extension.
 - Stefan Schröer, *A simple proof for Hochster's Theorem*,
   arXiv:2606.20016v1, §2, motivates the
   subset-weight-one valuation on polynomial function fields and indirectly

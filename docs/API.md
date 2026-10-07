@@ -533,10 +533,45 @@ extension with no source variables, infinite/proper embeddings and both
 directions of weight-mismatch and noninjective-variable boundaries. No
 surjectivity onto the target residue field is asserted.
 
+## `MultivariatePolynomials.PointSquareZeroPresentation`
+
+[Producer](../MultivariatePolynomials/PointSquareZeroPresentation.lean). For
+any commutative ring `R`, including the zero ring, and arbitrary index type
+`ι`, `pointSquareZeroIdeal a` is generated **only** by `X (some i) ^ 2` and
+`(X none - C (a i)) * X (some i)` in `MvPolynomial (Option ι) R`; mixed
+products are not defining relations. `pointSquareZeroQuotient a` is the
+quotient, with an `R[X]`-algebra structure sending `X` to `[X none]` and
+agreeing with its coefficient `R`-algebra structure. `pointSquareZeroModule a`
+is the direct sum of `R[X] / ker (Polynomial.evalRingHom (a i))`, with the
+polynomial action determined separately by each evaluation point.
+
+`pointSquareZeroDelta` gives canonical summand coordinates and their
+annihilation law. `pointSquareZeroLift` constructs an `R[X]`-algebra map to a
+commutative target from square-zero elements annihilated by `X - C (a i)`;
+its generator laws, `pointSquareZeroAlgHom_ext` and
+`pointSquareZeroLift_unique` characterize this map. `pointSquareZeroForward`
+is the prescribed lift into the canonical trivial square-zero extension; it
+needs no separation hypothesis.
+
+## `MultivariatePolynomials.PointSquareZeroQuotient`
+
+[Producer](../MultivariatePolynomials/PointSquareZeroQuotient.lean). If
+`a i - a j` is a unit for every pair of distinct indices,
+`pointSquareZeroForward_bijective` proves that the same prescribed map is
+bijective, and `pointSquareZeroAlgEquiv` applies `AlgEquiv.ofBijective` to
+that map. The equivalence has forward laws on indexed coordinates, the
+distinguished coordinate and constants, and an inverse law on
+`pointSquareZeroDelta`. The two defining relations and unit separation
+force all mixed coordinate products to vanish. Multiplication by each
+coordinate then descends along its polynomial evaluation kernel; the direct
+sum and the square-zero universal property yield an inverse in both
+directions. Neither a converse nor noninjectivity upon failed unit separation
+is proved.
+
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all fifteen leaves.
-Nineteen test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports all seventeen leaves.
+Twenty-one test/example modules are registered as literal roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
@@ -554,7 +589,11 @@ Nineteen test/example modules are registered as literal roots under
 [monic-lift client](../MultivariatePolynomialsTests/MonicLift.lean), and
 [first-variable lex client](../MultivariatePolynomialsTests/FirstVariableLex.lean), and
 [localized quotient client](../MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean), and
+[presentation-only fixtures](../MultivariatePolynomialsTests/PointSquareZeroFixtures.lean), and
+[headline equivalence clients](../MultivariatePolynomialsTests/PointSquareZeroHeadline.lean), and
 [weight-one valuation client](../MultivariatePolynomialsTests/WeightOneValuation.lean), and
 [weight-one naturality client](../MultivariatePolynomialsTests/WeightOneNaturality.lean).
-The tests are not re-exported as production API. These sixteen production plus
-nineteen test modules total thirty-five Lean modules.
+The presentation-only fixtures import only the presentation leaf;
+the headline clients import the separated-equivalence leaf. The tests are not re-exported as production
+API. These eighteen production modules (including the aggregate) plus
+twenty-one test modules total thirty-nine Lean modules.

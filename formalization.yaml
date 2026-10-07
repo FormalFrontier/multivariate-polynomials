@@ -8,6 +8,9 @@ project:
     disjoint-block substitution and its iteration,
     degree, coefficient extraction and linear evaluation, chosen linear
     division, existential monic lifts and scalar-top first-variable lex degree.
+    A polynomial point quotient by indexed squares and linear point relations
+    has a canonical map to a square-zero extension of evaluation quotients;
+    that same map is an algebra equivalence under pairwise unit differences.
     See README.md and docs/API.md
     for precise hypotheses and limitations.
   authors:
@@ -69,10 +72,16 @@ sources:
 
 status:
   scope: >-
-    Forty-five selected public declarations over twelve leaves and the
+    Forty-eight selected public declarations over fourteen leaves and the
     aggregate: coordinate-difference ideals equal evaluation kernels over
     CommRing coefficients for arbitrary variables, with a vanishing membership
     criterion and a singleton-vanishing-ideal bridge over fields;
+    the quotient of MvPolynomial (Option ι) R by only indexed squares and
+    linear point relations has a canonical R[X]-algebra map to TrivSqZeroExt
+    of the direct sum of evaluation quotients without separation, and that
+    same map is bijective and an algebra equivalence when differences between
+    distinct points are units, for any CommRing R (including the zero ring)
+    and any independently-universed index type;
     non-finite generation of the variable ideal for Nontrivial CommSemiring
     coefficients and Infinite variables; scaling under arbitrary CommSemiring
     with fixed coefficient homomorphism; disjoint-block substitution with
@@ -98,6 +107,12 @@ status:
       file: MultivariatePolynomials/EvaluationIdeal.lean
     - declaration: MvPolynomial.ideal_span_X_sub_C_eq_vanishingIdeal_singleton
       file: MultivariatePolynomials/EvaluationIdeal.lean
+    - declaration: MvPolynomial.pointSquareZeroForward
+      file: MultivariatePolynomials/PointSquareZeroPresentation.lean
+    - declaration: MvPolynomial.pointSquareZeroForward_bijective
+      file: MultivariatePolynomials/PointSquareZeroQuotient.lean
+    - declaration: MvPolynomial.pointSquareZeroAlgEquiv
+      file: MultivariatePolynomials/PointSquareZeroQuotient.lean
     - declaration: MvPolynomial.idealOfVars_not_fg
       file: MultivariatePolynomials/IdealOfVars.lean
     - declaration: MvPolynomial.IsWeightedHomogeneous.eval₂Hom_scaleVariables

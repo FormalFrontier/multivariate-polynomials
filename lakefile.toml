@@ -13,9 +13,14 @@ name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
 rev = "83abb3e776bdefcbc447a1e44d0debe4010039e5"
 
+[[require]]
+name = "coherent-modules"
+git = "https://github.com/FormalFrontier/coherent-modules.git"
+rev = "408a52bd54df17ccc928ce970942f1313ff10d5c"
+
 [[lean_lib]]
 name = "MultivariatePolynomials"
 
 [[lean_lib]]
 name = "MultivariatePolynomialsTests"
-roots = ["MultivariatePolynomialsTests.IdealOfVars", "MultivariatePolynomialsTests.Axioms", "MultivariatePolynomialsTests.LeafImport", "MultivariatePolynomialsTests.ReadmeExample", "MultivariatePolynomialsTests.HomogeneousEvaluation", "MultivariatePolynomialsTests.BlockSubstitution", "MultivariatePolynomialsTests.IteratedBlockSubstitution", "MultivariatePolynomialsTests.BlockSubstitutionLaws", "MultivariatePolynomialsTests.BlockSubstitutionDegree", "MultivariatePolynomialsTests.PolynomialCoefficientHomogeneity", "MultivariatePolynomialsTests.LinearCoefficientEvaluation", "MultivariatePolynomialsTests.LinearDivision", "MultivariatePolynomialsTests.MonicLift", "MultivariatePolynomialsTests.FirstVariableLex", "MultivariatePolynomialsTests.EvaluationIdeal", "MultivariatePolynomialsTests.EvaluationIdealNaturality", "MultivariatePolynomialsTests.LocalizedCoordinateQuotient", "MultivariatePolynomialsTests.WeightOneValuation", "MultivariatePolynomialsTests.WeightOneNaturality"]
+roots = ["MultivariatePolynomialsTests.IdealOfVars", "MultivariatePolynomialsTests.Axioms", "MultivariatePolynomialsTests.LeafImport", "MultivariatePolynomialsTests.ReadmeExample", "MultivariatePolynomialsTests.HomogeneousEvaluation", "MultivariatePolynomialsTests.BlockSubstitution", "MultivariatePolynomialsTests.IteratedBlockSubstitution", "MultivariatePolynomialsTests.BlockSubstitutionLaws", "MultivariatePolynomialsTests.BlockSubstitutionDegree", "MultivariatePolynomialsTests.PolynomialCoefficientHomogeneity", "MultivariatePolynomialsTests.LinearCoefficientEvaluation", "MultivariatePolynomialsTests.LinearDivision", "MultivariatePolynomialsTests.MonicLift", "MultivariatePolynomialsTests.FirstVariableLex", "MultivariatePolynomialsTests.EvaluationIdeal", "MultivariatePolynomialsTests.EvaluationIdealNaturality", "MultivariatePolynomialsTests.LocalizedCoordinateQuotient", "MultivariatePolynomialsTests.PointSquareZeroFixtures", "MultivariatePolynomialsTests.PointSquareZeroHeadline", "MultivariatePolynomialsTests.WeightOneValuation", "MultivariatePolynomialsTests.WeightOneNaturality"]
