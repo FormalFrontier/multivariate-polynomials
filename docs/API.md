@@ -39,6 +39,27 @@ when the points take values in a larger field; `pointToPoint_comap_self` uses
 include a quotient evaluation square requiring vanishing on the target ideal
 and an independent counterexample when vanishing fails.
 
+## `MultivariatePolynomials.QuotientClosedPoints`
+
+[Producer](../MultivariatePolynomials/QuotientClosedPoints.lean) and
+[ordinary-import clients](../MultivariatePolynomialsTests/QuotientClosedPoints.lean).
+For a field `K` and arbitrary variable type `σ`, `zeroLocusQuotientEval I a`
+is the canonical `K`-algebra homomorphism from `MvPolynomial σ K ⧸ I` to `K`
+for a zero `a`. Its `_comp`, `_mk` and `_X` laws give its values without
+unfolding the definition. For every field and any variable type,
+`zeroLocusClosedPoint I a` is the closed point whose ideal is the kernel of
+this evaluation; its `_asIdeal` and `_mem_iff` laws characterize that point.
+If `K` is algebraically closed and `σ` is finite,
+`zeroLocusEquivClosedPoints I` identifies the zero locus of every ideal,
+including the unit ideal, with the closed quotient-spectrum points. Its
+`_apply` and `_symm_apply` laws identify its maps with the standalone
+`zeroLocusClosedPoint` and `closedPointZeroLocus`. The inverse map's `_ideal`,
+`_mem_iff` and `_coordinate` laws characterize its coordinates directly;
+the equivalence's `_asIdeal`, `_mem_iff`, `_symm_mem_iff`, `_symm_coordinate`
+and round-trip laws follow from these. Independent universes and nonreduced
+quotients require no extra hypotheses. This is a point-set equivalence, not an
+equivalence of spaces or schemes.
+
 ## `MultivariatePolynomials.LocalizedCoordinateQuotient`
 
 [Producer](../MultivariatePolynomials/LocalizedCoordinateQuotient.lean) and

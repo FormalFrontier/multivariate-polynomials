@@ -2,7 +2,7 @@
 
 [`API.md`](API.md) is the current **hand-maintained** map of selected public
 interfaces, including the localized coordinate quotient and subset-weight-one
-valuation families. It does not catalog every public helper and is neither
+valuation families and closed-point quotient coordinates. It does not catalog every public helper and is neither
 freshly native-generated nor a proof certificate. The separate
 [homogeneous-evaluation guide](homogeneous-polynomial-evaluation.md) explains
 the two scaling laws and their assumptions; the

@@ -6,16 +6,28 @@ evaluation and division, monic lifts, first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
 function fields. Polynomial point quotients at pairwise unit-separated points
 are canonically equivalent to square-zero extensions of evaluation modules.
+For any ideal of a finite-variable polynomial algebra over an algebraically
+closed field, its zeros also give precisely the closed points of the quotient
+spectrum, even for nonreduced quotients.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has seventeen production leaves and twenty-one test/example modules.
+library has eighteen production leaves and twenty-two test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Zeros are closed points of polynomial quotients.** For any ideal `I` in
+  `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
+  [canonical point-set equivalence](MultivariatePolynomials/QuotientClosedPoints.lean)
+  identifies `MvPolynomial.zeroLocus K I` with closed points of the spectrum
+  of `MvPolynomial σ K ⧸ I`. The forward prime is the kernel of descended
+  evaluation; polynomial membership and inverse coordinates have explicit
+  laws. The field and variables may inhabit different universes, and `I` may
+  be the unit ideal or define a nonreduced quotient. No topological or sheaf
+  equivalence is asserted.
 - **Separated polynomial point quotients are square-zero extensions.** Over
   any commutative ring, including the zero ring, and any index type, the
   [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)

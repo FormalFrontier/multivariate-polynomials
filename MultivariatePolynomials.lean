@@ -16,6 +16,7 @@ public import MultivariatePolynomials.LinearDivision
 public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
+public import MultivariatePolynomials.QuotientClosedPoints
 public import MultivariatePolynomials.LocalizedCoordinateQuotient
 public import MultivariatePolynomials.PointSquareZeroPresentation
 public import MultivariatePolynomials.PointSquareZeroQuotient
@@ -45,6 +46,9 @@ the evaluation kernel, with a membership criterion and a field-valued bridge
 to the singleton vanishing ideal. Polynomial substitution contracts evaluation
 kernels and coordinate-difference ideals, and carries associated prime-spectrum
 points contravariantly, including field-extension-valued points.
+For a polynomial algebra in finitely many variables over an algebraically
+closed field, the zero locus of any ideal is canonically equivalent to the
+closed points of the quotient spectrum, including nonreduced quotients.
 Evaluation at zero gives an algebra equivalence for the localized
 coordinate quotient by `C r * X`, with representative and fraction laws.
 Polynomial point quotients have a square-zero presentation and a canonical
@@ -66,6 +70,8 @@ Import the corresponding
 is needed. `MultivariatePolynomials.EvaluationIdeal` supplies the
 coordinate-difference statements; `MultivariatePolynomials.LocalizedCoordinateQuotient`
 supplies the localized quotient interface;
+`MultivariatePolynomials.QuotientClosedPoints` supplies the closed-point
+coordinate equivalence;
 `MultivariatePolynomials.PointSquareZeroPresentation` gives the polynomial-point
 presentation and forward map, and `MultivariatePolynomials.WeightOneValuation`
 describes subset-weight-one valuations. Test modules are deliberately not re-exported.

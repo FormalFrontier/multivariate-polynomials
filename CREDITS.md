@@ -22,15 +22,22 @@ credited below.
   Exercise 3.2.P (pp. 110–111) motivates point substitution without proving
   this library's general naturality laws. Exercise 6.7.E (PDF p. 199)
   motivates the variable-ideal theorem, not a formalization of the complete
-  short exact sequence. The [README](README.md) includes a finite-support
+  short exact sequence. §3.6.9 and the discussion after Exercise 5.1.E
+  motivate the polynomial-quotient closed-point dictionary, generalized here
+  to possibly nonreduced quotients as a point-set result. The [README](README.md) includes a finite-support
   argument. None of these citations asserts a source proof of the generalized
   formal statements or resolves the source's quotient-reading question.
 - [Mathlib](https://github.com/leanprover-community/mathlib4) supplies the
   polynomial, ideal, homogeneity, substitution, monomial-order and linear-map
   infrastructure, plus quotient, localization, prime-spectrum and finite-ring
   APIs used by the newer producers and clients. Its finite-variable ideal
-  theorem is not new here. The module-level references name the Mathlib APIs
-  underlying the separate project arguments.
+  theorem and Nullstellensatz are not new here. Its quotient, multivariate
+  evaluation and prime-spectrum APIs underpin the closed-point construction;
+  the earlier Formal Frontier source experiment supplied the project-authored
+  quotient-evaluation definition and its basic proofs, as well as the coordinate
+  approach, but not a completed proof of the closed-point equivalence. The
+  module-level references name the Mathlib APIs underlying the separate
+  project arguments.
 - [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
   supplies the canonical opposite-module and central-scalar instances on the
   direct sum used in the polynomial point quotient's square-zero extension.
