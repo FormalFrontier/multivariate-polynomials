@@ -60,6 +60,29 @@ and round-trip laws follow from these. Independent universes and nonreduced
 quotients require no extra hypotheses. This is a point-set equivalence, not an
 equivalence of spaces or schemes.
 
+## `MultivariatePolynomials.ZariskiTopology`
+
+[Producer](../MultivariatePolynomials/ZariskiTopology.lean) and
+[ordinary-import examples](../MultivariatePolynomialsTests/ZariskiTopology.lean).
+`MvPolynomial.ZariskiSpace K σ` wraps tuples of field-valued coordinates and
+has the topology induced by `pointToPoint` into the polynomial prime spectrum,
+not a topology on `K` or on the function type. `coordinatesEquiv`, `ext`,
+`pointToPoint_asIdeal`, and `mem_zeroLocus_iff_mem_spectrum_zeroLocus`
+characterize its coordinates and evaluation prime. For any ideal,
+`isClosed_iff` characterizes closed sets by `zeroLocus`; `isOpen_iff`,
+`basicOpen_eq_preimage`, and `isTopologicalBasis_basicOpen` give the
+nonvanishing-set basis. `isEmbedding_pointToPoint` and
+`continuous_substitution` hold over arbitrary fields and variable types, with
+`substitution_apply`, `substitution_id`, and `substitution_comp` governing the
+contravariant coordinate action. `zeroLocusClosedPoint_mem_iff` computes
+quotient membership by evaluation, and `isEmbedding_zeroLocusClosedPoint`
+embeds each zero locus in the inherited closed-point subspace without
+finiteness or algebraic closure. With algebraic closure and finite variables,
+`zeroLocusHomeomorphClosedPoints` upgrades the existing coordinate equivalence
+to a homeomorphism; its forward and inverse coordinate laws agree with the
+point-set correspondence. The unit ideal and nonradical quotients are included;
+arbitrary-field surjectivity and a scheme/sheaf equivalence are not claimed.
+
 ## `MultivariatePolynomials.LocalizedCoordinateQuotient`
 
 [Producer](../MultivariatePolynomials/LocalizedCoordinateQuotient.lean) and

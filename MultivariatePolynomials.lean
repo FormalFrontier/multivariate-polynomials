@@ -17,6 +17,7 @@ public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
 public import MultivariatePolynomials.QuotientClosedPoints
+public import MultivariatePolynomials.ZariskiTopology
 public import MultivariatePolynomials.LocalizedCoordinateQuotient
 public import MultivariatePolynomials.PointSquareZeroPresentation
 public import MultivariatePolynomials.PointSquareZeroQuotient
@@ -49,6 +50,12 @@ points contravariantly, including field-extension-valued points.
 For a polynomial algebra in finitely many variables over an algebraically
 closed field, the zero locus of any ideal is canonically equivalent to the
 closed points of the quotient spectrum, including nonreduced quotients.
+The polynomial Zariski topology on field-valued coordinates has polynomial
+zero loci as closed sets and basic nonvanishing opens as a basis;
+substitution is continuous, and evaluation embeds arbitrary-field coordinate
+tuples and zero loci into the appropriate prime spectra. Under algebraic
+closure and finite variables, the coordinate equivalence is a homeomorphism
+onto the quotient spectrum's inherited closed-point subspace.
 Evaluation at zero gives an algebra equivalence for the localized
 coordinate quotient by `C r * X`, with representative and fraction laws.
 Polynomial point quotients have a square-zero presentation and a canonical
@@ -72,6 +79,8 @@ coordinate-difference statements; `MultivariatePolynomials.LocalizedCoordinateQu
 supplies the localized quotient interface;
 `MultivariatePolynomials.QuotientClosedPoints` supplies the closed-point
 coordinate equivalence;
+`MultivariatePolynomials.ZariskiTopology` supplies polynomial coordinate
+topology and the zero-locus homeomorphism;
 `MultivariatePolynomials.PointSquareZeroPresentation` gives the polynomial-point
 presentation and forward map, and `MultivariatePolynomials.WeightOneValuation`
 describes subset-weight-one valuations. Test modules are deliberately not re-exported.

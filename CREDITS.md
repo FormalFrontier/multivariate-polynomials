@@ -26,7 +26,9 @@ credited below.
   motivate the polynomial-quotient closed-point dictionary, generalized here
   to possibly nonreduced quotients as a point-set result. The [README](README.md) includes a finite-support
   argument. None of these citations asserts a source proof of the generalized
-  formal statements or resolves the source's quotient-reading question.
+  formal statements or resolves the source's quotient-reading question. The
+  additional coordinate-topology homeomorphism is a topological enhancement
+  of that dictionary, not a claim that the source proves the formal statement.
 - [Mathlib](https://github.com/leanprover-community/mathlib4) supplies the
   polynomial, ideal, homogeneity, substitution, monomial-order and linear-map
   infrastructure, plus quotient, localization, prime-spectrum and finite-ring
@@ -36,6 +38,10 @@ credited below.
   the earlier Formal Frontier source experiment supplied the project-authored
   quotient-evaluation definition and its basic proofs, as well as the coordinate
   approach, but not a completed proof of the closed-point equivalence. The
+  coordinate-topology arguments reuse Mathlib's closed-set and basic-open
+  characterizations of the prime spectrum, induced-topology and embedding
+  API, and continuous contraction of prime ideals; these are not new results
+  of this library. The
   module-level references name the Mathlib APIs underlying the separate
   project arguments.
 - [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)

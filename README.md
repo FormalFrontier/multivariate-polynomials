@@ -9,10 +9,14 @@ are canonically equivalent to square-zero extensions of evaluation modules.
 For any ideal of a finite-variable polynomial algebra over an algebraically
 closed field, its zeros also give precisely the closed points of the quotient
 spectrum, even for nonreduced quotients.
+The polynomial Zariski topology on field-valued coordinates makes the
+evaluation map an embedding and identifies zero loci with inherited
+closed-point subspaces under the same finite-variable algebraic-closure
+hypotheses.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has eighteen production leaves and twenty-two test/example modules.
+library has nineteen production leaves and twenty-three test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -26,8 +30,20 @@ weight-one-valuation naturality interfaces.
   of `MvPolynomial σ K ⧸ I`. The forward prime is the kernel of descended
   evaluation; polynomial membership and inverse coordinates have explicit
   laws. The field and variables may inhabit different universes, and `I` may
-  be the unit ideal or define a nonreduced quotient. No topological or sheaf
-  equivalence is asserted.
+  be the unit ideal or define a nonreduced quotient. This point-set result
+  itself does not assert a topological or sheaf equivalence.
+- **Polynomial coordinate zero loci have their quotient topology.** For any
+  field and variable type, the [coordinate topology](MultivariatePolynomials/ZariskiTopology.lean)
+  induced by the evaluation point in the prime spectrum has exactly polynomial
+  zero loci as closed sets, with polynomial nonvanishing sets as an open basis.
+  Evaluation embeds coordinate tuples; polynomial substitution is continuous.
+  Every ideal's zero locus embeds in the closed-point subspace of its quotient
+  spectrum, without assuming finiteness or algebraic closure. For an
+  algebraically closed field and finitely many variables, the existing
+  coordinate equivalence is a homeomorphism onto that inherited subspace,
+  including the unit ideal and nonradical ideals. A parabola has inverse
+  polynomial-coordinate parametrizations; over the rationals a closed quotient
+  point need not arise from a rational zero. No sheaf equivalence is claimed.
 - **Separated polynomial point quotients are square-zero extensions.** Over
   any commutative ring, including the zero ring, and any index type, the
   [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)
