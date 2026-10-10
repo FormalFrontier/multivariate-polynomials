@@ -6,6 +6,8 @@ project:
     Reusable multivariate-polynomial results on infinite-variable ideals,
     coordinate-difference evaluation ideals, homogeneous evaluation,
     disjoint-block substitution and its iteration,
+    finite-variable origins of finite collections of polynomial fractions over
+    integral domains in arbitrary fraction-ring representations,
     degree, coefficient extraction and linear evaluation, chosen linear
     division, existential monic lifts and scalar-top first-variable lex degree.
     A polynomial point quotient by indexed squares and linear point relations
@@ -18,6 +20,18 @@ project:
   license: Apache-2.0
 
 sources:
+  - title: "Foundations of Rigid Geometry I"
+    authors:
+      - Kazuhiro Fujiwara
+      - Fumiharu Kato
+    type: book
+    location: "arXiv:1308.4734v5"
+    relationship: background
+    note: >-
+      Rational-function constructions motivate the finite-variable fraction-origin
+      theorem. The algebraic proof uses Mathlib polynomial supports, injective
+      renaming, localization representatives and the existing fraction-ring map;
+      no valuation, dimension or source-coverage conclusion is asserted.
   - title: "A non-finitely-generated variable ideal: finite-support proof exposition"
     authors:
       - Formal Frontier Agents
@@ -72,8 +86,11 @@ sources:
 
 status:
   scope: >-
-    Forty-eight selected public declarations over fourteen leaves and the
-    aggregate: coordinate-difference ideals equal evaluation kernels over
+    Forty-nine selected public declarations over fifteen leaves and the
+    aggregate: finite collections in an abstract fraction ring of MvPolynomial
+    over an integral domain come from one finite-variable fraction ring,
+    without a field coefficient or target hypothesis;
+    coordinate-difference ideals equal evaluation kernels over
     CommRing coefficients for arbitrary variables, with a vanishing membership
     criterion and a singleton-vanishing-ideal bridge over fields;
     the quotient of MvPolynomial (Option ι) R by only indexed squares and
@@ -101,6 +118,8 @@ status:
     functional, or source-specific completion is claimed. See README.md and
     docs/API.md for the detailed module map and guides.
   main_results:
+    - declaration: MvPolynomial.exists_finset_fractionRing_map_range
+      file: MultivariatePolynomials/FractionRingFiniteVariables.lean
     - declaration: MvPolynomial.ideal_span_X_sub_C_eq_ker_eval
       file: MultivariatePolynomials/EvaluationIdeal.lean
     - declaration: MvPolynomial.mem_ideal_span_X_sub_C_iff

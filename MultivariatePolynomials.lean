@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import MultivariatePolynomials.FractionRingFiniteVariables
 public import MultivariatePolynomials.IdealOfVars
 public import MultivariatePolynomials.HomogeneousEvaluation
 public import MultivariatePolynomials.BlockSubstitution

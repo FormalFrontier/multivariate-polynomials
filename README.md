@@ -16,13 +16,20 @@ hypotheses.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has nineteen production leaves and twenty-three test/example modules.
+library has twenty production leaves and twenty-four test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Finite collections of polynomial fractions have one finite-variable origin.**
+  [`MvPolynomial.exists_finset_fractionRing_map_range`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  captures any finite set in any fraction-ring representation of `MvPolynomial σ R`
+  over an integral domain `R` in the range of one coefficient-preserving finite-variable
+  fraction-ring map. The variables may be infinite and the three universes are independent;
+  no field structure on the coefficients or abstract target is assumed. The empty-variable
+  stage is a fraction ring of `R`, not generally `R` itself.
 - **Zeros are closed points of polynomial quotients.** For any ideal `I` in
   `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
   [canonical point-set equivalence](MultivariatePolynomials/QuotientClosedPoints.lean)
@@ -172,6 +179,14 @@ explains the archived six-module native API snapshot.
 
 ## Use and check
 
+For fraction origins, import `MultivariatePolynomials.FractionRingFiniteVariables`
+(or the aggregate) and apply `MvPolynomial.exists_finset_fractionRing_map_range hE`
+to `hE : E.Finite`. The resulting common `J` and range inclusion give a preimage
+for each member through Mathlib's `IsFractionRing.map`. The
+[examples](MultivariatePolynomialsTests/FractionRingFiniteVariables.lean) capture
+`X₀ / 2`, `1 / (X₁ + 1)`, and zero simultaneously over integer coefficients and
+infinitely many variables, and include empty collections and empty ambient variables.
+
 To use this library as a dependency, add it to your `lakefile.toml`:
 
 ```toml
@@ -227,6 +242,11 @@ snapshot's child-process RSS does not measure the expanded current project.
 
 ## References
 
+- Kazuhiro Fujiwara and Fumiharu Kato, *Foundations of Rigid Geometry I*,
+  arXiv:1308.4734v5: rational-function constructions motivate the
+  finite-variable fraction-origin theorem. Its algebraic proof uses Mathlib's
+  polynomial-support, renaming and localization-representative APIs; it asserts
+  no valuation or dimension result.
 - Ravi Vakil, *The Rising Sea: Foundations of Algebraic Geometry*, October 21,
   2025 draft: §§3.2.5–6 and Exercise 3.2.F (p. 107) motivate coordinate
   differences; Exercise 3.2.L (p. 109) gives the complex-axes localization
