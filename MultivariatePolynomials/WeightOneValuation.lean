@@ -674,6 +674,38 @@ theorem weightOneValuation_pivot_eq (i' : S) :
     simp
   · rw [weightOneValuation_div S i hp hq', weightOneValuation_div S i' hp hq']
 
+/-- A variable has valuation strictly below one exactly when it belongs to the weighted subset. -/
+theorem weightOneValuation_X_lt_one_iff (S : Set σ) (i : S) (a : σ) :
+    weightOneValuation (k := k) S i (algebraMap P K (X a)) < 1 ↔ a ∈ S := by
+  classical
+  rw [weightOneValuation_X]
+  by_cases ha : a ∈ S <;> simp [ha, WithZero.exp_lt_one_iff]
+
+/-- Two weight-one valuations are equal exactly when their weighted subsets are equal. -/
+theorem weightOneValuation_eq_iff (S T : Set σ) (i : S) (j : T) :
+    weightOneValuation (k := k) S i = weightOneValuation (k := k) T j ↔ S = T := by
+  constructor
+  · intro h
+    ext a
+    rw [← weightOneValuation_X_lt_one_iff (k := k) S i a,
+      ← weightOneValuation_X_lt_one_iff (k := k) T j a, h]
+  · intro h
+    subst T
+    exact weightOneValuation_pivot_eq S i j
+
+/-- Two weight-one valuations are equivalent exactly when their weighted subsets are equal. -/
+theorem weightOneValuation_isEquiv_iff (S T : Set σ) (i : S) (j : T) :
+    (weightOneValuation (k := k) S i).IsEquiv (weightOneValuation (k := k) T j) ↔
+      S = T := by
+  constructor
+  · intro h
+    ext a
+    rw [← weightOneValuation_X_lt_one_iff (k := k) S i a,
+      ← weightOneValuation_X_lt_one_iff (k := k) T j a]
+    exact h.lt_one_iff_lt_one
+  · intro h
+    exact Valuation.IsEquiv.of_eq ((weightOneValuation_eq_iff (k := k) S T i j).2 h)
+
 /-- A rational fraction belongs to the valuation subring precisely when its
 numerator has at least the minimum subset weight of its denominator. -/
 theorem weightOneValuation_mem_div_iff {p q : P} (hq : q ≠ 0) :

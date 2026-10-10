@@ -13,6 +13,8 @@ Two-variable examples distinguish an unweighted coordinate from a weighted
 ratio in the full residue field. The polynomial nonzero and support checks do
 not depend on the valuation. A trivial valuation provides the empty-subset
 boundary, and the same API also applies to an infinite variable family.
+Distinct singleton subsets give inequivalent valuations, while changing the
+pivot within a fixed subset leaves the valuation unchanged.
 
 ## References
 
@@ -34,12 +36,23 @@ private def singletonSet : Set (Fin 2) := {(0 : Fin 2)}
 
 private def singletonPivot : singletonSet := ⟨0, by simp [singletonSet]⟩
 
+private def secondSingletonSet : Set (Fin 2) := {(1 : Fin 2)}
+
+private def secondSingletonPivot : secondSingletonSet := ⟨1, by simp [secondSingletonSet]⟩
+
+private theorem singletonSet_ne_secondSingletonSet : singletonSet ≠ secondSingletonSet := by
+  intro h
+  have hzero : (0 : Fin 2) ∈ secondSingletonSet := h ▸ (by simp [singletonSet])
+  simpa [secondSingletonSet] using hzero
+
 private def secondUnweighted : {j : Fin 2 // j ∉ singletonSet} :=
   ⟨1, by simp [singletonSet]⟩
 
 private def bothSet : Set (Fin 2) := Set.univ
 
 private def bothPivot : bothSet := ⟨0, by simp [bothSet]⟩
+
+private def bothSecondPivot : bothSet := ⟨1, by simp [bothSet]⟩
 
 private def secondRatio : {j : Fin 2 // j ∈ bothSet ∧ j ≠ (bothPivot : Fin 2)} :=
   ⟨1, by simp [bothSet, bothPivot]⟩
@@ -170,6 +183,44 @@ example {k : Type u} [Field k] :
         (algebraMap (MvPolynomial (Fin 2) k) (FractionRing (MvPolynomial (Fin 2) k))
           (X (1 : Fin 2))) = 1 := by
   constructor <;> rw [weightOneValuation_X] <;> simp [singletonSet]
+
+/-- The same generator is below one for one singleton subset, but not for the other. -/
+example :
+    weightOneValuation (k := ℚ) singletonSet singletonPivot
+        (algebraMap (MvPolynomial (Fin 2) ℚ) (FractionRing (MvPolynomial (Fin 2) ℚ))
+          (X (0 : Fin 2))) < 1 ∧
+    ¬ weightOneValuation (k := ℚ) secondSingletonSet secondSingletonPivot
+        (algebraMap (MvPolynomial (Fin 2) ℚ) (FractionRing (MvPolynomial (Fin 2) ℚ))
+          (X (0 : Fin 2))) < 1 := by
+  constructor <;> rw [weightOneValuation_X_lt_one_iff] <;>
+    simp [singletonSet, secondSingletonSet]
+
+/-- Distinct singleton subsets give unequal and inequivalent valuations over `ℚ`. -/
+example :
+    weightOneValuation (k := ℚ) singletonSet singletonPivot ≠
+      weightOneValuation (k := ℚ) secondSingletonSet secondSingletonPivot ∧
+    ¬ (weightOneValuation (k := ℚ) singletonSet singletonPivot).IsEquiv
+      (weightOneValuation (k := ℚ) secondSingletonSet secondSingletonPivot) := by
+  constructor
+  · intro h
+    exact singletonSet_ne_secondSingletonSet
+      ((weightOneValuation_eq_iff (k := ℚ) singletonSet secondSingletonSet
+        singletonPivot secondSingletonPivot).1 h)
+  · rw [weightOneValuation_isEquiv_iff]
+    exact singletonSet_ne_secondSingletonSet
+
+/-- Weighting both variables gives equal and equivalent valuations for pivots zero and one. -/
+example :
+    bothPivot ≠ bothSecondPivot ∧
+    weightOneValuation (k := ℚ) bothSet bothPivot =
+      weightOneValuation (k := ℚ) bothSet bothSecondPivot ∧
+    (weightOneValuation (k := ℚ) bothSet bothPivot).IsEquiv
+      (weightOneValuation (k := ℚ) bothSet bothSecondPivot) := by
+  refine ⟨?_, (weightOneValuation_eq_iff bothSet bothSet bothPivot bothSecondPivot).2 rfl,
+    (weightOneValuation_isEquiv_iff bothSet bothSet bothPivot bothSecondPivot).2 rfl⟩
+  intro h
+  have hindices := congrArg (fun i : bothSet => (i : Fin 2)) h
+  simpa [bothPivot, bothSecondPivot] using hindices
 
 /-- The full residue of one weighted variable is `k(T₁)`. -/
 example {k : Type u} [Field k] :
@@ -347,5 +398,12 @@ example {k : Type u} [Field k] :
       WithZero.exp (-1 : ℤ) := by
   rw [weightOneValuation_X]
   simp
+
+/-- The universal subset of infinitely many variables has pivot-independent valuation. -/
+example {k : Type u} [Field k] :
+    weightOneValuation (k := k) (Set.univ : Set ℕ) ⟨0, Set.mem_univ 0⟩ =
+      weightOneValuation (k := k) (Set.univ : Set ℕ) ⟨1, Set.mem_univ 1⟩ := by
+  exact (weightOneValuation_eq_iff (Set.univ : Set ℕ) Set.univ
+    ⟨0, Set.mem_univ 0⟩ ⟨1, Set.mem_univ 1⟩).2 rfl
 
 end MultivariatePolynomialsTests.WeightOneValuation
