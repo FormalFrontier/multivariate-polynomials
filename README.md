@@ -16,7 +16,7 @@ hypotheses.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty production leaves and twenty-four test/example modules.
+library has twenty production leaves and twenty-five test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -96,6 +96,18 @@ weight-one-valuation naturality interfaces.
   For commutative rings this contracts coordinate-difference ideals; over fields,
   contraction of the associated prime-spectrum points works also for points
   valued in a field extension. See the [evaluation-ideal module](MultivariatePolynomials/EvaluationIdeal.lean).
+- **Variable ideals are finitely generated exactly for finite subsets.** Over
+  any nontrivial commutative semiring,
+  [`MvPolynomial.ideal_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
+  characterizes finite generation of `Ideal.span (MvPolynomial.X '' S)` in the
+  full ambient polynomial semiring by finiteness of `S`. No domain, Noetherian
+  or finite-ambient-variable assumption is needed. Finite subsets, including
+  the empty subset, give finitely generated ideals even with infinitely many
+  ambient variables; the converse fails over the zero semiring. Mathlib supplies
+  the characteristic membership API `MvPolynomial.mem_ideal_span_X_image`;
+  this library supplies the finite-generation iff. The
+  [examples](MultivariatePolynomialsTests/IdealOfVarsSubset.lean) include a proper
+  infinite even-variable ideal over `ZMod 6` and the zero-ring boundary `ZMod 1`.
 - **The variable ideal is not finitely generated.** For a nontrivial
   commutative semiring and infinitely many variables,
   [`MvPolynomial.idealOfVars_not_fg`](MultivariatePolynomials/IdealOfVars.lean)
@@ -223,7 +235,7 @@ the matching precompiled mathlib cache before building**:
 ```sh
 elan toolchain install leanprover/lean4:v4.34.0-rc2
 lake exe cache get
-lake --wfail build
+lake build
 ```
 
 The default Lake build includes both the production and test/example targets.
