@@ -170,6 +170,37 @@ For dependency setup, imports and build commands, see the
   for constant coefficients, regular variables and the empty-variable equivalence,
   and its unit-map and zero-unit APIs to force trivial coefficients when a
   variable is present.
+- **Univariate polynomials are Artinian exactly over trivial semirings.** The
+  [Artinian module](../MultivariatePolynomials/Artinian.lean) also proves:
+
+  ```lean
+  Polynomial.isArtinianRing_iff (R : Type u) [Semiring R] :
+      IsArtinianRing (Polynomial R) ↔ Subsingleton R
+  ```
+
+  The coefficient universe is arbitrary, and multiplication need not be
+  commutative. No additive inverses or coefficient Artinianity hypothesis is
+  required. This is the canonical left self-module condition
+  `IsArtinian (Polynomial R) (Polynomial R)`, not Artinianity for the
+  coefficient `R`-module action or a right-module condition. With trivial
+  coefficients every polynomial is zero; with nontrivial coefficients the
+  polynomial semiring is not Artinian.
+  The [applications](../MultivariatePolynomialsTests/PolynomialArtinianClient.lean)
+  use both directions for arbitrary semirings: `.mp` forces equality of any
+  two coefficients, and `.mpr` gives polynomial left self-Artinianity from
+  subsingleton coefficients. They include the zero ring `ZMod 1`, where every
+  polynomial is zero. With its usual semiring operations, `ℝ≥0` has an
+  infinite carrier and no additive inverse of `1`, but its finite ideal lattice
+  makes its coefficient left self-module Artinian. The criterion nevertheless
+  rules out Artinianity of `Polynomial ℝ≥0`. The noncommutative ring
+  `Matrix (Fin 2) (Fin 2) (ZMod 2)` has exactly sixteen elements, so its
+  coefficient left self-module is Artinian; the criterion again rules out
+  polynomial Artinianity.
+  The proof reuses Mathlib's `Polynomial.isRegular_X` and
+  `Polynomial.not_isUnit_X` from its polynomial coefficient and degree APIs,
+  and `IsArtinianRing.isUnit_iff_isRightRegular` from
+  `Mathlib.RingTheory.Artinian.Module`. The trivial-coefficient direction uses
+  Mathlib's subsingleton polynomial and finite Artinian module APIs.
 - **Coefficient-and-variable ideals have an exact finite-generation criterion.**
   For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
   [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](../MultivariatePolynomials/IdealOfVars.lean)

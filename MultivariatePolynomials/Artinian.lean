@@ -12,7 +12,7 @@ public import Mathlib.RingTheory.Artinian.Module
 @[expose] public section
 
 /-!
-# Artinian multivariate polynomial semirings
+# Artinian polynomial semirings
 
 A multivariate polynomial semiring is Artinian as a module over itself if and only if
 its coefficient semiring is Artinian and either there are no variables or the
@@ -21,11 +21,17 @@ coefficient semiring is subsingleton.
 The scalars in `IsArtinianRing (MvPolynomial σ R)` are the polynomials themselves,
 not the coefficients in `R`.
 
+For univariate polynomials, the coefficients need not be commutative. The polynomial
+semiring is Artinian over itself exactly when the coefficient semiring is subsingleton.
+
 ## References
 
 * Mathlib, `Mathlib.Algebra.MvPolynomial.Basic` and
   `Mathlib.Algebra.MvPolynomial.Equiv`: regular variables, constant coefficients,
   and the empty-variable equivalence.
+* Mathlib, `Mathlib.Algebra.Polynomial.Basic`, `Mathlib.Algebra.Polynomial.Coeff`,
+  and `Mathlib.Algebra.Polynomial.Degree.Operations`: subsingleton polynomials,
+  regularity of the variable, and its noninvertibility over nontrivial semirings.
 * Mathlib, `Mathlib.RingTheory.Artinian.Module`: surjective descent,
   transport along ring equivalences, finite Artinian modules, and the equivalence
   between regular elements and units in Artinian semirings.
@@ -68,3 +74,24 @@ theorem isArtinianRing_iff {σ : Type u} {R : Type v} [CommSemiring R] :
       exact isArtinian_of_finite (R := MvPolynomial σ R) (M := MvPolynomial σ R)
 
 end MvPolynomial
+
+namespace Polynomial
+
+/-- A polynomial semiring is Artinian over itself exactly when its coefficient semiring
+is subsingleton. The coefficients need not be commutative. -/
+theorem isArtinianRing_iff (R : Type u) [Semiring R] :
+    IsArtinianRing (Polynomial R) ↔ Subsingleton R := by
+  constructor
+  · intro h
+    let : IsArtinianRing (Polynomial R) := h
+    rcases subsingleton_or_nontrivial R with hR | hR
+    · exact hR
+    · let : Nontrivial R := hR
+      have hx : IsUnit (X : Polynomial R) :=
+        IsArtinianRing.isUnit_iff_isRightRegular.mpr isRegular_X.right
+      exact (not_isUnit_X hx).elim
+  · intro h
+    let : Subsingleton R := h
+    exact isArtinian_of_finite (R := Polynomial R) (M := Polynomial R)
+
+end Polynomial

@@ -18,7 +18,7 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-three production leaves and thirty-one test/example modules.
+library has twenty-three production leaves and thirty-four test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -89,15 +89,22 @@ weight-one-valuation naturality interfaces.
   The coefficient and variable universes are independent. The
   [examples](MultivariatePolynomialsTests/Noetherian.lean) distinguish empty,
   finite and infinite variables over the integers, `ZMod 6`, and `ZMod 1`.
-- **Artinian polynomial-semiring criterion.** For arbitrary variable types
-  `σ : Type u` and coefficients `R : Type v` with `[CommSemiring R]`,
+- **Artinian polynomial-semiring criteria.** For any `R : Type u` with
+  `[Semiring R]`, including noncommutative coefficients,
+  [`Polynomial.isArtinianRing_iff`](MultivariatePolynomials/Artinian.lean)
+  proves `IsArtinianRing (Polynomial R) ↔ Subsingleton R`.
+  For arbitrary variable types `σ : Type u` and coefficients `R : Type v`
+  with `[CommSemiring R]`,
   [`MvPolynomial.isArtinianRing_iff`](MultivariatePolynomials/Artinian.lean)
   proves `IsArtinianRing (MvPolynomial σ R) ↔ IsArtinianRing R ∧
-  (IsEmpty σ ∨ Subsingleton R)`. The action is polynomial multiplication
-  on the canonical left self-module, not the coefficient `R`-module action.
-  The universes are independent; no ring or finite-variable hypothesis is
-  imposed. Empty variables recover coefficient Artinianity, and trivial
-  coefficients work for every variable type.
+  (IsEmpty σ ∨ Subsingleton R)`. Both use polynomial multiplication on the
+  canonical left self-module, not the coefficient `R`-module action.
+  All universes are arbitrary; the multivariate universes are independent.
+  No ring or finite-variable hypothesis is imposed. Empty multivariate
+  variables recover coefficient Artinianity; trivial coefficients make every
+  polynomial zero. The [univariate applications](MultivariatePolynomialsTests/PolynomialArtinianClient.lean)
+  include the usual non-ring semiring `ℝ≥0`, the noncommutative 16-element
+  matrix ring over `ZMod 2`, and the zero ring `ZMod 1`.
 - **Coefficient-and-variable ideals have an exact finite-generation criterion.**
   For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
   [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
@@ -210,7 +217,7 @@ not a complete declaration inventory.
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; self and coefficient-module criteria (direct import) |
-| [`Artinian`](MultivariatePolynomials/Artinian.lean) | Polynomial self-Artinianity over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
+| [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self-Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |

@@ -271,6 +271,45 @@ The [ring clients](../MultivariatePolynomialsTests/Noetherian.lean) include empt
 finite and infinite variables and coefficient rings with zero divisors. These
 criteria do not assert a Hilbert basis theorem for arbitrary semirings.
 
+## `MultivariatePolynomials.Artinian`
+
+Import the [producer](../MultivariatePolynomials/Artinian.lean) directly as
+`MultivariatePolynomials.Artinian`, or through the aggregate. Its two public
+criteria concern the canonical left self-module: the polynomial semiring acts
+on itself, not through the coefficient `R`-module action.
+
+```lean
+theorem Polynomial.isArtinianRing_iff (R : Type u) [Semiring R] :
+    IsArtinianRing (Polynomial R) ↔ Subsingleton R
+
+theorem MvPolynomial.isArtinianRing_iff
+    {σ : Type u} {R : Type v} [CommSemiring R] :
+    IsArtinianRing (MvPolynomial σ R) ↔
+      IsArtinianRing R ∧ (IsEmpty σ ∨ Subsingleton R)
+```
+
+The univariate criterion allows noncommutative multiplication and needs no
+additive inverses; `u` is arbitrary. The multivariate criterion requires a
+commutative semiring, with independent variable and coefficient universes and
+no finite-variable hypothesis. Empty multivariate variables recover coefficient
+Artinianity. In either setting trivial coefficients make every polynomial zero.
+Neither criterion concerns a right-module or opposite-ring action.
+
+The [univariate client source](../MultivariatePolynomialsTests/PolynomialArtinianClient.lean)
+uses `.mp` to deduce equality of arbitrary coefficients and `.mpr` to obtain
+`IsArtinian (Polynomial R) (Polynomial R)` from subsingleton coefficients.
+Its `ZMod 1` examples give Artinianity and polynomial vanishing. With its usual
+semiring operations, `ℝ≥0` has an infinite carrier, no additive inverse of `1`,
+and a finite ideal lattice giving coefficient left self-Artinianity, but its
+polynomial semiring is not Artinian. The noncommutative ring
+`Matrix (Fin 2) (Fin 2) (ZMod 2)` has sixteen elements and is left self-Artinian,
+while its polynomial ring is not. These declarations are private examples,
+not additional public theorem names. The [multivariate client source](../MultivariatePolynomialsTests/ArtinianCriterion.lean)
+covers empty and nonempty variables over the usual semiring `ℝ≥0`.
+Mathlib's regular-variable, regular-to-unit, nonunit-variable and finite Artinian
+module results supply the proof ingredients; the producer lists their module
+references.
+
 ## `MultivariatePolynomials.HomogeneousEvaluation`
 
 [Producer](../MultivariatePolynomials/HomogeneousEvaluation.lean) and
@@ -768,7 +807,7 @@ is proved.
 [Aggregate](../MultivariatePolynomials.lean) publicly imports twenty-two production
 leaves. The [Noetherian producer](../MultivariatePolynomials/Noetherian.lean) is
 available through its direct import.
-Thirty-one test/example modules are registered as explicit roots under
+Thirty-four test/example modules are registered as explicit roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
@@ -798,9 +837,12 @@ Thirty-one test/example modules are registered as explicit roots under
 [coefficient-and-variable ideal clients](../MultivariatePolynomialsTests/CoefficientVariableIdeal.lean),
 [quotient closed-point clients](../MultivariatePolynomialsTests/QuotientClosedPoints.lean),
 [polynomial Zariski topology clients](../MultivariatePolynomialsTests/ZariskiTopology.lean),
-[Artinian polynomial fixtures](../MultivariatePolynomialsTests/Artinian.lean), and
-[Artinian criterion clients](../MultivariatePolynomialsTests/ArtinianCriterion.lean).
+[Artinian polynomial fixtures](../MultivariatePolynomialsTests/Artinian.lean),
+[Artinian criterion clients](../MultivariatePolynomialsTests/ArtinianCriterion.lean),
+[univariate semiring model examples](../MultivariatePolynomialsTests/PolynomialArtinianModels.lean),
+[noncommutative matrix model examples](../MultivariatePolynomialsTests/PolynomialMatrixArtinian.lean), and
+[univariate criterion applications](../MultivariatePolynomialsTests/PolynomialArtinianClient.lean).
 The presentation-only fixtures import only the presentation leaf;
 the headline clients import the separated-equivalence leaf. The tests are not re-exported as production
-API. The twenty-three production leaves, aggregate, and thirty-one test modules
-total fifty-five Lean source modules.
+API. The twenty-three production leaves, aggregate, and thirty-four test modules
+total fifty-eight Lean source modules.
