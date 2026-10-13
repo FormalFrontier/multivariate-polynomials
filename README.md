@@ -191,6 +191,14 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
+For variable subsets, `MvPolynomial.idealOfVars_map_rename` identifies the
+image of the all-variable ideal under any renaming `f` with
+`Ideal.span (MvPolynomial.X '' Set.range f)`. Taking `f` to be the inclusion
+of `S` gives the span of the selected variables. Mathlib's `killCompl` for
+that inclusion **retains `S`** and kills variables outside it; to **eliminate
+`S` by setting its variables to zero**, use the inclusion of `Sᶜ` instead. See the
+[subset examples](MultivariatePolynomialsTests/IdealOfVarsSubset.lean).
+
 Read the [toolchain file](lean-toolchain), [Lake configuration](lakefile.toml)
 and [resolved manifest](lake-manifest.json) for the checkout's versions.
 Libraries used together must share one Mathlib revision; Lake resolves one

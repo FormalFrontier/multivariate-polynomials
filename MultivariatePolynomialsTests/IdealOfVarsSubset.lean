@@ -176,3 +176,312 @@ example :
   · rw [even_variable_span_zmod_one_eq_bot]
     exact Submodule.fg_bot
   · exact even_indices_infinite
+
+/-!
+## Retaining a selection and eliminating it
+
+For a selected set `S`, `killCompl` along `S → ℕ` keeps `S`, whereas the
+same construction along `Sᶜ → ℕ` sets the variables of `S` to zero. The
+complement section recovers the retained polynomial, not its discarded terms.
+Coordinate deletion can send a non-finitely-generated variable ideal to a
+finitely-generated ideal without killing all the remaining variables.
+
+These computations use Mathlib's renaming and `killCompl` retraction API
+(`Mathlib.Algebra.MvPolynomial.Rename`) and its ideal-map calculus
+(`Mathlib.RingTheory.Ideal.Maps`).
+-/
+
+namespace MultivariatePolynomialsTests
+
+section SelectedVariableElimination
+
+local notation "S₃" => ({0, 2, 4} : Set ℕ)
+local notation "Sₑ" => Set.ofPred (fun n : ℕ => Even n)
+
+private theorem finite_selection_retention_image :
+    (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃)).map
+      (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : S₃ → ℕ))
+        Subtype.val_injective).toRingHom = MvPolynomial.idealOfVars S₃ ℕ := by
+  have hforward :
+      (MvPolynomial.idealOfVars S₃ ℕ).map
+        (MvPolynomial.rename (R := ℕ) (Subtype.val : S₃ → ℕ)).toRingHom =
+          Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃) := by
+    simpa only [Subtype.range_val] using
+      MvPolynomial.idealOfVars_map_rename (R := ℕ) (Subtype.val : S₃ → ℕ)
+  rw [← hforward]
+  change ((MvPolynomial.idealOfVars S₃ ℕ).map
+    (MvPolynomial.rename (R := ℕ) (Subtype.val : S₃ → ℕ))).map
+      (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : S₃ → ℕ))
+        Subtype.val_injective) = MvPolynomial.idealOfVars S₃ ℕ
+  rw [Ideal.map_mapₐ, MvPolynomial.killCompl_comp_rename, Ideal.map_idₐ]
+
+private theorem even_selection_retention_image :
+    (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)).map
+      (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : Sₑ → ℕ))
+        Subtype.val_injective).toRingHom = MvPolynomial.idealOfVars Sₑ ℕ := by
+  have hforward :
+      (MvPolynomial.idealOfVars Sₑ ℕ).map
+        (MvPolynomial.rename (R := ℕ) (Subtype.val : Sₑ → ℕ)).toRingHom =
+          Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ) := by
+    simpa only [Subtype.range_val] using
+      MvPolynomial.idealOfVars_map_rename (R := ℕ) (Subtype.val : Sₑ → ℕ)
+  rw [← hforward]
+  change ((MvPolynomial.idealOfVars Sₑ ℕ).map
+    (MvPolynomial.rename (R := ℕ) (Subtype.val : Sₑ → ℕ))).map
+      (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : Sₑ → ℕ))
+        Subtype.val_injective) = MvPolynomial.idealOfVars Sₑ ℕ
+  rw [Ideal.map_mapₐ, MvPolynomial.killCompl_comp_rename, Ideal.map_idₐ]
+
+private theorem finite_selection_elimination_image {R : Type v} [CommSemiring R] :
+    (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ R) '' S₃)).map
+      (MvPolynomial.killCompl (R := R) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+        Subtype.val_injective).toRingHom = ⊥ := by
+  classical
+  refine le_antisymm ?_ bot_le
+  rw [Ideal.map_span, Ideal.span_le]
+  rintro _ ⟨_, ⟨i, hi, rfl⟩, rfl⟩
+  apply Ideal.mem_bot.mpr
+  change (MvPolynomial.monomial (Finsupp.single i 1) (1 : R)).killCompl _ = 0
+  apply MvPolynomial.killCompl_monomial_eq_zero_of_notMem_range (a := i)
+  · simp
+  · rintro ⟨j, hj⟩
+    exact j.property (hj.symm ▸ hi)
+
+private theorem even_selection_elimination_image {R : Type v} [CommSemiring R] :
+    (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ R) '' Sₑ)).map
+      (MvPolynomial.killCompl (R := R) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+        Subtype.val_injective).toRingHom = ⊥ := by
+  classical
+  refine le_antisymm ?_ bot_le
+  rw [Ideal.map_le_iff_le_comap, Ideal.span_le]
+  rintro _ ⟨i, hi, rfl⟩
+  rw [SetLike.mem_coe, Ideal.mem_comap, Ideal.mem_bot]
+  change (MvPolynomial.monomial (Finsupp.single i 1) (1 : R)).killCompl _ = 0
+  apply MvPolynomial.killCompl_monomial_eq_zero_of_notMem_range (a := i)
+  · simp
+  · rintro ⟨j, hj⟩
+    exact j.property (hj.symm ▸ hi)
+
+private theorem finite_elimination_zero_variable {R : Type v} [CommSemiring R] :
+    MvPolynomial.killCompl (R := R) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective (MvPolynomial.X 0) = 0 := by
+  have hx := Ideal.mem_map_of_mem
+    (MvPolynomial.killCompl (R := R) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective).toRingHom
+    (Ideal.subset_span (s := (MvPolynomial.X : ℕ → MvPolynomial ℕ R) '' S₃)
+      ⟨0, by simp, rfl⟩)
+  rw [finite_selection_elimination_image] at hx
+  exact Ideal.mem_bot.mp hx
+
+private theorem finite_elimination_retained_variable {R : Type v} [CommSemiring R] :
+    MvPolynomial.killCompl (R := R) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective (MvPolynomial.X 1) =
+        MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)) := by
+  simpa only [MvPolynomial.rename_X] using
+    MvPolynomial.killCompl_rename_app (R := R) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective (MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)))
+
+private theorem finite_sparse_polynomial_elimination :
+    let e := MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective
+    let p : MvPolynomial ℕ ℕ :=
+      MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.X 1 ^ 2 + MvPolynomial.C 3
+    (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃)).FG ∧
+      Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃) ≠ ⊤ ∧
+      (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃)).map
+        (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : S₃ → ℕ))
+          Subtype.val_injective).toRingHom = MvPolynomial.idealOfVars S₃ ℕ ∧
+      (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S₃)).map
+        e.toRingHom = ⊥ ∧
+      e.comp (MvPolynomial.rename (R := ℕ) (Subtype.val : ↥(S₃ᶜ) → ℕ)) =
+        AlgHom.id ℕ (MvPolynomial ↥(S₃ᶜ) ℕ) ∧
+      e p = MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)) ^ 2 + MvPolynomial.C 3 ∧
+      MvPolynomial.rename (Subtype.val : ↥(S₃ᶜ) → ℕ) (e p) =
+        MvPolynomial.X 1 ^ 2 + MvPolynomial.C 3 ∧
+      e (MvPolynomial.X 1) ≠ 0 := by
+  dsimp only
+  have hp :
+      MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+        Subtype.val_injective
+        (MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.X 1 ^ 2 +
+          MvPolynomial.C 3) =
+        MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)) ^ 2 + MvPolynomial.C 3 := by
+    simp only [map_add, map_mul, map_pow, finite_elimination_zero_variable,
+      finite_elimination_retained_variable, MvPolynomial.killCompl_C, zero_mul, zero_add]
+  refine ⟨(MvPolynomial.ideal_span_X_image_fg_iff (R := ℕ) S₃).mpr (by simp),
+    (Ideal.ne_top_iff_one _).mpr (one_notMem_variable_span S₃),
+    finite_selection_retention_image, finite_selection_elimination_image,
+    MvPolynomial.killCompl_comp_rename Subtype.val_injective, hp, ?_, ?_⟩
+  · rw [hp]
+    simp only [map_add, map_pow, MvPolynomial.rename_X, MvPolynomial.rename_C]
+  · rw [finite_elimination_retained_variable]
+    exact MvPolynomial.X_ne_zero _
+
+private theorem infinite_even_elimination_does_not_reflect_fg :
+    let e := MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+      Subtype.val_injective
+    ¬ (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)).FG ∧
+      (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)).map
+        (MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : Sₑ → ℕ))
+          Subtype.val_injective).toRingHom = MvPolynomial.idealOfVars Sₑ ℕ ∧
+      (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)).map
+        e.toRingHom = ⊥ ∧
+      ((Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)).map
+        e.toRingHom).FG ∧
+      e (MvPolynomial.X 1) = MvPolynomial.X (⟨1, by decide⟩ : ↥(Sₑᶜ)) ∧
+      e (MvPolynomial.X 1) ≠ 0 ∧
+      e.comp (MvPolynomial.rename (R := ℕ) (Subtype.val : ↥(Sₑᶜ) → ℕ)) =
+        AlgHom.id ℕ (MvPolynomial ↥(Sₑᶜ) ℕ) := by
+  dsimp only
+  have hretained :
+      MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+        Subtype.val_injective (MvPolynomial.X 1) =
+          MvPolynomial.X (⟨1, by decide⟩ : ↥(Sₑᶜ)) := by
+    simpa only [MvPolynomial.rename_X] using
+      MvPolynomial.killCompl_rename_app (R := ℕ) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+        Subtype.val_injective (MvPolynomial.X (⟨1, by decide⟩ : ↥(Sₑᶜ)))
+  refine ⟨?_, even_selection_retention_image, even_selection_elimination_image, ?_,
+    hretained, ?_, MvPolynomial.killCompl_comp_rename Subtype.val_injective⟩
+  · intro hfg
+    exact even_indices_infinite
+      ((MvPolynomial.ideal_span_X_image_fg_iff (R := ℕ) Sₑ).mp hfg)
+  · rw [even_selection_elimination_image]
+    exact Submodule.fg_bot
+  · rw [hretained]
+    exact MvPolynomial.X_ne_zero _
+
+private theorem constant_rename_principal_image :
+    let f : ℕ → ℕ := fun _ => 0
+    ¬ Function.Injective f ∧ ¬ (MvPolynomial.idealOfVars ℕ ℕ).FG ∧
+      (MvPolynomial.idealOfVars ℕ ℕ).map (MvPolynomial.rename (R := ℕ) f).toRingHom =
+        Ideal.span ({MvPolynomial.X 0} : Set (MvPolynomial ℕ ℕ)) ∧
+      ((MvPolynomial.idealOfVars ℕ ℕ).map
+        (MvPolynomial.rename (R := ℕ) f).toRingHom).FG := by
+  dsimp only
+  have hrange : Set.range (fun _ : ℕ => (0 : ℕ)) = {0} := by
+    ext n
+    simp
+  have himage :
+      (MvPolynomial.idealOfVars ℕ ℕ).map
+        (MvPolynomial.rename (R := ℕ) (fun _ : ℕ => (0 : ℕ))).toRingHom =
+          Ideal.span ({MvPolynomial.X 0} : Set (MvPolynomial ℕ ℕ)) := by
+    rw [MvPolynomial.idealOfVars_map_rename, hrange, Set.image_singleton]
+  refine ⟨?_, MvPolynomial.idealOfVars_not_fg ℕ ℕ, himage, ?_⟩
+  · intro hf
+    exact (by decide : (0 : ℕ) ≠ 1) (hf (a₁ := 0) (a₂ := 1) rfl)
+  · rw [himage]
+    exact Submodule.fg_span (Set.finite_singleton _)
+
+private theorem nilpotent_coefficient_elimination :
+    let e := MvPolynomial.killCompl (R := ZMod 4) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+      Subtype.val_injective
+    let c : MvPolynomial ↥(S₃ᶜ) (ZMod 4) := MvPolynomial.C 2
+    c ≠ 0 ∧ c ^ 2 = 0 ∧ e (MvPolynomial.C 2) = c ∧
+      e (MvPolynomial.C 2 * MvPolynomial.X 0 + MvPolynomial.X 1 + MvPolynomial.C 2) =
+        MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)) + c ∧
+      MvPolynomial.rename (Subtype.val : ↥(S₃ᶜ) → ℕ)
+        (e (MvPolynomial.C 2 * MvPolynomial.X 0 + MvPolynomial.X 1 + MvPolynomial.C 2)) =
+          MvPolynomial.X 1 + MvPolynomial.C 2 := by
+  dsimp only
+  have hp :
+      MvPolynomial.killCompl (R := ZMod 4) (f := (Subtype.val : ↥(S₃ᶜ) → ℕ))
+        Subtype.val_injective
+        (MvPolynomial.C 2 * MvPolynomial.X 0 + MvPolynomial.X 1 + MvPolynomial.C 2) =
+          MvPolynomial.X (⟨1, by decide⟩ : ↥(S₃ᶜ)) + MvPolynomial.C 2 := by
+    simp only [map_add, map_mul, MvPolynomial.killCompl_C,
+      finite_elimination_zero_variable, finite_elimination_retained_variable,
+      mul_zero, zero_add]
+  refine ⟨?_, ?_, MvPolynomial.killCompl_C Subtype.val_injective 2, hp, ?_⟩
+  · intro hc
+    exact (by decide : (2 : ZMod 4) ≠ 0) (MvPolynomial.C_eq_zero.mp hc)
+  · rw [← MvPolynomial.C_pow, (by decide : (2 : ZMod 4) ^ 2 = 0), MvPolynomial.C_0]
+  · rw [hp]
+    simp only [map_add, MvPolynomial.rename_X, MvPolynomial.rename_C]
+
+private theorem zero_coefficient_selector_sections :
+    (MvPolynomial.killCompl (R := ZMod 1) (f := (Subtype.val : Sₑ → ℕ))
+      Subtype.val_injective).comp
+        (MvPolynomial.rename (R := ZMod 1) (Subtype.val : Sₑ → ℕ)) =
+          AlgHom.id (ZMod 1) (MvPolynomial Sₑ (ZMod 1)) ∧
+      (MvPolynomial.killCompl (R := ZMod 1) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+        Subtype.val_injective).comp
+          (MvPolynomial.rename (R := ZMod 1) (Subtype.val : ↥(Sₑᶜ) → ℕ)) =
+            AlgHom.id (ZMod 1) (MvPolynomial ↥(Sₑᶜ) (ZMod 1)) ∧
+      (Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ (ZMod 1)) '' Sₑ)).FG := by
+  refine ⟨MvPolynomial.killCompl_comp_rename Subtype.val_injective,
+    MvPolynomial.killCompl_comp_rename Subtype.val_injective, ?_⟩
+  rw [even_variable_span_zmod_one_eq_bot]
+  exact Submodule.fg_bot
+
+private theorem unit_coefficient_ideal_elimination (S : Set ℕ) :
+    let J := Ideal.map (MvPolynomial.C : ℕ →+* MvPolynomial ℕ ℕ) (⊤ : Ideal ℕ) ⊔
+      Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S)
+    let e := MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(Sᶜ) → ℕ))
+      Subtype.val_injective
+    J = ⊤ ∧ J.FG ∧ J.map e.toRingHom = ⊤ ∧ (J.map e.toRingHom).FG := by
+  dsimp only
+  have htop :
+      Ideal.map (MvPolynomial.C : ℕ →+* MvPolynomial ℕ ℕ) (⊤ : Ideal ℕ) ⊔
+        Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' S) = ⊤ := by
+    rw [Ideal.map_top, top_sup_eq]
+  refine ⟨htop,
+    (MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff (⊤ : Ideal ℕ) S).mpr
+      ⟨Ideal.fg_top ℕ, Or.inr rfl⟩, ?_, ?_⟩
+  · rw [htop, Ideal.map_top]
+  · rw [htop, Ideal.map_top]
+    exact Ideal.fg_top _
+
+private theorem infinite_selection_unit_coefficients :
+    let J := Ideal.map (MvPolynomial.C : ℕ →+* MvPolynomial ℕ ℕ) (⊤ : Ideal ℕ) ⊔
+      Ideal.span ((MvPolynomial.X : ℕ → MvPolynomial ℕ ℕ) '' Sₑ)
+    let e := MvPolynomial.killCompl (R := ℕ) (f := (Subtype.val : ↥(Sₑᶜ) → ℕ))
+      Subtype.val_injective
+    (Sₑ).Infinite ∧ J.FG ∧ J.map e.toRingHom = ⊤ ∧ (J.map e.toRingHom).FG := by
+  exact ⟨even_indices_infinite, (unit_coefficient_ideal_elimination Sₑ).2⟩
+
+private theorem lifted_complement_polynomial_action :
+    let S : Set (ULift.{u + 1} ℕ) := {i | Even i.down}
+    let e := MvPolynomial.killCompl (R := ULift.{v + 1} ℕ)
+      (f := (Subtype.val : ↥(Sᶜ) → ULift.{u + 1} ℕ)) Subtype.val_injective
+    e (MvPolynomial.X (ULift.up 0) * MvPolynomial.X (ULift.up 1) +
+        MvPolynomial.X (ULift.up 1) ^ 2 + MvPolynomial.C (ULift.up 3)) =
+      MvPolynomial.X (⟨ULift.up 1, by decide⟩ : ↥(Sᶜ)) ^ 2 +
+        MvPolynomial.C (ULift.up 3) ∧
+      e (MvPolynomial.X (ULift.up 1)) ≠ 0 ∧
+      e.comp (MvPolynomial.rename (R := ULift.{v + 1} ℕ)
+        (Subtype.val : ↥(Sᶜ) → ULift.{u + 1} ℕ)) =
+          AlgHom.id (ULift.{v + 1} ℕ) (MvPolynomial ↥(Sᶜ) (ULift.{v + 1} ℕ)) := by
+  dsimp only
+  have hzero :
+      MvPolynomial.killCompl (R := ULift.{v + 1} ℕ)
+        (f := (Subtype.val : ↥({i : ULift.{u + 1} ℕ | Even i.down}ᶜ) → ULift.{u + 1} ℕ))
+        Subtype.val_injective (MvPolynomial.X (ULift.up 0)) = 0 := by
+    change (MvPolynomial.monomial (Finsupp.single (ULift.up 0) 1)
+      (1 : ULift.{v + 1} ℕ)).killCompl _ = 0
+    apply MvPolynomial.killCompl_monomial_eq_zero_of_notMem_range
+      (a := (ULift.up 0 : ULift.{u + 1} ℕ))
+    · simp
+    · rintro ⟨j, hj⟩
+      have h : ¬ Even j.val.down := j.property
+      rw [hj] at h
+      exact h (by decide)
+  have hretained :
+      MvPolynomial.killCompl (R := ULift.{v + 1} ℕ)
+        (f := (Subtype.val : ↥({i : ULift.{u + 1} ℕ | Even i.down}ᶜ) → ULift.{u + 1} ℕ))
+        Subtype.val_injective (MvPolynomial.X (ULift.up 1)) =
+          MvPolynomial.X
+            (⟨ULift.up 1, by decide⟩ : ↥({i : ULift.{u + 1} ℕ | Even i.down}ᶜ)) := by
+    simpa only [MvPolynomial.rename_X] using
+      MvPolynomial.killCompl_rename_app (R := ULift.{v + 1} ℕ)
+        (f := (Subtype.val : ↥({i : ULift.{u + 1} ℕ | Even i.down}ᶜ) → ULift.{u + 1} ℕ))
+        Subtype.val_injective
+        (MvPolynomial.X (⟨ULift.up 1, by decide⟩ : ↥({i : ULift.{u + 1} ℕ | Even i.down}ᶜ)))
+  refine ⟨?_, ?_, MvPolynomial.killCompl_comp_rename Subtype.val_injective⟩
+  · simp only [map_add, map_mul, map_pow, hzero, hretained, MvPolynomial.killCompl_C,
+      zero_mul, zero_add]
+  · rw [hretained]
+    exact MvPolynomial.X_ne_zero _
+
+end SelectedVariableElimination
+
+end MultivariatePolynomialsTests
