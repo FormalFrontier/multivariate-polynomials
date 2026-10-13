@@ -142,6 +142,23 @@ end MvPolynomial
 
 namespace Polynomial
 
+/-- A polynomial semiring is Noetherian as a module over its coefficient semiring
+exactly when the coefficient semiring is subsingleton. The scalar action is the
+canonical left coefficient action, and coefficient multiplication need not commute. -/
+theorem isNoetherian_iff (R : Type u) [Semiring R] :
+    IsNoetherian R (Polynomial R) ↔ Subsingleton R := by
+  constructor
+  · intro h
+    rcases subsingleton_or_nontrivial R with hsub | hnontriv
+    · exact hsub
+    · let : Nontrivial R := hnontriv
+      let : IsNoetherian R (Polynomial R) := h
+      exact (Polynomial.not_finite (R := R)
+        (Module.IsNoetherian.finite R (Polynomial R))).elim
+  · intro h
+    let : Subsingleton R := h
+    exact isNoetherian_of_subsingleton R (Polynomial R)
+
 private theorem mem_leadingCoeffNth_iff_coeff
     {R : Type u} [Semiring R] (I : Ideal (Polynomial R)) (n : ℕ) (r : R) :
     r ∈ I.leadingCoeffNth n ↔

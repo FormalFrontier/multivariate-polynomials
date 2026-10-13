@@ -18,7 +18,7 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-three production leaves and thirty-four test/example modules.
+library has twenty-three production leaves and thirty-five test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -105,6 +105,19 @@ weight-one-valuation naturality interfaces.
   polynomial zero. The [univariate applications](MultivariatePolynomialsTests/PolynomialArtinianClient.lean)
   include the usual non-ring semiring `ℝ≥0`, the noncommutative 16-element
   matrix ring over `ZMod 2`, and the zero ring `ZMod 1`.
+- **Univariate coefficient-module Noetherianity and Artinianity each characterize trivial coefficients.**
+  For any `R : Type u` with `[Semiring R]`,
+  [`Polynomial.isNoetherian_iff`](MultivariatePolynomials/Noetherian.lean) and
+  [`Polynomial.isArtinian_iff`](MultivariatePolynomials/Artinian.lean) give
+  `IsNoetherian R (Polynomial R) ↔ Subsingleton R` and
+  `IsArtinian R (Polynomial R) ↔ Subsingleton R`, respectively.
+  Both use the canonical left coefficient action
+  `r • p = Polynomial.C r * p`, not polynomial multiplication as a self-module.
+  The universe is arbitrary; no commutativity, ring, domain or field hypothesis
+  is required. The [coefficient-module examples](MultivariatePolynomialsTests/PolynomialCoefficientModules.lean)
+  distinguish these properties from coefficient self-Noetherianity and
+  self-Artinianity, even for the infinite non-ring semiring `ℝ≥0` with finitely
+  many ideals.
 - **Coefficient-and-variable ideals have an exact finite-generation criterion.**
   For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
   [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
@@ -125,9 +138,9 @@ weight-one-valuation naturality interfaces.
 
 The [full results guide](docs/Results.md) also covers simultaneous finite-fraction
 origins and their preimage dimension bounds, polynomial Zariski topology,
-valuation naturality, evaluation kernels, coefficient-module Noetherianity,
-polynomial self-Artinianity, and the substitution, degree, division and lifting
-interfaces, with all their hypotheses and boundary cases.
+valuation naturality, evaluation kernels, coefficient-module Noetherianity and
+Artinianity, polynomial self-Artinianity, and the substitution, degree, division
+and lifting interfaces, with all their hypotheses and boundary cases.
 Its [fraction examples](docs/Results.md#fraction-origins-and-traces-in-use)
 explain how to use the common finite stage and why whole stage fields do not
 provide the subsemiring dimension bound.
@@ -216,8 +229,8 @@ not a complete declaration inventory.
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Simultaneous finite-variable origins for polynomial fractions |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
-| [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; self and coefficient-module criteria (direct import) |
-| [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self-Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
+| [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
+| [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |

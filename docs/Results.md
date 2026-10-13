@@ -128,6 +128,38 @@ For dependency setup, imports and build commands, see the
   non-ring semiring `ℕ`, the Boolean ring `ZMod 2`, and `ℤ × ZMod 2` with zero
   divisors, and contrast finite-variable integer self-Noetherianity with failure
   for its coefficient module.
+- **Univariate coefficient-module Noetherianity and Artinianity each characterize trivial coefficients.**
+  The [Noetherian](../MultivariatePolynomials/Noetherian.lean) and
+  [Artinian](../MultivariatePolynomials/Artinian.lean) modules prove:
+
+  ```lean
+  Polynomial.isNoetherian_iff (R : Type u) [Semiring R] :
+      IsNoetherian R (Polynomial R) ↔ Subsingleton R
+
+  Polynomial.isArtinian_iff (R : Type u) [Semiring R] :
+      IsArtinian R (Polynomial R) ↔ Subsingleton R
+  ```
+
+  Both use the canonical left coefficient action
+  `r • p = Polynomial.C r * p`. The universe `u` is arbitrary, coefficient
+  multiplication need not commute, and no ring, domain or field hypothesis is
+  imposed. Trivial coefficients make every polynomial zero; every nontrivial
+  semiring fails each coefficient-module condition. These are not polynomial
+  self-module conditions: the Hilbert basis theorem and
+  `Polynomial.isArtinianRing_iff` use `Polynomial R` as scalars. The separate
+  multivariate criteria require commutative coefficients and distinguish the
+  empty-variable case.
+  The [coefficient-module examples](../MultivariatePolynomialsTests/PolynomialCoefficientModules.lean)
+  include the usual semiring `ℝ≥0`: it is infinite and not a ring (`1` has no
+  additive inverse), while its finite ideal lattice makes its coefficient
+  self-module both Noetherian and Artinian. Neither coefficient-module condition
+  holds for `Polynomial ℝ≥0`. Similarly, `ℕ` is self-Noetherian, but
+  `Polynomial ℕ` is not self-Noetherian and is neither Noetherian nor Artinian
+  over `ℕ`. The noncommutative sixteen-element ring
+  `Matrix (Fin 2) (Fin 2) (ZMod 2)` has a left-Noetherian polynomial self-module,
+  but neither coefficient-module property. The genuine zero ring `ZMod 1`
+  supplies both positive coefficient-module conditions, with every polynomial
+  equal to zero.
 - **Noetherian polynomial-ring criteria.** The
   [Noetherian module](../MultivariatePolynomials/Noetherian.lean) proves the
   coefficient-and-variable characterization over arbitrary commutative rings:

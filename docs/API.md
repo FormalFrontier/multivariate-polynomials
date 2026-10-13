@@ -271,11 +271,27 @@ The [ring clients](../MultivariatePolynomialsTests/Noetherian.lean) include empt
 finite and infinite variables and coefficient rings with zero divisors. These
 criteria do not assert a Hilbert basis theorem for arbitrary semirings.
 
+For the univariate coefficient module, the same producer gives
+
+```lean
+theorem Polynomial.isNoetherian_iff (R : Type u) [Semiring R] :
+    IsNoetherian R (Polynomial R) ↔ Subsingleton R
+```
+
+This uses the canonical left coefficient action
+`r • p = Polynomial.C r * p`, not the polynomial self-action of the Hilbert
+basis theorem. The universe `u` is arbitrary; coefficients need not commute
+or form a ring, domain or field. Trivial coefficients give a Noetherian
+coefficient module; every nontrivial semiring fails this condition. The
+[coefficient-module examples](../MultivariatePolynomialsTests/PolynomialCoefficientModules.lean)
+contrast these actions over `ℕ`, `ℝ≥0`, the noncommutative sixteen-element
+matrix ring over `ZMod 2`, and `ZMod 1`.
+
 ## `MultivariatePolynomials.Artinian`
 
 Import the [producer](../MultivariatePolynomials/Artinian.lean) directly as
-`MultivariatePolynomials.Artinian`, or through the aggregate. Its two public
-criteria concern the canonical left self-module: the polynomial semiring acts
+`MultivariatePolynomials.Artinian`, or through the aggregate. Its two
+self-module criteria use the canonical left self-action: the polynomial semiring acts
 on itself, not through the coefficient `R`-module action.
 
 ```lean
@@ -309,6 +325,22 @@ covers empty and nonempty variables over the usual semiring `ℝ≥0`.
 Mathlib's regular-variable, regular-to-unit, nonunit-variable and finite Artinian
 module results supply the proof ingredients; the producer lists their module
 references.
+
+For the coefficient module, the producer also gives
+
+```lean
+theorem Polynomial.isArtinian_iff (R : Type u) [Semiring R] :
+    IsArtinian R (Polynomial R) ↔ Subsingleton R
+```
+
+The scalars here are `R`, with the canonical left coefficient action
+`r • p = Polynomial.C r * p`, not `Polynomial R` as in
+`Polynomial.isArtinianRing_iff`. The universe is arbitrary, and no
+commutativity, ring, domain or field hypothesis is required. The
+[coefficient-module examples](../MultivariatePolynomialsTests/PolynomialCoefficientModules.lean)
+show that even coefficient self-Noetherianity and self-Artinianity, or a finite
+coefficient ideal lattice, do not imply either polynomial coefficient-module
+chain condition.
 
 ## `MultivariatePolynomials.HomogeneousEvaluation`
 
@@ -807,7 +839,7 @@ is proved.
 [Aggregate](../MultivariatePolynomials.lean) publicly imports twenty-two production
 leaves. The [Noetherian producer](../MultivariatePolynomials/Noetherian.lean) is
 available through its direct import.
-Thirty-four test/example modules are registered as explicit roots under
+Thirty-five test/example modules are registered as explicit roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
@@ -840,9 +872,10 @@ Thirty-four test/example modules are registered as explicit roots under
 [Artinian polynomial fixtures](../MultivariatePolynomialsTests/Artinian.lean),
 [Artinian criterion clients](../MultivariatePolynomialsTests/ArtinianCriterion.lean),
 [univariate semiring model examples](../MultivariatePolynomialsTests/PolynomialArtinianModels.lean),
-[noncommutative matrix model examples](../MultivariatePolynomialsTests/PolynomialMatrixArtinian.lean), and
-[univariate criterion applications](../MultivariatePolynomialsTests/PolynomialArtinianClient.lean).
+[noncommutative matrix model examples](../MultivariatePolynomialsTests/PolynomialMatrixArtinian.lean),
+[univariate criterion applications](../MultivariatePolynomialsTests/PolynomialArtinianClient.lean), and
+[coefficient-module examples](../MultivariatePolynomialsTests/PolynomialCoefficientModules.lean).
 The presentation-only fixtures import only the presentation leaf;
 the headline clients import the separated-equivalence leaf. The tests are not re-exported as production
-API. The twenty-three production leaves, aggregate, and thirty-four test modules
-total fifty-eight Lean source modules.
+API. The twenty-three production leaves, aggregate, and thirty-five test modules
+total fifty-nine Lean source modules.

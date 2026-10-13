@@ -77,6 +77,27 @@ end MvPolynomial
 
 namespace Polynomial
 
+/-- A polynomial semiring is Artinian as a module over its coefficient semiring
+exactly when the coefficient semiring is subsingleton. The scalar action is the
+canonical left coefficient action, and coefficient multiplication need not commute. -/
+theorem isArtinian_iff (R : Type u) [Semiring R] :
+    IsArtinian R (Polynomial R) ↔ Subsingleton R := by
+  constructor
+  · intro h
+    let : IsArtinian R (Polynomial R) := h
+    rcases subsingleton_or_nontrivial R with hR | hR
+    · exact hR
+    · let : Nontrivial R := hR
+      obtain ⟨p, hp⟩ := IsArtinian.surjective_of_injective_endomorphism
+        (LinearMap.mulRight R (X : Polynomial R)) isRegular_X.right 1
+      have hz : (0 : R) = 1 := by
+        simpa only [LinearMap.mulRight_apply, coeff_mul_X_zero, coeff_one_zero] using
+          congrArg (fun q : Polynomial R ↦ q.coeff 0) hp
+      exact (zero_ne_one hz).elim
+  · intro h
+    let : Subsingleton R := h
+    exact isArtinian_of_finite (R := R) (M := Polynomial R)
+
 /-- A polynomial semiring is Artinian over itself exactly when its coefficient semiring
 is subsingleton. The coefficients need not be commutative. -/
 theorem isArtinianRing_iff (R : Type u) [Semiring R] :
