@@ -14,22 +14,26 @@ evaluation map an embedding and identifies zero loci with inherited
 closed-point subspaces under the same finite-variable algebraic-closure
 hypotheses.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
-for the square-zero action. Import `MultivariatePolynomials` for the
+for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits)
+supplies the generic finite-capture preimage dimension bound used for polynomial
+fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty production leaves and twenty-five test/example modules.
+library has twenty-three production leaves and thirty-one test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
-- **Finite collections of polynomial fractions have one finite-variable origin.**
-  [`MvPolynomial.exists_finset_fractionRing_map_range`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
-  captures any finite set in any fraction-ring representation of `MvPolynomial σ R`
-  over an integral domain `R` in the range of one coefficient-preserving finite-variable
-  fraction-ring map. The variables may be infinite and the three universes are independent;
-  no field structure on the coefficients or abstract target is assumed. The empty-variable
-  stage is a fraction ring of `R`, not generally `R` itself.
+- **Fraction-ring variable images are exactly the renamed variables.** Over
+  any integral domain `R`, an injective index map `ρ : τ → σ` induces a
+  [canonical fraction-ring map](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  between arbitrary commutative-ring fraction-ring realizations. The image of
+  `X i` belongs to its range exactly when `i ∈ Set.range ρ`; coefficient,
+  variable and realization universes are independent. A finite-variable stage
+  missing `i` is not surjective, so with infinitely many variables **every**
+  finite stage is nonsurjective, although each finite family of fractions has
+  a common finite stage. See the [API guide](docs/API.md#multivariatepolynomialsfractionringfinitevariables).
 - **Zeros are closed points of polynomial quotients.** For any ideal `I` in
   `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
   [canonical point-set equivalence](MultivariatePolynomials/QuotientClosedPoints.lean)
@@ -39,18 +43,6 @@ weight-one-valuation naturality interfaces.
   laws. The field and variables may inhabit different universes, and `I` may
   be the unit ideal or define a nonreduced quotient. This point-set result
   itself does not assert a topological or sheaf equivalence.
-- **Polynomial coordinate zero loci have their quotient topology.** For any
-  field and variable type, the [coordinate topology](MultivariatePolynomials/ZariskiTopology.lean)
-  induced by the evaluation point in the prime spectrum has exactly polynomial
-  zero loci as closed sets, with polynomial nonvanishing sets as an open basis.
-  Evaluation embeds coordinate tuples; polynomial substitution is continuous.
-  Every ideal's zero locus embeds in the closed-point subspace of its quotient
-  spectrum, without assuming finiteness or algebraic closure. For an
-  algebraically closed field and finitely many variables, the existing
-  coordinate equivalence is a homeomorphism onto that inherited subspace,
-  including the unit ideal and nonradical ideals. A parabola has inverse
-  polynomial-coordinate parametrizations; over the rationals a closed quotient
-  point need not arise from a rational zero. No sheaf equivalence is claimed.
 - **Separated polynomial point quotients are square-zero extensions.** Over
   any commutative ring, including the zero ring, and any index type, the
   [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)
@@ -70,44 +62,52 @@ weight-one-valuation naturality interfaces.
   function field in those unweighted variables and ratios. The equal-order
   fraction law computes residues from initial coefficients. For the empty
   subset, the separate trivial valuation has no discrete-valuation claim.
-- **Weight-one valuations and full residues respect embeddings.** An injective
-  coefficient map and variable embedding preserve minimum support weight,
-  including at zero, over arbitrary commutative semirings when source weights
-  are pulled back from target weights. Over fields the induced maps of fraction
-  fields, valuation rings and full residue fields preserve valuations under the
-  exact inverse-image condition on weighted variables. Source and target pivots
-  may differ: the coordinate change fixes constants and unweighted variables
-  and transforms weighted ratios by division by the new pivot ratio. If every
-  source variable maps to an unweighted target variable, the *source function
-  field* instead embeds into the target residue field without a source pivot;
-  an additional weighted target ratio lies outside this image. These results
-  require no finite-variable assumption or surjectivity of the variable
-  embedding. See the [naturality module](MultivariatePolynomials/WeightOneNaturality.lean)
-  and its [examples](MultivariatePolynomialsTests/WeightOneNaturality.lean).
-- **Coordinate differences identify evaluation kernels.** The
-  [coordinate-difference ideal](MultivariatePolynomials/EvaluationIdeal.lean)
-  at any point over a commutative ring equals the evaluation
-  kernel, with a membership criterion and a bridge to the singleton vanishing
-  ideal over any field. The variable type may be infinite or empty, and the
-  coefficient ring may have zero divisors or be the zero ring.
-- **Evaluation ideals commute with substitution.** Polynomial algebra
-  homomorphisms contract evaluation kernels to evaluation kernels at the
-  substituted coordinates over any commutative semiring and coefficient algebra.
-  For commutative rings this contracts coordinate-difference ideals; over fields,
-  contraction of the associated prime-spectrum points works also for points
-  valued in a field extension. See the [evaluation-ideal module](MultivariatePolynomials/EvaluationIdeal.lean).
-- **Variable ideals are finitely generated exactly for finite subsets.** Over
-  any nontrivial commutative semiring,
-  [`MvPolynomial.ideal_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
-  characterizes finite generation of `Ideal.span (MvPolynomial.X '' S)` in the
-  full ambient polynomial semiring by finiteness of `S`. No domain, Noetherian
-  or finite-ambient-variable assumption is needed. Finite subsets, including
-  the empty subset, give finitely generated ideals even with infinitely many
-  ambient variables; the converse fails over the zero semiring. Mathlib supplies
-  the characteristic membership API `MvPolynomial.mem_ideal_span_X_image`;
-  this library supplies the finite-generation iff. The
-  [examples](MultivariatePolynomialsTests/IdealOfVarsSubset.lean) include a proper
-  infinite even-variable ideal over `ZMod 6` and the zero-ring boundary `ZMod 1`.
+- **Hilbert basis theorem for left-Noetherian rings.**
+  [`Polynomial.isNoetherianRing_of_isNoetherianRing`](MultivariatePolynomials/Noetherian.lean)
+  proves `IsNoetherianRing (Polynomial R)` for any `R : Type u` with
+  `[Ring R]` and `[IsNoetherianRing R]`. The polynomial variable is central;
+  coefficient commutativity, nontriviality and absence of zero divisors are
+  not required. On commutative rings,
+  `Polynomial.isNoetherianRing_of_isNoetherianRing_eq_isNoetherianRing`
+  identifies this proof with Mathlib's `Polynomial.isNoetherianRing`.
+  Here `IsNoetherianRing R` means `IsNoetherian R R` for the canonical left
+  self-action. It does not assume `IsNoetherian R (Polynomial R)`: that
+  coefficient-module property is false for every nontrivial coefficient ring.
+  The [examples](MultivariatePolynomialsTests/Noetherian.lean) include the
+  noncommutative 16-element ring `Matrix (Fin 2) (Fin 2) (ZMod 2)`, whose
+  polynomial ring is infinite but left-Noetherian, the zero ring `ZMod 1`,
+  and `ZMod 4` with its nonzero nilpotent `2`.
+- **Noetherian polynomial-ring criteria.** The
+  [Noetherian module](MultivariatePolynomials/Noetherian.lean) proves the
+  coefficient-and-variable characterization over arbitrary commutative rings:
+  `MvPolynomial σ R` is Noetherian for its self-action exactly when `R` is
+  Noetherian and either
+  `σ` is finite or `R` is the zero ring. For nontrivial commutative semirings,
+  Noetherianity of the polynomial semiring forces `σ` to be finite; no
+  semiring Hilbert-basis sufficiency is asserted. The nontrivial-ring form
+  removes the zero-ring alternative without imposing a domain hypothesis.
+  The coefficient and variable universes are independent. The
+  [examples](MultivariatePolynomialsTests/Noetherian.lean) distinguish empty,
+  finite and infinite variables over the integers, `ZMod 6`, and `ZMod 1`.
+- **Artinian polynomial-semiring criterion.** For arbitrary variable types
+  `σ : Type u` and coefficients `R : Type v` with `[CommSemiring R]`,
+  [`MvPolynomial.isArtinianRing_iff`](MultivariatePolynomials/Artinian.lean)
+  proves `IsArtinianRing (MvPolynomial σ R) ↔ IsArtinianRing R ∧
+  (IsEmpty σ ∨ Subsingleton R)`. The action is polynomial multiplication
+  on the canonical left self-module, not the coefficient `R`-module action.
+  The universes are independent; no ring or finite-variable hypothesis is
+  imposed. Empty variables recover coefficient Artinianity, and trivial
+  coefficients work for every variable type.
+- **Coefficient-and-variable ideals have an exact finite-generation criterion.**
+  For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
+  [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
+  characterizes finite generation of `Ideal.map C I ⊔ Ideal.span (X '' S)`:
+  `I` must be finitely generated, and either `S` is finite or `I` is the unit ideal.
+  The coefficient and variable universes are independent; no ring, domain,
+  subtractivity or finite-ambient-variable hypothesis is required. The
+  [examples](MultivariatePolynomialsTests/CoefficientVariableIdeal.lean) include
+  a proper nonsubtractive ideal over `ℕ`, coefficient zero divisors, and the
+  zero-ring boundary.
 - **The variable ideal is not finitely generated.** For a nontrivial
   commutative semiring and infinitely many variables,
   [`MvPolynomial.idealOfVars_not_fg`](MultivariatePolynomials/IdealOfVars.lean)
@@ -115,89 +115,17 @@ weight-one-valuation naturality interfaces.
   some variable; evaluation separating that variable gives a contradiction.
   Mathlib supplies the complementary *finite*-variable ideal theorem. This
   library does not prove the motivating complete short exact sequence.
-- **Homogeneous evaluation scales predictably.** The
-  [weighted and ordinary scaling laws](MultivariatePolynomials/HomogeneousEvaluation.lean)
-  hold over arbitrary commutative semirings with the coefficient homomorphism
-  held fixed; the scalar may be zero. See the
-  [evaluation guide](docs/homogeneous-polynomial-evaluation.md).
-- **Disjoint-block substitution preserves appropriate zero loci.**
-  [`blockSubst` and its laws](MultivariatePolynomials/BlockSubstitution.lean)
-  distinguish forward-only vanishing from vanishing *iff* the input tuple is
-  zero. Structural [renaming, association, unit and iteration laws](MultivariatePolynomials/BlockSubstitutionLaws.lean)
-  hold even for noninjective renaming over arbitrary commutative semirings.
-  See the [substitution](docs/block-substitution.md) and
-  [structural laws](docs/block-substitution-laws.md) guides.
-- **Iterates have conditional attained degrees.**
-  [`iteratedBlockSubst`](MultivariatePolynomials/IteratedBlockSubstitution.lean)
-  uses tuple indices `Fin r → ι`. For a homogeneous base of degree `d`, its
-  nominal degree is `d ^ r`; nontrivial coefficients, nonempty indices and a
-  forward-only vanishing condition give the exact total degree. With `1 < d`,
-  the attained degrees exceed every bound. Neither a base form nor every
-  sufficiently large degree is asserted. See the [iteration guide](docs/iterated-block-substitution.md).
-- **Exact degree of disjoint-block substitution.**
-  [`totalDegree_blockSubst`](MultivariatePolynomials/BlockSubstitutionDegree.lean)
-  handles arbitrary inputs, including zero, constants and empty indices, over
-  a commutative semiring without zero divisors. See the
-  [degree guide](docs/block-substitution-degree.md).
-- **Polynomial-parameter coefficient extraction preserves a homogeneous
-  label.** The [interchange theorem](MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean)
-  works over any commutative semiring, including zero coefficients; it does not
-  imply equality of actual degrees. See the
-  [coefficient guide](docs/polynomial-coefficient-homogeneity.md).
-- **Linear coefficient functionals commute with base-valued evaluation.**
-  [`eval_addMonoidAlgebraMap_of_linearMap`](MultivariatePolynomials/LinearCoefficientEvaluation.lean)
-  needs only an `R`-linear coefficient map, not a multiplicative one, and
-  evaluates at points in `R`. See the
-  [linear-evaluation guide](docs/linear-coefficient-evaluation.md).
-- **Fixed linear division preserves coefficient ideals.** Given arbitrary
-  variable and divisor-index types over a commutative ring, and unit leading
-  coefficients, [chosen `R`-linear quotient and remainder maps](MultivariatePolynomials/LinearDivision.lean)
-  reconstruct every input. Actual remainder exponents avoid *every*
-  componentwise leading cone; every coefficient ideal is preserved, including
-  in each quotient coordinate. The choices are not canonical; no Gröbner
-  basis is assumed or established, and no finite-variable or domain
-  condition is imposed. See the
-  [division guide](docs/linear-division.md).
-- **Monic lifts preserve literal leading exponents.**
-  [`MonomialOrder.exists_monic_lift`](MultivariatePolynomials/MonicLift.lean)
-  gives an existential lift along a surjective coefficient map for arbitrary
-  variables and commutative rings, including a zero target. Support equality
-  is used only in the nontrivial-target proof; the zero-target case takes
-  `q = 1`. No injectivity, finite-variable or blanket nontriviality condition
-  is needed. See the [lift guide](docs/monic-lift.md).
 
-- **A scalar top first-variable coefficient fixes the maximum lex monomial.**
-  [`MonomialOrder.lex_degree_of_finSuccEquiv_scalar_top`](MultivariatePolynomials/FirstVariableLex.lean)
-  works over any commutative semiring when the separated polynomial has natural
-  degree `d` and its degree-`d` coefficient is a nonzero scalar. The `Fin 0`
-  tail and `d = 0` are included. A distinct [pointwise cone lemma](MultivariatePolynomials/FirstVariableLex.lean)
-  characterizes exponents above the pure first-variable monomial; it is not a
-  lexicographic inequality. See the [lex guide](docs/first-variable-lex.md).
-
-The [localized coordinate quotient](MultivariatePolynomials/LocalizedCoordinateQuotient.lean)
-has a coefficient-annihilation kernel law and algebra equivalence from
-the localization of `R[X] / ⟨C r * X⟩` at the image of `r` to `R[1/r]`,
-for any commutative ring and any `r`. Evaluation at zero on the quotient
-and its representative law supply the map; its localization has forward and
-inverse fraction laws, a variable-to-zero law, and a chosen-inverse law. The
-[ordinary-import clients](MultivariatePolynomialsTests/LocalizedCoordinateQuotient.lean)
-exercise nonconstant fractions, a separately justified nonzero variable,
-and degenerate coefficient choices.
-
-These results are mathematical interfaces, not source-coverage certifications.
-The [API map](docs/API.md) gives declaration names, modules and hypotheses;
-[documentation navigation](docs/README.md) links each focused guide and
-explains the archived six-module native API snapshot.
+The [full results guide](docs/Results.md) also covers simultaneous finite-fraction
+origins and their preimage dimension bounds, polynomial Zariski topology,
+valuation naturality, evaluation kernels, coefficient-module Noetherianity,
+polynomial self-Artinianity, and the substitution, degree, division and lifting
+interfaces, with all their hypotheses and boundary cases.
+Its [fraction examples](docs/Results.md#fraction-origins-and-traces-in-use)
+explain how to use the common finite stage and why whole stage fields do not
+provide the subsemiring dimension bound.
 
 ## Use and check
-
-For fraction origins, import `MultivariatePolynomials.FractionRingFiniteVariables`
-(or the aggregate) and apply `MvPolynomial.exists_finset_fractionRing_map_range hE`
-to `hE : E.Finite`. The resulting common `J` and range inclusion give a preimage
-for each member through Mathlib's `IsFractionRing.map`. The
-[examples](MultivariatePolynomialsTests/FractionRingFiniteVariables.lean) capture
-`X₀ / 2`, `1 / (X₁ + 1)`, and zero simultaneously over integer coefficients and
-infinitely many variables, and include empty collections and empty ambient variables.
 
 To use this library as a dependency, add it to your `lakefile.toml`:
 
@@ -213,7 +141,23 @@ add or update the dependency; `lake-manifest.json` retains that commit until you
 update again. To pin a particular release, use a full commit from that branch's
 history instead of `main`.
 
-The aggregate import exposes the current producer modules; direct imports such
+For the Noetherian criteria and the left-Noetherian Hilbert basis theorem,
+import `MultivariatePolynomials.Noetherian` directly. The matrix-ring example
+obtains coefficient self-Noetherianity from finiteness and applies the theorem:
+
+```lean
+import MultivariatePolynomials.Noetherian
+import Mathlib.Data.Matrix.Basis
+import Mathlib.Data.ZMod.Basic
+
+example :
+    IsNoetherianRing (Polynomial (Matrix (Fin 2) (Fin 2) (ZMod 2))) := by
+  let B : Type := Matrix (Fin 2) (Fin 2) (ZMod 2)
+  let : IsNoetherianRing B := isNoetherian_of_finite B B
+  exact Polynomial.isNoetherianRing_of_isNoetherianRing (R := B)
+```
+
+The aggregate import exposes the other producer modules; direct imports such
 as `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.LinearDivision`, `MultivariatePolynomials.MonicLift`
 and `MultivariatePolynomials.FirstVariableLex`
@@ -227,8 +171,15 @@ private theorem readmeRationals : ¬ (MvPolynomial.idealOfVars ℕ ℚ).FG :=
   MvPolynomial.idealOfVars_not_fg ℚ ℕ
 ```
 
+Read the [toolchain file](lean-toolchain), [Lake configuration](lakefile.toml)
+and [resolved manifest](lake-manifest.json) for the checkout's versions.
+Libraries used together must share one Mathlib revision; Lake resolves one
+revision of each package, so do not try to use multiple revisions of this
+library in the same project.
+
+For a source checkout, run the following commands from its root directory.
 The repository pins Lean `v4.34.0-rc2` and mathlib
-`83abb3e776bdefcbc447a1e44d0debe4010039e5` (ten resolved packages in
+`83abb3e776bdefcbc447a1e44d0debe4010039e5` (eleven pinned package records in
 `lake-manifest.json`). Install the pinned toolchain and **successfully fetch
 the matching precompiled mathlib cache before building**:
 
@@ -241,16 +192,43 @@ lake build
 The default Lake build includes both the production and test/example targets.
 `LEAN_NUM_THREADS=1` can set Lean's runtime task-worker count; it is **not** a
 whole-build process or memory limit. The pinned Lake does **not** use
-`LAKE_JOBS` as an effective concurrency limit. After-cache two-target project
-builds on comparable CI runners took 16.967 and 19.234 seconds, with matching
-cache fetches of 39.349 and 41.061 seconds; complete workflows with setup and
-private-inclusive axiom auditing took 229 and 240 seconds. Roughly 20–30
-seconds for the after-cache project build and 4–5 minutes for the whole
-workflow are *planning estimates*, not guaranteed timings. Allow about 8 GiB
+`LAKE_JOBS` as an effective concurrency limit. Allow about 8 GiB
 available RAM and several GiB free disk as *planning allowances*, not measured
-minima or current aggregate peaks; host and concurrent load matter. These
-figures do not describe a full mathlib source rebuild. The archived six-module
-snapshot's child-process RSS does not measure the expanded current project.
+minima or current aggregate peaks; host and concurrent load matter. Fetch the
+matching cache rather than falling back to a Mathlib source rebuild.
+
+## Contents
+
+Each leaf may be imported individually. The aggregate imports twenty-two of
+these twenty-three leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
+not a complete declaration inventory.
+
+| Module (`MultivariatePolynomials.`) | Main interfaces |
+| --- | --- |
+| [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Simultaneous finite-variable origins for polynomial fractions |
+| [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
+| [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
+| [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; self and coefficient-module criteria (direct import) |
+| [`Artinian`](MultivariatePolynomials/Artinian.lean) | Polynomial self-Artinianity over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
+| [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
+| [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
+| [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |
+| [`BlockSubstitutionLaws`](MultivariatePolynomials/BlockSubstitutionLaws.lean) | Renaming, association, unit and iteration laws |
+| [`BlockSubstitutionDegree`](MultivariatePolynomials/BlockSubstitutionDegree.lean) | Exact total degree under no zero divisors |
+| [`PolynomialCoefficientHomogeneity`](MultivariatePolynomials/PolynomialCoefficientHomogeneity.lean) | Homogeneous labels under polynomial coefficient extraction |
+| [`LinearCoefficientEvaluation`](MultivariatePolynomials/LinearCoefficientEvaluation.lean) | Linear coefficients and base-valued evaluation |
+| [`LinearDivision`](MultivariatePolynomials/LinearDivision.lean) | Chosen linear division preserving coefficient ideals |
+| [`MonicLift`](MultivariatePolynomials/MonicLift.lean) | Monic lifts along surjective coefficient maps |
+| [`FirstVariableLex`](MultivariatePolynomials/FirstVariableLex.lean) | First-variable scalar coefficients and lexicographic degree |
+| [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels and contraction under substitution |
+| [`QuotientClosedPoints`](MultivariatePolynomials/QuotientClosedPoints.lean) | Closed points of polynomial quotient spectra |
+| [`ZariskiTopology`](MultivariatePolynomials/ZariskiTopology.lean) | Polynomial coordinate topology and zero-locus homeomorphisms |
+| [`LocalizedCoordinateQuotient`](MultivariatePolynomials/LocalizedCoordinateQuotient.lean) | Localized coordinate quotients and evaluation at zero |
+| [`PointSquareZeroPresentation`](MultivariatePolynomials/PointSquareZeroPresentation.lean) | Point quotient presentation and its forward map |
+| [`PointSquareZeroQuotient`](MultivariatePolynomials/PointSquareZeroQuotient.lean) | Equivalence with a square-zero extension |
+| [`WeightOneValuation`](MultivariatePolynomials/WeightOneValuation.lean) | Subset-weight-one valuations and full residue fields |
+| [`WeightOneNaturality`](MultivariatePolynomials/WeightOneNaturality.lean) | Valuation and residue maps under embeddings |
 
 ## References
 
@@ -270,6 +248,11 @@ snapshot's child-process RSS does not measure the expanded current project.
   multivariate-polynomial, ideal, homogeneity, substitution, localization,
   monomial-order, and linear-map APIs used throughout the library. The leaf
   modules identify the specific formalized dependencies.
+- [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits/tree/5959888b3d648cf1f72038459f63d804093d6c54)
+  supplies the generic finite-capture bound for subsemiring preimage dimensions.
+  The polynomial-fraction application and integer boundary examples are original
+  Formal Frontier formalizations using that bound, this library's simultaneous
+  finite-fraction origins, and Mathlib's integer, field and ring-equivalence APIs.
 - [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
   supplies the canonical opposite-module and central-scalar action used by the
   polynomial point quotient's trivial square-zero extension.

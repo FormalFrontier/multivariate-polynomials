@@ -59,7 +59,7 @@ implication. This requires neither vanishing at zero nor finite support.
 
 For homogeneous inputs of nominal degrees `d` and `e`, reuse mathlib's
 `MvPolynomial.IsHomogeneous.aeval` and `.rename_isHomogeneous` to show that
-`blockSubst p q` is homogeneous of nominal degree `e * d`; the native
+`blockSubst p q` is homogeneous of nominal degree `e * d`; Mathlib's
 `aeval_eq_bind₁` identifies substitution with `aeval`. Exact
 `MvPolynomial.totalDegree = e * d` also requires the substituted polynomial
 to be **nonzero**: mathlib's `IsHomogeneous.totalDegree` takes that hypothesis,

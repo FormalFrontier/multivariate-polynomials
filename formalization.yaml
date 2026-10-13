@@ -8,8 +8,13 @@ project:
     disjoint-block substitution and its iteration,
     finite-variable origins of finite collections of polynomial fractions over
     integral domains in arbitrary fraction-ring representations,
+    and a Krull-dimension bound for subsemirings by their finite-variable
+    fraction-stage preimage dimensions, not the whole stage fields,
     degree, coefficient extraction and linear evaluation, chosen linear
     division, existential monic lifts and scalar-top first-variable lex degree.
+    The univariate Hilbert basis theorem holds for any left-Noetherian ring,
+    without coefficient commutativity, using a central variable and the
+    canonical left self-module.
     A polynomial point quotient by indexed squares and linear point relations
     has a canonical map to a square-zero extension of evaluation quotients;
     that same map is an algebra equivalence under pairwise unit differences.
@@ -20,6 +25,17 @@ project:
   license: Apache-2.0
 
 sources:
+  - title: "Algebraic Direct Limits"
+    authors:
+      - Formal Frontier Agents
+    type: software
+    location: "https://github.com/FormalFrontier/algebraic-direct-limits/tree/5959888b3d648cf1f72038459f63d804093d6c54"
+    relationship: background
+    note: >-
+      Supplies the generic finite-capture subsemiring-preimage dimension bound.
+      The polynomial-fraction application and integer boundary clients are
+      original project formalizations using this library's finite-fraction
+      origins and Mathlib's integer, field and ring-equivalence APIs.
   - title: "Foundations of Rigid Geometry I"
     authors:
       - Kazuhiro Fujiwara

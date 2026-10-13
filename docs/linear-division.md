@@ -22,7 +22,7 @@ that each actual exponent `α ∈ (B p).support` satisfies
 `∀ i, ¬ m.degree (b i) ≤ α`. Here `≤` is **componentwise exponent order**,
 not a comparison in the monomial order `m`. For every `J : Ideal R`,
 `linearDivision_remainder_coeffsIn` and
-`linearDivision_quotient_coeffsIn` preserve the native `MvPolynomial.coeffsIn`
+`linearDivision_quotient_coeffsIn` preserve the `MvPolynomial.coeffsIn`
 condition for `B p` and each quotient coordinate `(Q p) i`. This applies in
 particular to `J ^ n` without adding a filtration type. The
 `linearDivision_remainder_of_reduced` and

@@ -10,7 +10,7 @@ public import Mathlib.Algebra.MvPolynomial.Eval
 # Evaluation after an additive coefficient map
 
 An `R`-linear map on coefficients commutes with evaluation at points valued in `R`,
-using the native additive map on multivariate polynomials. The coefficient map
+using the additive coefficient map on multivariate polynomials. The coefficient map
 need not preserve multiplication.
 
 ## References
@@ -30,6 +30,11 @@ universe u v w
 variable {R : Type u} {S : Type v} {V : Type w}
 variable [CommSemiring R] [CommSemiring S] [Algebra R S]
 
+/-- Over commutative semirings `R` and `S` with `S` an `R`-algebra, applying
+an `R`-linear map `lambda : S →ₗ[R] R` after evaluation at
+`algebraMap R S ∘ y` agrees with evaluation at the `R`-valued point `y`
+after the additive coefficient map `AddMonoidAlgebra.map lambda.toAddMonoidHom`.
+The map `lambda` need not preserve multiplication. -/
 theorem eval_addMonoidAlgebraMap_of_linearMap (lambda : S →ₗ[R] R)
     (F : MvPolynomial V S) (y : V → R) :
     lambda (MvPolynomial.eval (algebraMap R S ∘ y) F) =

@@ -104,7 +104,7 @@ private lemma interchange_coeff_coeff (p : MvPolynomial σ R[X]) (n : ℕ)
       Finsupp.coe_add, Pi.add_apply] using congrArg₂ (· + ·) hp hq
 
 /-- Taking a coefficient in the polynomial parameter preserves the homogeneous
-label in the multivariate variables after the native interchange equivalence. -/
+label in the multivariate variables after the interchange equivalence. -/
 theorem coeff_polynomial_interchange (p : MvPolynomial σ R[X]) (degree index : ℕ)
     (hp : p.IsHomogeneous degree) :
     ((((MvPolynomial.optionEquivRight R σ).symm.trans

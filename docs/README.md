@@ -42,6 +42,11 @@ in the [API map](API.md) describes the evaluation equivalence and fraction laws,
 along with ordinary-import clients and an independent nonzero-variable witness;
 it is not part of the archived native snapshot.
 
+The [polynomial fraction trace entry](API.md#multivariatepolynomialspolynomialfractiontrace)
+describes the preimage dimension bound and its aggregate-import integer clients,
+including the empty stage and the failure of a bound by whole stage fields.
+It is not part of the archived native snapshot.
+
 [`API-initial-snapshot.md`](API-initial-snapshot.md) is byte-for-byte the
 original six-module native doc-gen4 output: one public ideal theorem, two
 producer modules and four private test/example modules. The unchanged

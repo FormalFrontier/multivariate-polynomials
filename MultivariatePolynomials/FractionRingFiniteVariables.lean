@@ -17,8 +17,11 @@ The target may be any fraction-ring representation, and the variable type need n
 be finite. An empty variable stage is a fraction ring of the coefficients, not
 in general the coefficient ring itself.
 
-The proof takes the finite union of the variable supports of localization
-numerators and denominators, then uses the renaming and localization map APIs.
+The finite-family proof takes the finite union of the variable supports of
+localization numerators and denominators, then uses the renaming and localization
+map APIs. Variable membership in the image of an injective renaming is characterized
+by membership in the image of the index map. A finite stage missing a variable is
+not surjective; over an infinite variable type this applies to every finite stage.
 
 ## References
 
@@ -31,7 +34,7 @@ numerators and denominators, then uses the renaming and localization map APIs.
 
 @[expose] public section
 
-universe u v w
+universe u v w uR uτ uσ uL uK
 
 namespace MvPolynomial
 
@@ -87,5 +90,113 @@ theorem exists_finset_fractionRing_map_range
     ⟨j d, (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective j hj) d.property⟩ = z
   rw [show j p = (s z).1 from hp, hd]
   exact IsLocalization.mk'_sec K z
+
+/-- A variable belongs to the image of the fraction-ring map induced by an injective
+renaming exactly when its index belongs to the image of the index map. Both fraction
+rings may be arbitrary commutative-ring realizations. -/
+theorem X_mem_range_fractionRing_map_rename_iff
+    {R : Type uR} [CommRing R] [IsDomain R]
+    {τ : Type uτ} {σ : Type uσ}
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial τ R) L]
+    [IsFractionRing (MvPolynomial τ R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K]
+    (ρ : τ → σ) (hρ : Function.Injective ρ) (i : σ) :
+    algebraMap (MvPolynomial σ R) K (X i) ∈
+      Set.range
+        (IsFractionRing.map
+          (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+          (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom)
+          (rename_injective ρ hρ)) ↔
+      i ∈ Set.range ρ := by
+  classical
+  let φ := IsFractionRing.map
+    (A := MvPolynomial τ R) (B := MvPolynomial σ R) (K := L) (L := K)
+    (j := (rename (R := R) ρ).toRingHom) (rename_injective ρ hρ)
+  have hφ (p : MvPolynomial τ R) :
+      φ (algebraMap (MvPolynomial τ R) L p) =
+        algebraMap (MvPolynomial σ R) K (rename ρ p) :=
+    IsLocalization.map_eq (S := L) (Q := K)
+      (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective
+        (rename (R := R) ρ).toRingHom (rename_injective ρ hρ)) p
+  constructor
+  · rintro ⟨z, hz⟩
+    have hz : φ z = algebraMap (MvPolynomial σ R) K (X i) := hz
+    by_contra hi
+    -- Outside the index image, every renamed polynomial has degree zero.
+    have hdegree (p : MvPolynomial τ R) : degreeOf i (rename ρ p) = 0 := by
+      by_contra hp
+      obtain ⟨j, _, hj⟩ := mem_vars_rename ρ p (mem_vars_iff_degreeOf_ne_zero.mpr hp)
+      exact hi ⟨j, hj⟩
+    obtain ⟨⟨a, b⟩, hab⟩ :=
+      IsLocalization.surj (nonZeroDivisors (MvPolynomial τ R)) z
+    have hb : rename ρ (b : MvPolynomial τ R) ≠ 0 := by
+      intro hb
+      apply mem_nonZeroDivisors_iff_ne_zero.mp b.property
+      apply rename_injective ρ hρ
+      simpa only [map_zero] using hb
+    -- Map the denominator-clearing equation and use injectivity in the target.
+    have hpoly : X i * rename ρ (b : MvPolynomial τ R) = rename ρ a := by
+      apply IsFractionRing.injective (MvPolynomial σ R) K
+      simpa only [map_mul, hφ, hz] using congrArg φ hab
+    have hdeg := congrArg (degreeOf i) hpoly
+    rw [mul_comm, (degreeOf_mul_X_eq_degreeOf_add_one_iff i _).mpr hb,
+      hdegree, hdegree] at hdeg
+    exact Nat.one_ne_zero hdeg
+  · rintro ⟨j, rfl⟩
+    refine ⟨algebraMap (MvPolynomial τ R) L (X j), ?_⟩
+    simpa only [rename_X] using hφ (X j)
+
+/-- A variable belongs to a finite-variable fraction-ring stage exactly when its
+index belongs to that finite set. -/
+theorem X_mem_range_fractionRing_map_finset_iff
+    {R : Type uR} [CommRing R] [IsDomain R] {σ : Type uσ}
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K] (S : Finset σ) (i : σ) :
+    algebraMap (MvPolynomial σ R) K (X i) ∈
+      Set.range
+        (IsFractionRing.map
+          (A := MvPolynomial {j : σ // j ∈ S} R) (B := MvPolynomial σ R)
+          (K := FractionRing (MvPolynomial {j : σ // j ∈ S} R)) (L := K)
+          (j := (rename (R := R) Subtype.val).toRingHom)
+          (rename_injective Subtype.val Subtype.val_injective)) ↔
+      i ∈ S := by
+  simpa only [Subtype.range_val_subtype, Set.mem_ofPred_eq] using
+    (X_mem_range_fractionRing_map_rename_iff
+      (R := R) (L := FractionRing (MvPolynomial {j : σ // j ∈ S} R)) (K := K)
+      (Subtype.val : {j : σ // j ∈ S} → σ) Subtype.val_injective i)
+
+/-- A finite-variable fraction-ring stage is not surjective if it misses a variable. -/
+theorem not_surjective_fractionRing_map_finset_of_notMem
+    {R : Type uR} [CommRing R] [IsDomain R] {σ : Type uσ}
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K]
+    (S : Finset σ) (i : σ) (hi : i ∉ S) :
+    ¬ Function.Surjective
+      (IsFractionRing.map
+        (A := MvPolynomial {j : σ // j ∈ S} R) (B := MvPolynomial σ R)
+        (K := FractionRing (MvPolynomial {j : σ // j ∈ S} R)) (L := K)
+        (j := (rename (R := R) Subtype.val).toRingHom)
+        (rename_injective Subtype.val Subtype.val_injective)) := by
+  intro h
+  exact hi ((X_mem_range_fractionRing_map_finset_iff (R := R) (K := K) S i).mp
+    (h (algebraMap (MvPolynomial σ R) K (X i))))
+
+/-- Over an infinite variable type, no finite-variable fraction-ring stage is
+surjective. This is compatible with simultaneous capture of each finite family:
+the finite stage for such a family may depend on that family. -/
+theorem not_surjective_fractionRing_map_finset_of_infinite
+    {R : Type uR} [CommRing R] [IsDomain R] {σ : Type uσ} [Infinite σ]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K] :
+    ∀ S : Finset σ, ¬ Function.Surjective
+      (IsFractionRing.map
+        (A := MvPolynomial {j : σ // j ∈ S} R) (B := MvPolynomial σ R)
+        (K := FractionRing (MvPolynomial {j : σ // j ∈ S} R)) (L := K)
+        (j := (rename (R := R) Subtype.val).toRingHom)
+        (rename_injective Subtype.val Subtype.val_injective)) := by
+  intro S
+  obtain ⟨i, hi⟩ := S.exists_notMem
+  exact not_surjective_fractionRing_map_finset_of_notMem (R := R) (K := K) S i hi
 
 end MvPolynomial

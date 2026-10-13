@@ -3,8 +3,11 @@
 # Base-valued linear coefficient evaluation
 
 Import `MultivariatePolynomials.LinearCoefficientEvaluation` directly, or
-`MultivariatePolynomials` for the complete public interface. The leaf imports
-`Mathlib.Algebra.MvPolynomial.Eval` and exposes one theorem:
+`MultivariatePolynomials` for most public interfaces. The
+[Noetherian APIs](../MultivariatePolynomials/Noetherian.lean) require the separate
+`MultivariatePolynomials.Noetherian` import; see also the [API map](API.md).
+The linear-evaluation leaf imports `Mathlib.Algebra.MvPolynomial.Eval` and
+exposes one theorem:
 
 ```lean
 MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
@@ -18,14 +21,14 @@ MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
 The point `y` **must have values in the base semiring `R`**. There is no
 `Fintype V`, field, domain, nontriviality, injective algebra map, homogeneous
 polynomial, positive-degree or multiplicativity assumption on `lambda`.
-`AddMonoidAlgebra.map` is the native additive coefficient map; no ring-hom
+`AddMonoidAlgebra.map` is the additive coefficient map; no ring-hom
 structure is demanded. It is useful, for example, with arbitrary-index
 `Module.Basis.coord` maps, and with the nonmultiplicative sum map
 `(ℕ × ℕ) →ₗ[ℕ] ℕ`. The ordinary-import examples (also a zero map and `Empty`
 variables) are in [`MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean`](../MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean).
 The proof expands the finite monomial sum, transports each monomial's
 base-valued product through `algebraMap R S`, applies linearity to the resulting
-scalar multiplication, and reassembles the native additive map.
+scalar multiplication, and reassembles the additive coefficient map.
 
 This statement does not construct a ring homomorphism from an arbitrary
 coefficient-linear map, reconstruct a polynomial from basis coordinates,
@@ -40,7 +43,7 @@ building both default targets and the ordinary-import client:
 
 ```sh
 lake exe cache get
-lake --wfail build MultivariatePolynomials MultivariatePolynomialsTests
+lake build MultivariatePolynomials MultivariatePolynomialsTests
 lake env lean -DwarningAsError=true MultivariatePolynomialsTests/LinearCoefficientEvaluation.lean
 ```
 

@@ -32,7 +32,7 @@ nontrivial coefficients, positive degree or a field. They also cover zero rings,
 empty variable types and `r = 0`.
 
 If `p.IsHomogeneous d`, then `isHomogeneous_iteratedBlockSubst` makes every
-iterate homogeneous of **nominal degree** `d ^ r`. This uses native
+iterate homogeneous of **nominal degree** `d ^ r`. This uses Mathlib's
 `IsHomogeneous.aeval` and `rename_isHomogeneous` on the local generic
 `blockSubst`; the result does not require `p ≠ 0`. In particular, at `r = 0`
 the degree is `1` even when `d = 0`, and degrees `0` or `1` do not give
@@ -49,7 +49,7 @@ assumes `1 < d` and gives, for every `bound : ℕ`, some `r` with
 beyond every bound**, not that every sufficiently large degree occurs. The
 private ordinary-import client
 `MultivariatePolynomialsTests.IteratedBlockSubstitution` exercises this
-with the native finite arity equation
+with the finite arity equation
 `Fintype.card (Fin r → ι) = (Fintype.card ι) ^ r`; if the base arity is
 `d ^ m`, the tuple arity is `d ^ (m * r)`, equivalently the iterate's exact
 total degree to the power `m`. These are conditional results: this library does

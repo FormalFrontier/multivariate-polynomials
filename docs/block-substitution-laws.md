@@ -23,7 +23,7 @@ has variables `(Fin n → I)`, including the empty-word variable at `n = 0`.
 `iteratedBlockSubst_one p` renames `p` by one-letter words. The additive law
 `iteratedBlockSubst_add p m n` identifies the `(m+n)`-fold iterate with
 `blockSubst (iteratedBlockSubst p m) (iteratedBlockSubst p n)` after renaming
-`(a,b)` to `Fin.append a b`. The proof uses the native cons successor and the
+`(a,b)` to `Fin.append a b`. The proof uses the cons successor equation and the
 position-preserving length cast
 `Nat.add_right_comm m 1 n : m+1+n = m+n+1`; it never chooses an equivalence
 merely from equal cardinalities. `iteratedBlockSubst_snoc p m` is the opposite

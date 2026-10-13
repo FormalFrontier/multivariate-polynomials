@@ -2,8 +2,9 @@
 
 This is a hand-maintained map of selected public interfaces, **not** freshly
 generated native documentation, a build record or proof certification. Import
-`MultivariatePolynomials` for all production families, or the named leaf for
-one family. The localized quotient and weight-one valuation leaves also have
+`MultivariatePolynomials` for most production families, or the named leaf for
+one family. The Noetherian criteria require the direct import
+`MultivariatePolynomials.Noetherian`. The localized quotient and weight-one valuation leaves also have
 their evaluation, equivalence and characteristic laws. The weight-one
 naturality leaf describes embeddings of valuation rings and their full
 residue fields, including independent choices of pivot.
@@ -12,6 +13,95 @@ explains how to build the library. The
 [initial native snapshot](API-initial-snapshot.md) and its
 [unchanged manifest](api-manifest.json) cover only the original six-module
 revision, not this expanded interface.
+
+## `MultivariatePolynomials.FractionRingFiniteVariables`
+
+Let `R` be an integral domain (`[CommRing R] [IsDomain R]`), and let
+`ρ : τ → σ` be injective. Let `L` and `K` be any commutative-ring fraction-ring
+realizations of `MvPolynomial τ R` and `MvPolynomial σ R`, respectively, with
+the corresponding `Algebra` and `IsFractionRing` instances. The coefficient,
+variable and realization types may inhabit independent universes; neither
+realization needs a `Field` instance.
+
+Write `φρ : L →+* K` for Mathlib's `IsFractionRing.map` induced by
+`(MvPolynomial.rename (R := R) ρ).toRingHom`. It sends the image of a polynomial
+`p` in `L` to the image of `MvPolynomial.rename ρ p` in `K`.
+[`MvPolynomial.X_mem_range_fractionRing_map_rename_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
+characterizes the image of each variable:
+`algebraMap (MvPolynomial σ R) K (MvPolynomial.X i) ∈ Set.range φρ ↔ i ∈ Set.range ρ`.
+This is an equivalence for variables, not a characterization of every target fraction.
+
+For a finite set `S : Finset σ`, specialize `ρ` to
+`Subtype.val : {i : σ // i ∈ S} → σ`, with the canonical
+`FractionRing (MvPolynomial {i : σ // i ∈ S} R)` as source. Then
+`MvPolynomial.X_mem_range_fractionRing_map_finset_iff` says that the image of
+`X i` belongs to this stage exactly when `i ∈ S`.
+`MvPolynomial.not_surjective_fractionRing_map_finset_of_notMem S i hi`
+excludes surjectivity whenever `hi : i ∉ S`. If `[Infinite σ]`,
+`MvPolynomial.not_surjective_fractionRing_map_finset_of_infinite` excludes
+surjectivity **for every** `S : Finset σ`.
+
+This is compatible with `MvPolynomial.exists_finset_fractionRing_map_range`:
+each finite family of fractions has a common finite stage, which may depend
+on the family. It does not give one finite stage containing all fractions.
+For example, over `ℤ` with variables `ℕ`, the empty stage contains `1/2`, but
+not the image of `X 0`. The empty stage is a fraction ring of the coefficients,
+not generally the coefficient ring.
+
+A variable outside an injective index image has no fraction preimage:
+
+```lean
+module
+
+public import MultivariatePolynomials.FractionRingFiniteVariables
+
+@[expose] public section
+
+universe u v uR uτ uσ uL uK
+
+open MvPolynomial
+
+example
+    {R : Type uR} [CommRing R] [IsDomain R] {τ : Type uτ} {σ : Type uσ}
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial τ R) L]
+    [IsFractionRing (MvPolynomial τ R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K]
+    (ρ : τ → σ) (hρ : Function.Injective ρ) (i : σ) (hi : i ∉ Set.range ρ) :
+    algebraMap (MvPolynomial σ R) K (X i) ∉ Set.range
+      (IsFractionRing.map (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+        (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom)
+        (rename_injective ρ hρ)) :=
+  (X_mem_range_fractionRing_map_rename_iff (R := R) (L := L) (K := K) ρ hρ i).not.mpr hi
+```
+
+The [fraction-ring examples](../MultivariatePolynomialsTests/FractionRingFiniteVariables.lean)
+also cover finite stages, even-index renaming and different-universe variable types.
+
+## `MultivariatePolynomials.PolynomialFractionTrace`
+
+The [polynomial fraction trace leaf](../MultivariatePolynomials/PolynomialFractionTrace.lean)
+exports `MvPolynomial.ringKrullDim_subsemiring_le_iSup_comap_fractionRing`.
+For `[CommRing R] [IsDomain R]`, arbitrary variables `σ`, any fraction-ring
+representation `K` with its canonical `Algebra (MvPolynomial σ R) K` and
+`IsFractionRing (MvPolynomial σ R) K`, and any `A : Subsemiring K`, it gives
+`ringKrullDim A ≤ ⨆ J : Finset σ, ringKrullDim (A.comap (φ J))`.
+Here `φ J` is Mathlib's coefficient-preserving `IsFractionRing.map` induced by
+subtype-variable renaming from the canonical finite-variable `FractionRing`.
+The coefficient, variable and ambient universes are independent. The bound
+uses stage **preimages**, not whole fields; a subring uses its underlying
+subsemiring. The empty stage is a fraction ring of `R`, not generally `R`.
+
+This reuses the released Algebraic Direct Limits finite-capture preimage theorem
+and the same-package finite-fraction origin theorem; it defines no second engine.
+The [aggregate-import integer clients](../MultivariatePolynomialsTests/PolynomialFractionTrace.lean)
+show trace equality (`integer_stage_trace`), dimension one for image and traces
+versus zero for stage fields (`integer_trace_dimensions`), properness by missing
+`1/2` (`integer_image_and_trace_proper`), and empty-stage origins for every integer
+(`integer_image_has_empty_stage_origins`). Both `integer_trace_dimension_bound`
+and `integer_subring_dimension_bound` use the headline;
+`not_dimension_bound_by_whole_fraction_stages` rejects the whole-field replacement.
+These names are in `PolynomialFractionTraceExamples`.
 
 ## `MultivariatePolynomials.EvaluationIdeal`
 
@@ -108,7 +198,28 @@ nilpotent boundary examples do not add assumptions to the equivalence statement.
 
 ## `MultivariatePolynomials.IdealOfVars`
 
-[Producer](../MultivariatePolynomials/IdealOfVars.lean):
+[Producer](../MultivariatePolynomials/IdealOfVars.lean). For independent
+`σ : Type u` and `R : Type v`, any commutative semiring `R`, ideal `I`, and
+subset `S`, `MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff` says
+
+```lean
+theorem MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff
+    {σ : Type u} {R : Type v} [CommSemiring R] (I : Ideal R) (S : Set σ) :
+    (Ideal.map (MvPolynomial.C : R →+* MvPolynomial σ R) I ⊔
+      Ideal.span ((MvPolynomial.X : σ → MvPolynomial σ R) '' S)).FG ↔
+        I.FG ∧ (S.Finite ∨ I = ⊤)
+```
+
+The ambient variable type need not be finite. The unit-ideal alternative is
+essential, including over the zero semiring. No subtractivity hypothesis on
+`I` is needed. The [examples](../MultivariatePolynomialsTests/CoefficientVariableIdeal.lean)
+include proper ideals in `ℤ`, `ℕ`, and `ℤ × ℤ`, finite selected sets inside an
+infinite ambient type, and non-finitely-generated coefficient ideals.
+
+`MvPolynomial.ideal_map_C_sup_idealOfVars_not_fg` gives the all-variable
+obstruction for any proper coefficient ideal when the variable type is infinite.
+`MvPolynomial.ideal_span_X_image_fg_iff` is the bottom-coefficient specialization
+over a nontrivial semiring. The original all-variable specialization
 `MvPolynomial.idealOfVars_not_fg` says
 
 ```lean
@@ -119,6 +230,46 @@ theorem MvPolynomial.idealOfVars_not_fg
 
 The types `k` and `σ` may be in different universes. The claim concerns the
 ideal of variables, not an arbitrary ideal or a complete short exact sequence.
+
+## `MultivariatePolynomials.Noetherian`
+
+Import this [producer](../MultivariatePolynomials/Noetherian.lean) directly.
+For arbitrary semirings, the univariate obstruction is
+
+```lean
+theorem Polynomial.not_isNoetherianRing_of_subsingleton_addUnits
+    {R : Type u} [Semiring R] [Nontrivial R] [Subsingleton (AddUnits R)] :
+    ¬ IsNoetherianRing (Polynomial R)
+```
+
+Here Noetherianity concerns the left self-module, not the module over the
+coefficient semiring. The additive-unit condition means that a sum can vanish
+only when each summand vanishes. The proof uses the left ideal spanned by
+`1 + X ^ (n + 1)` for `n : ℕ`: a finite subset of these generators cannot produce
+a generator with a larger exponent, even with arbitrary polynomial left
+multipliers. No commutativity, cancellation, order, domain or coefficient
+Noetherianity hypothesis is imposed.
+
+The [ordinary-import clients](../MultivariatePolynomialsTests/PolynomialAddUnits.lean)
+apply this result to `ℕ`, `ℕ × ℕ`, and `Matrix (Fin 2) (Fin 2) ℕ`. Independent
+fixtures check the positive-exponent coefficients, the zero-exponent boundary,
+zero divisors and noncommutative matrix multiplication. Mathlib's Frobenius-number
+theorem supplies `IsNoetherianRing ℕ`; thus coefficient Noetherianity alone does
+not suffice for the polynomial semiring. For commutative coefficients, the
+clients use `MvPolynomial.uniqueAlgEquiv` and Noetherian ring-equivalence
+transport to obtain the obstruction for any unique variable type, in a universe
+independent of the coefficient type. The zero ring and integers delimit the two
+hypotheses.
+
+`MvPolynomial.finite_of_isNoetherianRing` gives the finite-variable necessity
+over a nontrivial commutative semiring, with independent coefficient and variable
+universes. Over a commutative ring, `MvPolynomial.isNoetherianRing_iff`
+characterizes polynomial Noetherianity as coefficient Noetherianity together with
+finite variables or a trivial coefficient ring. The nontrivial-ring form
+`MvPolynomial.isNoetherianRing_iff_of_nontrivial` removes that alternative.
+The [ring clients](../MultivariatePolynomialsTests/Noetherian.lean) include empty,
+finite and infinite variables and coefficient rings with zero divisors. These
+criteria do not assert a Hilbert basis theorem for arbitrary semirings.
 
 ## `MultivariatePolynomials.HomogeneousEvaluation`
 
@@ -348,7 +499,7 @@ theorem MvPolynomial.IsHomogeneous.coeff_polynomial_interchange
       (MvPolynomial.optionEquivLeft R σ)) p).coeff index).IsHomogeneous degree
 ```
 
-The native interchange places the polynomial parameter in a separate
+The interchange equivalence places the polynomial parameter in a separate
 weight-zero variable: each coefficient retains the *label* `degree` in the
 multivariate variables. Zero coefficients satisfy every label. No finiteness,
 domain, field, nontriviality or actual-degree-equality premise is required.
@@ -372,7 +523,7 @@ theorem MvPolynomial.eval_addMonoidAlgebraMap_of_linearMap
 
 The evaluation point is valued in the **base semiring `R`**, not arbitrary `S`.
 The map `lambda` is only linear, not a ring homomorphism or necessarily
-multiplicative; `AddMonoidAlgebra.map` is mathlib's native additive map.
+multiplicative; `AddMonoidAlgebra.map` is mathlib's additive coefficient map.
 There is no finite-variable/basis, field, domain, nontriviality or injectivity
 assumption. The basis-coordinate, nonmultiplicative Nat-pair sum, zero-map and
 `Empty` clients do not reconstruct polynomials from coordinates, preserve
@@ -614,12 +765,14 @@ is proved.
 
 ## Aggregate and tests
 
-[Aggregate](../MultivariatePolynomials.lean) publicly imports all seventeen leaves.
-Twenty-one test/example modules are registered as literal roots under
+[Aggregate](../MultivariatePolynomials.lean) publicly imports twenty-two production
+leaves. The [Noetherian producer](../MultivariatePolynomials/Noetherian.lean) is
+available through its direct import.
+Thirty-one test/example modules are registered as explicit roots under
 `MultivariatePolynomialsTests`: [evaluation-ideal client](../MultivariatePolynomialsTests/EvaluationIdeal.lean),
 [evaluation-naturality client](../MultivariatePolynomialsTests/EvaluationIdealNaturality.lean),
 [aggregate ideal client](../MultivariatePolynomialsTests/IdealOfVars.lean),
-[selected ideal-only axiom print](../MultivariatePolynomialsTests/Axioms.lean),
+[integer infinite-variable ideal client](../MultivariatePolynomialsTests/Axioms.lean),
 [direct ideal clients](../MultivariatePolynomialsTests/LeafImport.lean),
 [README ideal example](../MultivariatePolynomialsTests/ReadmeExample.lean),
 [direct homogeneous-evaluation client](../MultivariatePolynomialsTests/HomogeneousEvaluation.lean),
@@ -636,8 +789,18 @@ Twenty-one test/example modules are registered as literal roots under
 [presentation-only fixtures](../MultivariatePolynomialsTests/PointSquareZeroFixtures.lean), and
 [headline equivalence clients](../MultivariatePolynomialsTests/PointSquareZeroHeadline.lean), and
 [weight-one valuation client](../MultivariatePolynomialsTests/WeightOneValuation.lean), and
-[weight-one naturality client](../MultivariatePolynomialsTests/WeightOneNaturality.lean).
+[weight-one naturality client](../MultivariatePolynomialsTests/WeightOneNaturality.lean),
+[fraction-ring finite-variable client](../MultivariatePolynomialsTests/FractionRingFiniteVariables.lean),
+[polynomial fraction trace clients](../MultivariatePolynomialsTests/PolynomialFractionTrace.lean),
+[selected-variable ideal client](../MultivariatePolynomialsTests/IdealOfVarsSubset.lean),
+[Noetherian polynomial clients](../MultivariatePolynomialsTests/Noetherian.lean),
+[polynomial additive-unit clients](../MultivariatePolynomialsTests/PolynomialAddUnits.lean),
+[coefficient-and-variable ideal clients](../MultivariatePolynomialsTests/CoefficientVariableIdeal.lean),
+[quotient closed-point clients](../MultivariatePolynomialsTests/QuotientClosedPoints.lean),
+[polynomial Zariski topology clients](../MultivariatePolynomialsTests/ZariskiTopology.lean),
+[Artinian polynomial fixtures](../MultivariatePolynomialsTests/Artinian.lean), and
+[Artinian criterion clients](../MultivariatePolynomialsTests/ArtinianCriterion.lean).
 The presentation-only fixtures import only the presentation leaf;
 the headline clients import the separated-equivalence leaf. The tests are not re-exported as production
-API. These eighteen production modules (including the aggregate) plus
-twenty-one test modules total thirty-nine Lean modules.
+API. The twenty-three production leaves, aggregate, and thirty-one test modules
+total fifty-five Lean source modules.

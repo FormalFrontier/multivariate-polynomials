@@ -41,9 +41,23 @@ credited below.
   coordinate-topology arguments reuse Mathlib's closed-set and basic-open
   characterizations of the prime spectrum, induced-topology and embedding
   API, and continuous contraction of prime ideals; these are not new results
-  of this library. The
+  of this library. The univariate left-Noetherian Hilbert basis theorem
+  generalizes Mathlib's `Polynomial.isNoetherianRing`, with an agreement lemma
+  for commutative coefficients. Its proof follows Mathlib's coefficient-image
+  stabilization approach and reuses the canonical Noetherian and left-ideal
+  definitions, coefficient-image ideals, ascending-chain stabilization, and
+  `Polynomial.degreeLTEquiv` for bounded-degree coefficient modules. The
   module-level references name the Mathlib APIs underlying the separate
   project arguments.
+- [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits/tree/5959888b3d648cf1f72038459f63d804093d6c54)
+  supplies the generic finite-capture dimension bound through subsemiring
+  preimages, using finite witnesses to strict prime-ideal chains and Mathlib's
+  contraction API. The polynomial-fraction application and typed integer
+  boundary clients are original Formal Frontier Agents formalizations. They
+  reuse this library's simultaneous finite-variable fraction origins and
+  Mathlib's localization maps, integer PID dimension, field dimension,
+  injective range-comap and ring-equivalence APIs; no generic engine or
+  fraction-map construction is duplicated.
 - [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
   supplies the canonical opposite-module and central-scalar instances on the
   direct sum used in the polynomial point quotient's square-zero extension.
@@ -58,7 +72,7 @@ credited below.
   [lift](docs/monic-lift.md), not a pre-existing multivariate theorem.
 - Antoine Chambert-Loir's mathlib `MonomialOrder` infrastructure supplies
   division for the [fixed linear-division](docs/linear-division.md)
-  construction and leading exponents for the lift; native
+  construction and leading exponents for the lift;
   `Finsupp.linearCombination` and `coeffsIn` also remain
   contributions of mathlib's authors. This library's fixed, choice-dependent
   linear maps and its monic-lift theorem are separate project results.

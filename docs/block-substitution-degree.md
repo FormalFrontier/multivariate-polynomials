@@ -36,9 +36,9 @@ claim need not hold. The proof's auxiliary degree, component, and profile
 lemmas are private implementation details; no source-specific wrapper or
 structural substitution law is duplicated.
 
-The destination project pins Lean `v4.34.0-rc2`, mathlib
-`83abb3e776bdefcbc447a1e44d0debe4010039e5` and nine resolved external
-packages; it has no incubator or other Formal Frontier library dependency.
+The [Lean toolchain](../lean-toolchain), [Lake dependencies](../lakefile.toml)
+and [resolved manifest](../lake-manifest.json) record the checkout's versions,
+including Mathlib, Coherent Modules and Algebraic Direct Limits.
 From the pinned `multivariate-polynomials` checkout, fetch the matching
 precompiled mathlib cache **before** building the default targets or the
 individual modules:
@@ -46,9 +46,11 @@ individual modules:
 ```sh
 elan toolchain install leanprover/lean4:v4.34.0-rc2
 lake exe cache get
-lake --wfail build MultivariatePolynomials MultivariatePolynomialsTests
+lake build MultivariatePolynomials MultivariatePolynomialsTests
 lake --wfail build MultivariatePolynomials.BlockSubstitutionDegree
 lake --wfail build MultivariatePolynomialsTests.BlockSubstitutionDegree
 ```
 
-Both focused modules treat warnings as errors. For contributors and mathematical references, see [CREDITS.md](../CREDITS.md).
+The focused module checks treat warnings as errors. The default build also includes
+private boundary examples. For contributors and mathematical references, see
+[CREDITS.md](../CREDITS.md).

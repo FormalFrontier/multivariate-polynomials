@@ -2,8 +2,8 @@
 
 Import `MultivariatePolynomials.HomogeneousEvaluation` directly, or import
 `MultivariatePolynomials` for the aggregate public interface. The ordinary-import
-client is [`MultivariatePolynomialsTests/HomogeneousEvaluation.lean`](../MultivariatePolynomialsTests/HomogeneousEvaluation.lean);
-neither import requires an incubator or source-repository dependency.
+client is [`MultivariatePolynomialsTests/HomogeneousEvaluation.lean`](../MultivariatePolynomialsTests/HomogeneousEvaluation.lean).
+The module provides scaling laws for weighted and ordinary homogeneous polynomials.
 
 For any index type `ι`, commutative semirings `B`, `R`, unital ring homomorphism
 `σ : B →+* R`, variable values `v : ι → R`, weights `w : ι → ℕ`, degree `d : ℕ`,
@@ -25,8 +25,8 @@ is needed. In particular the results apply to the zero polynomial and zero
 semiring, empty index types, zero weights, degree zero and zero scalar; `a ^ 0`
 keeps its ordinary semiring meaning.
 
-The proof expands `p` into its finite monomial support via native
-`MvPolynomial.support_sum_monomial_coeff`, uses native
+The proof expands `p` into its finite monomial support via
+`MvPolynomial.support_sum_monomial_coeff`, uses
 `MvPolynomial.eval₂Hom_monomial`, converts the product of scalar powers to the
 power of `Finsupp.weight w`, and applies the weighted-homogeneity hypothesis
 to each occurring monomial. The ordinary case uses mathlib's definition
