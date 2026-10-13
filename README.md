@@ -4,8 +4,10 @@ This Lean library provides reusable results about variable ideals, homogeneous
 evaluation, substitution into disjoint blocks, coefficient extraction, linear
 evaluation and division, monic lifts, first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
-function fields. Polynomial point quotients at pairwise unit-separated points
-are canonically equivalent to square-zero extensions of evaluation modules.
+function fields. It also gives exact injectivity and recovery criteria for
+finite coefficient aggregation. Polynomial point quotients at pairwise
+unit-separated points are canonically equivalent to square-zero extensions
+of evaluation modules.
 For any ideal of a finite-variable polynomial algebra over an algebraically
 closed field, its zeros also give precisely the closed points of the quotient
 spectrum, even for nonreduced quotients.
@@ -18,13 +20,34 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-three production leaves and thirty-five test/example modules.
+library has twenty-four production leaves and thirty-eight test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Finite coefficient aggregation has an exact injectivity criterion.** For
+  types `α`, `β` and `M` in independent universes, an additive commutative
+  monoid `M`, and any index map `f : α → β`,
+  [`Finsupp.mapDomain_injective_iff`](MultivariatePolynomials/FiniteSupport.lean)
+  characterizes injectivity of `Finsupp.mapDomain f : (α →₀ M) → (β →₀ M)`:
+  it holds exactly when `f` is injective **or** `M` is subsingleton. The map
+  adds coefficients whose indices have the same image; cancellation, a ring
+  structure and nontrivial coefficients are not required. The
+  [applications](MultivariatePolynomialsTests/FiniteSupport.lean) contrast the
+  identity and a constant index map with natural-number coefficients.
+- **Joint degree-and-support profiles recover bivariate coefficients only for trivial coefficients.**
+  For any additive commutative monoid `M` in an arbitrary universe,
+  [`Finsupp.mapDomain_degree_support_hasLeftInverse_iff`](MultivariatePolynomials/FiniteSupport.lean)
+  proves that pushing coefficients along
+  `d ↦ (d.degree, d.support.card)`, for `d : Fin 2 →₀ ℕ`, admits a total left
+  inverse exactly when `M` is subsingleton. The profile groups coefficients
+  jointly by total degree and the number of variables with positive exponent.
+  The decoder may be **any total function**: no additive, multiplicative or
+  linear structure is required. The
+  [applications](MultivariatePolynomialsTests/FiniteSupport.lean) exclude every
+  decoder over `ℕ` and obtain recovery over the zero ring `ZMod 1`.
 - **Fraction-ring variable images are exactly the renamed variables.** Over
   any integral domain `R`, an injective index map `ρ : τ → σ` induces a
   [canonical fraction-ring map](MultivariatePolynomials/FractionRingFiniteVariables.lean)
@@ -177,6 +200,12 @@ example :
   exact Polynomial.isNoetherianRing_of_isNoetherianRing (R := B)
 ```
 
+For finite coefficient aggregation, import `MultivariatePolynomials.FiniteSupport`
+and use `Finsupp.mapDomain_injective_iff` or
+`Finsupp.mapDomain_degree_support_hasLeftInverse_iff`. The
+[finite-support applications](MultivariatePolynomialsTests/FiniteSupport.lean)
+show both criteria with concrete coefficient monoids.
+
 The aggregate import exposes the other producer modules; direct imports such
 as `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.LinearDivision`, `MultivariatePolynomials.MonicLift`
@@ -227,13 +256,14 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-two of
-these twenty-three leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports twenty-three of
+these twenty-four leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
 | Module (`MultivariatePolynomials.`) | Main interfaces |
 | --- | --- |
+| [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Simultaneous finite-variable origins for polynomial fractions |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
