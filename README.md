@@ -48,15 +48,23 @@ weight-one-valuation naturality interfaces.
   linear structure is required. The
   [applications](MultivariatePolynomialsTests/FiniteSupport.lean) exclude every
   decoder over `ℕ` and obtain recovery over the zero ring `ZMod 1`.
-- **Fraction-ring variable images are exactly the renamed variables.** Over
-  any integral domain `R`, an injective index map `ρ : τ → σ` induces a
-  [canonical fraction-ring map](MultivariatePolynomials/FractionRingFiniteVariables.lean)
-  between arbitrary commutative-ring fraction-ring realizations. The image of
-  `X i` belongs to its range exactly when `i ∈ Set.range ρ`; coefficient,
-  variable and realization universes are independent. A finite-variable stage
-  missing `i` is not surjective, so with infinitely many variables **every**
-  finite stage is nonsurjective, although each finite family of fractions has
-  a common finite stage. See the [API guide](docs/API.md#multivariatepolynomialsfractionringfinitevariables).
+- **Fraction-ring renaming is surjective exactly when it covers all variables.**
+  For any integral domain `R` (`[CommRing R] [IsDomain R]`) and injective
+  `ρ : τ → σ`,
+  [`MvPolynomial.surjective_fractionRing_map_rename_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  characterizes surjectivity of the induced fraction-ring map by
+  `Function.Surjective ρ`. Its source `L` and target `K` may be any
+  commutative-ring fraction-ring realizations with their `Algebra` and
+  `IsFractionRing` instances, without `Field` instances. The five universes
+  of `R`, `τ`, `σ`, `L` and `K` are independent.
+  [`MvPolynomial.surjective_fractionRing_map_finset_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  specializes this to a finite-variable stage `S : Finset σ`: the stage map
+  is surjective exactly when `∀ i : σ, i ∈ S`, with no finiteness hypothesis
+  on the ambient variable type. The variable-image criterion identifies
+  the image of `X i` in the range exactly when `i ∈ Set.range ρ`. Thus every
+  finite stage in infinitely many variables is nonsurjective, although each
+  finite family of fractions has a common finite stage. See the
+  [API guide](docs/API.md#multivariatepolynomialsfractionringfinitevariables).
 - **Zeros are closed points of polynomial quotients.** For any ideal `I` in
   `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
   [canonical point-set equivalence](MultivariatePolynomials/QuotientClosedPoints.lean)
@@ -264,7 +272,7 @@ not a complete declaration inventory.
 | Module (`MultivariatePolynomials.`) | Main interfaces |
 | --- | --- |
 | [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
-| [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Simultaneous finite-variable origins for polynomial fractions |
+| [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image and surjectivity criteria for polynomial fraction rings |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |

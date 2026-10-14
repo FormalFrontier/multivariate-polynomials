@@ -19,13 +19,27 @@ revision, not this expanded interface.
 Let `R` be an integral domain (`[CommRing R] [IsDomain R]`), and let
 `ρ : τ → σ` be injective. Let `L` and `K` be any commutative-ring fraction-ring
 realizations of `MvPolynomial τ R` and `MvPolynomial σ R`, respectively, with
-the corresponding `Algebra` and `IsFractionRing` instances. The coefficient,
-variable and realization types may inhabit independent universes; neither
-realization needs a `Field` instance.
+the corresponding `Algebra` and `IsFractionRing` instances. The five types
+`R`, `τ`, `σ`, `L` and `K` may inhabit independent universes; neither realization
+needs a `Field` instance.
 
 Write `φρ : L →+* K` for Mathlib's `IsFractionRing.map` induced by
 `(MvPolynomial.rename (R := R) ρ).toRingHom`. It sends the image of a polynomial
 `p` in `L` to the image of `MvPolynomial.rename ρ p` in `K`.
+The polynomial-image and fraction-representative laws are Mathlib's
+`IsLocalization.map_eq` and `IsLocalization.map_mk'`; no separate fraction-map
+construction is needed.
+
+### Surjectivity and variable images
+
+[`MvPolynomial.surjective_fractionRing_map_rename_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
+gives the full surjectivity criterion
+`Function.Surjective φρ ↔ Function.Surjective ρ`
+under exactly the hypotheses above. Apply
+`MvPolynomial.surjective_fractionRing_map_rename_iff (R := R) (L := L) (K := K) ρ hρ`:
+use `.mp` to recover index surjectivity from surjectivity of the fraction map,
+or `.mpr` to obtain fraction-map surjectivity from a preimage of every index.
+
 [`MvPolynomial.X_mem_range_fractionRing_map_rename_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
 characterizes the image of each variable:
 `algebraMap (MvPolynomial σ R) K (MvPolynomial.X i) ∈ Set.range φρ ↔ i ∈ Set.range ρ`.
@@ -36,6 +50,16 @@ For a finite set `S : Finset σ`, specialize `ρ` to
 `FractionRing (MvPolynomial {i : σ // i ∈ S} R)` as source. Then
 `MvPolynomial.X_mem_range_fractionRing_map_finset_iff` says that the image of
 `X i` belongs to this stage exactly when `i ∈ S`.
+[`MvPolynomial.surjective_fractionRing_map_finset_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
+characterizes surjectivity of the entire stage map by `∀ i : σ, i ∈ S`.
+Apply `MvPolynomial.surjective_fractionRing_map_finset_iff (R := R) (K := K) S`:
+its `.mpr` direction uses this membership condition, and its `.mp` direction
+recovers it from stage-map surjectivity. This is the subtype-renaming
+specialization of the general criterion; the target `K` remains an arbitrary
+commutative-ring fraction-ring realization. There is no `[Finite σ]` or
+`[Fintype σ]` hypothesis.
+
+The necessary obstructions remain useful without supplying all preimages:
 `MvPolynomial.not_surjective_fractionRing_map_finset_of_notMem S i hi`
 excludes surjectivity whenever `hi : i ∉ S`. If `[Infinite σ]`,
 `MvPolynomial.not_surjective_fractionRing_map_finset_of_infinite` excludes
@@ -46,7 +70,14 @@ each finite family of fractions has a common finite stage, which may depend
 on the family. It does not give one finite stage containing all fractions.
 For example, over `ℤ` with variables `ℕ`, the empty stage contains `1/2`, but
 not the image of `X 0`. The empty stage is a fraction ring of the coefficients,
-not generally the coefficient ring.
+not generally the coefficient ring. With empty ambient variables the empty
+stage is surjective; with a single ambient variable it is not. Over `ℤ`, the
+half-fraction in both cases is nonzero and different from one, and is a unit
+in the fraction field.
+
+These criteria concern coefficient-preserving renaming over the **same** `R`,
+not surjectivity of an arbitrary coefficient homomorphism. For instance,
+`ℤ → ℚ` is not surjective, but induces an isomorphism of fraction fields.
 
 A variable outside an injective index image has no fraction preimage:
 
@@ -76,7 +107,8 @@ example
 ```
 
 The [fraction-ring examples](../MultivariatePolynomialsTests/FractionRingFiniteVariables.lean)
-also cover finite stages, even-index renaming and different-universe variable types.
+also cover full and proper finite stages, empty ambient variables, even-index
+renaming and independently chosen variable and realization universes.
 
 ## `MultivariatePolynomials.PolynomialFractionTrace`
 

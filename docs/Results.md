@@ -6,6 +6,21 @@ For dependency setup, imports and build commands, see the
 
 ## Result inventory
 
+- **Fraction-ring renaming is surjective exactly when all variables are covered.**
+  For `[CommRing R] [IsDomain R]` and injective `ρ : τ → σ`,
+  [`MvPolynomial.surjective_fractionRing_map_rename_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  gives surjectivity of the induced fraction-ring map exactly when
+  `Function.Surjective ρ`. Both realizations `L` and `K` need only `CommRing`,
+  the corresponding `Algebra` and `IsFractionRing` instances; the five universes
+  of coefficients, source and target variables, and source and target realizations
+  are independent. Its finite-stage specialization,
+  [`MvPolynomial.surjective_fractionRing_map_finset_iff`](../MultivariatePolynomials/FractionRingFiniteVariables.lean),
+  says that the canonical stage for `S : Finset σ` is surjective exactly when
+  `∀ i : σ, i ∈ S`. No finiteness assumption on the ambient type is required.
+  The variable-image criteria and missing-variable obstructions describe proper
+  stages, including every finite stage with infinitely many ambient variables.
+  See the [API guide](API.md#multivariatepolynomialsfractionringfinitevariables)
+  for both directions and their coefficient-preserving scope.
 - **Finite collections of polynomial fractions have one finite-variable origin.**
   [`MvPolynomial.exists_finset_fractionRing_map_range`](../MultivariatePolynomials/FractionRingFiniteVariables.lean)
   captures any finite set in any fraction-ring representation of `MvPolynomial σ R`
@@ -345,6 +360,15 @@ for each member through Mathlib's `IsFractionRing.map`. The
 [examples](../MultivariatePolynomialsTests/FractionRingFiniteVariables.lean) capture
 `X₀ / 2`, `1 / (X₁ + 1)`, and zero simultaneously over integer coefficients and
 infinitely many variables, and include empty collections and empty ambient variables.
+
+For surjectivity, use the `.mpr` direction of
+`MvPolynomial.surjective_fractionRing_map_rename_iff` after showing that every
+target index has a preimage. For a finite stage, use the `.mpr` direction of
+`MvPolynomial.surjective_fractionRing_map_finset_iff` with a proof of
+`∀ i : σ, i ∈ S`; the `.mp` direction recovers this condition from surjectivity.
+A missing variable instead gives nonsurjectivity through the variable-image
+criterion. Finite-family origins are compatible with this obstruction: their
+common stage depends on the family, not on all fractions at once.
 
 For the dimension bound, import `MultivariatePolynomials.PolynomialFractionTrace`
 (or the aggregate) and apply

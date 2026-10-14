@@ -42,6 +42,13 @@ in the [API map](API.md) describes the evaluation equivalence and fraction laws,
 along with ordinary-import clients and an independent nonzero-variable witness;
 it is not part of the archived native snapshot.
 
+The [polynomial fraction-ring entry](API.md#multivariatepolynomialsfractionringfinitevariables)
+describes the surjectivity criterion for injective variable renaming over an
+integral domain and its finite-stage specialization: every ambient variable
+must belong to the stage. It also gives the variable-image criterion,
+missing-variable obstructions and simultaneous finite-family origins, with
+arbitrary commutative-ring fraction-ring realizations and independent universes.
+
 The [polynomial fraction trace entry](API.md#multivariatepolynomialspolynomialfractiontrace)
 describes the preimage dimension bound and its aggregate-import integer clients,
 including the empty stage and the failure of a bound by whole stage fields.
