@@ -1,0 +1,279 @@
+/-
+SPDX-License-Identifier: Apache-2.0
+Authors: Formal Frontier Agents
+-/
+module
+
+public import MultivariatePolynomials.RenameFiniteType
+public import MultivariatePolynomials.RenameKernel
+public import Mathlib.RingTheory.FinitePresentation
+import MultivariatePolynomials.EvaluationIdeal
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Logic.Equiv.Set
+
+@[expose] public section
+
+/-!
+# Finite presentation of variable renaming
+
+For commutative-ring coefficients, variable renaming makes the target polynomial
+ring an algebra over the source polynomial ring. Finite presentation for this
+algebra is characterized by subsingleton coefficients or the conjunction of two
+finiteness conditions: finitely many missed target variables and finitely many
+source indices participating in collisions. The latter set includes both
+endpoints of every collision, not just a chosen representative from each fibre.
+
+The coefficient type and both variable types may have independent universes.
+Neither variable type need be finite, and the variable map need not be injective
+or surjective. The zero ring and rings with nilpotents are allowed.
+
+The ring hypothesis matters for Mathlib's ideal-kernel definition of finite
+presentation. Over the natural-number semiring, projection `ℕ × Bool → ℕ`
+has a surjective renaming with bottom ideal kernel and a zero-variable finite
+presentation, despite infinitely many collision participants. This is distinct
+from finite presentation defined using a kernel congruence of semirings.
+
+## References
+
+* Mathlib, `Mathlib.RingTheory.FinitePresentation`: finite presentation via a
+  finite-variable polynomial algebra and a finitely generated ideal kernel.
+* `MultivariatePolynomials.RenameFiniteType`: finite algebra generation relative
+  to variable renaming.
+* `MultivariatePolynomials.RenameKernel`: the ideal kernel of variable renaming
+  and finite generation in terms of all collision participants.
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Equiv`: decomposition into a polynomial
+  algebra in complementary variables with coefficients in the retained variables.
+* `MultivariatePolynomials.EvaluationIdeal`: the coordinate-difference
+  description of evaluation kernels, applied at zero.
+-/
+
+universe u v w
+
+namespace MvPolynomial
+
+/-- Separate the complementary variables from the variables in `S`, treating
+polynomials in `S` as coefficients. -/
+private noncomputable def splitComplAlgEquiv {R : Type u} {τ : Type w}
+    [CommRing R] (S : Set τ) :
+    MvPolynomial τ R ≃ₐ[R] MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) := by
+  classical
+  exact (renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
+    (Equiv.sumComm S (Sᶜ : Set τ)))).trans (sumAlgEquiv R (Sᶜ : Set τ) S)
+
+private theorem splitComplAlgEquiv_comp_rename_subtypeVal
+    {R : Type u} {τ : Type w} [CommRing R] (S : Set τ) :
+    (splitComplAlgEquiv (R := R) S).toAlgHom.comp
+        (rename (Subtype.val : S → τ)) =
+      IsScalarTower.toAlgHom R (MvPolynomial S R)
+        (MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)) := by
+  classical
+  have hrename :
+      (renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
+        (Equiv.sumComm S (Sᶜ : Set τ)))).toAlgHom.comp
+          (rename (Subtype.val : S → τ)) =
+        rename (Sum.inr : S → (Sᶜ : Set τ) ⊕ S) := by
+    apply algHom_ext
+    intro i
+    simp [renameEquiv_apply]
+  change (sumAlgEquiv R (Sᶜ : Set τ) S).toAlgHom.comp
+    ((renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
+      (Equiv.sumComm S (Sᶜ : Set τ)))).toAlgHom.comp
+        (rename (Subtype.val : S → τ))) = _
+  rw [hrename]
+  exact sumAlgEquiv_comp_rename_inr R (Sᶜ : Set τ) S
+
+/-- Adjoining finitely many complementary variables is a finite presentation. -/
+private theorem finitePresentation_rename_subtypeVal
+    {R : Type u} {τ : Type w} [CommRing R] {S : Set τ}
+    (hS : Set.Finite (Sᶜ)) :
+    (rename (R := R) (Subtype.val : S → τ)).toRingHom.FinitePresentation := by
+  classical
+  let : Fintype (Sᶜ : Set τ) := hS.fintype
+  let e := splitComplAlgEquiv (R := R) S
+  have hinc (p : MvPolynomial S R) :
+      e (rename (Subtype.val : S → τ) p) = C p := by
+    simpa only [e, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom,
+      IsScalarTower.coe_toAlgHom', algebraMap_eq] using
+      DFunLike.congr_fun (splitComplAlgEquiv_comp_rename_subtypeVal (R := R) S) p
+  have hcomp : e.symm.toRingEquiv.toRingHom.comp
+      (C : MvPolynomial S R →+* MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)) =
+        (rename (R := R) (Subtype.val : S → τ)).toRingHom := by
+    apply RingHom.ext
+    intro p
+    apply e.injective
+    change e (e.symm (C p)) = e (rename (Subtype.val : S → τ) p)
+    rw [AlgEquiv.apply_symm_apply, hinc]
+  have hC :
+      (C : MvPolynomial S R →+*
+        MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)).FinitePresentation := by
+    change (algebraMap (MvPolynomial S R)
+      (MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R))).FinitePresentation
+    exact RingHom.finitePresentation_algebraMap.mpr inferInstance
+  rw [← hcomp]
+  exact (RingHom.FinitePresentation.of_bijective
+    (f := e.symm.toRingEquiv.toRingHom) e.symm.bijective).comp hC
+
+/-- Killing finitely many complementary variables has finitely generated kernel.
+Under the complementary-variable decomposition, this is the kernel of evaluation
+at zero, generated by the finitely many complementary variables. -/
+private theorem ker_killCompl_fg_of_finite_compl
+    {R : Type u} {τ : Type w} [CommRing R] {S : Set τ}
+    (hS : Set.Finite (Sᶜ)) :
+    (RingHom.ker (killCompl (R := R) (f := (Subtype.val : S → τ))
+      Subtype.val_injective).toRingHom).FG := by
+  classical
+  let : Fintype (Sᶜ : Set τ) := hS.fintype
+  let e := splitComplAlgEquiv (R := R) S
+  let k := (killCompl (R := R) (f := (Subtype.val : S → τ))
+    Subtype.val_injective).toRingHom
+  have hprojection : k =
+      (constantCoeff : MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) →+*
+        MvPolynomial S R).comp e.toRingEquiv.toRingHom := by
+    apply ringHom_ext
+    · intro r
+      change killCompl (R := R) (f := (Subtype.val : S → τ))
+        Subtype.val_injective (C r) = constantCoeff (e (C r))
+      simp [e, splitComplAlgEquiv, renameEquiv_apply]
+    · intro i
+      change killCompl (R := R) (f := (Subtype.val : S → τ))
+        Subtype.val_injective (X i) = constantCoeff (e (X i))
+      by_cases hi : i ∈ S
+      · let j : S := ⟨i, hi⟩
+        have hleft : killCompl (R := R) (f := (Subtype.val : S → τ))
+            Subtype.val_injective (X i) = X j := by
+          simpa only [rename_X] using
+            killCompl_rename_app (R := R) (f := (Subtype.val : S → τ))
+              Subtype.val_injective (X j)
+        have hright : e (X i) = C (X j) := by
+          simpa only [e, j, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, rename_X,
+            Subtype.coe_mk, IsScalarTower.coe_toAlgHom', algebraMap_eq] using
+            DFunLike.congr_fun
+              (splitComplAlgEquiv_comp_rename_subtypeVal (R := R) S) (X j)
+        rw [hleft, hright, constantCoeff_C]
+      · let j : (Sᶜ : Set τ) := ⟨i, hi⟩
+        have hleft : killCompl (R := R) (f := (Subtype.val : S → τ))
+            Subtype.val_injective (X i) = 0 := by
+          simp [killCompl, hi]
+        have hright : e (X i) = X j := by
+          simp [e, splitComplAlgEquiv, renameEquiv_apply, j,
+            Equiv.Set.sumCompl_symm_apply_of_notMem hi]
+        rw [hleft, hright, constantCoeff_X]
+  have hzero : idealOfVars (Sᶜ : Set τ) (MvPolynomial S R) =
+      RingHom.ker (constantCoeff : MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) →+*
+        MvPolynomial S R) := by
+    simpa only [map_zero, sub_zero, eval_zero', idealOfVars] using
+      ideal_span_X_sub_C_eq_ker_eval (R := MvPolynomial S R)
+        (fun _ : (Sᶜ : Set τ) => 0)
+  have hker : (RingHom.ker (constantCoeff :
+      MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) →+* MvPolynomial S R)).FG := by
+    rw [← hzero]
+    exact idealOfVars_fg _ _
+  change (RingHom.ker k).FG
+  have hker_eq : RingHom.ker k =
+      (RingHom.ker (constantCoeff : MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) →+*
+        MvPolynomial S R)).map e.symm.toRingEquiv.toRingHom := by
+    rw [hprojection, ← RingHom.comap_ker]
+    exact Ideal.comap_symm e.symm.toRingEquiv
+  rw [hker_eq]
+  exact hker.map _
+
+/-- Variable renaming over a commutative ring is finitely presented over the
+source polynomial ring exactly when the coefficients are subsingleton or both
+its missed target variables and all source collision participants form finite
+sets. The algebra structure is induced by the renaming homomorphism. -/
+theorem finitePresentation_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
+    [CommRing R] (f : σ → τ) :
+    @Algebra.FinitePresentation (MvPolynomial σ R) (MvPolynomial τ R) _ _
+      (MvPolynomial.rename (R := R) f).toRingHom.toAlgebra ↔
+      Subsingleton R ∨ (Set.Finite ((Set.range f)ᶜ) ∧
+        Set.Finite {i : σ | ∃ j : σ, i ≠ j ∧ f i = f j}) := by
+  classical
+  change (rename (R := R) f).toRingHom.FinitePresentation ↔ _
+  rcases subsingleton_or_nontrivial R with hR | hR
+  · let : Subsingleton R := hR
+    let : Subsingleton (MvPolynomial τ R) := Algebra.subsingleton R (MvPolynomial τ R)
+    constructor
+    · intro _
+      exact Or.inl hR
+    · intro _
+      apply RingHom.FinitePresentation.of_surjective (rename (R := R) f).toRingHom
+      · intro p
+        exact ⟨0, Subsingleton.elim _ _⟩
+      · rw [RingHom.ker_eq_top_of_subsingleton]
+        exact Ideal.fg_top _
+  · let : Nontrivial R := hR
+    let S : Set τ := Set.range f
+    let q : MvPolynomial σ R →ₐ[R] MvPolynomial S R := rename (Set.rangeFactorization f)
+    let i : MvPolynomial S R →ₐ[R] MvPolynomial τ R := rename (Subtype.val : S → τ)
+    have hqSurj : Function.Surjective q :=
+      rename_surjective (Set.rangeFactorization f) Set.rangeFactorization_surjective
+    have hiq : i.comp q = rename (R := R) f := by
+      change (rename (R := R) (Subtype.val : Set.range f → τ)).comp
+        (rename (Set.rangeFactorization f)) = rename f
+      rw [rename_comp_rename, Set.coe_comp_rangeFactorization]
+    have hcollision :
+        {a : σ | ∃ b : σ, a ≠ b ∧
+          Set.rangeFactorization f a = Set.rangeFactorization f b} =
+        {a : σ | ∃ b : σ, a ≠ b ∧ f a = f b} := by
+      ext a
+      simp only [Set.mem_ofPred_eq, Set.rangeFactorization_eq_rangeFactorization_iff]
+    constructor
+    · intro hfp
+      have hmissed : Set.Finite ((Set.range f)ᶜ) := by
+        have hft := RingHom.FiniteType.of_finitePresentation hfp
+        rcases (finiteType_rename_iff (R := R) f).mp hft with hss | hfinite
+        · exact ((not_subsingleton R) hss).elim
+        · exact hfinite
+      let k : MvPolynomial τ R →ₐ[R] MvPolynomial S R :=
+        killCompl (R := R) (f := (Subtype.val : S → τ)) Subtype.val_injective
+      have hki : k.comp i = AlgHom.id R (MvPolynomial S R) :=
+        killCompl_comp_rename (R := R) (f := (Subtype.val : S → τ))
+          Subtype.val_injective
+      have hkSurj : Function.Surjective k := fun p => ⟨i p, AlgHom.congr_fun hki p⟩
+      have hkrename : k.comp (rename (R := R) f) = q := by
+        rw [← hiq, ← AlgHom.comp_assoc, hki, AlgHom.id_comp]
+      -- Killing the finitely many missed variables descends the presentation
+      -- to the surjective renaming onto the range.
+      have hqfp : q.toRingHom.FinitePresentation := by
+        have h := hfp.comp_surjective (g := k.toRingHom) hkSurj
+          (ker_killCompl_fg_of_finite_compl (R := R) (S := S) hmissed)
+        change (k.comp (rename (R := R) f)).toRingHom.FinitePresentation at h
+        rwa [hkrename] at h
+      have hqfg : (RingHom.ker q.toRingHom).FG := by
+        let : Algebra (MvPolynomial σ R) (MvPolynomial S R) := q.toRingHom.toAlgebra
+        let : Algebra.FinitePresentation (MvPolynomial σ R) (MvPolynomial S R) := hqfp
+        -- Both algebras are finitely presented over the same source ring:
+        -- the source by the self instance and the range by the descended presentation.
+        let : Algebra.FinitePresentation (MvPolynomial σ R) (MvPolynomial σ R) :=
+          Algebra.FinitePresentation.self (MvPolynomial σ R)
+        have hfg := Algebra.FinitePresentation.ker_fG_of_surjective
+          (R := MvPolynomial σ R)
+          (Algebra.ofId (MvPolynomial σ R) (MvPolynomial S R))
+          (show Function.Surjective
+            (Algebra.ofId (MvPolynomial σ R) (MvPolynomial S R)) from hqSurj)
+        change (RingHom.ker q.toRingHom).FG at hfg
+        exact hfg
+      have hfinite : Set.Finite
+          {a : σ | ∃ b : σ, a ≠ b ∧
+            Set.rangeFactorization f a = Set.rangeFactorization f b} := by
+        rcases (ker_rename_fg_iff (R := R) (Set.rangeFactorization f)).mp hqfg with
+          hss | hfinite
+        · exact ((not_subsingleton R) hss).elim
+        · exact hfinite
+      rw [hcollision] at hfinite
+      exact Or.inr ⟨hmissed, hfinite⟩
+    · rintro (hss | ⟨hmissed, hfinite⟩)
+      · exact ((not_subsingleton R) hss).elim
+      · have hqfg : (RingHom.ker q.toRingHom).FG := by
+          apply (ker_rename_fg_iff (R := R) (Set.rangeFactorization f)).mpr
+          right
+          rwa [hcollision]
+        have hqfp : q.toRingHom.FinitePresentation :=
+          RingHom.FinitePresentation.of_surjective q.toRingHom hqSurj hqfg
+        have hifp : i.toRingHom.FinitePresentation :=
+          finitePresentation_rename_subtypeVal (R := R) (S := S) hmissed
+        have hcomp := hifp.comp hqfp
+        change (i.comp q).toRingHom.FinitePresentation at hcomp
+        rwa [hiq] at hcomp
+
+end MvPolynomial

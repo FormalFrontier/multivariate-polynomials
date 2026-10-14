@@ -16,19 +16,27 @@ evaluation map an embedding and identifies zero loci with inherited
 closed-point subspaces under the same finite-variable algebraic-closure
 hypotheses.
 Variable renaming also has an exact finite-type criterion relative to the
-source polynomial semiring.
+source polynomial semiring. Its finite-presentation interface over commutative
+rings also accounts for all source indices participating in collisions.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits)
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-six production leaves and forty-two test/example modules.
+library has twenty-seven production leaves and forty-five test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Finite presentation of commutative-ring variable renaming.**
+  [`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
+  states the relative finite-presentation criterion: subsingleton coefficients,
+  or finitely many missed target variables together with finitely many source
+  collision participants. Both collision endpoints are counted. See the
+  [finite-presentation section](#relative-finite-presentation-of-variable-renaming)
+  for the coefficient-ring boundary and infinite-variable examples.
 - **Variable renaming has an exact relative finite-type criterion.**
   [`MvPolynomial.finiteType_rename_iff`](MultivariatePolynomials/RenameFiniteType.lean)
   characterizes finite generation of the target polynomial algebra over the
@@ -237,6 +245,42 @@ of `n ↦ 2 * n + 1`. This index embedding sends `X n` to `X (2 * n)`; it is not
 the substitution `X n ↦ (X n)²`. The criterion uses Mathlib's polynomial
 renaming, finite-support and algebra-adjoin APIs.
 
+## Relative finite presentation of variable renaming
+
+For any map `f : σ → τ` and any commutative ring `R`,
+[`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
+has the interface
+
+```lean
+@Algebra.FinitePresentation (MvPolynomial σ R) (MvPolynomial τ R) _ _
+  (MvPolynomial.rename (R := R) f).toRingHom.toAlgebra ↔
+  Subsingleton R ∨ (Set.Finite ((Set.range f)ᶜ) ∧
+    Set.Finite {i : σ | ∃ j : σ, i ≠ j ∧ f i = f j})
+```
+
+The base is the source polynomial ring with the same renaming-induced action
+as in the finite-type criterion. The coefficient and two variable universes
+are independent. No Noetherian, domain, reducedness, injectivity, surjectivity
+or finite-variable hypothesis is imposed. The collision set contains all
+source participants, not one representative per fibre. Subsingleton rings
+allow infinitely many missed variables and collisions.
+
+The [integer-coefficient applications](MultivariatePolynomialsTests/RenameFinitePresentationCriterion.lean)
+use this interface for successor and predecessor renaming and for the negative
+paired projection `ℕ × Bool → ℕ`. Separate
+[ring examples](MultivariatePolynomialsTests/RenameFinitePresentationModels.lean)
+construct finite presentations from Mathlib's APIs, including empty variable
+types in different universes, the zero ring `ZMod 1`, non-Noetherian sources,
+and the nonzero nilpotent `2` in `ZMod 4`.
+
+The commutative-ring hypothesis is substantive. In the
+[natural-number example](MultivariatePolynomialsTests/RenameFinitePresentationSemiring.lean),
+paired projection has bottom ideal kernel and a zero-variable finite presentation
+in Mathlib's existing class, although all infinitely many source indices collide.
+Bottom ideal kernel does not imply injectivity over this semiring. This
+ideal-kernel definition is distinct from a congruence-based finite-presentation
+notion for semirings.
+
 ## Use and check
 
 To use this library as a dependency, add it to your `lakefile.toml`:
@@ -325,8 +369,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-five of
-these twenty-six leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports twenty-six of
+these twenty-seven leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -335,6 +379,7 @@ not a complete declaration inventory.
 | [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
+| [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image and surjectivity criteria for polynomial fraction rings |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
