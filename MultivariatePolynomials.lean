@@ -28,6 +28,7 @@ public import MultivariatePolynomials.WeightOneNaturality
 public import MultivariatePolynomials.Artinian
 public import MultivariatePolynomials.FiniteSupport
 public import MultivariatePolynomials.RenameKernel
+public import MultivariatePolynomials.RenameFiniteType
 
 /-!
 # Multivariate polynomials

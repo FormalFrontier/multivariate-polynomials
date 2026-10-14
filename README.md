@@ -15,18 +15,27 @@ The polynomial Zariski topology on field-valued coordinates makes the
 evaluation map an embedding and identifies zero loci with inherited
 closed-point subspaces under the same finite-variable algebraic-closure
 hypotheses.
+Variable renaming also has an exact finite-type criterion relative to the
+source polynomial semiring.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits)
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-five production leaves and forty test/example modules.
+library has twenty-six production leaves and forty-two test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Variable renaming has an exact relative finite-type criterion.**
+  [`MvPolynomial.finiteType_rename_iff`](MultivariatePolynomials/RenameFiniteType.lean)
+  characterizes finite generation of the target polynomial algebra over the
+  source polynomial semiring: the coefficients are subsingleton or the set of
+  missed target variables is finite. See the
+  [relative finite-type section](#relative-finite-type-of-variable-renaming)
+  for the algebra structure, generality and infinite-variable applications.
 - **Finite coefficient aggregation has an exact injectivity criterion.** For
   types `α`, `β` and `M` in independent universes, an additive commutative
   monoid `M`, and any index map `f : α → β`,
@@ -190,6 +199,44 @@ Its [fraction examples](docs/Results.md#fraction-origins-and-traces-in-use)
 explain how to use the common finite stage and why whole stage fields do not
 provide the subsemiring dimension bound.
 
+## Relative finite type of variable renaming
+
+For any map `f : σ → τ` and any commutative semiring `R`,
+[`MvPolynomial.finiteType_rename_iff`](MultivariatePolynomials/RenameFiniteType.lean)
+states
+
+```lean
+@Algebra.FiniteType (MvPolynomial σ R) (MvPolynomial τ R) _ _
+  (MvPolynomial.rename (R := R) f).toRingHom.toAlgebra ↔
+  Subsingleton R ∨ Set.Finite ((Set.range f)ᶜ)
+```
+
+The displayed algebra structure is induced by the renaming homomorphism:
+a source polynomial `p` acts on a target polynomial `q` by
+`MvPolynomial.rename f p * q`. The base is the **source polynomial semiring**,
+not the coefficient semiring. The types `R`, `σ` and `τ` may lie in three
+independent universes. Neither variable type need be finite, and `f` need not
+be injective or surjective. Empty variable types, non-ring commutative
+semirings such as `ℕ`, the zero semiring, and nonreduced rings such as `ZMod 4`
+are all allowed.
+
+Finitely many variables outside the image of `f` supply relative algebra
+generators. For nontrivial coefficients, finite polynomial support prevents a
+finite family of generators from supplying infinitely many missed variables.
+For subsingleton coefficients the target polynomial semiring is itself
+subsingleton, even if the set of missed variables is infinite. This is a
+criterion for finite **algebra** generation, not finite presentation,
+coefficient-module finiteness, or finite generation of the source polynomial
+kernel ideal.
+
+The [infinite-variable applications](MultivariatePolynomialsTests/RenameFiniteTypeCriterion.lean)
+show that shifting natural-number indices by one or two is of finite type,
+whereas the even-index embedding `n ↦ 2 * n` is of finite type exactly when
+`R` is subsingleton. Its missed variables include the infinite injective image
+of `n ↦ 2 * n + 1`. This index embedding sends `X n` to `X (2 * n)`; it is not
+the substitution `X n ↦ (X n)²`. The criterion uses Mathlib's polynomial
+renaming, finite-support and algebra-adjoin APIs.
+
 ## Use and check
 
 To use this library as a dependency, add it to your `lakefile.toml`:
@@ -278,8 +325,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-four of
-these twenty-five leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports twenty-five of
+these twenty-six leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -287,6 +334,7 @@ not a complete declaration inventory.
 | --- | --- |
 | [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
+| [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image and surjectivity criteria for polynomial fraction rings |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
