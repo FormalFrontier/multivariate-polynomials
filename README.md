@@ -79,7 +79,8 @@ weight-one-valuation naturality interfaces.
   ideal of the **source polynomial ring** `MvPolynomial σ R`, not as an
   `R`-module. No surjectivity or finite-variable hypothesis is required. See
   the [applications](MultivariatePolynomialsTests/RenameKernelCriterion.lean).
-- **Fraction-ring renaming is surjective exactly when it covers all variables.**
+- **Fraction-ring renaming is surjective, equivalently integral, exactly when
+  it covers all variables.**
   For any integral domain `R` (`[CommRing R] [IsDomain R]`) and injective
   `ρ : τ → σ`,
   [`MvPolynomial.surjective_fractionRing_map_rename_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
@@ -87,14 +88,22 @@ weight-one-valuation naturality interfaces.
   `Function.Surjective ρ`. Its source `L` and target `K` may be any
   commutative-ring fraction-ring realizations with their `Algebra` and
   `IsFractionRing` instances, without `Field` instances. The five universes
-  of `R`, `τ`, `σ`, `L` and `K` are independent.
+  of `R`, `τ`, `σ`, `L` and `K` are independent. For this same map,
+  [`MvPolynomial.isIntegral_fractionRing_map_rename_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  characterizes integrality by the same condition `Function.Surjective ρ`.
   [`MvPolynomial.surjective_fractionRing_map_finset_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
-  specializes this to a finite-variable stage `S : Finset σ`: the stage map
-  is surjective exactly when `∀ i : σ, i ∈ S`, with no finiteness hypothesis
-  on the ambient variable type. The variable-image criterion identifies
-  the image of `X i` in the range exactly when `i ∈ Set.range ρ`. Thus every
-  finite stage in infinitely many variables is nonsurjective, although each
-  finite family of fractions has a common finite stage. See the
+  and
+  [`MvPolynomial.isIntegral_fractionRing_map_finset_iff`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  specialize these criteria to a finite-variable stage `S : Finset σ`: the
+  stage map is surjective, equivalently integral, exactly when
+  `∀ i : σ, i ∈ S`, with no finiteness hypothesis on the ambient variable
+  type. The variable-image criterion identifies the image of `X i` in the
+  range exactly when `i ∈ Set.range ρ`. When `i ∉ Set.range ρ`,
+  [`MvPolynomial.not_isIntegralElem_fractionRing_map_rename_X`](MultivariatePolynomials/FractionRingFiniteVariables.lean)
+  shows that the localized variable `X i` in `K` is not integral over the
+  image of the fraction-ring map. Thus every finite stage in infinitely
+  many variables is neither surjective nor integral, although each finite
+  family of fractions has a common finite stage. See the
   [API guide](docs/API.md#multivariatepolynomialsfractionringfinitevariables).
 - **Zeros are closed points of polynomial quotients.** For any ideal `I` in
   `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
@@ -380,7 +389,7 @@ not a complete declaration inventory.
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
-| [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image and surjectivity criteria for polynomial fraction rings |
+| [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |

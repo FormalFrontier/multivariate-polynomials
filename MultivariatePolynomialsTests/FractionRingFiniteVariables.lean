@@ -6,6 +6,11 @@ module
 
 public import MultivariatePolynomials.FractionRingFiniteVariables
 import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.RatFunc.AsPolynomial
+import Mathlib.RingTheory.Algebraic.Integral
+import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Tactic
 
 /-!
@@ -22,6 +27,10 @@ universe lifts, and the boundaries of injectivity and the domain hypothesis.
 ## References
 
 * `MultivariatePolynomials.FractionRingFiniteVariables` and its references.
+* Mathlib's `RingHom.isIntegral_of_surjective` and `RingHom.isIntegralElem_map`
+  supply the positive integral examples.
+* Mathlib's `RatFunc.transcendental_X` and `IsIntegral.isAlgebraic` supply an
+  independent nonintegral rational-function example over the integers.
 -/
 
 @[expose] public section
@@ -754,6 +763,40 @@ private theorem even_rename_controls :
   · intro n
     exact ⟨even_index_variable_in_image n, odd_index_variable_not_in_image n⟩
 
+/-- Renaming natural-number variables to even indices gives a nonintegral fraction-ring map. -/
+private theorem even_rename_not_isIntegral :
+    ¬ (IsFractionRing.map (A := P) (B := P) (K := F) (L := F)
+      (j := (rename (R := ℤ) (fun n : ℕ => 2 * n)).toRingHom)
+      (rename_injective _ even_rename_controls.1)).IsIntegral := by
+  exact (isIntegral_fractionRing_map_rename_iff (R := ℤ) (L := F) (K := F)
+    (fun n : ℕ => 2 * n) even_rename_controls.1).not.mpr even_rename_controls.2.1
+
+/-- The localized variable at index one is not integral over the even-index image. -/
+private theorem even_rename_X_one_not_isIntegralElem :
+    ¬ (IsFractionRing.map (A := P) (B := P) (K := F) (L := F)
+      (j := (rename (R := ℤ) (fun n : ℕ => 2 * n)).toRingHom)
+      (rename_injective _ even_rename_controls.1)).IsIntegralElem
+        (algebraMap P F (X 1)) := by
+  apply not_isIntegralElem_fractionRing_map_rename_X (R := ℤ) (L := F) (K := F)
+    (fun n : ℕ => 2 * n) even_rename_controls.1 1
+  exact (X_mem_range_fractionRing_map_rename_iff (R := ℤ) (L := F) (K := F)
+    (fun n : ℕ => 2 * n) even_rename_controls.1 1).not.mp
+      (by simpa using odd_index_variable_not_in_image 0)
+
+/-- The empty finite-variable stage is not integral in a one-variable fraction ring. -/
+private theorem empty_unit_stage_not_isIntegral
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial Unit ℤ) K]
+    [IsFractionRing (MvPolynomial Unit ℤ) K] :
+    ¬ (IsFractionRing.map
+      (A := MvPolynomial {i : Unit // i ∈ (∅ : Finset Unit)} ℤ)
+      (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial {i : Unit // i ∈ (∅ : Finset Unit)} ℤ))
+      (L := K) (j := (rename (R := ℤ) Subtype.val).toRingHom)
+      (rename_injective Subtype.val Subtype.val_injective)).IsIntegral := by
+  rw [isIntegral_fractionRing_map_finset_iff]
+  intro h
+  simpa using h ()
+
 -- The same permutation works between independent lifts and arbitrary realizations.
 private theorem lifted_fin_two_swap_controls
     {R : Type uR} [CommRing R] [IsDomain R]
@@ -1155,5 +1198,233 @@ example :
       change 2 * a.down = 2 * b.down at hm
       omega)).not.mpr
   exact lifted_even_rename_controls.2.1
+
+end MvPolynomialTests.FractionRingFiniteVariables
+
+namespace MvPolynomialTests.FractionRingFiniteVariables
+
+open MvPolynomial
+
+-- These positive examples use surjectivity, not the integrality criterion.
+private theorem fraction_rename_integral_of_surjective
+    {R : Type uR} [CommRing R] [IsDomain R] {τ : Type uτ} {σ : Type uσ}
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial τ R) L]
+    [IsFractionRing (MvPolynomial τ R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K]
+    (ρ : τ → σ) (hρ : Function.Injective ρ) (honto : Function.Surjective ρ) :
+    (IsFractionRing.map (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+      (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom)
+      (rename_injective ρ hρ)).IsIntegral := by
+  apply RingHom.isIntegral_of_surjective
+  exact (surjective_fractionRing_map_rename_iff (R := R) (L := L) (K := K) ρ hρ).mpr honto
+
+private theorem integer_fin_two_swap_integral :
+    let e := Equiv.swap (0 : Fin 2) 1
+    (IsFractionRing.map
+      (A := MvPolynomial (Fin 2) ℤ) (B := MvPolynomial (Fin 2) ℤ)
+      (K := FractionRing (MvPolynomial (Fin 2) ℤ))
+      (L := FractionRing (MvPolynomial (Fin 2) ℤ))
+      (j := (rename (R := ℤ) e).toRingHom) (rename_injective e e.injective)).IsIntegral := by
+  exact fraction_rename_integral_of_surjective _ (Equiv.swap 0 1).injective
+    (Equiv.swap 0 1).surjective
+
+-- The element has a nonconstant numerator and a genuine variable denominator.
+private theorem integer_swap_variable_fraction_integral :
+    let e := Equiv.swap (0 : Fin 2) 1
+    let φ := IsFractionRing.map
+      (A := MvPolynomial (Fin 2) ℤ) (B := MvPolynomial (Fin 2) ℤ)
+      (K := FractionRing (MvPolynomial (Fin 2) ℤ))
+      (L := FractionRing (MvPolynomial (Fin 2) ℤ))
+      (j := (rename (R := ℤ) e).toRingHom) (rename_injective e e.injective)
+    φ.IsIntegralElem
+      (algebraMap (MvPolynomial (Fin 2) ℤ) (FractionRing (MvPolynomial (Fin 2) ℤ))
+        (X 1 + 1) /
+      algebraMap (MvPolynomial (Fin 2) ℤ) (FractionRing (MvPolynomial (Fin 2) ℤ))
+        (X 0 + 1)) := by
+  exact integer_fin_two_swap_integral _
+
+private theorem lifted_fin_two_swap_integral
+    {R : Type uR} [CommRing R] [IsDomain R]
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial (ULift.{uτ} (Fin 2)) R) L]
+    [IsFractionRing (MvPolynomial (ULift.{uτ} (Fin 2)) R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial (ULift.{uσ} (Fin 2)) R) K]
+    [IsFractionRing (MvPolynomial (ULift.{uσ} (Fin 2)) R) K] :
+    let e : ULift.{uτ} (Fin 2) ≃ ULift.{uσ} (Fin 2) :=
+      (Equiv.ulift.trans (Equiv.swap 0 1)).trans Equiv.ulift.symm
+    (IsFractionRing.map
+      (A := MvPolynomial (ULift.{uτ} (Fin 2)) R)
+      (B := MvPolynomial (ULift.{uσ} (Fin 2)) R)
+      (K := L) (L := K) (j := (rename (R := R) e).toRingHom)
+      (rename_injective e e.injective)).IsIntegral := by
+  dsimp only
+  exact fraction_rename_integral_of_surjective _
+    ((Equiv.ulift.trans (Equiv.swap 0 1)).trans Equiv.ulift.symm).injective
+    ((Equiv.ulift.trans (Equiv.swap 0 1)).trans Equiv.ulift.symm).surjective
+
+private theorem full_fin_two_integer_integral
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial (Fin 2) ℤ) K]
+    [IsFractionRing (MvPolynomial (Fin 2) ℤ) K] :
+    (IsFractionRing.map
+      (A := MvPolynomial {i : Fin 2 // i ∈ (Finset.univ : Finset (Fin 2))} ℤ)
+      (B := MvPolynomial (Fin 2) ℤ)
+      (K := FractionRing
+        (MvPolynomial {i : Fin 2 // i ∈ (Finset.univ : Finset (Fin 2))} ℤ))
+      (L := K) (j := (rename (R := ℤ) Subtype.val).toRingHom)
+      (rename_injective Subtype.val Subtype.val_injective)).IsIntegral := by
+  apply RingHom.isIntegral_of_surjective
+  exact (surjective_fractionRing_map_finset_iff (R := ℤ) (K := K) Finset.univ).mpr
+    Finset.mem_univ
+
+private theorem empty_ambient_integral :
+    (IsFractionRing.map
+      (A := MvPolynomial {i : Empty // i ∈ (∅ : Finset Empty)} ℤ)
+      (B := MvPolynomial Empty ℤ)
+      (K := FractionRing (MvPolynomial {i : Empty // i ∈ (∅ : Finset Empty)} ℤ))
+      (L := FractionRing (MvPolynomial Empty ℤ))
+      (j := (rename (R := ℤ) Subtype.val).toRingHom)
+      (rename_injective Subtype.val Subtype.val_injective)).IsIntegral := by
+  exact RingHom.isIntegral_of_surjective _ empty_ambient_stage_surjective
+
+-- A preserved coefficient fraction is integral even when a variable is missing.
+private theorem empty_to_unit_half_integral :
+    (IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) Empty.elim).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))).IsIntegralElem
+        (1 / 2 : FractionRing (MvPolynomial Unit ℤ)) := by
+  have h := (IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) Empty.elim).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))).isIntegralElem_map
+        (x := (1 / 2 : FractionRing (MvPolynomial Empty ℤ)))
+  simpa only [map_div₀, map_one, map_ofNat] using h
+
+-- An independent stock transcendental sample; it is not a rename-map comparison.
+private theorem ratFunc_integer_X_not_integral :
+    ¬ (algebraMap ℤ (RatFunc ℤ)).IsIntegralElem (RatFunc.X : RatFunc ℤ) := by
+  intro h
+  exact RatFunc.transcendental_X (IsIntegral.isAlgebraic h)
+
+private theorem ratFunc_integer_extension_not_integral :
+    ¬ (algebraMap ℤ (RatFunc ℤ)).IsIntegral := by
+  intro h
+  exact ratFunc_integer_X_not_integral (h RatFunc.X)
+
+-- Concrete Empty → Unit boundary; no admitted integrality theorem is used.
+private theorem empty_to_unit_polynomial_eval_injective :
+    Function.Injective (Polynomial.eval₂RingHom
+      (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom
+      (X () : MvPolynomial Unit ℤ)) := by
+  let g : Option Empty → Unit := fun o => Option.elim o () Empty.elim
+  have hg : Function.Injective g := by
+    intro a b _
+    cases a with
+    | none =>
+      cases b with
+      | none => rfl
+      | some e => exact e.elim
+    | some e => exact e.elim
+  have heq : Polynomial.eval₂RingHom
+      (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom
+      (X () : MvPolynomial Unit ℤ) =
+      (rename (R := ℤ) g).toRingHom.comp
+        (optionEquivLeft ℤ Empty).symm.toRingHom := by
+    apply Polynomial.ringHom_ext
+    · intro p
+      obtain ⟨r, rfl⟩ := (isEmptyRingEquiv ℤ Empty).symm.surjective p
+      simp
+    · simp [RingHom.comp_apply, g]
+  rw [heq]
+  exact (rename_injective g hg).comp (optionEquivLeft ℤ Empty).symm.injective
+
+private theorem empty_to_unit_fraction_eval_injective :
+    let φ := IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))
+    Function.Injective (Polynomial.eval₂RingHom
+      (φ.comp (algebraMap (MvPolynomial Empty ℤ)
+        (FractionRing (MvPolynomial Empty ℤ))))
+      (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ))
+        (X ()))) := by
+  dsimp only
+  let φ := IsFractionRing.map
+    (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+    (K := FractionRing (MvPolynomial Empty ℤ))
+    (L := FractionRing (MvPolynomial Unit ℤ))
+    (j := (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom)
+    (rename_injective Empty.elim (by intro a; exact a.elim))
+  change Function.Injective (Polynomial.eval₂RingHom
+    (φ.comp (algebraMap (MvPolynomial Empty ℤ)
+      (FractionRing (MvPolynomial Empty ℤ))))
+    (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ)) (X ())))
+  have heq : Polynomial.eval₂RingHom
+      (φ.comp (algebraMap (MvPolynomial Empty ℤ)
+        (FractionRing (MvPolynomial Empty ℤ))))
+      (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ)) (X ())) =
+      (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ))).comp
+        (Polynomial.eval₂RingHom
+          (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom
+          (X () : MvPolynomial Unit ℤ)) := by
+    apply Polynomial.ringHom_ext
+    · intro p
+      simpa only [φ, IsFractionRing.map, Polynomial.coe_eval₂RingHom,
+        Polynomial.eval₂_C, RingHom.comp_apply] using
+        (IsLocalization.map_eq
+          (S := FractionRing (MvPolynomial Empty ℤ))
+          (Q := FractionRing (MvPolynomial Unit ℤ))
+          (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective
+            (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom
+            (rename_injective Empty.elim (by intro a; exact a.elim))) p)
+    · simp only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, RingHom.comp_apply]
+  rw [heq]
+  exact (IsFractionRing.injective (MvPolynomial Unit ℤ)
+    (FractionRing (MvPolynomial Unit ℤ))).comp empty_to_unit_polynomial_eval_injective
+
+private theorem empty_to_unit_variable_not_integral :
+    ¬ (IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))).IsIntegralElem
+        (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ))
+          (X ())) := by
+  let : IsDomain (FractionRing (MvPolynomial Empty ℤ)) :=
+    IsFractionRing.isDomain (MvPolynomial Empty ℤ)
+  rintro ⟨p, hp, hroot⟩
+  have hnormalized := IsLocalization.integerNormalization_eval₂_eq_zero
+    (nonZeroDivisors (MvPolynomial Empty ℤ))
+    (IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))) p hroot
+  have hzero :
+      IsLocalization.integerNormalization (nonZeroDivisors (MvPolynomial Empty ℤ)) p = 0 := by
+    apply empty_to_unit_fraction_eval_injective
+    simpa only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_zero] using hnormalized
+  exact hp.ne_zero
+    ((IsLocalization.integerNormalization_eq_zero_iff le_rfl p).mp hzero)
+
+private theorem empty_to_unit_fraction_extension_not_integral :
+    ¬ (IsFractionRing.map
+      (A := MvPolynomial Empty ℤ) (B := MvPolynomial Unit ℤ)
+      (K := FractionRing (MvPolynomial Empty ℤ))
+      (L := FractionRing (MvPolynomial Unit ℤ))
+      (j := (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom)
+      (rename_injective Empty.elim (by intro a; exact a.elim))).IsIntegral := by
+  intro h
+  exact empty_to_unit_variable_not_integral
+    (h (algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ)) (X ())))
+-- End of concrete Empty → Unit model.
 
 end MvPolynomialTests.FractionRingFiniteVariables

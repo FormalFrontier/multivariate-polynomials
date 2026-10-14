@@ -4,8 +4,12 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import Mathlib.Algebra.MvPolynomial.Equiv
 public import Mathlib.Algebra.MvPolynomial.Variables
 public import Mathlib.RingTheory.Localization.FractionRing
+public import Mathlib.RingTheory.Localization.Integral
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs
+public import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
 
 /-!
 # Finite-variable origins of polynomial fractions
@@ -258,6 +262,132 @@ theorem surjective_fractionRing_map_finset_iff
         (j := (rename (R := R) Subtype.val).toRingHom)
         (rename_injective Subtype.val Subtype.val_injective)) ↔ ∀ i : σ, i ∈ S := by
   rw [surjective_fractionRing_map_rename_iff Subtype.val Subtype.val_injective]
+  constructor
+  · intro h i
+    obtain ⟨j, rfl⟩ := h i
+    exact j.property
+  · intro h i
+    exact ⟨⟨i, h i⟩, rfl⟩
+
+end MvPolynomial
+
+namespace MvPolynomial
+
+/-- A localized variable outside the index image is not integral over the
+fraction-ring map induced by the variable renaming. -/
+theorem not_isIntegralElem_fractionRing_map_rename_X
+    {R : Type uR} [CommRing R] [IsDomain R] {τ : Type uτ} {σ : Type uσ}
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial τ R) L]
+    [IsFractionRing (MvPolynomial τ R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K]
+    (ρ : τ → σ) (hρ : Function.Injective ρ) (i : σ) (hi : i ∉ Set.range ρ) :
+    ¬ (IsFractionRing.map (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+      (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom)
+      (rename_injective ρ hρ)).IsIntegralElem
+        (algebraMap (MvPolynomial σ R) K (X i)) := by
+  classical
+  let g : Option τ → σ := fun o => Option.elim o i ρ
+  have hg : Function.Injective g := by
+    intro a b hab
+    cases a with
+    | none =>
+      cases b with
+      | none => rfl
+      | some b => exact (hi ⟨b, hab.symm⟩).elim
+    | some a =>
+      cases b with
+      | none => exact (hi ⟨a, hab⟩).elim
+      | some b => exact congrArg Option.some (hρ hab)
+  have hcoeff (p : MvPolynomial τ R) :
+      (optionEquivLeft R τ).symm (Polynomial.C p) = rename Option.some p := by
+    change Polynomial.aevalTower (rename (R := R) (Option.some : τ → Option τ))
+      (X none : MvPolynomial (Option τ) R) (Polynomial.C p) = rename Option.some p
+    simp only [Polynomial.aevalTower_C]
+  have hpoly : Function.Injective
+      (Polynomial.eval₂RingHom (rename (R := R) ρ).toRingHom
+        (X i : MvPolynomial σ R)) := by
+    have heq : Polynomial.eval₂RingHom (rename (R := R) ρ).toRingHom
+        (X i : MvPolynomial σ R) =
+        (rename (R := R) g).toRingHom.comp (optionEquivLeft R τ).symm.toRingHom := by
+      apply Polynomial.ringHom_ext
+      · intro p
+        simp only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, RingHom.comp_apply]
+        change rename ρ p = rename g ((optionEquivLeft R τ).symm (Polynomial.C p))
+        simp only [hcoeff, rename_rename]
+        simp [g, Function.comp_def]
+      · simp [RingHom.comp_apply, g]
+    rw [heq]
+    exact (rename_injective g hg).comp (optionEquivLeft R τ).symm.injective
+  let φ := IsFractionRing.map (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+    (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom) (rename_injective ρ hρ)
+  have hfrac : Function.Injective (Polynomial.eval₂RingHom
+      (φ.comp (algebraMap (MvPolynomial τ R) L))
+      (algebraMap (MvPolynomial σ R) K (X i))) := by
+    have heq : Polynomial.eval₂RingHom
+        (φ.comp (algebraMap (MvPolynomial τ R) L))
+        (algebraMap (MvPolynomial σ R) K (X i)) =
+        (algebraMap (MvPolynomial σ R) K).comp
+          (Polynomial.eval₂RingHom (rename (R := R) ρ).toRingHom
+            (X i : MvPolynomial σ R)) := by
+      apply Polynomial.ringHom_ext
+      · intro p
+        simpa only [φ, IsFractionRing.map, Polynomial.coe_eval₂RingHom,
+          Polynomial.eval₂_C, RingHom.comp_apply] using
+          (IsLocalization.map_eq (S := L) (Q := K)
+            (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective
+              (rename (R := R) ρ).toRingHom (rename_injective ρ hρ)) p)
+      · simp only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, RingHom.comp_apply]
+    rw [heq]
+    exact (IsFractionRing.injective (MvPolynomial σ R) K).comp hpoly
+  let : IsDomain L := IsFractionRing.isDomain (MvPolynomial τ R)
+  rintro ⟨p, hp, hroot⟩
+  have hnormalized := IsLocalization.integerNormalization_eval₂_eq_zero
+    (nonZeroDivisors (MvPolynomial τ R)) φ p hroot
+  have hzero : IsLocalization.integerNormalization
+      (nonZeroDivisors (MvPolynomial τ R)) p = 0 := by
+    apply hfrac
+    simpa only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_zero] using hnormalized
+  exact hp.ne_zero
+    ((IsLocalization.integerNormalization_eq_zero_iff le_rfl p).mp hzero)
+
+/-- The fraction-ring map induced by an injective variable renaming is integral
+exactly when the index map is surjective. Both fraction rings may be arbitrary
+commutative-ring realizations, and the coefficient ring need only be a domain. -/
+theorem isIntegral_fractionRing_map_rename_iff
+    {R : Type uR} [CommRing R] [IsDomain R] {τ : Type uτ} {σ : Type uσ}
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial τ R) L]
+    [IsFractionRing (MvPolynomial τ R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K] (ρ : τ → σ) (hρ : Function.Injective ρ) :
+    (IsFractionRing.map (A := MvPolynomial τ R) (B := MvPolynomial σ R)
+      (K := L) (L := K) (j := (rename (R := R) ρ).toRingHom)
+      (rename_injective ρ hρ)).IsIntegral ↔ Function.Surjective ρ := by
+  classical
+  constructor
+  · intro h i
+    by_contra hi
+    exact not_isIntegralElem_fractionRing_map_rename_X
+      (R := R) (L := L) (K := K) ρ hρ i hi (h _)
+  · intro h
+    exact RingHom.isIntegral_of_surjective _
+      ((surjective_fractionRing_map_rename_iff (R := R) (L := L) (K := K) ρ hρ).mpr h)
+
+/-- A finite-variable fraction-ring stage is integral exactly when its finite set
+contains every ambient variable. The source and target may both be arbitrary
+commutative-ring fraction-ring realizations. -/
+theorem isIntegral_fractionRing_map_finset_iff
+    {R : Type uR} [CommRing R] [IsDomain R] {σ : Type uσ} (S : Finset σ)
+    {L : Type uL} [CommRing L] [Algebra (MvPolynomial {j : σ // j ∈ S} R) L]
+    [IsFractionRing (MvPolynomial {j : σ // j ∈ S} R) L]
+    {K : Type uK} [CommRing K] [Algebra (MvPolynomial σ R) K]
+    [IsFractionRing (MvPolynomial σ R) K] :
+    (IsFractionRing.map
+      (A := MvPolynomial {j : σ // j ∈ S} R) (B := MvPolynomial σ R)
+      (K := L) (L := K) (j := (rename (R := R) Subtype.val).toRingHom)
+      (rename_injective Subtype.val Subtype.val_injective)).IsIntegral ↔ ∀ i : σ, i ∈ S := by
+  rw [isIntegral_fractionRing_map_rename_iff (R := R) (L := L) (K := K)
+    Subtype.val Subtype.val_injective]
   constructor
   · intro h i
     obtain ⟨j, rfl⟩ := h i
