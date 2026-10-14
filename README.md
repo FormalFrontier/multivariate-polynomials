@@ -23,7 +23,8 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-eight production leaves and forty-eight test/example modules.
+library's production modules are [listed below](#contents), with separate
+test and example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -116,6 +117,17 @@ weight-one-valuation naturality interfaces.
   many variables is neither surjective nor integral, although each finite
   family of fractions has a common finite stage. See the
   [API guide](docs/API.md#multivariatepolynomialsfractionringfinitevariables).
+- **Omitted variables are algebraically independent over the source fraction ring.**
+  For a commutative domain `R`, an injective map `ρ : τ → σ`, and arbitrary
+  commutative-ring fraction rings `L` of `MvPolynomial τ R` and `K` of
+  `MvPolynomial σ R`,
+  [`MvPolynomial.algebraicIndependent_fractionRing_map_rename_compl`](MultivariatePolynomials/FractionRingAlgebraicIndependence.lean)
+  proves that the images of `X i` in `K`, indexed by
+  `{i : σ // i ∉ Set.range ρ}`, are algebraically independent over `L`.
+  The `L`-algebra structure on `K` must be induced by the same canonical
+  fraction-ring map of `MvPolynomial.rename ρ`, not an arbitrary scalar action.
+  The five universes of `R`, `τ`, `σ`, `L` and `K` are independent;
+  no `Field` instances or finite index types are required.
 - **Zeros are closed points of polynomial quotients.** For any ideal `I` in
   `MvPolynomial σ K` with `K` algebraically closed and `σ` finite, the
   [canonical point-set equivalence](MultivariatePolynomials/QuotientClosedPoints.lean)
@@ -389,8 +401,9 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-seven of
-these twenty-eight leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate re-exports the
+production modules listed below except `MultivariatePolynomials.Noetherian`,
+which is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -402,6 +415,7 @@ not a complete declaration inventory.
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
+| [`FractionRingAlgebraicIndependence`](MultivariatePolynomials/FractionRingAlgebraicIndependence.lean) | Over a commutative domain, variables omitted by an injective renaming are algebraically independent over the source fraction ring under the same fraction-renaming scalar action |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |

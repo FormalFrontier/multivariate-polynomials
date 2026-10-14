@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import MultivariatePolynomials.FractionRingAlgebraicIndependence
 public import MultivariatePolynomials.FractionRingFiniteVariables
 public import MultivariatePolynomials.PolynomialFractionTrace
 public import MultivariatePolynomials.IdealOfVars
