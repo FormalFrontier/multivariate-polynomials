@@ -32,10 +32,13 @@ public import MultivariatePolynomials.RenameKernel
 public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameFinitePresentation
 public import MultivariatePolynomials.RenameModuleFinite
+public import MultivariatePolynomials.RenameIntegral
 
 /-!
 # Multivariate polynomials
 
+Variable renaming between full polynomial rings is integral exactly when the
+variable map is surjective or the coefficient ring is subsingleton.
 Finite polynomial fractions have simultaneous finite-variable origins. The dimension
 of a subsemiring of a polynomial fraction ring is bounded by the supremum of the
 dimensions of its finite-variable stage preimages, not the whole stage fields.

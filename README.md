@@ -23,14 +23,19 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library's production modules are [listed below](#contents), with separate
-test and example modules.
+library has thirty production leaves and fifty-two test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Integrality of polynomial variable renaming.**
+  [`MvPolynomial.isIntegral_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
+  states that renaming between the full polynomial rings is integral exactly
+  when the variable map is surjective or the coefficient ring is subsingleton.
+  See the [integrality section](#integrality-of-polynomial-variable-renaming)
+  for the precise map, generality and independent models.
 - **Finite presentation of commutative-ring variable renaming.**
   [`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
   states the relative finite-presentation criterion: subsingleton coefficients,
@@ -313,6 +318,51 @@ Bottom ideal kernel does not imply injectivity over this semiring. This
 ideal-kernel definition is distinct from a congruence-based finite-presentation
 notion for semirings.
 
+## Integrality of polynomial variable renaming
+
+For any commutative ring `R` and any map `f : σ → τ`,
+[`MvPolynomial.isIntegral_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
+has the statement
+
+```lean
+RingHom.IsIntegral ((MvPolynomial.rename (R := R) f).toRingHom) ↔
+  Function.Surjective f ∨ Subsingleton R
+```
+
+This is Mathlib's existing predicate for the canonical ring homomorphism
+`MvPolynomial σ R →+* MvPolynomial τ R`. Integrality is relative to the
+**full source polynomial ring**, with the full target polynomial ring as
+codomain. It is not coefficient-`R` integrality, integrality of a fraction-ring
+map, or integrality after restricting the codomain to the image. In particular,
+when `σ = τ` the displayed renaming map still determines the question; it is
+not replaced by the identity map or a default algebra structure.
+
+The types `R : Type u`, `σ : Type v` and `τ : Type w` have three independent
+universes. No injectivity, finiteness, domain, reducedness, Noetherian or
+nontriviality hypothesis is imposed. Noninjective surjections are allowed.
+Subsingleton coefficients account for nonsurjective maps over the zero ring,
+and empty source or target variable types are included.
+
+The named
+[criterion applications](MultivariatePolynomialsTests/RenameIntegralCriterion.lean)
+derive their integrality conclusions from this equivalence. They include
+surjections, subsingleton coefficients, the noninjective
+projection `ℕ × Bool → ℕ`, empty-to-empty renaming, and successor renaming,
+which is integral exactly when the coefficients are subsingleton. They also
+include the noninjective, nonsurjective map `(n, b) ↦ n + 1`, whose renaming
+is nonintegral over nontrivial coefficients.
+
+Two separate independent model files are included:
+`MultivariatePolynomialsTests/RenameIntegralPositive.lean` and
+`MultivariatePolynomialsTests/RenameIntegralNegative.lean`. They give direct
+positive examples (including infinite and noninjective surjections, a nonzero
+nilpotent coefficient in `ZMod 4`, zero-ring boundaries and three independent
+lifted universes) and negative examples over
+nontrivial, possibly nonreduced rings, without applying the displayed equivalence.
+The negative controls include the noninjective, nonsurjective shifted projection
+`(n, b) ↦ n + 1`; its proof factors through successor rather than asserting
+transcendence over the full source ring. These models do not prove the headline.
+
 ## Use and check
 
 To use this library as a dependency, add it to your `lakefile.toml`:
@@ -401,9 +451,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate re-exports the
-production modules listed below except `MultivariatePolynomials.Noetherian`,
-which is direct-only.
+Each leaf may be imported individually. The aggregate imports twenty-nine of
+these thirty leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -414,6 +463,7 @@ not a complete declaration inventory.
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
+| [`RenameIntegral`](MultivariatePolynomials/RenameIntegral.lean) | Integrality criterion for canonical renaming between full polynomial rings over any commutative ring: surjective variables or subsingleton coefficients |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
 | [`FractionRingAlgebraicIndependence`](MultivariatePolynomials/FractionRingAlgebraicIndependence.lean) | Over a commutative domain, variables omitted by an injective renaming are algebraically independent over the source fraction ring under the same fraction-renaming scalar action |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
