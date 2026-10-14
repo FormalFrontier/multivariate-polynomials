@@ -15,15 +15,15 @@ The polynomial Zariski topology on field-valued coordinates makes the
 evaluation map an embedding and identifies zero loci with inherited
 closed-point subspaces under the same finite-variable algebraic-closure
 hypotheses.
-Variable renaming also has an exact finite-type criterion relative to the
-source polynomial semiring. Its finite-presentation interface over commutative
-rings also accounts for all source indices participating in collisions.
+Variable renaming also has exact finite-type and module-finiteness criteria
+relative to the source polynomial semiring. Its finite-presentation interface
+over commutative rings also accounts for all source indices participating in collisions.
 It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
 for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits)
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has twenty-seven production leaves and forty-five test/example modules.
+library has twenty-eight production leaves and forty-eight test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -44,6 +44,17 @@ weight-one-valuation naturality interfaces.
   missed target variables is finite. See the
   [relative finite-type section](#relative-finite-type-of-variable-renaming)
   for the algebra structure, generality and infinite-variable applications.
+- **Module finiteness of variable renaming has a sharper criterion.** For any
+  commutative semiring `R` and any map `f : σ → τ`, with all three types in
+  independent universes,
+  [`MvPolynomial.moduleFinite_rename_iff`](MultivariatePolynomials/RenameModuleFinite.lean)
+  states that the full target polynomial semiring is a finite module over the
+  full source polynomial semiring under `p • q = MvPolynomial.rename f p * q`
+  exactly when `f` is surjective or `R` is subsingleton. This is stronger than
+  finite type: over nontrivial coefficients, `Nat.succ : ℕ → ℕ` misses only
+  `0`, so its renaming is of finite type but is not module-finite. These are
+  source-polynomial scalars, not coefficient-`R` scalars. See the
+  [criterion applications](MultivariatePolynomialsTests/RenameModuleFiniteCriterion.lean).
 - **Finite coefficient aggregation has an exact injectivity criterion.** For
   types `α`, `β` and `M` in independent universes, an additive commutative
   monoid `M`, and any index map `f : α → β`,
@@ -378,8 +389,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-six of
-these twenty-seven leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports twenty-seven of
+these twenty-eight leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -389,6 +400,7 @@ not a complete declaration inventory.
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
+| [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |

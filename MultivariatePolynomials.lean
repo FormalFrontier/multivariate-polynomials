@@ -30,6 +30,7 @@ public import MultivariatePolynomials.FiniteSupport
 public import MultivariatePolynomials.RenameKernel
 public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameFinitePresentation
+public import MultivariatePolynomials.RenameModuleFinite
 
 /-!
 # Multivariate polynomials
