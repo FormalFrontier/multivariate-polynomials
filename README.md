@@ -23,7 +23,7 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has 31 production leaves and 55 test/example modules.
+library has 32 production leaves and 58 test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -45,6 +45,19 @@ weight-one-valuation naturality interfaces.
   when the variable map is surjective or the coefficient ring is subsingleton.
   See the [integrality section](#integrality-of-polynomial-variable-renaming)
   for the precise map, generality and independent models.
+- **Algebraicity of polynomial variable renaming.**
+  [`MvPolynomial.isAlgebraic_rename_iff`](MultivariatePolynomials/RenameAlgebraic.lean)
+  states that the full target polynomial ring is algebraic over the full source
+  via the specified renaming exactly when the coefficients are nontrivial and
+  the variable map is surjective or noninjective. A collision gives a nonzero
+  constant annihilator, even when a target variable is missed; zero coefficients
+  give no such polynomial, even for identity renaming. This is weak algebraicity,
+  not integrality or module finiteness. The coefficient and both variable types
+  have independent universes, with no additional ring or finiteness hypotheses.
+  [Criterion applications](MultivariatePolynomialsTests/RenameAlgebraicType.lean)
+  use the public result; the [positive](MultivariatePolynomialsTests/RenameAlgebraicPositive.lean)
+  and [negative](MultivariatePolynomialsTests/RenameAlgebraicNegative.lean) models
+  independently use stock Mathlib only.
 - **Finite presentation of commutative-ring variable renaming.**
   [`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
   states the relative finite-presentation criterion: subsingleton coefficients,
@@ -460,8 +473,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports 30 of
-these 31 leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports 31 of
+these 32 leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -474,6 +487,7 @@ not a complete declaration inventory.
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`RenameIntegral`](MultivariatePolynomials/RenameIntegral.lean) | Integrality criterion for canonical renaming between full polynomial rings over any commutative ring: surjective variables or subsingleton coefficients |
+| [`RenameAlgebraic`](MultivariatePolynomials/RenameAlgebraic.lean) | Algebraicity of the full target over the full source under the specified renaming iff nontrivial coefficients and a surjective or noninjective variable map; arbitrary commutative rings and three independent universes |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
 | [`FractionRingAlgebraicIndependence`](MultivariatePolynomials/FractionRingAlgebraicIndependence.lean) | Over a commutative domain, variables omitted by an injective renaming are algebraically independent over the source fraction ring under the same fraction-renaming scalar action |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |

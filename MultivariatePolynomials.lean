@@ -34,6 +34,7 @@ public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameFinitePresentation
 public import MultivariatePolynomials.RenameModuleFinite
 public import MultivariatePolynomials.RenameIntegral
+public import MultivariatePolynomials.RenameAlgebraic
 
 /-!
 # Multivariate polynomials
