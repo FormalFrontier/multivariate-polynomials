@@ -22,8 +22,9 @@ It builds on mathlib and [Coherent Modules](https://github.com/FormalFrontier/co
 for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits)
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
-aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has 32 production leaves and 58 test/example modules.
+aggregate, or a [producer module](docs/API.md) for a smaller import.
+The module index below lists the producer interfaces; tests and examples use
+`MultivariatePolynomialsTests` as their module root.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
@@ -473,8 +474,9 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports 31 of
-these 32 leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each producer module may be imported individually. The aggregate's
+[public import list](MultivariatePolynomials.lean) records its re-exports;
+`MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -504,7 +506,7 @@ not a complete declaration inventory.
 | [`LinearDivision`](MultivariatePolynomials/LinearDivision.lean) | Chosen linear division preserving coefficient ideals |
 | [`MonicLift`](MultivariatePolynomials/MonicLift.lean) | Monic lifts along surjective coefficient maps |
 | [`FirstVariableLex`](MultivariatePolynomials/FirstVariableLex.lean) | First-variable scalar coefficients and lexicographic degree |
-| [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels and contraction under substitution |
+| [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels; two-point kernel images, sums and comaximality; contraction under substitution |
 | [`QuotientClosedPoints`](MultivariatePolynomials/QuotientClosedPoints.lean) | Closed points of polynomial quotient spectra |
 | [`ZariskiTopology`](MultivariatePolynomials/ZariskiTopology.lean) | Polynomial coordinate topology and zero-locus homeomorphisms |
 | [`LocalizedCoordinateQuotient`](MultivariatePolynomials/LocalizedCoordinateQuotient.lean) | Localized coordinate quotients and evaluation at zero |
