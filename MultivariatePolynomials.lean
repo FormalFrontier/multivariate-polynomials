@@ -28,6 +28,7 @@ public import MultivariatePolynomials.WeightOneValuation
 public import MultivariatePolynomials.WeightOneNaturality
 public import MultivariatePolynomials.Artinian
 public import MultivariatePolynomials.FiniteSupport
+public import MultivariatePolynomials.Rename
 public import MultivariatePolynomials.RenameKernel
 public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameFinitePresentation
@@ -42,6 +43,10 @@ variable map is surjective or the coefficient ring is subsingleton.
 Finite polynomial fractions have simultaneous finite-variable origins. The dimension
 of a subsemiring of a polynomial fraction ring is bounded by the supremum of the
 dimensions of its finite-variable stage preimages, not the whole stage fields.
+
+Variable renaming on the full polynomial semirings is injective, respectively
+surjective, exactly when its variable map has that property or the coefficient
+semiring is subsingleton.
 
 Public aggregate import for the variable-ideal non-finite-generation theorem,
 homogeneous-polynomial evaluation scaling laws, and disjoint-block polynomial

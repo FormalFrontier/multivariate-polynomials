@@ -23,13 +23,22 @@ for the square-zero action. [Algebraic Direct Limits](https://github.com/FormalF
 supplies the generic finite-capture preimage dimension bound used for polynomial
 fraction-stage traces. Import `MultivariatePolynomials` for the
 aggregate, or a [producer module](docs/API.md) for a smaller import. The
-library has thirty production leaves and fifty-two test/example modules.
+library has 31 production leaves and 55 test/example modules.
 The [hand-maintained API map](docs/API.md) highlights selected public
 declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Injectivity and surjectivity of variable renaming.** For any commutative
+  semiring `R` and any map `f : σ → τ`, with the coefficient, source-variable
+  and target-variable types in independent universes, the canonical renaming
+  map from the full polynomial semiring `MvPolynomial σ R` to the full
+  polynomial semiring `MvPolynomial τ R` is injective exactly when `f` is
+  injective or `R` is subsingleton
+  ([`MvPolynomial.injective_rename_iff`](MultivariatePolynomials/Rename.lean)),
+  and is surjective exactly when `f` is surjective or `R` is subsingleton
+  ([`MvPolynomial.surjective_rename_iff`](MultivariatePolynomials/Rename.lean)).
 - **Integrality of polynomial variable renaming.**
   [`MvPolynomial.isIntegral_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
   states that renaming between the full polynomial rings is integral exactly
@@ -451,14 +460,15 @@ matching cache rather than falling back to a Mathlib source rebuild.
 
 ## Contents
 
-Each leaf may be imported individually. The aggregate imports twenty-nine of
-these thirty leaves; `MultivariatePolynomials.Noetherian` is direct-only.
+Each leaf may be imported individually. The aggregate imports 30 of
+these 31 leaves; `MultivariatePolynomials.Noetherian` is direct-only.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
 | Module (`MultivariatePolynomials.`) | Main interfaces |
 | --- | --- |
 | [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
+| [`Rename`](MultivariatePolynomials/Rename.lean) | Injectivity and surjectivity of the full polynomial renaming map iff the variable map has the corresponding property or the coefficient semiring is subsingleton |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
