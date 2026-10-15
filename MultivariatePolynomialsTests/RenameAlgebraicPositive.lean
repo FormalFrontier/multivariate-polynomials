@@ -10,6 +10,7 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+import MultivariatePolynomials.RenameIntegral
 
 /-!
 # Algebraic variable renaming: independent positive models
@@ -253,5 +254,25 @@ private theorem zmodFour_pairSucc_model :
         (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra :=
   ⟨zmodFour_has_nonzero_square_zero, pairSucc_not_injective,
     pairSucc_not_surjective, zmodFour_pairSucc_isAlgebraic⟩
+
+/-- Shifted projection over the ring of order four is algebraic over the full
+source, but its missing zero-indexed target variable is not integral over that
+source for the same renaming action. -/
+private theorem zmodFour_pairSucc_isAlgebraic_and_X_zero_not_isIntegral :
+    @Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4))
+      inferInstance inferInstance
+      (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra ∧
+    ¬ @IsIntegral (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4))
+      inferInstance inferInstance
+      (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra
+      (MvPolynomial.X 0) := by
+  refine ⟨zmodFour_pairSucc_isAlgebraic, ?_⟩
+  intro h
+  rcases (MvPolynomial.isIntegral_X_rename_iff (R := ZMod 4) pairSucc 0).mp h with
+    hzero | hsub
+  · obtain ⟨p, hp⟩ := hzero
+    exact pairSucc_misses_zero p hp
+  · haveI : Nontrivial (ZMod 4) := zmodFour_nontrivial
+    exact zero_ne_one (hsub.elim 0 1)
 
 end MvPolynomialRenameAlgebraicPositive

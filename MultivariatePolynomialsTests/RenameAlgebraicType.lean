@@ -174,10 +174,20 @@ private theorem lifted_successor_not_isAlgebraic :
       (MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℤ)) inferInstance inferInstance
       (MvPolynomial.rename (R := ULift.{u} ℤ)
         (liftedSuccessor : ULift.{v} ℕ → ULift.{w} ℕ)).toRingHom.toAlgebra := by
+  let : Algebra (MvPolynomial (ULift.{v} ℕ) (ULift.{u} ℤ))
+      (MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℤ)) :=
+    (MvPolynomial.rename (R := ULift.{u} ℤ)
+      (liftedSuccessor : ULift.{v} ℕ → ULift.{w} ℕ)).toRingHom.toAlgebra
   intro h
-  rcases ((MvPolynomial.isAlgebraic_rename_iff (R := ULift.{u} ℤ)
-    (liftedSuccessor : ULift.{v} ℕ → ULift.{w} ℕ)).1 h).2 with hs | hi
-  · obtain ⟨n, hn⟩ := hs ⟨0⟩
+  have : Algebra.IsAlgebraic (MvPolynomial (ULift.{v} ℕ) (ULift.{u} ℤ))
+      (MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℤ)) := h
+  have hx := Algebra.IsAlgebraic.isAlgebraic
+    (R := MvPolynomial (ULift.{v} ℕ) (ULift.{u} ℤ))
+    (X (ULift.up 0 : ULift.{w} ℕ) :
+      MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℤ))
+  rcases ((MvPolynomial.isAlgebraic_X_rename_iff (R := ULift.{u} ℤ)
+    (liftedSuccessor : ULift.{v} ℕ → ULift.{w} ℕ) (ULift.up 0)).1 hx).2 with hs | hi
+  · obtain ⟨n, hn⟩ := hs
     have hn' : n.down.succ = 0 := congrArg ULift.down hn
     exact Nat.succ_ne_zero n.down hn'
   · apply hi

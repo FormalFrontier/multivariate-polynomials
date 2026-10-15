@@ -56,9 +56,12 @@ weight-one-valuation naturality interfaces.
   not integrality or module finiteness. The coefficient and both variable types
   have independent universes, with no additional ring or finiteness hypotheses.
   [Criterion applications](MultivariatePolynomialsTests/RenameAlgebraicType.lean)
-  use the public result; the [positive](MultivariatePolynomialsTests/RenameAlgebraicPositive.lean)
-  and [negative](MultivariatePolynomialsTests/RenameAlgebraicNegative.lean) models
-  independently use stock Mathlib only.
+  use the public result. The four weak-algebraicity proofs in the
+  [positive models](MultivariatePolynomialsTests/RenameAlgebraicPositive.lean)
+  and the proofs in the [negative models](MultivariatePolynomialsTests/RenameAlgebraicNegative.lean)
+  use stock Mathlib directly. The positive models also include a shifted-projection
+  contrast over `ZMod 4`, whose missing-variable nonintegrality proof uses
+  [`MvPolynomial.isIntegral_X_rename_iff`](MultivariatePolynomials/RenameIntegral.lean).
 - **Finite presentation of commutative-ring variable renaming.**
   [`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
   states the relative finite-presentation criterion: subsingleton coefficients,
@@ -378,6 +381,15 @@ universes. No injectivity, finiteness, domain, reducedness, Noetherian or
 nontriviality hypothesis is imposed. Noninjective surjections are allowed.
 Subsingleton coefficients account for nonsurjective maps over the zero ring,
 and empty source or target variable types are included.
+
+For a target index `j`,
+[`MvPolynomial.isIntegral_X_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
+states that `X j` is integral over the full source through the specified
+renaming-induced algebra structure exactly when `j ∈ Set.range f` or
+`Subsingleton R`. It applies to arbitrary variable maps over commutative rings,
+with the same three independent universes. In particular, a collision may make
+the full-source algebra algebraic while a missing target variable remains
+nonintegral; the shifted-projection example over `ZMod 4` exhibits this contrast.
 
 The named
 [criterion applications](MultivariatePolynomialsTests/RenameIntegralCriterion.lean)
