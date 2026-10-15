@@ -8,8 +8,7 @@ public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameKernel
 public import Mathlib.RingTheory.FinitePresentation
 import MultivariatePolynomials.EvaluationIdeal
-import Mathlib.Algebra.MvPolynomial.Equiv
-import Mathlib.Logic.Equiv.Set
+public import MultivariatePolynomials.RenameComplement
 
 @[expose] public section
 
@@ -50,37 +49,6 @@ from finite presentation defined using a kernel congruence of semirings.
 universe u v w
 
 namespace MvPolynomial
-
-/-- Separate the complementary variables from the variables in `S`, treating
-polynomials in `S` as coefficients. -/
-private noncomputable def splitComplAlgEquiv {R : Type u} {τ : Type w}
-    [CommRing R] (S : Set τ) :
-    MvPolynomial τ R ≃ₐ[R] MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) := by
-  classical
-  exact (renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
-    (Equiv.sumComm S (Sᶜ : Set τ)))).trans (sumAlgEquiv R (Sᶜ : Set τ) S)
-
-private theorem splitComplAlgEquiv_comp_rename_subtypeVal
-    {R : Type u} {τ : Type w} [CommRing R] (S : Set τ) :
-    (splitComplAlgEquiv (R := R) S).toAlgHom.comp
-        (rename (Subtype.val : S → τ)) =
-      IsScalarTower.toAlgHom R (MvPolynomial S R)
-        (MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)) := by
-  classical
-  have hrename :
-      (renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
-        (Equiv.sumComm S (Sᶜ : Set τ)))).toAlgHom.comp
-          (rename (Subtype.val : S → τ)) =
-        rename (Sum.inr : S → (Sᶜ : Set τ) ⊕ S) := by
-    apply algHom_ext
-    intro i
-    simp [renameEquiv_apply]
-  change (sumAlgEquiv R (Sᶜ : Set τ) S).toAlgHom.comp
-    ((renameEquiv R ((Equiv.Set.sumCompl S).symm.trans
-      (Equiv.sumComm S (Sᶜ : Set τ)))).toAlgHom.comp
-        (rename (Subtype.val : S → τ))) = _
-  rw [hrename]
-  exact sumAlgEquiv_comp_rename_inr R (Sᶜ : Set τ) S
 
 /-- Adjoining finitely many complementary variables is a finite presentation. -/
 private theorem finitePresentation_rename_subtypeVal

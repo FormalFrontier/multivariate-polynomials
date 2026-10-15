@@ -31,6 +31,22 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Flatness of commutative-ring variable renaming.** For every commutative
+  ring `R` and arbitrary `f : σ → τ`, with coefficient and variable types in
+  independent universes,
+  [`MvPolynomial.rename_flat_iff`](MultivariatePolynomials/RenameFlatness.lean)
+  characterizes flatness of the full ring homomorphism
+  `MvPolynomial.rename (R := R) f` by injectivity of `f` or subsingleton
+  coefficients. The scalar action is induced by this original polynomial-ring
+  map, not just by `R` or by its image. Injective maps give free polynomial
+  extensions after complementary variables are separated; a collision kills
+  the regular difference of two distinct variables. The
+  [regularity API](MultivariatePolynomials/Regularity.lean) works over every
+  commutative ring, including the zero ring. The
+  [independent models](MultivariatePolynomialsTests/RenameFlatnessModels.lean)
+  and [criterion applications](MultivariatePolynomialsTypeTests/RenameFlatness.lean)
+  include a proper inclusion over the integers, a collision over the nonreduced
+  ring `ZMod 4`, and the same collision over `ZMod 1`.
 - **Canonical unique-variable degree.** For any commutative semiring `R`,
   unique variable type `σ` (`[Unique σ]`), and `p : MvPolynomial σ R`,
   [`MvPolynomial.natDegree_uniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean)
@@ -556,6 +572,8 @@ matching cache rather than falling back to a Mathlib source rebuild.
 Each producer module may be imported individually. The aggregate's
 [public import list](MultivariatePolynomials.lean) records its re-exports;
 `MultivariatePolynomials.Noetherian` is direct-only.
+The aggregate also re-exports `MultivariatePolynomials.Regularity` through
+its public import of `MultivariatePolynomials.RenameFlatness`.
 Tests and examples are not re-exported. The [API map](docs/API.md) is selective,
 not a complete declaration inventory.
 
@@ -565,6 +583,9 @@ not a complete declaration inventory.
 | [`Rename`](MultivariatePolynomials/Rename.lean) | Injectivity and surjectivity of the full polynomial renaming map iff the variable map has the corresponding property or the coefficient semiring is subsingleton |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
+| [`RenameComplement`](MultivariatePolynomials/RenameComplement.lean) | Complementary-variable algebra equivalence over a commutative semiring, with the retained-variable action bridge and evaluation laws |
+| [`Regularity`](MultivariatePolynomials/Regularity.lean) | Differences of distinct variables are regular over every commutative ring, including the zero ring |
+| [`RenameFlatness`](MultivariatePolynomials/RenameFlatness.lean) | Full polynomial-ring renaming over a commutative ring is flat exactly when the variable map is injective or the coefficients are subsingleton |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`RenameIntegral`](MultivariatePolynomials/RenameIntegral.lean) | Integrality criterion for canonical renaming between full polynomial rings over any commutative ring: surjective variables or subsingleton coefficients |

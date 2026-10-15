@@ -35,7 +35,9 @@ public import MultivariatePolynomials.FiniteSupport
 public import MultivariatePolynomials.Rename
 public import MultivariatePolynomials.RenameKernel
 public import MultivariatePolynomials.RenameFiniteType
+public import MultivariatePolynomials.RenameComplement
 public import MultivariatePolynomials.RenameFinitePresentation
+public import MultivariatePolynomials.RenameFlatness
 public import MultivariatePolynomials.RenameModuleFinite
 public import MultivariatePolynomials.RenameIntegral
 public import MultivariatePolynomials.RenameAlgebraic
