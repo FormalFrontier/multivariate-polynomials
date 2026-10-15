@@ -288,6 +288,18 @@ weight-one-valuation naturality interfaces.
   some variable; evaluation separating that variable gives a contradiction.
   Mathlib supplies the complementary *finite*-variable ideal theorem. This
   library does not prove the motivating complete short exact sequence.
+- **Variable classes form the augmentation cotangent basis.** For any
+  `(σ : Type u)` and `(R : Type v) [CommRing R]`,
+  [`MvPolynomial.idealOfVarsCotangentBasis`](MultivariatePolynomials/Cotangent.lean)
+  is a `σ`-indexed `R`-basis of the stock variable-ideal cotangent `I/I²`.
+  Its vectors are the classes of `X i`, with inherited coefficient action
+  `r • [p] = [C r * p]`. The `_apply` and `_repr_X` lemmas characterize those
+  vectors, and `idealOfVarsCotangentBasis_repr_toCotangent` computes each
+  coordinate as `(x : MvPolynomial σ R).coeff (Finsupp.single i 1)` for any
+  representative `x` in the variable ideal. Quadratic and higher terms do not
+  contribute. The variable and coefficient universes are independent; empty
+  or infinite variable types, zero rings and nilpotent coefficients are allowed.
+  This is an indexed basis, not a numerical rank assertion over the zero ring.
 
 The [full results guide](docs/Results.md) also covers simultaneous finite-fraction
 origins and their preimage dimension bounds, polynomial Zariski topology,
@@ -535,6 +547,7 @@ not a complete declaration inventory.
 | [`FractionRingTranscendenceBasis`](MultivariatePolynomials/FractionRingTranscendenceBasis.lean) | Algebraicity over the source-fraction adjoin of omitted variables and the corresponding transcendence basis for injective renaming |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
+| [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |

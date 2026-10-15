@@ -21,6 +21,9 @@ only one element, and at a rational point. Evaluation at zero in one variable
 has a finitely generated kernel over `ℤ`, but contracting it along the renaming
 that sends every natural-number-indexed variable to that variable gives an
 augmentation ideal that is not finitely generated.
+The cotangent basis is used on an integer variable class with infinitely many
+available variables and on a mixed linear and quadratic representative over
+`ZMod 4`, where the coefficient `2` is nilpotent but survives as a coordinate.
 
 ## References
 
@@ -125,3 +128,37 @@ private theorem integer_augmentation_contraction_not_fg :
   refine ⟨MvPolynomial.idealOfVars_fg (Fin 1) ℤ, hcomap, ?_⟩
   rw [hcomap]
   exact MvPolynomial.idealOfVars_not_fg ℤ ℕ
+
+/-- A variable class has coordinate one, even with an infinite variable type. -/
+private theorem integerCotangentGenerator :
+    (MvPolynomial.idealOfVarsCotangentBasis ℕ ℤ).repr
+      ((MvPolynomial.idealOfVars ℕ ℤ).toCotangent
+        ⟨MvPolynomial.X 37, Ideal.subset_span (Set.mem_range_self 37)⟩) 37 = 1 := by
+  rw [MvPolynomial.idealOfVarsCotangentBasis_repr_X]
+  simp
+
+/-- A representative with a nilpotent linear coefficient and a quadratic term. -/
+private noncomputable def nilpotentAugmentationRepresentative :
+    MvPolynomial.idealOfVars (Fin 2) (ZMod 4) :=
+  ⟨MvPolynomial.X 0 + MvPolynomial.C 2 * MvPolynomial.X 1 +
+      MvPolynomial.X 0 * MvPolynomial.X 1, by
+    apply Ideal.add_mem
+    · apply Ideal.add_mem
+      · exact Ideal.subset_span (Set.mem_range_self (0 : Fin 2))
+      · exact Ideal.mul_mem_left _ _
+          (Ideal.subset_span (Set.mem_range_self (1 : Fin 2)))
+    · exact Ideal.mul_mem_left _ _
+        (Ideal.subset_span (Set.mem_range_self (1 : Fin 2)))⟩
+
+/-- Only the two linear coefficients contribute to the cotangent coordinates. -/
+private theorem nilpotentCotangentCoordinates :
+    (MvPolynomial.idealOfVarsCotangentBasis (Fin 2) (ZMod 4)).repr
+        ((MvPolynomial.idealOfVars (Fin 2) (ZMod 4)).toCotangent
+          nilpotentAugmentationRepresentative) 0 = 1 ∧
+      (MvPolynomial.idealOfVarsCotangentBasis (Fin 2) (ZMod 4)).repr
+        ((MvPolynomial.idealOfVars (Fin 2) (ZMod 4)).toCotangent
+          nilpotentAugmentationRepresentative) 1 = 2 := by
+  simp only [MvPolynomial.idealOfVarsCotangentBasis_repr_toCotangent]
+  norm_num [nilpotentAugmentationRepresentative, MvPolynomial.coeff_X,
+    MvPolynomial.coeff_mul_X', Finsupp.single_apply,
+    Finsupp.single_left_inj (by decide : (1 : ℕ) ≠ 0)]

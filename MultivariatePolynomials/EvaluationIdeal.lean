@@ -8,6 +8,7 @@ public import Mathlib.RingTheory.MvPolynomial.Ideal
 public import Mathlib.RingTheory.Nullstellensatz
 public import Mathlib.Algebra.MvPolynomial.Comap
 public import Mathlib.RingTheory.Spectrum.Prime.RingHom
+public import MultivariatePolynomials.Cotangent
 
 /-!
 # Coordinate differences and evaluation ideals
@@ -24,6 +25,9 @@ This applies Mathlib's finite Chinese remainder theorem to the evaluation kernel
 the variable type need not be finite.
 Polynomial substitution contracts evaluation kernels and coordinate-difference
 ideals, and the corresponding field-valued points commute with spectrum comap.
+
+The augmentation cotangent basis and its linear-coefficient formula are in
+`MultivariatePolynomials.Cotangent`.
 
 ## References
 
