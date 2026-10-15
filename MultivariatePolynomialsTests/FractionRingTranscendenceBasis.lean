@@ -84,6 +84,16 @@ private theorem twoVariable_isTranscendenceBasis :
     (K := FractionRing (MvPolynomial Bool ℤ)) (fun (_ : Unit) => false)
     falseRenaming_injective falseAction_fullMap
 
+private theorem twoVariable_adjoin_isFractionRing :
+    IsFractionRing
+      (Algebra.adjoin (FractionRing P) (Set.range
+        (fun i : {i : Bool // i ∉ Set.range (fun (_ : Unit) => false)} =>
+          algebraMap Q (FractionRing Q) (X i.1)))) (FractionRing Q) := by
+  exact isFractionRing_adjoin_fractionRing_map_rename_compl
+    (R := ℤ) (L := FractionRing (MvPolynomial Unit ℤ))
+    (K := FractionRing (MvPolynomial Bool ℤ)) (fun (_ : Unit) => false)
+    falseRenaming_injective falseAction_fullMap
+
 end CanonicalAction
 
 end TwoVariables

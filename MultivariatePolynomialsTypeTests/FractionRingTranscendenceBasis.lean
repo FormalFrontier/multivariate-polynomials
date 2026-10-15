@@ -250,6 +250,24 @@ private theorem emptyIdentity_stockBasis :
           (X i.1)) := by
   exact empty_self_isTranscendenceBasis _
 
+private theorem unitIdentity_adjoin_isFractionRing :
+    IsFractionRing
+      (Algebra.adjoin (FractionRing (MvPolynomial Unit ℤ)) (Set.range
+        (fun i : {i : Unit // i ∉ Set.range (id : Unit → Unit)} =>
+          algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ))
+            (X i.1)))) (FractionRing (MvPolynomial Unit ℤ)) := by
+  exact isFractionRing_adjoin_fractionRing_map_rename_compl
+    (R := ℤ) id Function.injective_id (identityFractionMap Unit)
+
+private theorem emptyIdentity_adjoin_isFractionRing :
+    IsFractionRing
+      (Algebra.adjoin (FractionRing (MvPolynomial Empty ℤ)) (Set.range
+        (fun i : {i : Empty // i ∉ Set.range (id : Empty → Empty)} =>
+          algebraMap (MvPolynomial Empty ℤ) (FractionRing (MvPolynomial Empty ℤ))
+            (X i.1)))) (FractionRing (MvPolynomial Empty ℤ)) := by
+  exact isFractionRing_adjoin_fractionRing_map_rename_compl
+    (R := ℤ) id Function.injective_id (identityFractionMap Empty)
+
 end IdentityRenamings
 
 section LiftedRealizations
@@ -370,6 +388,22 @@ private theorem lifted_isTranscendenceBasis :
           (ULift.{uK} (FractionRing (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ))))
           (X i.1)) := by
   exact isTranscendenceBasis_fractionRing_map_rename_compl
+    (R := ULift.{uR} ℤ)
+    (L := ULift.{uL} (FractionRing (MvPolynomial (ULift.{uτ} Unit) (ULift.{uR} ℤ))))
+    (K := ULift.{uK} (FractionRing (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ))))
+    liftedRenaming liftedRenaming_injective lifted_fullMap
+
+private theorem lifted_adjoin_isFractionRing :
+    IsFractionRing
+      (Algebra.adjoin
+        (ULift.{uL} (FractionRing (MvPolynomial (ULift.{uτ} Unit) (ULift.{uR} ℤ))))
+        (Set.range (fun i : {i : ULift.{uσ} Bool // i ∉ Set.range
+            (liftedRenaming : ULift.{uτ} Unit → ULift.{uσ} Bool)} =>
+          algebraMap (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ))
+            (ULift.{uK} (FractionRing (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ))))
+            (X i.1))))
+      (ULift.{uK} (FractionRing (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ)))) := by
+  exact isFractionRing_adjoin_fractionRing_map_rename_compl
     (R := ULift.{uR} ℤ)
     (L := ULift.{uL} (FractionRing (MvPolynomial (ULift.{uτ} Unit) (ULift.{uR} ℤ))))
     (K := ULift.{uK} (FractionRing (MvPolynomial (ULift.{uσ} Bool) (ULift.{uR} ℤ))))
