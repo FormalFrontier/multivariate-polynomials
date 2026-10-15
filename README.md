@@ -187,6 +187,15 @@ weight-one-valuation naturality interfaces.
   laws. The field and variables may inhabit different universes, and `I` may
   be the unit ideal or define a nonreduced quotient. This point-set result
   itself does not assert a topological or sheaf equivalence.
+- **Finite simultaneous polynomial evaluation has an exact surjectivity criterion.**
+  For any commutative ring `R`, arbitrary variable type `σ`, finite point-index
+  type `ι` and family `a : ι → σ → R`,
+  [`MvPolynomial.surjective_eval_family_iff`](MultivariatePolynomials/EvaluationIdeal.lean)
+  states that `p ↦ (i ↦ MvPolynomial.eval (a i) p)` is surjective exactly when
+  the coordinate differences `a i s - a j s`, for all `s : σ`, generate the
+  unit ideal for every pair of distinct indices `i ≠ j`. The three types have
+  independent universes. Empty families, empty or infinite variable types,
+  repeated points and the zero ring are included; no field hypothesis is needed.
 - **Separated polynomial point quotients are square-zero extensions.** Over
   any commutative ring, including the zero ring, and any index type, the
   [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)
