@@ -374,6 +374,39 @@ show that even coefficient self-Noetherianity and self-Artinianity, or a finite
 coefficient ideal lattice, do not imply either polynomial coefficient-module
 chain condition.
 
+## `MultivariatePolynomials.UniqueAlgEquiv`
+
+[`MvPolynomial.natDegree_uniqueAlgEquiv`](../MultivariatePolynomials/UniqueAlgEquiv.lean)
+identifies `Polynomial.natDegree (MvPolynomial.uniqueAlgEquiv R σ p)` with `p.totalDegree`
+for `[CommSemiring R] [Unique σ]` in independent universes, including zero and trivial coefficients.
+
+## `MultivariatePolynomials.Interpolation`
+
+[`MvPolynomial.exists_eval_eq_totalDegree_le_of_pairwise_span_eq_top`](../MultivariatePolynomials/Interpolation.lean)
+provides prescribed evaluations over a commutative ring with total degree at most
+`s.card - 1`, assuming that the coordinate differences of every distinct pair of
+selected points span the unit ideal. The variable and ambient label types are arbitrary;
+for an empty selection the natural-number degree bound is zero, not a uniqueness claim.
+
+## `MultivariatePolynomials.LagrangeComparison`
+
+For `[Field F] [Unique σ]` and independently universe-polymorphic node labels,
+[`MvPolynomial.uniqueAlgEquiv_eq_interpolate_of_eval_eq`](../MultivariatePolynomials/LagrangeComparison.lean)
+identifies `uniqueAlgEquiv F σ p` with Mathlib's `Lagrange.interpolate s a v` from
+injectivity of `a` on `s`, `p.totalDegree < s.card`, and the prescribed evaluations.
+It derives the required `Polynomial.degree` inequality using
+`MvPolynomial.natDegree_uniqueAlgEquiv` and reuses Mathlib's evaluation transport and
+`Lagrange.eq_interpolate_of_eval_eq`; no univariate degree premise is required.
+
+- `uniqueAlgEquiv_eq_interpolate_of_eval_eq_of_totalDegree_le` applies the same
+  comparison to `p.totalDegree ≤ s.card - 1` when `s.Nonempty`.
+
+The nonempty bounded comparison applies to any witness supplied by the generic
+commutative-ring interpolation theorem; it does not introduce another interpolation
+construction or existence API. For the empty selection, stock `map_zero` and
+`Lagrange.interpolate_empty` identify the zero choice with the interpolant; degree
+zero alone would not suffice.
+
 ## `MultivariatePolynomials.HomogeneousEvaluation`
 
 [Producer](../MultivariatePolynomials/HomogeneousEvaluation.lean) and

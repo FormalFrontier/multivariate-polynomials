@@ -31,6 +31,13 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Canonical unique-variable degree.** For any commutative semiring `R`,
+  unique variable type `σ` (`[Unique σ]`), and `p : MvPolynomial σ R`,
+  [`MvPolynomial.natDegree_uniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean)
+  identifies `Polynomial.natDegree (MvPolynomial.uniqueAlgEquiv R σ p)`
+  with `p.totalDegree`. The coefficient and variable universes are independent.
+  No nonzero-polynomial or nontrivial-coefficient premise is needed:
+  both natural-number degrees assign zero to the zero polynomial.
 - **Injectivity and surjectivity of variable renaming.** For any commutative
   semiring `R` and any map `f : σ → τ`, with the coefficient, source-variable
   and target-variable types in independent universes, the canonical renaming
@@ -301,6 +308,26 @@ weight-one-valuation naturality interfaces.
   or infinite variable types, zero rings and nilpotent coefficients are allowed.
   This is an indexed basis, not a numerical rank assertion over the zero ring.
 
+- **Degree-controlled finite interpolation.** Over any commutative ring `R`,
+  let `s : Finset ι` select points `a : ι → σ → R`. If, for every distinct
+  `i, j ∈ s`, the coordinate differences `a i x - a j x` span the unit ideal,
+  then any prescribed values `v : ι → R` are attained on `s` by a polynomial
+  of total degree at most `s.card - 1`
+  ([`MvPolynomial.exists_eval_eq_totalDegree_le_of_pairwise_span_eq_top`](MultivariatePolynomials/Interpolation.lean)).
+  Both the variable type and ambient label type may be infinite; no field or
+  domain hypothesis is needed. The theorem asserts existence, not uniqueness.
+
+- **Comparison with Lagrange interpolation.** Over a field, for a unique
+  variable type, a polynomial taking prescribed values at distinct nodes and
+  having total degree strictly below the number of nodes maps to Mathlib's
+  Lagrange interpolant under the canonical single-variable equivalence
+  ([`MvPolynomial.uniqueAlgEquiv_eq_interpolate_of_eval_eq`](MultivariatePolynomials/LagrangeComparison.lean)).
+  The univariate degree bound follows from the total-degree bound. On a
+  nonempty selection, the bound `s.card - 1` also suffices, so the comparison
+  applies to any bounded witness supplied by the commutative-ring existence
+  theorem. Zero agrees with the empty interpolant separately; an arbitrary
+  degree-zero witness need not do so.
+
 The [full results guide](docs/Results.md) also covers simultaneous finite-fraction
 origins and their preimage dimension bounds, polynomial Zariski topology,
 valuation naturality, evaluation kernels, coefficient-module Noetherianity and
@@ -550,6 +577,7 @@ not a complete declaration inventory.
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
+| [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |
@@ -561,6 +589,8 @@ not a complete declaration inventory.
 | [`MonicLift`](MultivariatePolynomials/MonicLift.lean) | Monic lifts along surjective coefficient maps |
 | [`FirstVariableLex`](MultivariatePolynomials/FirstVariableLex.lean) | First-variable scalar coefficients and lexicographic degree |
 | [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels; two-point kernel images, sums and comaximality; contraction under substitution |
+| [`Interpolation`](MultivariatePolynomials/Interpolation.lean) | Finite interpolation over commutative rings with a total-degree bound, under pairwise coordinate-difference ideals equal to the unit ideal |
+| [`LagrangeComparison`](MultivariatePolynomials/LagrangeComparison.lean) | Identification of bounded unique-variable field polynomials with Mathlib's Lagrange interpolant; comparison for finite-interpolation witnesses and the empty-zero choice |
 | [`QuotientClosedPoints`](MultivariatePolynomials/QuotientClosedPoints.lean) | Closed points of polynomial quotient spectra |
 | [`ZariskiTopology`](MultivariatePolynomials/ZariskiTopology.lean) | Polynomial coordinate topology and zero-locus homeomorphisms |
 | [`LocalizedCoordinateQuotient`](MultivariatePolynomials/LocalizedCoordinateQuotient.lean) | Localized coordinate quotients and evaluation at zero |

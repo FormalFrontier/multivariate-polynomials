@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import MultivariatePolynomials.UniqueAlgEquiv
 public import MultivariatePolynomials.FractionRingAlgebraicIndependence
 public import MultivariatePolynomials.FractionRingTranscendenceBasis
 public import MultivariatePolynomials.FractionRingFiniteVariables
@@ -20,6 +21,8 @@ public import MultivariatePolynomials.LinearDivision
 public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
+public import MultivariatePolynomials.Interpolation
+public import MultivariatePolynomials.LagrangeComparison
 public import MultivariatePolynomials.QuotientClosedPoints
 public import MultivariatePolynomials.ZariskiTopology
 public import MultivariatePolynomials.LocalizedCoordinateQuotient
@@ -52,6 +55,11 @@ dimensions of its finite-variable stage preimages, not the whole stage fields.
 Variable renaming on the full polynomial semirings is injective, respectively
 surjective, exactly when its variable map has that property or the coefficient
 semiring is subsingleton.
+
+For a unique variable type over any commutative semiring, the canonical
+univariate equivalence identifies natural degree with multivariate total degree,
+including zero polynomials and trivial coefficients. Import
+`MultivariatePolynomials.UniqueAlgEquiv` directly for this degree identity.
 
 Public aggregate import for the variable-ideal non-finite-generation theorem,
 homogeneous-polynomial evaluation scaling laws, and disjoint-block polynomial
