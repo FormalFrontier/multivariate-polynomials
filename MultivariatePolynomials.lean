@@ -41,6 +41,7 @@ public import MultivariatePolynomials.RenameFlatness
 public import MultivariatePolynomials.RenameModuleFinite
 public import MultivariatePolynomials.RenameIntegral
 public import MultivariatePolynomials.RenameAlgebraic
+public import MultivariatePolynomials.RenameUnramified
 
 /-!
 # Multivariate polynomials

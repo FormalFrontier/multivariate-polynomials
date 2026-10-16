@@ -63,6 +63,15 @@ weight-one-valuation naturality interfaces.
   ([`MvPolynomial.injective_rename_iff`](MultivariatePolynomials/Rename.lean)),
   and is surjective exactly when `f` is surjective or `R` is subsingleton
   ([`MvPolynomial.surjective_rename_iff`](MultivariatePolynomials/Rename.lean)).
+- **Formal unramifiedness of variable renaming.** Over any commutative ring
+  `R`, [`MvPolynomial.formallyUnramified_rename_iff_surjective`](MultivariatePolynomials/RenameUnramified.lean)
+  says that `MvPolynomial.rename f`, as a homomorphism from the full source
+  polynomial ring, is formally unramified exactly when it is surjective:
+  equivalently, when `f` is surjective or `R` is subsingleton. The coefficient
+  and variable types may lie in independent universes, and neither variable
+  type must be finite or inhabited. The [boundary examples](MultivariatePolynomialsTests/RenameUnramifiedModels.lean)
+  include a collision of variables over the integers, an omitted variable over
+  the integers, and an omitted variable over `ZMod 1`.
 - **Integrality of polynomial variable renaming.**
   Over any commutative ring `R`,
   [`MvPolynomial.isIntegral_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
