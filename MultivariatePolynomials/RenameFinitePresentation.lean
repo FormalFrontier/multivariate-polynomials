@@ -58,19 +58,12 @@ private theorem finitePresentation_rename_subtypeVal
   classical
   let : Fintype (Sᶜ : Set τ) := hS.fintype
   let e := splitComplAlgEquiv (R := R) S
-  have hinc (p : MvPolynomial S R) :
-      e (rename (Subtype.val : S → τ) p) = C p := by
-    simpa only [e, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom,
-      IsScalarTower.coe_toAlgHom', algebraMap_eq] using
-      DFunLike.congr_fun (splitComplAlgEquiv_comp_rename_subtypeVal (R := R) S) p
   have hcomp : e.symm.toRingEquiv.toRingHom.comp
       (C : MvPolynomial S R →+* MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)) =
         (rename (R := R) (Subtype.val : S → τ)).toRingHom := by
     apply RingHom.ext
     intro p
-    apply e.injective
-    change e (e.symm (C p)) = e (rename (Subtype.val : S → τ) p)
-    rw [AlgEquiv.apply_symm_apply, hinc]
+    exact splitComplAlgEquiv_symm_C (R := R) S p
   have hC :
       (C : MvPolynomial S R →+*
         MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R)).FinitePresentation := by
@@ -101,7 +94,7 @@ private theorem ker_killCompl_fg_of_finite_compl
     · intro r
       change killCompl (R := R) (f := (Subtype.val : S → τ))
         Subtype.val_injective (C r) = constantCoeff (e (C r))
-      simp [e, splitComplAlgEquiv, renameEquiv_apply]
+      simp only [e, killCompl_C, splitComplAlgEquiv_C, constantCoeff_C]
     · intro i
       change killCompl (R := R) (f := (Subtype.val : S → τ))
         Subtype.val_injective (X i) = constantCoeff (e (X i))
@@ -112,19 +105,15 @@ private theorem ker_killCompl_fg_of_finite_compl
           simpa only [rename_X] using
             killCompl_rename_app (R := R) (f := (Subtype.val : S → τ))
               Subtype.val_injective (X j)
-        have hright : e (X i) = C (X j) := by
-          simpa only [e, j, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, rename_X,
-            Subtype.coe_mk, IsScalarTower.coe_toAlgHom', algebraMap_eq] using
-            DFunLike.congr_fun
-              (splitComplAlgEquiv_comp_rename_subtypeVal (R := R) S) (X j)
+        have hright : e (X i) = C (X j) :=
+          splitComplAlgEquiv_X_mem (R := R) S j
         rw [hleft, hright, constantCoeff_C]
       · let j : (Sᶜ : Set τ) := ⟨i, hi⟩
         have hleft : killCompl (R := R) (f := (Subtype.val : S → τ))
             Subtype.val_injective (X i) = 0 := by
           simp [killCompl, hi]
-        have hright : e (X i) = X j := by
-          simp [e, splitComplAlgEquiv, renameEquiv_apply, j,
-            Equiv.Set.sumCompl_symm_apply_of_notMem hi]
+        have hright : e (X i) = X j :=
+          splitComplAlgEquiv_X_compl (R := R) S j
         rw [hleft, hright, constantCoeff_X]
   have hzero : idealOfVars (Sᶜ : Set τ) (MvPolynomial S R) =
       RingHom.ker (constantCoeff : MvPolynomial (Sᶜ : Set τ) (MvPolynomial S R) →+*
@@ -203,9 +192,9 @@ theorem finitePresentation_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
       -- Killing the finitely many missed variables descends the presentation
       -- to the surjective renaming onto the range.
       have hqfp : q.toRingHom.FinitePresentation := by
-        have h := hfp.comp_surjective (g := k.toRingHom) hkSurj
-          (ker_killCompl_fg_of_finite_compl (R := R) (S := S) hmissed)
-        change (k.comp (rename (R := R) f)).toRingHom.FinitePresentation at h
+        have h : (k.comp (rename (R := R) f)).FinitePresentation :=
+          AlgHom.FinitePresentation.comp_surjective hfp hkSurj
+            (ker_killCompl_fg_of_finite_compl (R := R) (S := S) hmissed)
         rwa [hkrename] at h
       have hqfg : (RingHom.ker q.toRingHom).FG := by
         let : Algebra (MvPolynomial σ R) (MvPolynomial S R) := q.toRingHom.toAlgebra
@@ -240,8 +229,8 @@ theorem finitePresentation_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
           RingHom.FinitePresentation.of_surjective q.toRingHom hqSurj hqfg
         have hifp : i.toRingHom.FinitePresentation :=
           finitePresentation_rename_subtypeVal (R := R) (S := S) hmissed
-        have hcomp := hifp.comp hqfp
-        change (i.comp q).toRingHom.FinitePresentation at hcomp
+        have hcomp : (i.comp q).FinitePresentation :=
+          AlgHom.FinitePresentation.comp hifp hqfp
         rwa [hiq] at hcomp
 
 end MvPolynomial
