@@ -42,6 +42,7 @@ public import MultivariatePolynomials.RenameModuleFinite
 public import MultivariatePolynomials.RenameIntegral
 public import MultivariatePolynomials.RenameAlgebraic
 public import MultivariatePolynomials.RenameUnramified
+public import MultivariatePolynomials.RenameQuasiFinite
 
 /-!
 # Multivariate polynomials

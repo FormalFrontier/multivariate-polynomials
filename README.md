@@ -129,6 +129,19 @@ weight-one-valuation naturality interfaces.
   `0`, so its renaming is of finite type but is not module-finite. These are
   source-polynomial scalars, not coefficient-`R` scalars. See the
   [criterion applications](MultivariatePolynomialsTests/RenameModuleFiniteCriterion.lean).
+- **Quasi-finiteness of commutative-ring variable renaming.** For any
+  commutative ring `R` and arbitrary `f : σ → τ`, with all three types in
+  independent universes,
+  [`MvPolynomial.rename_quasiFinite_iff`](MultivariatePolynomials/RenameQuasiFinite.lean)
+  states that the original full polynomial-ring map is quasi-finite exactly
+  when `f` is surjective or `R` is subsingleton. It uses Mathlib's
+  residue-field-fiber convention, without a `FiniteType` hypothesis, and
+  the full source-polynomial action. Module finiteness supplies the positive
+  direction; an omitted target variable gives a surjective evaluation onto
+  `R[X]`, reducing the converse to Mathlib's polynomial local obstruction. The
+  [independent models](MultivariatePolynomialsTests/RenameQuasiFiniteModels.lean)
+  contrast an omitted variable and a noninjective surjection over `ℤ`, and
+  include the zero-coefficient boundary.
 - **Finite coefficient aggregation has an exact injectivity criterion.** For
   types `α`, `β` and `M` in independent universes, an additive commutative
   monoid `M`, and any index map `f : α → β`,
@@ -606,6 +619,7 @@ not a complete declaration inventory.
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`RenameIntegral`](MultivariatePolynomials/RenameIntegral.lean) | Integrality criterion for canonical renaming between full polynomial rings over any commutative ring: surjective variables or subsingleton coefficients |
+| [`RenameQuasiFinite`](MultivariatePolynomials/RenameQuasiFinite.lean) | Quasi-finiteness criterion for the original full polynomial-ring map over a commutative ring: surjective variables or subsingleton coefficients, without a finite-type hypothesis |
 | [`RenameAlgebraic`](MultivariatePolynomials/RenameAlgebraic.lean) | Algebraicity of the full target over the full source under the specified renaming iff nontrivial coefficients and a surjective or noninjective variable map; arbitrary commutative rings and three independent universes |
 | [`FractionRingFiniteVariables`](MultivariatePolynomials/FractionRingFiniteVariables.lean) | Finite-variable origins, variable-image, surjectivity and integrality criteria for polynomial fraction rings |
 | [`FractionRingAlgebraicIndependence`](MultivariatePolynomials/FractionRingAlgebraicIndependence.lean) | Over a commutative domain, variables omitted by an injective renaming are algebraically independent over the source fraction ring under the same fraction-renaming scalar action |
