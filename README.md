@@ -47,6 +47,14 @@ weight-one-valuation naturality interfaces.
   and [criterion applications](MultivariatePolynomialsTypeTests/RenameFlatness.lean)
   include a proper inclusion over the integers, a collision over the nonreduced
   ring `ZMod 4`, and the same collision over `ZMod 1`.
+  The same module also gives
+  [`MvPolynomial.comap_rename_surjective_iff`](MultivariatePolynomials/RenameFlatness.lean)
+  for commutative semirings and
+  [`MvPolynomial.rename_faithfullyFlat_iff`](MultivariatePolynomials/RenameFlatness.lean)
+  for commutative rings: each uses the same injectivity-or-subsingleton condition
+  for the original full polynomial map. Their criterion applications include
+  the strict inclusion over `ℤ`, prime-spectrum surjectivity over the non-ring
+  semiring `ℕ`, an empty source, and a collision over the zero ring.
 - **Canonical unique-variable degree.** For any commutative semiring `R`,
   unique variable type `σ` (`[Unique σ]`), and `p : MvPolynomial σ R`,
   [`MvPolynomial.natDegree_uniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean)

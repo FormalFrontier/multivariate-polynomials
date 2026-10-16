@@ -7,12 +7,13 @@ module
 public import MultivariatePolynomials.RenameComplement
 public import MultivariatePolynomials.Regularity
 public import Mathlib.RingTheory.RingHom.Flat
+public import Mathlib.RingTheory.RingHom.FaithfullyFlat
 public import Mathlib.RingTheory.MvPolynomial.Basic
 
 @[expose] public section
 
 /-!
-# Flatness of variable renaming
+# Flatness and prime spectra of variable renaming
 
 The original homomorphism on the full polynomial rings induced by a variable
 map is flat exactly when the variable map is injective or the coefficient ring
@@ -23,10 +24,20 @@ An injective variable map identifies the source with polynomials on its range;
 over that source. A collision kills a regular difference of variables, which
 flatness can do only when the target, and hence its coefficient ring, is zero.
 
+The prime-spectrum surjectivity criterion over commutative semirings and the
+faithful-flatness criterion over commutative rings use the same
+injectivity-or-subsingleton condition, for the original map on full polynomial
+semirings or rings. An injective renaming has a retraction, while evaluation
+at zero and one separates colliding source variables over nontrivial
+coefficients. Faithful flatness follows from flatness and surjectivity on
+prime spectra.
+
 ## References
 
 * Mathlib's `Module.Free` instance for multivariate polynomials,
   `RingHom.Flat.comp`, and `IsSMulRegular.of_flat`.
+* Mathlib's `MvPolynomial.killCompl_comp_rename` and
+  `RingHom.FaithfullyFlat.iff_flat_and_comap_surjective`.
 -/
 
 universe u v w
@@ -119,5 +130,59 @@ theorem rename_flat_iff {R : Type u} {σ : Type v} {τ : Type w}
     · let : Subsingleton R := hR
       unfold RingHom.Flat
       infer_instance
+
+/-- The map on prime spectra induced by variable renaming on the full polynomial
+semirings is surjective exactly when the variable map is injective or the
+coefficient semiring is subsingleton. -/
+theorem comap_rename_surjective_iff {R : Type u} {σ : Type v} {τ : Type w}
+    [CommSemiring R] (f : σ → τ) :
+    Function.Surjective (PrimeSpectrum.comap (MvPolynomial.rename (R := R) f).toRingHom) ↔
+      Function.Injective f ∨ Subsingleton R := by
+  classical
+  constructor
+  · intro hsurj
+    rcases subsingleton_or_nontrivial R with hR | hR
+    · exact Or.inr hR
+    · left
+      intro i j hij
+      by_contra hne
+      obtain ⟨p⟩ := (PrimeSpectrum.nonempty_iff_nontrivial (R := R)).mpr hR
+      -- Pulling back `p` along this evaluation separates the colliding variables.
+      let e : MvPolynomial σ R →+* R := eval (fun k => if k = j then 1 else 0)
+      obtain ⟨q, hq⟩ := hsurj (PrimeSpectrum.comap e p)
+      have hi : (X i : MvPolynomial σ R) ∈ (PrimeSpectrum.comap e p).asIdeal := by
+        change e (X i) ∈ p.asIdeal
+        simpa only [e, eval_X, if_neg hne] using p.asIdeal.zero_mem
+      have hj : (X j : MvPolynomial σ R) ∈ (PrimeSpectrum.comap e p).asIdeal := by
+        rw [← hq] at hi ⊢
+        change rename f (X i) ∈ q.asIdeal at hi
+        change rename f (X j) ∈ q.asIdeal
+        simpa only [rename_X, hij] using hi
+      have hone : (1 : R) ∈ p.asIdeal := by
+        change e (X j) ∈ p.asIdeal at hj
+        simpa only [e, eval_X, if_pos rfl, ite_true] using hj
+      exact p.isPrime.one_notMem hone
+  · rintro (hf | hR)
+    · intro p
+      refine ⟨PrimeSpectrum.comap (killCompl (R := R) hf).toRingHom p, ?_⟩
+      have hcomp : (killCompl (R := R) hf).toRingHom.comp (rename (R := R) f).toRingHom =
+          RingHom.id (MvPolynomial σ R) := by
+        apply RingHom.ext
+        intro a
+        exact killCompl_rename_app hf a
+      rw [← PrimeSpectrum.comap_comp_apply, hcomp, PrimeSpectrum.comap_id]
+    · letI : Subsingleton R := hR
+      intro p
+      exact isEmptyElim p
+
+/-- Variable renaming on the full polynomial rings is faithfully flat exactly
+when the variable map is injective or the coefficient ring is subsingleton.
+The scalar action is induced by the displayed renaming homomorphism. -/
+theorem rename_faithfullyFlat_iff {R : Type u} {σ : Type v} {τ : Type w}
+    [CommRing R] (f : σ → τ) :
+    RingHom.FaithfullyFlat (MvPolynomial.rename (R := R) f).toRingHom ↔
+      Function.Injective f ∨ Subsingleton R := by
+  rw [RingHom.FaithfullyFlat.iff_flat_and_comap_surjective,
+    rename_flat_iff, comap_rename_surjective_iff, and_self]
 
 end MvPolynomial
