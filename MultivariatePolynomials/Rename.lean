@@ -40,31 +40,18 @@ injective or the coefficient semiring is subsingleton. -/
 theorem injective_rename_iff (f : σ → τ) :
     Function.Injective (rename (R := R) f) ↔
       Function.Injective f ∨ Subsingleton R := by
-  have hcoeff (p : MvPolynomial σ R) :
-      AddMonoidAlgebra.coeffEquiv (rename (R := R) f p) =
-        Finsupp.mapDomain (Finsupp.mapDomain f) (AddMonoidAlgebra.coeffEquiv p) := by
-    change (AddMonoidAlgebra.mapDomain (Finsupp.mapDomain f) p).coeff = _
-    rfl
-  have hrename :
-      Function.Injective (rename (R := R) f) ↔
-        Function.Injective (Finsupp.mapDomain (Finsupp.mapDomain f) :
-          ((σ →₀ ℕ) →₀ R) → ((τ →₀ ℕ) →₀ R)) := by
-    constructor
-    · intro h p q hpq
-      apply AddMonoidAlgebra.ofCoeff_injective
+  constructor
+  · intro h
+    rcases subsingleton_or_nontrivial R with hR | hR
+    · exact Or.inr hR
+    · left
+      intro i j hij
+      apply X_injective (R := R)
       apply h
-      apply AddMonoidAlgebra.coeffEquiv.injective
-      simpa only [hcoeff, AddMonoidAlgebra.coeffEquiv_apply,
-        AddMonoidAlgebra.coeff_ofCoeff] using hpq
-    · intro h p q hpq
-      apply AddMonoidAlgebra.coeffEquiv.injective
-      apply h
-      rw [← hcoeff, ← hcoeff, hpq]
-  have hNat : ¬ Subsingleton ℕ := by
-    intro h
-    exact Nat.zero_ne_one (h.elim _ _)
-  rw [hrename, Finsupp.mapDomain_injective_iff, Finsupp.mapDomain_injective_iff]
-  simp only [hNat, or_false]
+      simpa only [rename_X] using congrArg (X (R := R)) hij
+  · rintro (hf | hR)
+    · exact rename_injective f hf
+    · exact Function.injective_of_subsingleton _
 
 /-- Polynomial variable renaming is surjective exactly when the variable map is
 surjective or the coefficient semiring is subsingleton. -/
