@@ -71,6 +71,17 @@ weight-one-valuation naturality interfaces.
   ([`MvPolynomial.injective_rename_iff`](MultivariatePolynomials/Rename.lean)),
   and is surjective exactly when `f` is surjective or `R` is subsingleton
   ([`MvPolynomial.surjective_rename_iff`](MultivariatePolynomials/Rename.lean)).
+- **Formal smoothness of variable renaming.** Over any commutative ring `R`,
+  [`MvPolynomial.rename_formallySmooth_iff_injective`](MultivariatePolynomials/RenameFormalSmoothness.lean)
+  characterizes formal smoothness of the full source polynomial-ring
+  homomorphism by injectivity of that homomorphism. Equivalently,
+  [`MvPolynomial.rename_formallySmooth_iff`](MultivariatePolynomials/RenameFormalSmoothness.lean)
+  says that the variable map is injective or the coefficients are subsingleton.
+  The scalar action is induced by the original renaming, not just by `R`.
+  The coefficient and variable types have independent universes, with no
+  finiteness or nontriviality hypotheses. Complementary variables give the
+  polynomial-extension direction; a square-zero lifting obstruction detects
+  collisions over nontrivial coefficients.
 - **Formal unramifiedness of variable renaming.** Over any commutative ring
   `R`, [`MvPolynomial.formallyUnramified_rename_iff_surjective`](MultivariatePolynomials/RenameUnramified.lean)
   says that `MvPolynomial.rename f`, as a homomorphism from the full source

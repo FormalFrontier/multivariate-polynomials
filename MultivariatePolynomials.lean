@@ -42,6 +42,7 @@ public import MultivariatePolynomials.RenameModuleFinite
 public import MultivariatePolynomials.RenameIntegral
 public import MultivariatePolynomials.RenameAlgebraic
 public import MultivariatePolynomials.RenameUnramified
+public import MultivariatePolynomials.RenameFormalSmoothness
 public import MultivariatePolynomials.RenameQuasiFinite
 
 /-!
