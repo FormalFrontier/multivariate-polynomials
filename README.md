@@ -31,6 +31,13 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Integral closure in arbitrarily many variables.** For every integrally closed
+  commutative domain `R` and arbitrary variable type `ι`,
+  [`MvPolynomial.isIntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean)
+  makes the ordinary polynomial ring `MvPolynomial ι R` integrally closed.
+  The coefficient and variable universes are independent, and the variables may
+  be empty or infinite. No Noetherian or unique-factorization hypothesis is
+  imposed on `R`.
 - **Flatness of commutative-ring variable renaming.** For every commutative
   ring `R` and arbitrary `f : σ → τ`, with coefficient and variable types in
   independent universes,
@@ -640,6 +647,7 @@ not a complete declaration inventory.
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
+| [`IntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean) | Integral closure of polynomial rings over integrally closed commutative domains, with arbitrary variable types and independent universes |
 | [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |

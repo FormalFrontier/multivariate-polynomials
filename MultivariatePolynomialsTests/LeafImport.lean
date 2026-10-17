@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import MultivariatePolynomials.IdealOfVars
+import MultivariatePolynomials.IntegrallyClosed
 
 /-!
 # Direct-leaf clients
@@ -35,3 +36,11 @@ theorem leafUnequalUniverses (k : Type) (σ : Type 1)
     [CommSemiring k] [Nontrivial k] [Infinite σ] :
     ¬ (MvPolynomial.idealOfVars σ k).FG :=
   MvPolynomial.idealOfVars_not_fg k σ
+
+private theorem isIntegrallyClosed_rational_infinite :
+    IsIntegrallyClosed (MvPolynomial ℕ ℚ) :=
+  MvPolynomial.isIntegrallyClosed (R := ℚ) (ι := ℕ)
+
+private theorem isIntegrallyClosed_rational_empty :
+    IsIntegrallyClosed (MvPolynomial Empty ℚ) :=
+  MvPolynomial.isIntegrallyClosed (R := ℚ) (ι := Empty)

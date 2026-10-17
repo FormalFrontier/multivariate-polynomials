@@ -31,6 +31,7 @@ public import MultivariatePolynomials.PointSquareZeroQuotient
 public import MultivariatePolynomials.WeightOneValuation
 public import MultivariatePolynomials.WeightOneNaturality
 public import MultivariatePolynomials.Artinian
+public import MultivariatePolynomials.IntegrallyClosed
 public import MultivariatePolynomials.FiniteSupport
 public import MultivariatePolynomials.Rename
 public import MultivariatePolynomials.RenameKernel
