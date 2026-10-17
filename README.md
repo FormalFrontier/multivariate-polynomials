@@ -97,6 +97,14 @@ weight-one-valuation naturality interfaces.
   finiteness or nontriviality hypotheses. Complementary variables give the
   polynomial-extension direction; a square-zero lifting obstruction detects
   collisions over nontrivial coefficients.
+- **Smoothness of variable renaming.** Over any commutative ring `R`,
+  [`MvPolynomial.rename_smooth_iff`](MultivariatePolynomials/RenameSmooth.lean)
+  says that the canonical homomorphism on full polynomial rings is smooth
+  exactly when the variable map is injective with finite complement, or `R`
+  is subsingleton. This is stock `RingHom.Smooth`, including finite
+  presentation, for the source-polynomial action induced by renaming.
+  Coefficients and both variable types have independent universes; no
+  finiteness or nontriviality hypothesis is imposed on them.
 - **Formal unramifiedness of variable renaming.** Over any commutative ring
   `R`, [`MvPolynomial.formallyUnramified_rename_iff_surjective`](MultivariatePolynomials/RenameUnramified.lean)
   says that `MvPolynomial.rename f`, as a homomorphism from the full source

@@ -45,6 +45,7 @@ public import MultivariatePolynomials.RenameIntegral
 public import MultivariatePolynomials.RenameAlgebraic
 public import MultivariatePolynomials.RenameUnramified
 public import MultivariatePolynomials.RenameFormalSmoothness
+public import MultivariatePolynomials.RenameSmooth
 public import MultivariatePolynomials.RenameQuasiFinite
 public import MultivariatePolynomials.Nilpotent
 public import MultivariatePolynomials.PrimeSpectrum
