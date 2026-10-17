@@ -31,6 +31,14 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Nilpotent coefficients and irreducible polynomial spectra.** For any
+  commutative semiring `R` and arbitrary variable type `σ`,
+  [`MvPolynomial.isNilpotent_iff_coeff`](MultivariatePolynomials/Nilpotent.lean)
+  characterizes nilpotent polynomials by nilpotence of every coefficient.
+  [`PrimeSpectrum.irreducibleSpace_mvPolynomial_iff`](MultivariatePolynomials/PrimeSpectrum.lean)
+  states that `PrimeSpectrum (MvPolynomial σ R)` is irreducible exactly when
+  `PrimeSpectrum R` is irreducible. Coefficients and variables have independent
+  universes; empty or infinite variables and trivial coefficients are allowed.
 - **Integral closure in arbitrarily many variables.** For every integrally closed
   commutative domain `R` and arbitrary variable type `ι`,
   [`MvPolynomial.isIntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean)
