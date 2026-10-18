@@ -13,7 +13,10 @@ public import Mathlib.Algebra.MvPolynomial.Nilpotent
 
 A multivariate polynomial over a commutative semiring is nilpotent if and only
 if each of its coefficients is nilpotent. The variable type is arbitrary,
-and the coefficient semiring may be trivial.
+and the coefficient semiring may be trivial. Consequently,
+`MvPolynomial.isReduced_iff` characterizes reduced polynomial semirings by
+reducedness of their coefficients, and `MvPolynomial.instIsReducedOfCommSemiring`
+provides the corresponding instance.
 
 ## References
 
@@ -139,5 +142,31 @@ private theorem isNilpotent_iff_coeff_eq_isNilpotent_iff [CommRing R]
     (p : MvPolynomial σ R) :
     isNilpotent_iff_coeff p = (MvPolynomial.isNilpotent_iff (P := p)) := by
   exact Subsingleton.elim _ _
+
+/-- A multivariate polynomial semiring is reduced exactly when its coefficient
+semiring is reduced, with no restriction on the variable type. -/
+@[simp]
+theorem isReduced_iff [CommSemiring R] :
+    IsReduced (MvPolynomial σ R) ↔ IsReduced R := by
+  constructor
+  · intro h
+    letI : IsReduced (MvPolynomial σ R) := h
+    exact isReduced_of_injective (C : R →+* MvPolynomial σ R) (C_injective σ R)
+  · intro h
+    letI : IsReduced R := h
+    refine ⟨fun p hp ↦ ?_⟩
+    ext d
+    simpa using ((isNilpotent_iff_coeff p).mp hp d).eq_zero
+
+-- The inferred instance here is Mathlib's instance for commutative rings.
+private theorem isReduced_iff_mpr_eq [CommRing R] [IsReduced R] :
+    (isReduced_iff (σ := σ) (R := R)).mpr ‹IsReduced R› =
+      (inferInstance : IsReduced (MvPolynomial σ R)) := by
+  exact Subsingleton.elim _ _
+
+/-- Multivariate polynomials over a reduced commutative semiring form a reduced semiring. -/
+instance instIsReducedOfCommSemiring [CommSemiring R] [IsReduced R] :
+    IsReduced (MvPolynomial σ R) :=
+  (isReduced_iff (σ := σ) (R := R)).mpr inferInstance
 
 end MvPolynomial

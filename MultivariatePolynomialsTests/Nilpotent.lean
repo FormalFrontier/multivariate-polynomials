@@ -16,8 +16,9 @@ variables is nonzero and has square zero. The coefficient semiring is not a
 ring: its multiplicative identity has no additive inverse. The spectrum
 criterion also applies to polynomials in infinitely many variables over `ℕ`.
 
-The empty-variable equivalence and the empty spectrum over a trivial base
-provide boundary examples.
+Reducedness is available for polynomial semirings over `ℕ`, and reflects to
+the coefficient semiring. The empty-variable equivalence and the empty spectrum
+over a trivial base provide boundary examples.
 
 ## References
 
@@ -62,6 +63,22 @@ example : p ≠ 0 ∧ p ^ 2 = 0 ∧
   have hnonzero : ε ≠ 0 := by decide
   apply hnonzero
   simpa [coeff_X, hmon] using hc
+
+example : IsReduced ℕ ∧ ¬ ∃ n : ℕ, n + 1 = 0 := by
+  exact ⟨inferInstance, by simp⟩
+
+example : IsReduced (MvPolynomial Bool ℕ) := inferInstance
+
+example (q : MvPolynomial Bool ℕ) (hq : IsNilpotent q) : q = 0 := hq.eq_zero
+
+example : IsReduced (MvPolynomial PEmpty (ZMod 1)) := inferInstance
+
+example (σ : Type v) : ¬ IsReduced (MvPolynomial σ (ZMod 4)) := by
+  intro h
+  letI : IsReduced (ZMod 4) := (MvPolynomial.isReduced_iff (σ := σ)).mp h
+  have hnil : IsNilpotent (2 : ZMod 4) := ⟨2, by decide⟩
+  have hne : (2 : ZMod 4) ≠ 0 := by decide
+  exact hne hnil.eq_zero
 
 example : IrreducibleSpace (PrimeSpectrum (MvPolynomial ℕ ℕ)) :=
   (PrimeSpectrum.irreducibleSpace_mvPolynomial_iff ℕ ℕ).mpr inferInstance
