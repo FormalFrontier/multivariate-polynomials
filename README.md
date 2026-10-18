@@ -53,6 +53,16 @@ weight-one-valuation naturality interfaces.
   states that `PrimeSpectrum (MvPolynomial σ R)` is irreducible exactly when
   `PrimeSpectrum R` is irreducible. Coefficients and variables have independent
   universes; empty or infinite variables and trivial coefficients are allowed.
+- **Integral elements over coefficient rings.** For any commutative ring `R`
+  and arbitrary variable type `σ`,
+  [`MvPolynomial.isIntegral_iff_coeff_isNilpotent`](MultivariatePolynomials/IntegralCoefficients.lean)
+  characterizes `IsIntegral R p` by nilpotence of every nonconstant coefficient.
+  For reduced `R`,
+  [`MvPolynomial.isIntegral_iff_eq_C_coeff_zero`](MultivariatePolynomials/IntegralCoefficients.lean)
+  specializes this to `p = C (p.coeff 0)`.
+  The coefficient and variable universes are independent; trivial coefficient
+  rings and empty or infinite variable types are allowed. Over `ZMod 4`,
+  `C 2 * X ()` is a nonconstant square-zero integral polynomial.
 - **Integral closure in arbitrarily many variables.** For every integrally closed
   commutative domain `R` and arbitrary variable type `ι`,
   [`MvPolynomial.isIntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean)
