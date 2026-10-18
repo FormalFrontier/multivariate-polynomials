@@ -31,6 +31,20 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Coefficient ideals over commutative semirings.** For any commutative
+  semiring `R`, ideal `I` and arbitrary variable type `σ`,
+  [`MvPolynomial.coeffsIn_eq_restrictScalars_map_C`](MultivariatePolynomials/CoefficientIdeal.lean)
+  identifies the extension `Ideal.map C I`, restricted to the canonical
+  coefficient action, with Mathlib's coefficient submodule `coeffsIn σ I`.
+  Polynomial membership is therefore coefficientwise membership, and
+  contraction along `C` recovers `I`.
+  [`MvPolynomial.ker_map_eq_map_C`](MultivariatePolynomials/CoefficientIdeal.lean)
+  identifies the kernel of a coefficient map with the extension of its kernel.
+  Coefficients, target coefficients and variables have independent universes;
+  no ring, finiteness or nontriviality hypothesis is needed. The
+  [natural-number example](MultivariatePolynomialsTests/CoefficientIdeal.lean)
+  separates `2 * X` from `X` for the proper extended ideal `(2)` and for
+  coefficient reduction modulo two.
 - **Nilpotent coefficients and irreducible polynomial spectra.** For any
   commutative semiring `R` and arbitrary variable type `σ`,
   [`MvPolynomial.isNilpotent_iff_coeff`](MultivariatePolynomials/Nilpotent.lean)
@@ -660,6 +674,7 @@ not a complete declaration inventory.
 | [`FractionRingTranscendenceBasis`](MultivariatePolynomials/FractionRingTranscendenceBasis.lean) | Algebraicity over the source-fraction adjoin of omitted variables and the corresponding transcendence basis for injective renaming |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
+| [`CoefficientIdeal`](MultivariatePolynomials/CoefficientIdeal.lean) | Coefficient submodule and extended-ideal identification over commutative semirings; membership, contraction and coefficient-map kernels |
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
