@@ -382,6 +382,15 @@ weight-one-valuation naturality interfaces.
   distinguish these properties from coefficient self-Noetherianity and
   self-Artinianity, even for the infinite non-ring semiring `ℝ≥0` with finitely
   many ideals.
+- **Radical coefficient-ideal extensions force subtractivity.** For any
+  commutative semiring `R`, ideal `I`, and nonempty variable type `σ`,
+  [`MvPolynomial.mem_of_add_mem_of_isRadical_map_C`](MultivariatePolynomials/CoefficientIdealSubtractive.lean)
+  shows that radicality of `I.map C` forces `b ∈ I` whenever `a ∈ I` and
+  `a + b ∈ I`. The coefficient and variable universes are independent; no
+  properness, ring, domain or finiteness hypothesis is needed. The original
+  prime-extension theorem is a corollary, and the
+  [examples](MultivariatePolynomialsTests/CoefficientIdealSubtractive.lean)
+  apply both statements to the zero ideal over the natural numbers.
 - **Coefficient-and-variable ideals have an exact finite-generation criterion.**
   For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
   [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)
