@@ -14,6 +14,10 @@ The nonzero polynomial `2 * X` belongs to the extension of the ideal `(2)`
 over `ℕ`, whereas `X` does not. The same two polynomials distinguish membership
 in the kernel of coefficient reduction modulo two. This uses the stock
 natural-number semiring, its principal ideal and its canonical map to `ZMod 2`.
+
+The intersection of the extensions of `(2)` and `(3)` contains `6 * X` but
+not `2 * X`. Empty indexed intersections with no variables and set intersections
+over the zero coefficient ring check the degenerate cases.
 -/
 
 open MvPolynomial
@@ -61,3 +65,37 @@ private theorem twiceVariable_coefficientIdeal_facts :
     intro hx
     have hc := (mem_map_C_iff_coeff_mem.mp hx) (Finsupp.single () 1)
     exact hker1 (by simpa using hc)
+
+private theorem intersectionOfTwoCoefficientIdeals :
+    let I : Bool → Ideal ℕ := fun b => Ideal.span ({if b then 2 else 3} : Set ℕ)
+    (C 6 * X () : MvPolynomial Unit ℕ) ∈ Ideal.map C (⨅ b, I b) ∧
+      (C 2 * X () : MvPolynomial Unit ℕ) ∉ Ideal.map C (⨅ b, I b) := by
+  dsimp only
+  simp only [map_C_iInf, Ideal.mem_iInf]
+  constructor
+  · intro b
+    have h6 : (6 : ℕ) ∈ Ideal.span ({if b then 2 else 3} : Set ℕ) := by
+      rw [Ideal.mem_span_singleton]
+      cases b
+      · exact ⟨2, rfl⟩
+      · exact ⟨3, rfl⟩
+    exact (Ideal.map (C : ℕ →+* MvPolynomial Unit ℕ) _).mul_mem_right
+      (X ()) (Ideal.mem_map_of_mem C h6)
+  · intro h
+    have h2 : (2 : ℕ) ∈ Ideal.span ({3} : Set ℕ) := by
+      have hc := (mem_map_C_iff_coeff_mem.mp (h false)) (Finsupp.single () 1)
+      rw [coeff_C_mul, coeff_X_same, mul_one] at hc
+      simpa using hc
+    simpa [Ideal.mem_span_singleton] using h2
+
+private theorem emptyIndexedIntersection_noVariables :
+    Ideal.map (C : ℕ →+* MvPolynomial Empty ℕ)
+      (⨅ _ : Empty, (⊥ : Ideal ℕ)) = ⊤ := by
+  rw [map_C_iInf]
+  simp
+
+private theorem setIntersection_zeroCoefficients :
+    Ideal.map (C : ZMod 1 →+* MvPolynomial Unit (ZMod 1))
+      (sInf ({⊥, ⊤} : Set (Ideal (ZMod 1)))) = ⊤ := by
+  rw [map_C_sInf]
+  exact Subsingleton.elim _ _

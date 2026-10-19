@@ -13,8 +13,10 @@ public import Mathlib.RingTheory.Ideal.Maps
 Extending an ideal along `MvPolynomial.C` gives exactly the polynomials with
 coefficients in that ideal. As an `R`-submodule, this extension is Mathlib's
 `MvPolynomial.coeffsIn`, for the canonical action `r • p = C r * p`.
-Contraction along `C` recovers the coefficient ideal. The kernel of a map on
-coefficients is its coefficient kernel extended along `C`.
+Extension along `C` preserves arbitrary intersections of coefficient ideals and
+reflects their inclusion and equality. Contraction along `C` recovers the
+coefficient ideal. The kernel of a map on coefficients is its coefficient kernel
+extended along `C`.
 
 The coefficient and variable universes are independent; for coefficient maps,
 the source and target coefficient universes are independent as well. No
@@ -31,12 +33,15 @@ finiteness, nontriviality, cancellation or additive inverses are required.
   `MvPolynomial.ker_map`. The submodule identifications below recover those
   statements for rings and also apply to semirings. The extension argument
   uses the `coeffsIn` span and multiplication APIs, rather than a separate
-  coefficient-by-coefficient induction on the extended ideal.
+  coefficient-by-coefficient induction on the extended ideal. The order
+  reflection uses the same extension-contraction adjunction.
+* Mathlib's complete-lattice API supplies `sInf_eq_iInf'` and `sInf_image'`
+  to express set intersections in terms of indexed intersections.
 -/
 
 @[expose] public section
 
-universe u v w
+universe u v w x
 
 namespace MvPolynomial
 
@@ -78,6 +83,22 @@ theorem mem_map_C_iff_coeff_mem {I : Ideal R} {p : MvPolynomial σ R} :
     p ∈ Ideal.map (C : R →+* MvPolynomial σ R) I ↔ ∀ d, p.coeff d ∈ I := by
   rw [← mem_coeffsIn, coeffsIn_eq_restrictScalars_map_C, Submodule.restrictScalars_mem]
 
+/-- Extension of coefficient ideals along `C` preserves arbitrary indexed
+intersections, including the empty intersection. -/
+theorem map_C_iInf {ι : Sort x} (I : ι → Ideal R) :
+    Ideal.map (C : R →+* MvPolynomial σ R) (⨅ i, I i) =
+      ⨅ i, Ideal.map (C : R →+* MvPolynomial σ R) (I i) := by
+  ext p
+  simp only [mem_map_C_iff_coeff_mem, Ideal.mem_iInf]
+  exact forall_comm
+
+/-- Extension of coefficient ideals along `C` preserves the intersection of
+any set of ideals, expressed as the intersection of its image. -/
+theorem map_C_sInf (A : Set (Ideal R)) :
+    Ideal.map (C : R →+* MvPolynomial σ R) (sInf A) =
+      sInf (Ideal.map (C : R →+* MvPolynomial σ R) '' A) := by
+  rw [sInf_eq_iInf' A, map_C_iInf, sInf_image']
+
 /-- Extending a coefficient ideal to polynomials and contracting along `C`
 recovers the original ideal, including for empty variable types. -/
 @[simp]
@@ -86,6 +107,20 @@ theorem comap_map_C (I : Ideal R) :
   ext r
   rw [Ideal.mem_comap, ← C_mem_coeffsIn (σ := σ) (M := (I : Submodule R R)),
     coeffsIn_eq_restrictScalars_map_C, Submodule.restrictScalars_mem]
+
+/-- Inclusion of extensions of coefficient ideals is equivalent to inclusion
+of the coefficient ideals themselves. -/
+@[simp]
+theorem map_C_le_map_C_iff {I J : Ideal R} :
+    Ideal.map (C : R →+* MvPolynomial σ R) I ≤
+      Ideal.map (C : R →+* MvPolynomial σ R) J ↔ I ≤ J := by
+  rw [Ideal.map_le_iff_le_comap, comap_map_C]
+
+/-- Extension along `C` is injective on coefficient ideals. In particular,
+its `Function.Injective.eq_iff` reflects equality of coefficient ideals. -/
+theorem map_C_injective :
+    Function.Injective (Ideal.map (C : R →+* MvPolynomial σ R)) :=
+  Function.LeftInverse.injective (comap_map_C (σ := σ))
 
 variable {F : Type*} [FunLike F R S] [RingHomClass F R S]
 
