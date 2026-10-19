@@ -54,6 +54,19 @@ weight-one-valuation naturality interfaces.
   Noetherian or nontriviality hypothesis. The
   [integer example](MultivariatePolynomialsTests/Primary.lean) extends the
   primary, nonradical ideal `(4)`.
+- **Supplied primary families and deletion irredundance.** For any commutative
+  ring `R`, ideal `I`, family `Q : ι → Ideal R` and variable type `σ`,
+  [`MvPolynomial.primary_family_map_C_iff`](MultivariatePolynomials/PrimaryDecomposition.lean)
+  says that `I.map C = ⨅ i, (Q i).map C` with every mapped component primary
+  exactly when `I = ⨅ i, Q i` with every component primary. Over any commutative
+  semiring, [`MvPolynomial.irredundant_iInf_map_C_iff`](MultivariatePolynomials/PrimaryDecomposition.lean)
+  preserves and reflects the condition that, for every index, the intersection
+  of all other components is not contained in that component. The index may
+  be any sort; coefficient, variable and index universes are independent.
+  Empty families and variable types are allowed, with no finiteness or
+  Noetherian hypothesis. These are transport statements, not existence or
+  uniqueness results. The [integer model](MultivariatePolynomialsTests/PrimaryDecomposition.lean)
+  uses both for `(12) = (4) ∩ (3)`.
 
 - **Nilpotent coefficients and irreducible polynomial spectra.** For any
   commutative semiring `R` and arbitrary variable type `σ`,
