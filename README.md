@@ -31,6 +31,14 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **The degree-zero homogeneous component.** For any commutative semiring
+  `R` and arbitrary variable type `σ`,
+  [`MvPolynomial.gradeZeroAlgEquiv`](MultivariatePolynomials/GradeZero.lean)
+  identifies `R` as an `R`-algebra with Mathlib's original degree-zero homogeneous
+  component. Its forward map is the inherited coefficient algebra map, with
+  ambient polynomial `C r`; its inverse is `constantCoeff`. The construction uses
+  independent universes and commutes with coefficient homomorphisms in the
+  ambient polynomial algebras, without finiteness or nontriviality hypotheses.
 - **Coefficient ideals over commutative semirings.** For any commutative
   semiring `R`, ideal `I` and arbitrary variable type `σ`,
   [`MvPolynomial.coeffsIn_eq_restrictScalars_map_C`](MultivariatePolynomials/CoefficientIdeal.lean)
@@ -732,6 +740,7 @@ not a complete declaration inventory.
 | [`IntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean) | Integral closure of polynomial rings over integrally closed commutative domains, with arbitrary variable types and independent universes |
 | [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
+| [`GradeZero`](MultivariatePolynomials/GradeZero.lean) | The coefficient algebra equivalence with the original degree-zero homogeneous component over arbitrary commutative semirings |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |
 | [`BlockSubstitutionLaws`](MultivariatePolynomials/BlockSubstitutionLaws.lean) | Renaming, association, unit and iteration laws |

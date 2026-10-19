@@ -16,6 +16,7 @@ public import MultivariatePolynomials.MonomialIdeal
 public import MultivariatePolynomials.Primary
 public import MultivariatePolynomials.PrimaryDecomposition
 public import MultivariatePolynomials.HomogeneousEvaluation
+public import MultivariatePolynomials.GradeZero
 public import MultivariatePolynomials.BlockSubstitution
 public import MultivariatePolynomials.IteratedBlockSubstitution
 public import MultivariatePolynomials.BlockSubstitutionLaws
@@ -116,7 +117,9 @@ The subset-weight-one API describes rational-function-field valuations using
 minimum polynomial order, birational coordinates and a full residue field.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
-`MultivariatePolynomials.HomogeneousEvaluation`, or
+`MultivariatePolynomials.HomogeneousEvaluation`,
+`MultivariatePolynomials.GradeZero` (the coefficient algebra equivalence with the
+degree-zero component), or
 `MultivariatePolynomials.BlockSubstitution`,
 `MultivariatePolynomials.IteratedBlockSubstitution` or
 `MultivariatePolynomials.BlockSubstitutionLaws` or

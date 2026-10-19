@@ -5,16 +5,19 @@ Authors: Formal Frontier Agents
 module
 
 public import MultivariatePolynomials.HomogeneousEvaluation
+public import MultivariatePolynomials.GradeZero
 
 /-!
 # Homogeneous-evaluation clients
 
-These examples instantiate the weighted and ordinary scaling laws.
+These examples instantiate the weighted and ordinary scaling laws and evaluate
+arithmetic in the degree-zero homogeneous component.
 
 ## References
 
 * `MultivariatePolynomials.HomogeneousEvaluation`: the scaling theorems and
   their Mathlib homogeneous-polynomial dependencies.
+* `MultivariatePolynomials.GradeZero`: the coefficient algebra equivalence.
 -/
 
 set_option warningAsError true
@@ -44,3 +47,36 @@ example (w : ι → ℕ) (d : ℕ) (σ : B →+* R) (v : ι → R) (a : R) :
     w d 0 σ v a
 
 end HomogeneousEvaluationClient
+
+namespace GradeZeroClient
+
+attribute [local instance] MvPolynomial.gradedAlgebra
+
+variable {K : Type*} [Field K]
+
+example (p : MvPolynomial.homogeneousSubmodule (Fin 2) K 0)
+    (a : K) (v : Fin 2 → K) :
+    MvPolynomial.eval v
+      ((p * MvPolynomial.gradeZeroAlgEquiv (Fin 2) K a + 1 :
+        MvPolynomial.homogeneousSubmodule (Fin 2) K 0) : MvPolynomial (Fin 2) K) =
+      (MvPolynomial.gradeZeroAlgEquiv (Fin 2) K).symm p * a + 1 := by
+  -- Component arithmetic, coefficient recovery, and evaluation.
+  have hp : (p : MvPolynomial (Fin 2) K) =
+      MvPolynomial.C ((MvPolynomial.gradeZeroAlgEquiv (Fin 2) K).symm p) := by
+    simpa only [MvPolynomial.coe_gradeZeroAlgEquiv] using
+      (congrArg (fun q : MvPolynomial.homogeneousSubmodule (Fin 2) K 0 =>
+        (q : MvPolynomial (Fin 2) K))
+        ((MvPolynomial.gradeZeroAlgEquiv (Fin 2) K).apply_symm_apply p)).symm
+  simp only [Submodule.coe_add, SetLike.GradeZero.coe_mul,
+    SetLike.GradeZero.coe_one, MvPolynomial.coe_gradeZeroAlgEquiv,
+    hp, map_add, map_mul, map_one, MvPolynomial.eval_C]
+
+example {R : Type*} [CommSemiring R] (r : R) :
+    MvPolynomial.constantCoeff
+      (algebraMap (MvPolynomial.homogeneousSubmodule Empty R 0)
+        (MvPolynomial Empty R) (MvPolynomial.gradeZeroAlgEquiv Empty R r)) = r := by
+  -- Empty-variable boundary with the original component-to-polynomial algebra map.
+  simp only [SetLike.GradeZero.algebraMap_apply,
+    MvPolynomial.coe_gradeZeroAlgEquiv, MvPolynomial.constantCoeff_C]
+
+end GradeZeroClient
