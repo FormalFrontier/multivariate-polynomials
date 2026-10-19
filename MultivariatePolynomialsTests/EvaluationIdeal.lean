@@ -21,6 +21,8 @@ only one element, and at a rational point. Evaluation at zero in one variable
 has a finitely generated kernel over `ℤ`, but contracting it along the renaming
 that sends every natural-number-indexed variable to that variable gives an
 augmentation ideal that is not finitely generated.
+The coefficient-ideal example evaluates `X + 1` at `3` over `ℤ`: its nonzero
+value `4` lies in the proper nonzero ideal `(2)`.
 The cotangent basis is used on an integer variable class with infinitely many
 available variables and on a mixed linear and quadratic representative over
 `ZMod 4`, where the coefficient `2` is nilpotent but survives as a coordinate.
@@ -53,6 +55,70 @@ public theorem MultivariatePolynomialsTests.integerNonmember :
         (MvPolynomial.X i : MvPolynomial ℕ ℤ) - MvPolynomial.C (5 : ℤ))) := by
   rw [MvPolynomial.mem_ideal_span_X_sub_C_iff]
   norm_num
+
+/-- A nonzero value in a proper nonzero coefficient ideal gives membership
+in the sum ideal without belonging to the evaluation kernel. -/
+private theorem integerCoefficientFiber :
+    let I : Ideal ℤ := Ideal.span {2}
+    let x : Unit → ℤ := fun _ => 3
+    let p : MvPolynomial Unit ℤ := MvPolynomial.X () + MvPolynomial.C 1
+    I ≠ ⊥ ∧ I ≠ ⊤ ∧ MvPolynomial.eval x p = 4 ∧ (4 : ℤ) ∈ I ∧
+      MvPolynomial.eval x p ≠ 0 ∧
+      p ∈ Ideal.map (MvPolynomial.C : ℤ →+* MvPolynomial Unit ℤ) I ⊔
+        Ideal.span (Set.range (fun i : Unit =>
+          MvPolynomial.X i - MvPolynomial.C (x i))) := by
+  dsimp only
+  have htwo : (2 : ℤ) ∈ Ideal.span ({2} : Set ℤ) :=
+    Ideal.mem_span_singleton_self 2
+  have hfour : (4 : ℤ) ∈ Ideal.span ({2} : Set ℤ) := by
+    norm_num [Ideal.mem_span_singleton]
+  have heval : MvPolynomial.eval (fun _ : Unit => (3 : ℤ))
+      (MvPolynomial.X () + MvPolynomial.C 1) = 4 := by
+    norm_num
+  refine ⟨?_, ?_, heval, hfour, ?_, ?_⟩
+  · intro h
+    have hz : (2 : ℤ) = 0 := by
+      simpa only [h, Ideal.mem_bot] using htwo
+    norm_num at hz
+  · intro h
+    have hone := (Ideal.eq_top_iff_one _).mp h
+    norm_num [Ideal.mem_span_singleton] at hone
+  · rw [heval]
+    norm_num
+  · rw [MvPolynomial.map_C_sup_span_X_sub_C_eq_comap_eval, Ideal.mem_comap, heval]
+    exact hfour
+
+private theorem emptyVariablesCoefficientNonmember :
+    (MvPolynomial.C (1 : ℤ) : MvPolynomial Empty ℤ) ∉
+      Ideal.map (MvPolynomial.C : ℤ →+* MvPolynomial Empty ℤ)
+          (Ideal.span ({2} : Set ℤ)) ⊔
+        Ideal.span (Set.range (fun i : Empty =>
+          (MvPolynomial.X i : MvPolynomial Empty ℤ) - MvPolynomial.C (0 : ℤ))) := by
+  rw [MvPolynomial.map_C_sup_span_X_sub_C_eq_comap_eval, Ideal.mem_comap,
+    MvPolynomial.eval_C]
+  norm_num [Ideal.mem_span_singleton]
+
+private theorem coefficientFiberTopBottom (x : ℕ → ℤ) :
+    let J : Ideal (MvPolynomial ℕ ℤ) :=
+      Ideal.span (Set.range (fun i : ℕ => MvPolynomial.X i - MvPolynomial.C (x i)))
+    (Ideal.map (MvPolynomial.C : ℤ →+* MvPolynomial ℕ ℤ) ⊤ ⊔ J = ⊤) ∧
+      (Ideal.map (MvPolynomial.C : ℤ →+* MvPolynomial ℕ ℤ) ⊥ ⊔ J =
+        RingHom.ker (MvPolynomial.eval x)) := by
+  dsimp only
+  constructor
+  · rw [MvPolynomial.map_C_sup_span_X_sub_C_eq_comap_eval, Ideal.comap_top]
+  · rw [MvPolynomial.map_C_sup_span_X_sub_C_eq_comap_eval, ← RingHom.ker_eq_comap_bot]
+
+private theorem zeroRingCoefficientFiber (I : Ideal (ZMod 1))
+    (p : MvPolynomial Unit (ZMod 1)) :
+    p ∈ Ideal.map (MvPolynomial.C : ZMod 1 →+* MvPolynomial Unit (ZMod 1)) I ⊔
+      Ideal.span (Set.range (fun i : Unit =>
+        MvPolynomial.X i - MvPolynomial.C (0 : ZMod 1))) := by
+  rw [MvPolynomial.map_C_sup_span_X_sub_C_eq_comap_eval, Ideal.mem_comap]
+  have h : MvPolynomial.eval (fun _ : Unit => (0 : ZMod 1)) p = 0 :=
+    Subsingleton.elim _ _
+  rw [h]
+  exact I.zero_mem
 
 private theorem emptyVariablesNonmember :
     (MvPolynomial.C (1 : ℤ) : MvPolynomial (Fin 0) ℤ) ∉
