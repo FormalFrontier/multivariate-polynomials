@@ -45,6 +45,16 @@ weight-one-valuation naturality interfaces.
   [natural-number example](MultivariatePolynomialsTests/CoefficientIdeal.lean)
   separates `2 * X` from `X` for the proper extended ideal `(2)` and for
   coefficient reduction modulo two.
+- **Primary coefficient ideals.** For any commutative ring `R`, ideal `I`
+  and arbitrary variable type `σ`,
+  [`MvPolynomial.isPrimary_map_C_iff`](MultivariatePolynomials/Primary.lean)
+  states that `I.map C` is primary exactly when `I` is primary, using
+  Mathlib's `Ideal.IsPrimary`. Coefficients and variables have independent
+  universes; empty variable types and the unit ideal are included, with no
+  Noetherian or nontriviality hypothesis. The
+  [integer example](MultivariatePolynomialsTests/Primary.lean) extends the
+  primary, nonradical ideal `(4)`.
+
 - **Nilpotent coefficients and irreducible polynomial spectra.** For any
   commutative semiring `R` and arbitrary variable type `σ`,
   [`MvPolynomial.isNilpotent_iff_coeff`](MultivariatePolynomials/Nilpotent.lean)
@@ -53,6 +63,15 @@ weight-one-valuation naturality interfaces.
   states that `PrimeSpectrum (MvPolynomial σ R)` is irreducible exactly when
   `PrimeSpectrum R` is irreducible. Coefficients and variables have independent
   universes; empty or infinite variables and trivial coefficients are allowed.
+- **Jacobson radicals of coefficient ideals.** For any commutative ring `R`,
+  ideal `I` and nonempty variable type `σ`,
+  [`Ideal.jacobson_map_mvPolynomial_C`](MultivariatePolynomials/Jacobson.lean)
+  identifies `Ideal.jacobson (I.map C)` with `I.radical.map C`.
+  In particular, the Jacobson radical of zero in `MvPolynomial σ R` is its
+  nilradical. Coefficient and variable universes are independent; no
+  Jacobson-ring, Noetherian, properness or nontriviality hypothesis is needed.
+  The [integer example](MultivariatePolynomialsTests/Jacobson.lean) separates
+  the extended ideal `(4)` from its proper Jacobson radical using `2 * X`.
 - **Integral elements over coefficient rings.** For any commutative ring `R`
   and arbitrary variable type `σ`,
   [`MvPolynomial.isIntegral_iff_coeff_isNilpotent`](MultivariatePolynomials/IntegralCoefficients.lean)
