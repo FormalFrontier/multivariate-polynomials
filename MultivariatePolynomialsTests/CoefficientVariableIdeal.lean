@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+import MultivariatePolynomials.CoefficientIdeal
 import MultivariatePolynomials.IdealOfVars
 import Mathlib.Algebra.Group.Int.Units
 import Mathlib.Algebra.Ring.Prod
@@ -77,12 +78,14 @@ example :
   exact (MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff (⊤ : Ideal ℤ)
     (Set.univ : Set ℕ)).mpr ⟨Ideal.fg_top ℤ, Or.inr rfl⟩
 
--- An empty selected set retains exactly the coefficient finite-generation condition.
+-- Evaluation at zero reflects finite generation of extended coefficient ideals.
 example {σ : Type u} {R : Type v} [CommSemiring R] (I : Ideal R) :
     (Ideal.map (MvPolynomial.C : R →+* MvPolynomial σ R) I).FG ↔ I.FG := by
-  simpa only [Set.image_empty, Ideal.span_empty, sup_bot_eq, Set.finite_empty,
-    true_or, and_true] using
-    MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff I (∅ : Set σ)
+  exact Ideal.fg_map_iff_of_comp_eq_id I
+    (MvPolynomial.C : R →+* MvPolynomial σ R)
+    (MvPolynomial.eval (0 : σ → R)) (by
+      ext r
+      simp)
 
 -- With bottom coefficients and a nontrivial base, recover the variable-subset criterion.
 example {σ : Type u} {R : Type v} [CommSemiring R] [Nontrivial R] (S : Set σ) :
@@ -171,14 +174,20 @@ example :
   exact hI ((MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff
     (MvPolynomial.idealOfVars ℕ ℤ) (∅ : Set ℕ)).mp hfg).1
 
--- With an empty ambient variable type, every selected set is finite.
+-- With an empty ambient variable type, every selected set is empty.
 example {R : Type v} [CommSemiring R] (I : Ideal R) (S : Set (Fin 0)) :
     (Ideal.map (MvPolynomial.C : R →+* MvPolynomial (Fin 0) R) I ⊔
       Ideal.span ((MvPolynomial.X : Fin 0 → MvPolynomial (Fin 0) R) '' S)).FG ↔
         I.FG := by
-  have hS : S.Finite := S.toFinite
-  simpa only [hS, true_or, and_true] using
-    MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff I S
+  have hS : S = ∅ := by
+    ext i
+    exact Fin.elim0 i
+  simpa only [hS, Set.image_empty, Ideal.span_empty, sup_bot_eq] using
+    Ideal.fg_map_iff_of_comp_eq_id I
+      (MvPolynomial.C : R →+* MvPolynomial (Fin 0) R)
+      (MvPolynomial.eval (0 : Fin 0 → R)) (by
+        ext r
+        simp)
 
 -- A proper idempotent coefficient ideal in a ring with zero divisors also allows finite S.
 example :

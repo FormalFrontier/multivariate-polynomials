@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.RingTheory.Finiteness.Ideal
 public import Mathlib.RingTheory.Ideal.Maps
 
 /-!
@@ -17,6 +18,10 @@ Extension along `C` preserves arbitrary intersections of coefficient ideals and
 reflects their inclusion and equality. Contraction along `C` recovers the
 coefficient ideal. The kernel of a map on coefficients is its coefficient kernel
 extended along `C`.
+
+More generally, extending ideals along a semiring homomorphism with a retraction
+preserves and reflects finite generation. This equivalence allows independent
+source and target universes and does not require commutativity.
 
 The coefficient and variable universes are independent; for coefficient maps,
 the source and target coefficient universes are independent as well. No
@@ -35,6 +40,9 @@ finiteness, nontriviality, cancellation or additive inverses are required.
   uses the `coeffsIn` span and multiplication APIs, rather than a separate
   coefficient-by-coefficient induction on the extended ideal. The order
   reflection uses the same extension-contraction adjunction.
+* Mathlib's `Mathlib.RingTheory.Finiteness.Ideal` supplies `Ideal.FG.map`;
+  applying it along a homomorphism and its retraction gives the
+  finite-generation equivalence.
 * Mathlib's complete-lattice API supplies `sInf_eq_iInf'` and `sInf_image'`
   to express set intersections in terms of indexed intersections.
 -/
@@ -42,6 +50,21 @@ finiteness, nontriviality, cancellation or additive inverses are required.
 @[expose] public section
 
 universe u v w x
+
+namespace Ideal
+
+/-- Finite generation is preserved and reflected by extension along a semiring
+homomorphism that admits a retraction. -/
+theorem fg_map_iff_of_comp_eq_id {R : Type u} {S : Type v} [Semiring R] [Semiring S]
+    (I : Ideal R) (f : R →+* S) (g : S →+* R) (hcomp : g.comp f = RingHom.id R) :
+    (I.map f).FG ↔ I.FG := by
+  constructor
+  · intro hfg
+    simpa only [Ideal.map_map, hcomp, Ideal.map_id] using Ideal.FG.map hfg g
+  · intro hfg
+    exact Ideal.FG.map hfg f
+
+end Ideal
 
 namespace MvPolynomial
 
