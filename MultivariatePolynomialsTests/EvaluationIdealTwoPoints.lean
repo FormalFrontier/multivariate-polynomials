@@ -394,3 +394,24 @@ private theorem empty_variables_not_pairwise_span_eq_top (a : Fin 2 → Empty �
 end
 
 end FiniteSimultaneousEvaluation
+
+/-- The stock quotient maps modulo two and three are jointly surjective. -/
+private theorem integer_pair_quotient_surjective :
+    Function.Surjective (RingHom.pi fun b : Bool =>
+      Ideal.Quotient.mk (Ideal.span ({cond b (3 : ℤ) 2} : Set ℤ))) := by
+  apply (Ideal.pi_quotient_mk_surjective_iff _).mpr
+  intro i j hij
+  cases i <;> cases j
+  · exact (hij rfl).elim
+  · exact (Ideal.sup_eq_top_iff_isCoprime (2 : ℤ) 3).mpr ⟨-1, 1, by decide⟩
+  · exact (Ideal.sup_eq_top_iff_isCoprime (3 : ℤ) 2).mpr ⟨1, -1, by decide⟩
+  · exact (hij rfl).elim
+
+/-- Repeating the zero ideal at distinct indices obstructs joint surjectivity. -/
+private theorem repeated_zero_ideal_quotient_not_surjective :
+    ¬ Function.Surjective (RingHom.pi fun _ : Bool => Ideal.Quotient.mk (⊥ : Ideal ℤ)) := by
+  intro h
+  have ht : (⊥ : Ideal ℤ) ⊔ ⊥ = ⊤ :=
+    Ideal.pairwise_sup_eq_top_of_surjective_pi_quotient_mk
+      (fun _ : Bool => (⊥ : Ideal ℤ)) h (by decide : false ≠ true)
+  exact bot_ne_top (by simpa only [sup_idem] using ht)

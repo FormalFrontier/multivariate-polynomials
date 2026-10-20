@@ -31,6 +31,18 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Scalar annihilators and non-zero-divisors.** For any commutative semiring
+  `R` and arbitrary variable type `σ`,
+  [`MvPolynomial.mem_nonZeroDivisors_iff`](MultivariatePolynomials/Regularity.lean)
+  characterizes non-zero-divisors by the absence of a nonzero scalar in the
+  original coefficient semiring annihilating every coefficient. No individual
+  coefficient need be a non-zero-divisor.
+  [`MvPolynomial.eq_zero_of_mul_eq_zero_of_smul`](MultivariatePolynomials/Regularity.lean)
+  shows that a polynomial with no nonzero scalar annihilator has no nonzero
+  polynomial annihilator. The results allow empty or infinite variable types,
+  independent universes and trivial coefficient semirings. The interpretation
+  in terms of `IsRegular` is asserted only over commutative rings.
+
 - **The degree-zero homogeneous component.** For any commutative semiring
   `R` and arbitrary variable type `σ`,
   [`MvPolynomial.gradeZeroAlgEquiv`](MultivariatePolynomials/GradeZero.lean)
