@@ -5,8 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import Mathlib.Algebra.MvPolynomial.Eval
-public import Mathlib.RingTheory.Finiteness.Ideal
-public import Mathlib.RingTheory.Ideal.Maps
+public import MultivariatePolynomials.IdealFiniteGeneration
 
 /-!
 # Coefficient ideals over commutative semirings
@@ -50,21 +49,6 @@ finiteness, nontriviality, cancellation or additive inverses are required.
 @[expose] public section
 
 universe u v w x
-
-namespace Ideal
-
-/-- Finite generation is preserved and reflected by extension along a semiring
-homomorphism that admits a retraction. -/
-theorem fg_map_iff_of_comp_eq_id {R : Type u} {S : Type v} [Semiring R] [Semiring S]
-    (I : Ideal R) (f : R →+* S) (g : S →+* R) (hcomp : g.comp f = RingHom.id R) :
-    (I.map f).FG ↔ I.FG := by
-  constructor
-  · intro hfg
-    simpa only [Ideal.map_map, hcomp, Ideal.map_id] using Ideal.FG.map hfg g
-  · intro hfg
-    exact Ideal.FG.map hfg f
-
-end Ideal
 
 namespace MvPolynomial
 

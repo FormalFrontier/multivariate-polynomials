@@ -759,6 +759,7 @@ not a complete declaration inventory.
 | [`FractionRingTranscendenceBasis`](MultivariatePolynomials/FractionRingTranscendenceBasis.lean) | Algebraicity over the source-fraction adjoin of omitted variables and the corresponding transcendence basis for injective renaming |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
+| [`IdealFiniteGeneration`](MultivariatePolynomials/IdealFiniteGeneration.lean) | Ideal extension along a semiring homomorphism with a retraction preserves and reflects finite generation; arbitrary semirings and independent universes |
 | [`CoefficientIdeal`](MultivariatePolynomials/CoefficientIdeal.lean) | Coefficient submodule and extended-ideal identification over commutative semirings; membership, contraction and coefficient-map kernels |
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
