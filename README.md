@@ -31,6 +31,14 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Radicals of coefficient-ideal extensions.** For any commutative ring `R`,
+  arbitrary variable type `σ` and ideal `I : Ideal R`,
+  [`MvPolynomial.radical_map_C`](MultivariatePolynomials/IdealExtension.lean)
+  says that extending `I` along the constant-polynomial map commutes with radicals.
+  [`MvPolynomial.mem_radical_map_C_iff`](MultivariatePolynomials/IdealExtension.lean)
+  characterizes radical membership coefficientwise: a polynomial lies in the
+  radical of the extended ideal exactly when every coefficient lies in `I.radical`.
+
 - **Scalar annihilators and non-zero-divisors.** For any commutative semiring
   `R` and arbitrary variable type `σ`,
   [`MvPolynomial.mem_nonZeroDivisors_iff`](MultivariatePolynomials/Regularity.lean)
@@ -359,6 +367,15 @@ weight-one-valuation naturality interfaces.
   unit ideal for every pair of distinct indices `i ≠ j`. The three types have
   independent universes. Empty families, empty or infinite variable types,
   repeated points and the zero ring are included; no field hypothesis is needed.
+- **Evaluation-kernel powers are detected by translated coefficients.** For any
+  commutative semiring `R` and point `a : σ → AddUnits R`,
+  [`MvPolynomial.mem_pow_ker_eval_addUnits_iff`](MultivariatePolynomials/EvaluationIdeal.lean)
+  characterizes membership in every `n`th evaluation-kernel power by vanishing
+  of all coefficients of total degree `< n` after the translation `p(X + a)`.
+  Over a commutative ring,
+  [`MvPolynomial.mem_pow_ker_eval_iff`](MultivariatePolynomials/EvaluationIdeal.lean)
+  allows arbitrary points `a : σ → R`. Both results allow arbitrary variable
+  types, independent coefficient/variable universes, and every `n : ℕ`, including zero.
 - **Separated polynomial point quotients are square-zero extensions.** Over
   any commutative ring, including the zero ring, and any index type, the
   [generator-prescribed forward map](MultivariatePolynomials/PointSquareZeroPresentation.lean)

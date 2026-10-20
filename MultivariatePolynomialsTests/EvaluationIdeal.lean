@@ -156,20 +156,6 @@ private theorem zeroPointVariableIdeal :
       MvPolynomial.idealOfVars ℕ ℤ := by
   simp [MvPolynomial.idealOfVars]
 
-universe u v
-
-/-- The all-variable ideal is the kernel of evaluation at zero, with no ring or
-nontriviality assumption on the coefficients. -/
-private theorem idealOfVars_eq_ker_aeval_zero
-    {σ : Type u} {R : Type v} [CommSemiring R] :
-    MvPolynomial.idealOfVars σ R =
-      RingHom.ker (MvPolynomial.aeval (fun _ : σ => (0 : R))).toRingHom := by
-  ext p
-  rw [RingHom.mem_ker]
-  simpa [MvPolynomial.aeval_zero', MvPolynomial.constantCoeff_eq,
-    Nat.lt_one_iff, Finsupp.degree_eq_zero_iff] using
-    (MvPolynomial.mem_pow_idealOfVars_iff' 1 p)
-
 /-- A finitely generated zero-evaluation ideal over `ℤ` has a non-finitely-generated
 contraction when infinitely many source variables are renamed to its sole variable. -/
 private theorem integer_augmentation_contraction_not_fg :
@@ -184,13 +170,14 @@ private theorem integer_augmentation_contraction_not_fg :
       (MvPolynomial.idealOfVars (Fin 1) ℤ).comap
         (MvPolynomial.rename (R := ℤ) (fun _ : ℕ => (0 : Fin 1))).toRingHom =
           MvPolynomial.idealOfVars ℕ ℤ := by
-    rw [idealOfVars_eq_ker_aeval_zero (σ := Fin 1) (R := ℤ),
-      idealOfVars_eq_ker_aeval_zero (σ := ℕ) (R := ℤ)]
-    simpa only [MvPolynomial.aeval_zero', MvPolynomial.constantCoeff_rename,
-      MvPolynomial.constantCoeff_X, map_zero] using
-      (MvPolynomial.ker_aeval_comap
-        (MvPolynomial.rename (R := ℤ) (fun _ : ℕ => (0 : Fin 1)))
-        (fun _ : Fin 1 => (0 : ℤ)))
+    rw [MvPolynomial.idealOfVars_eq_ker_constantCoeff (σ := Fin 1) (R := ℤ),
+      MvPolynomial.idealOfVars_eq_ker_constantCoeff (σ := ℕ) (R := ℤ)]
+    ext p
+    simp only [Ideal.mem_comap, RingHom.mem_ker]
+    change MvPolynomial.constantCoeff
+      (MvPolynomial.rename (fun _ : ℕ => (0 : Fin 1)) p) = 0 ↔
+        MvPolynomial.constantCoeff p = 0
+    rw [MvPolynomial.constantCoeff_rename]
   refine ⟨MvPolynomial.idealOfVars_fg (Fin 1) ℤ, hcomap, ?_⟩
   rw [hcomap]
   exact MvPolynomial.idealOfVars_not_fg ℤ ℕ
@@ -228,3 +215,23 @@ private theorem nilpotentCotangentCoordinates :
   norm_num [nilpotentAugmentationRepresentative, MvPolynomial.coeff_X,
     MvPolynomial.coeff_mul_X', Finsupp.single_apply,
     Finsupp.single_left_inj (by decide : (1 : ℕ) ≠ 0)]
+
+-- A double zero at a nonzero integer point, with infinitely many variables.
+open MvPolynomial in
+example :
+    ∀ d : ℕ →₀ ℕ, d.sum (fun _ k => k) < 2 →
+      (eval₂Hom C (fun i : ℕ => X i + C (2 : ℤ))
+        ((X 0 - C (2 : ℤ)) ^ 2)).coeff d = 0 := by
+  apply (mem_pow_ker_eval_iff (fun _ : ℕ => (2 : ℤ)) 2 _).mp
+  have h : X (0 : ℕ) - C (2 : ℤ) ∈
+      RingHom.ker (eval (fun _ : ℕ => (2 : ℤ))) := by
+    simp [RingHom.mem_ker]
+  simpa only [pow_two] using Ideal.mul_mem_mul h h
+
+-- The zeroth power also works over a semiring and an empty variable type.
+open MvPolynomial in
+example (p : MvPolynomial Empty ℕ) :
+    p ∈ RingHom.ker (eval (fun _ : Empty => ((0 : AddUnits ℕ) : ℕ))) ^ 0 := by
+  apply (mem_pow_ker_eval_addUnits_iff (fun _ : Empty => (0 : AddUnits ℕ)) 0 p).mpr
+  intro d hd
+  exact (Nat.not_lt_zero _ hd).elim

@@ -11,6 +11,7 @@ public import MultivariatePolynomials.FractionRingFiniteVariables
 public import MultivariatePolynomials.PolynomialFractionTrace
 public import MultivariatePolynomials.IdealOfVars
 public import MultivariatePolynomials.CoefficientIdeal
+public import MultivariatePolynomials.IdealExtension
 public import MultivariatePolynomials.CoefficientIdealSubtractive
 public import MultivariatePolynomials.MonomialIdeal
 public import MultivariatePolynomials.Primary
