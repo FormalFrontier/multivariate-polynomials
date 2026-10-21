@@ -157,8 +157,8 @@ theorem eq_zero_of_mul_eq_zero_of_smul
     (h : p * q = 0) (hp : ∀ r : R, r • p = 0 → r = 0) : q = 0 := by
   classical
   obtain ⟨lo, hwf⟩ := exists_wellFoundedGT sigma
-  letI := lo
-  letI := hwf
+  let := lo
+  let := hwf
   let m : MonomialOrder sigma := MonomialOrder.lex
   exact annihilator_eq_zero_by_degree m hp _ q rfl h
 

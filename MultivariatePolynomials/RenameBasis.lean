@@ -141,7 +141,7 @@ theorem renameMonomialBasis_repr_monomial
           (Function.Embedding.subtype (fun j => j ∉ Set.range e)).injective.injOn)
         (monomial (Finsupp.comapDomain e d e.injective.injOn) r) := by
   classical
-  letI : Module (MvPolynomial σ R) (MvPolynomial τ R) :=
+  let : Module (MvPolynomial σ R) (MvPolynomial τ R) :=
     @Algebra.toModule (MvPolynomial σ R) (MvPolynomial τ R) _ _
       (rename (R := R) (e : σ → τ)).toRingHom.toAlgebra
   let c := Function.Embedding.subtype (fun j => j ∉ Set.range e)

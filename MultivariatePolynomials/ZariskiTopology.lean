@@ -45,6 +45,7 @@ universe u v w
 
 /-- Field-valued coordinate tuples, separated from any topology on the function type. -/
 structure ZariskiSpace (K : Type u) (σ : Type v) where
+  /-- The underlying coordinate function from `σ` to `K`. -/
   toFun : σ → K
 
 namespace ZariskiSpace
@@ -300,8 +301,10 @@ theorem zeroLocusHomeomorphClosedPoints_toEquiv (I : Ideal (MvPolynomial σ K)) 
     (I : Ideal (MvPolynomial σ K)) (x : zeroLocus I) :
     zeroLocusHomeomorphClosedPoints I x = zeroLocusClosedPoint I x := rfl
 
-/-- Forgetting closedness gives the original quotient-spectrum evaluation point. -/
-@[simp] theorem zeroLocusHomeomorphClosedPoints_val
+/-- Forgetting closedness gives the original quotient-spectrum evaluation point.
+For simplification, `zeroLocusHomeomorphClosedPoints_apply` already identifies the
+closed point before taking its value. -/
+theorem zeroLocusHomeomorphClosedPoints_val
     (I : Ideal (MvPolynomial σ K)) (x : zeroLocus I) :
     (zeroLocusHomeomorphClosedPoints I x).val =
       (MvPolynomial.zeroLocusEquivClosedPoints I (zeroLocusEquiv I x)).val := rfl

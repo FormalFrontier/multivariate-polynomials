@@ -53,7 +53,7 @@ private noncomputable def idealOfVarsCotangentLinearCoeff (i : σ) :
     idealOfVarsCotangentLinearCoeff σ R i ((idealOfVars σ R).toCotangent x) =
       (x : MvPolynomial σ R).coeff (Finsupp.single i 1) := rfl
 
-@[simp] private theorem idealOfVarsCotangentLinearCoeff_X (i j : σ) :
+private theorem idealOfVarsCotangentLinearCoeff_X (i j : σ) :
     idealOfVarsCotangentLinearCoeff σ R i
       ((idealOfVars σ R).toCotangent
         ⟨X j, Ideal.subset_span (Set.mem_range_self j)⟩) =

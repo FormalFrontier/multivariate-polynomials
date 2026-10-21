@@ -118,11 +118,11 @@ theorem weightOneNatOrder_map {R : Type w} {A : Type z}
   exact congrArg ENat.toNat (weightOneOrder_map g hg e T p)
 
 /-- At zero, both orders are infinite, independently of the embedding. -/
-@[simp] theorem weightOneOrder_map_zero {R : Type w} {A : Type z}
+theorem weightOneOrder_map_zero {R : Type w} {A : Type z}
     [CommSemiring R] [CommSemiring A] (g : R →+* A) (e : σ ↪ τ)
     (T : Set τ) :
     weightOneOrder T (weightOnePolynomialMap g e (0 : MvPolynomial σ R)) = ⊤ := by
-  simp
+  simp only [map_zero, weightOneOrder_zero]
 
 /-- When every image variable is unweighted, a nonzero polynomial image has
 minimum target order zero, over any pair of commutative semirings. -/
@@ -441,7 +441,7 @@ theorem weightOneCoefficientChangePivot_ratio_of_ne (T : Set τ) (t t' : T)
 
 /-- The fraction map respects total field division. Rational-fraction
 representations used for valuations require a nonzero denominator. -/
-@[simp] theorem weightOneFractionMap_div (g : k →+* l) (e : σ ↪ τ)
+theorem weightOneFractionMap_div (g : k →+* l) (e : σ ↪ τ)
     (p q : MvPolynomial σ k) :
     weightOneFractionMap g e
       (algebraMap (MvPolynomial σ k) (FractionRing (MvPolynomial σ k)) p /
@@ -450,7 +450,7 @@ representations used for valuations require a nonzero denominator. -/
         (weightOnePolynomialMap g e p) /
       algebraMap (MvPolynomial τ l) (FractionRing (MvPolynomial τ l))
         (weightOnePolynomialMap g e q) := by
-  simp
+  simp only [map_div₀, weightOneFractionMap_polynomial]
 
 /-- Identity renaming and the identity coefficient map induce the identity field map. -/
 theorem weightOneFractionMap_id :

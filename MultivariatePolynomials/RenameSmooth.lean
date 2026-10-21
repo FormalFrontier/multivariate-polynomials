@@ -62,7 +62,7 @@ theorem rename_smooth_iff {R : Type u} [CommRing R] {σ : Type v} {τ : Type w}
       · exact Or.inl ⟨hf, hfinite⟩
     · exact Or.inr hR
   · rintro (⟨hf, hfinite⟩ | hR)
-    · letI : Fintype ((Set.range f)ᶜ : Set τ) := hfinite.fintype
+    · let : Fintype ((Set.range f)ᶜ : Set τ) := hfinite.fintype
       let e₁ := renameEquiv R (Equiv.ofInjective f hf)
       let e₂ := splitComplAlgEquiv (R := R) (Set.range f)
       have hrename :
@@ -95,7 +95,7 @@ theorem rename_smooth_iff {R : Type u} [CommRing R] {σ : Type v} {τ : Type w}
         RingHom.Smooth.of_bijective e₁.bijective
       rw [← hcomp]
       exact (h₁.comp hC).comp (RingHom.Smooth.of_bijective e₂.symm.bijective)
-    · letI : Subsingleton R := hR
+    · let : Subsingleton R := hR
       exact RingHom.Smooth.of_bijective
         (Function.bijective_of_subsingleton' ((rename (R := R) f).toRingHom))
 

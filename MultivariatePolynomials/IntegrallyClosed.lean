@@ -46,7 +46,7 @@ instance isIntegrallyClosed
     {R : Type u} [CommRing R] [IsDomain R] [IsIntegrallyClosed R]
     {ι : Type v} : IsIntegrallyClosed (MvPolynomial ι R) := by
   let K := FractionRing R
-  letI : Algebra (MvPolynomial ι R) (MvPolynomial ι K) := algebraMvPolynomial
+  let : Algebra (MvPolynomial ι R) (MvPolynomial ι K) := algebraMvPolynomial
   have : IsIntegrallyClosed (MvPolynomial ι K) :=
     UniqueFactorizationMonoid.instIsIntegrallyClosed
   suffices IsIntegrallyClosedIn (MvPolynomial ι R) (MvPolynomial ι K) from

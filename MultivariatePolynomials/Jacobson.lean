@@ -68,11 +68,11 @@ private theorem jacobson_bot_mvPolynomial_eq_radical {R : Type u} [CommRing R]
     have hd : d + Finsupp.single j 1 ≠ 0 := by
       intro h
       have h' := congrArg (fun e : σ →₀ ℕ => e j) h
-      simpa using h'
+      simp at h'
     have hu := (mem_jacobson_bot.mp hp) (MvPolynomial.X j)
     have hn := (MvPolynomial.isUnit_iff.mp hu).2 (d + Finsupp.single j 1) hd
-    simpa only [MvPolynomial.coeff_add, MvPolynomial.coeff_mul_X,
-      MvPolynomial.coeff_one, if_neg (Ne.symm hd), add_zero] using hn
+    simpa only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, MvPolynomial.coeff_mul_X,
+      MvPolynomial.coeff_one, ite_eq_right (Ne.symm hd), add_zero] using hn
   obtain ⟨n, hn⟩ := hnil
   exact ⟨n, by simpa only [mem_bot] using hn⟩
 

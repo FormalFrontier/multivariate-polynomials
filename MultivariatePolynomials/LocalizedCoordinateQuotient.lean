@@ -137,8 +137,10 @@ noncomputable def quotientSpanCMulXAwayAlgEquiv (r : R) :
     simpa only [map_zero] using
       (aeval_algebraMap_apply_eq_algebraMap_eval (A := target) (0 : R) p))
 
-/-- The inverse equivalence sends a localized coefficient to its constant polynomial class. -/
-@[simp] theorem quotientSpanCMulXAwayAlgEquiv_symm_algebraMap (r b : R) :
+/-- The inverse equivalence sends a localized coefficient to its constant polynomial class.
+This representative formula is intended for explicit rewriting; simplification uses
+`AlgEquiv.commutes` and retains the coefficient algebra map. -/
+theorem quotientSpanCMulXAwayAlgEquiv_symm_algebraMap (r b : R) :
     (quotientSpanCMulXAwayAlgEquiv r).symm
         (algebraMap R (Localization.Away r) b) =
       algebraMap _ _ (Ideal.Quotient.mk (Ideal.span ({C r * X} : Set R[X])) (C b)) := by
@@ -190,12 +192,13 @@ noncomputable def quotientSpanCMulXAwayAlgEquiv (r : R) :
   apply (quotientSpanCMulXAwayAlgEquiv r).injective
   simp
 
-/-- The polynomial variable maps to zero after the coefficient is inverted. -/
-@[simp] theorem quotientSpanCMulXAwayAlgEquiv_X (r : R) :
+/-- The polynomial variable maps to zero after the coefficient is inverted.
+Simplification obtains this from `quotientSpanCMulXAwayAlgEquiv_mk`. -/
+theorem quotientSpanCMulXAwayAlgEquiv_X (r : R) :
     quotientSpanCMulXAwayAlgEquiv r
         (algebraMap _ _
           (Ideal.Quotient.mk (Ideal.span ({C r * X} : Set R[X])) X)) = 0 := by
-  simp [quotientSpanCMulXAwayAlgEquiv_mk]
+  simp only [quotientSpanCMulXAwayAlgEquiv_mk, eval_X, map_zero]
 
 /-- The chosen inverse of the inverted coefficient is preserved by evaluation. -/
 @[simp] theorem quotientSpanCMulXAwayAlgEquiv_invSelf (r : R) :

@@ -152,7 +152,7 @@ theorem comap_rename_surjective_iff {R : Type u} {σ : Type v} {τ : Type w}
       obtain ⟨q, hq⟩ := hsurj (PrimeSpectrum.comap e p)
       have hi : (X i : MvPolynomial σ R) ∈ (PrimeSpectrum.comap e p).asIdeal := by
         change e (X i) ∈ p.asIdeal
-        simpa only [e, eval_X, if_neg hne] using p.asIdeal.zero_mem
+        simpa only [e, eval_X, ite_eq_right hne] using p.asIdeal.zero_mem
       have hj : (X j : MvPolynomial σ R) ∈ (PrimeSpectrum.comap e p).asIdeal := by
         rw [← hq] at hi ⊢
         change rename f (X i) ∈ q.asIdeal at hi
@@ -160,7 +160,7 @@ theorem comap_rename_surjective_iff {R : Type u} {σ : Type v} {τ : Type w}
         simpa only [rename_X, hij] using hi
       have hone : (1 : R) ∈ p.asIdeal := by
         change e (X j) ∈ p.asIdeal at hj
-        simpa only [e, eval_X, if_pos rfl, ite_true] using hj
+        simpa only [e, eval_X, ite_eq_left rfl, ite_true] using hj
       exact p.isPrime.one_notMem hone
   · rintro (hf | hR)
     · intro p
@@ -171,7 +171,7 @@ theorem comap_rename_surjective_iff {R : Type u} {σ : Type v} {τ : Type w}
         intro a
         exact killCompl_rename_app hf a
       rw [← PrimeSpectrum.comap_comp_apply, hcomp, PrimeSpectrum.comap_id]
-    · letI : Subsingleton R := hR
+    · let : Subsingleton R := hR
       intro p
       exact isEmptyElim p
 

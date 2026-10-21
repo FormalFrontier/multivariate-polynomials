@@ -134,7 +134,7 @@ theorem isPrimary_map_C_iff (I : Ideal R) :
   · intro h
     simpa only [comap_map_C] using h.comap (C : R →+* MvPolynomial σ R)
   · intro hI
-    letI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI.ne_top
+    let : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI.ne_top
     have hquot : (⊥ : Ideal (R ⧸ I)).IsPrimary := by
       refine Ideal.isPrimary_iff.mpr ⟨bot_ne_top, ?_⟩
       intro x y hxy

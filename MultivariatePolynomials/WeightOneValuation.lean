@@ -615,8 +615,9 @@ local notation "Vw" => Valuation.valuationSubring (weightOneValuation (k := k) S
       (Polynomial.idealX Cw).valuation (RatFunc Cw) (weightOneCoordinates S i x) :=
   rfl
 
-@[simp] theorem weightOneValuation_zero : weightOneValuation (k := k) S i (0 : K) = 0 := by
-  simp
+/-- The weight-one valuation vanishes at zero. -/
+theorem weightOneValuation_zero : weightOneValuation (k := k) S i (0 : K) = 0 := by
+  simp only [map_zero]
 
 /-- Nonzero polynomials have valuation determined by their least subset weight. -/
 theorem weightOneValuation_polynomial {p : P} (hp : p ≠ 0) :
@@ -650,9 +651,10 @@ theorem weightOneValuation_div {p q : P} (hp : p ≠ 0) (hq : q ≠ 0) :
   congr 1
   omega
 
-@[simp] theorem weightOneValuation_zero_div (q : P) :
+/-- A zero numerator has zero valuation, including when the denominator is zero. -/
+theorem weightOneValuation_zero_div (q : P) :
     weightOneValuation (k := k) S i (algebraMap P K 0 / algebraMap P K q) = 0 := by
-  simp
+  simp only [map_zero, zero_div]
 
 open scoped Classical in
 /-- A variable has `X`-adic value `exp (-1)` exactly when it is weighted. -/

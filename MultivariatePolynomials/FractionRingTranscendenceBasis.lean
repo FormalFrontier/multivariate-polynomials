@@ -79,14 +79,14 @@ theorem isAlgebraic_adjoin_fractionRing_map_rename_compl
     | mul_X p i hp => simpa only [map_mul] using A.mul_mem hp (hX i)
   let ψ : MvPolynomial σ R →+* A :=
     (algebraMap (MvPolynomial σ R) K).codRestrict A.toSubring hQ
-  letI : Algebra (MvPolynomial σ R) A := ψ.toAlgebra
-  letI : IsScalarTower (MvPolynomial σ R) A K :=
+  let : Algebra (MvPolynomial σ R) A := ψ.toAlgebra
+  let : IsScalarTower (MvPolynomial σ R) A K :=
     IsScalarTower.of_algebraMap_eq fun _ => rfl
   have hψ : Function.Injective (algebraMap (MvPolynomial σ R) A) := by
     intro p q hpq
     apply IsFractionRing.injective (MvPolynomial σ R) K
     exact congrArg (fun a : A => (a : K)) hpq
-  letI : Algebra.IsAlgebraic (MvPolynomial σ R) K :=
+  let : Algebra.IsAlgebraic (MvPolynomial σ R) K :=
     IsLocalization.isAlgebraic K (nonZeroDivisors (MvPolynomial σ R))
   exact Algebra.IsAlgebraic.extendScalars (R := MvPolynomial σ R) (S := A) (A := K) hψ
 
@@ -105,7 +105,7 @@ theorem isTranscendenceBasis_fractionRing_map_rename_compl
       (j := (rename (R := R) ρ).toRingHom) (rename_injective ρ hρ)) :
     IsTranscendenceBasis L (fun i : {i : σ // i ∉ Set.range ρ} =>
       algebraMap (MvPolynomial σ R) K (X i.1)) := by
-  letI : IsDomain L := IsFractionRing.isDomain (MvPolynomial τ R)
+  let : IsDomain L := IsFractionRing.isDomain (MvPolynomial τ R)
   have hi := algebraicIndependent_fractionRing_map_rename_compl ρ hρ hmap
   exact hi.isTranscendenceBasis_iff_isAlgebraic.mpr
     (isAlgebraic_adjoin_fractionRing_map_rename_compl ρ hρ hmap)
@@ -128,7 +128,7 @@ theorem isFractionRing_adjoin_fractionRing_map_rename_compl
       (Algebra.adjoin L (Set.range (fun i : {i : σ // i ∉ Set.range ρ} =>
         algebraMap (MvPolynomial σ R) K (X i.1)))) K := by
   classical
-  letI : Field K := IsFractionRing.toField (MvPolynomial σ R)
+  let : Field K := IsFractionRing.toField (MvPolynomial σ R)
   let A := Algebra.adjoin L (Set.range (fun i : {i : σ // i ∉ Set.range ρ} =>
     algebraMap (MvPolynomial σ R) K (X i.1)))
   have hrename (p : MvPolynomial τ R) :

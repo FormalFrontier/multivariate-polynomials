@@ -74,8 +74,8 @@ theorem mem_of_add_mem_of_isRadical_map_C {R : Type u} {σ : Type v}
     simpa using congrArg (fun d : σ →₀ ℕ => d j) heq
   have hcoeff : P.coeff (Finsupp.single j 1) = b := by
     dsimp only [P]
-    simp only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, coeff_C, if_neg h01,
-      coeff_C_mul, coeff_X_same, coeff_X_pow, if_neg h21, mul_one, mul_zero,
+    simp only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, coeff_C, ite_eq_right h01,
+      coeff_C_mul, coeff_X_same, coeff_X_pow, ite_eq_right h21, mul_one, mul_zero,
       zero_add, add_zero]
   simpa only [hcoeff] using (mem_map_C_iff_coeff_mem.mp hP) (Finsupp.single j 1)
 

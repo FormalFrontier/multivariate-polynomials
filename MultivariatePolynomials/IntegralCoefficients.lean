@@ -90,7 +90,7 @@ private theorem coeff_isNilpotent_of_isIntegral {R : Type u} [CommRing R] {σ : 
     IsNilpotent (p.coeff d) := by
   apply nilpotent_iff_mem_prime.mpr
   intro I hI
-  letI : I.IsPrime := hI
+  let : I.IsPrime := hI
   let K := FractionRing (R ⧸ I)
   let f : R →+* K :=
     (algebraMap (R ⧸ I) K).comp (Ideal.Quotient.mk I)

@@ -52,10 +52,11 @@ theorem iteratedBlockSubst_succ (p : MvPolynomial ι R) (r : ℕ) :
       rename (Fin.consEquiv (fun _ : Fin (r + 1) => ι))
         (blockSubst p (iteratedBlockSubst p r)) := rfl
 
-@[simp]
+/-- Evaluate the zero-fold substitution at the unique empty tuple.
+Simplification uses `iteratedBlockSubst_zero` followed by `eval_X`. -/
 theorem eval_iteratedBlockSubst_zero (p : MvPolynomial ι R)
     (x : (Fin 0 → ι) → R) : eval x (iteratedBlockSubst p 0) = x Fin.elim0 := by
-  simp [iteratedBlockSubst]
+  simp only [iteratedBlockSubst_zero, eval_X]
 
 theorem eval_iteratedBlockSubst_succ (p : MvPolynomial ι R) (r : ℕ)
     (x : (Fin (r + 1) → ι) → R) :

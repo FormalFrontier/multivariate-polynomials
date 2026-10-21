@@ -56,14 +56,14 @@ theorem formallyUnramified_rename_iff_surjective (f : σ → τ) :
   · intro h
     rcases subsingleton_or_nontrivial R with hR | hR
     · exact (surjective_rename_iff f).2 (Or.inr hR)
-    · letI : Nontrivial R := hR
+    · let : Nontrivial R := hR
       apply (surjective_rename_iff f).2
       left
       intro j
       by_contra hj
-      letI : Algebra (MvPolynomial σ R) (MvPolynomial τ R) :=
+      let : Algebra (MvPolynomial σ R) (MvPolynomial τ R) :=
         (rename (R := R) f).toRingHom.toAlgebra
-      letI : Algebra.FormallyUnramified (MvPolynomial σ R) (MvPolynomial τ R) := h
+      let : Algebra.FormallyUnramified (MvPolynomial σ R) (MvPolynomial τ R) := h
       have hkill (p : MvPolynomial σ R) : pderiv j (rename f p) = 0 := by
         apply pderiv_eq_zero_of_notMem_vars
         intro hjp

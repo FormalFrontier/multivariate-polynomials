@@ -57,13 +57,13 @@ theorem isPrime_ker_rename_iff (f : σ → τ) :
       (⊥ : Ideal R).IsPrime := by
   constructor
   · intro h
-    letI := h
+    let := h
     have hC : ((RingHom.ker (rename (R := R) f).toRingHom).comap
         (C : R →+* MvPolynomial σ R)).IsPrime := inferInstance
     simpa only [comap_C_ker_rename] using hC
   · intro h
-    letI : Nontrivial R := ⟨⟨1, 0, fun h10 => h.one_notMem (Ideal.mem_bot.mpr h10)⟩⟩
-    letI : NoZeroDivisors R := ⟨fun {x y} hxy => by
+    let : Nontrivial R := ⟨⟨1, 0, fun h10 => h.one_notMem (Ideal.mem_bot.mpr h10)⟩⟩
+    let : NoZeroDivisors R := ⟨fun {x y} hxy => by
       simpa only [Ideal.mem_bot] using
         h.mem_or_mem (show x * y ∈ (⊥ : Ideal R) from Ideal.mem_bot.mpr hxy)⟩
     change (Ideal.comap (rename (R := R) f).toRingHom ⊥).IsPrime
@@ -79,7 +79,7 @@ theorem isRadical_ker_rename_iff (f : σ → τ) :
     have hC := Ideal.IsRadical.comap (f := (C : R →+* MvPolynomial σ R)) h
     simpa only [comap_C_ker_rename] using hC
   · intro h
-    letI := h
+    let := h
     intro p hp
     apply RingHom.mem_ker.mpr
     have hnil : IsNilpotent ((rename (R := R) f).toRingHom p) := by

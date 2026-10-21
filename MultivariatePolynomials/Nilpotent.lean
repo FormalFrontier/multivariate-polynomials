@@ -150,10 +150,10 @@ theorem isReduced_iff [CommSemiring R] :
     IsReduced (MvPolynomial σ R) ↔ IsReduced R := by
   constructor
   · intro h
-    letI : IsReduced (MvPolynomial σ R) := h
+    let : IsReduced (MvPolynomial σ R) := h
     exact isReduced_of_injective (C : R →+* MvPolynomial σ R) (C_injective σ R)
   · intro h
-    letI : IsReduced R := h
+    let : IsReduced R := h
     refine ⟨fun p hp ↦ ?_⟩
     ext d
     simpa using ((isNilpotent_iff_coeff p).mp hp d).eq_zero

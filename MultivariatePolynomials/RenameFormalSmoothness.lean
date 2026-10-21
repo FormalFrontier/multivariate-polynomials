@@ -112,14 +112,14 @@ private theorem injective_of_rename_formallySmooth
   have hπ : π.comp φ = g := by
     apply ringHom_ext
     · intro r
-      simp [π, g, hφC, TrivSqZeroExt.fstHom_apply]
+      simp [π, g, hφC]
       rfl
     · intro k
-      simp [π, g, hφX, TrivSqZeroExt.fstHom_apply]
+      simp [π, g, hφX]
       rfl
-  letI : Algebra (MvPolynomial σ R) S := g.toAlgebra
-  letI : Algebra (MvPolynomial σ R) E := φ.toAlgebra
-  letI : Algebra.FormallySmooth (MvPolynomial σ R) S := h
+  let : Algebra (MvPolynomial σ R) S := g.toAlgebra
+  let : Algebra (MvPolynomial σ R) E := φ.toAlgebra
+  let : Algebra.FormallySmooth (MvPolynomial σ R) S := h
   let q : E →ₐ[MvPolynomial σ R] S :=
     { toRingHom := π
       commutes' p := RingHom.congr_fun hπ p }
@@ -155,13 +155,13 @@ theorem rename_formallySmooth_iff
   · intro h
     rcases subsingleton_or_nontrivial R with hR | hR
     · exact Or.inr hR
-    · letI : Nontrivial R := hR
+    · let : Nontrivial R := hR
       exact Or.inl (injective_of_rename_formallySmooth f h)
   · rintro (hf | hR)
     · exact rename_formallySmooth_of_injective f hf
-    · letI : Subsingleton R := hR
-      letI : Subsingleton (MvPolynomial σ R) := Algebra.subsingleton R _
-      letI : Subsingleton (MvPolynomial τ R) := Algebra.subsingleton R _
+    · let : Subsingleton R := hR
+      let : Subsingleton (MvPolynomial σ R) := Algebra.subsingleton R _
+      let : Subsingleton (MvPolynomial τ R) := Algebra.subsingleton R _
       exact RingHom.FormallySmooth.of_bijective
         ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
 

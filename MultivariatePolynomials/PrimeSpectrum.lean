@@ -54,8 +54,8 @@ theorem irreducibleSpace_mvPolynomial_iff (σ : Type v) (R : Type u) [CommSemiri
     simpa only [hC] using h.comap (MvPolynomial.C : R →+* MvPolynomial σ R)
   · intro hR
     obtain ⟨lo, wf⟩ := exists_wellFoundedGT σ
-    letI := lo
-    letI := wf
+    let := lo
+    let := wf
     let m : MonomialOrder σ := MonomialOrder.lex
     -- Separate the nilpotent coefficients from the remaining coefficients.
     let n (p : MvPolynomial σ R) : MvPolynomial σ R :=
@@ -72,17 +72,17 @@ theorem irreducibleSpace_mvPolynomial_iff (σ : Type v) (R : Type u) [CommSemiri
       intro d
       change IsNilpotent (if IsNilpotent (p.coeff d) then p.coeff d else 0)
       by_cases hd : IsNilpotent (p.coeff d)
-      · simpa only [if_pos hd] using hd
-      · simpa only [if_neg hd] using (IsNilpotent.zero : IsNilpotent (0 : R))
+      · simpa only [ite_eq_left hd] using hd
+      · simpa only [ite_eq_right hd] using (IsNilpotent.zero : IsNilpotent (0 : R))
     have hc (p : MvPolynomial σ R) (d : σ →₀ ℕ) (hd : (r p).coeff d ≠ 0) :
         ¬ IsNilpotent ((r p).coeff d) := by
       by_cases h : IsNilpotent (p.coeff d)
       · exfalso
         apply hd
         change (if ¬ IsNilpotent (p.coeff d) then p.coeff d else 0) = 0
-        simp only [h, not_true_eq_false, if_false]
+        simp only [h, not_true_eq_false, ite_false]
       · change ¬ IsNilpotent (if ¬ IsNilpotent (p.coeff d) then p.coeff d else 0)
-        simpa only [if_pos h] using h
+        simpa only [ite_eq_left h] using h
     have hlead (p : MvPolynomial σ R) (hp : ¬ IsNilpotent p) :
         ¬ IsNilpotent (m.leadingCoeff (r p)) := by
       have hr : r p ≠ 0 := by
