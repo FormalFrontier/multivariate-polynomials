@@ -246,6 +246,14 @@ weight-one-valuation naturality interfaces.
   missed target variables is finite. See the
   [relative finite-type section](#relative-finite-type-of-variable-renaming)
   for the algebra structure, generality and infinite-variable applications.
+- **Variable renaming has an exact relative essentially finite-type criterion.**
+  [`MvPolynomial.essFiniteType_rename_iff`](MultivariatePolynomials/RenameEssentialFiniteType.lean)
+  characterizes `RingHom.EssFiniteType` of renaming for arbitrary `f : σ → τ`
+  over a commutative ring `R`, with independent coefficient and variable
+  universes: `R` is subsingleton or `Set.Finite ((Set.range f)ᶜ)`. Scalars are
+  `MvPolynomial σ R`, acting on `MvPolynomial τ R` by `p • q = rename f p * q`.
+  Essential finite type is distinct from finite type, but their criteria
+  coincide for these maps.
 - **Module finiteness of variable renaming has a sharper criterion.** For any
   commutative semiring `R` and any map `f : σ → τ`, with all three types in
   independent universes,
@@ -788,6 +796,7 @@ not a complete declaration inventory.
 | [`Rename`](MultivariatePolynomials/Rename.lean) | Injectivity and surjectivity of the full polynomial renaming map iff the variable map has the corresponding property or the coefficient semiring is subsingleton |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |
 | [`RenameFiniteType`](MultivariatePolynomials/RenameFiniteType.lean) | Finite type over the source polynomial semiring under the explicit renaming algebra iff subsingleton coefficients or finitely many missed target variables |
+| [`RenameEssentialFiniteType`](MultivariatePolynomials/RenameEssentialFiniteType.lean) | Essential finite type over the source polynomial ring under renaming iff subsingleton coefficients or finitely many missed target variables |
 | [`RenameComplement`](MultivariatePolynomials/RenameComplement.lean) | Complementary-variable algebra equivalence over a commutative semiring, with the retained-variable action bridge and evaluation laws |
 | [`Regularity`](MultivariatePolynomials/Regularity.lean) | Differences of distinct variables are regular over every commutative ring, including the zero ring |
 | [`RenameFlatness`](MultivariatePolynomials/RenameFlatness.lean) | Full polynomial-ring renaming over a commutative ring is flat exactly when the variable map is injective or the coefficients are subsingleton |
