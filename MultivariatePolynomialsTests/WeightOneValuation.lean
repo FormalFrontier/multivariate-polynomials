@@ -43,7 +43,7 @@ private def secondSingletonPivot : secondSingletonSet := ⟨1, by simp [secondSi
 private theorem singletonSet_ne_secondSingletonSet : singletonSet ≠ secondSingletonSet := by
   intro h
   have hzero : (0 : Fin 2) ∈ secondSingletonSet := h ▸ (by simp [singletonSet])
-  simpa [secondSingletonSet] using hzero
+  simp [secondSingletonSet] at hzero
 
 private def secondUnweighted : {j : Fin 2 // j ∉ singletonSet} :=
   ⟨1, by simp [singletonSet]⟩
@@ -220,7 +220,7 @@ example :
     (weightOneValuation_isEquiv_iff bothSet bothSet bothPivot bothSecondPivot).2 rfl⟩
   intro h
   have hindices := congrArg (fun i : bothSet => (i : Fin 2)) h
-  simpa [bothPivot, bothSecondPivot] using hindices
+  simp [bothPivot, bothSecondPivot] at hindices
 
 /-- The full residue of one weighted variable is `k(T₁)`. -/
 example {k : Type u} [Field k] :
@@ -256,7 +256,7 @@ example {k : Type u} [Field k] :
   simp [weightOneInitial, weightOneNatOrder, first_denominator_order,
     first_expansion_pivot]
 
-/-- Both weighted variables have value `exp (-1)`, even in characteristic two. -/
+/-- The difference of the two variables has value `exp (-1)`, even in characteristic two. -/
 example {k : Type u} [Field k] :
     weightOneValuation bothSet bothPivot
         (algebraMap (MvPolynomial (Fin 2) k) (FractionRing (MvPolynomial (Fin 2) k))
@@ -323,7 +323,7 @@ private theorem ratio_not_scalar {k : Type u} [Field k] (a : k) :
   rw [MvPolynomial.coeff_X_same, MvPolynomial.coeff_C_of_ne_zero hsingle] at hcoeff
   exact one_ne_zero hcoeff
 
-/-- The residue of the original ratio is a transcendental generator, not a constant. -/
+/-- The residue of the original ratio is not equal to any scalar. -/
 example {k : Type u} [Field k] (a : k) :
     weightOneResidueEquiv (k := k) bothSet bothPivot
       (IsLocalRing.residue _

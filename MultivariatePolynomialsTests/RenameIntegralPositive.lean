@@ -101,13 +101,13 @@ private theorem empty_to_nat_not_surjective :
 
 private theorem zero_coefficients_target_subsingleton :
     Subsingleton (MvPolynomial ℕ (ZMod 1)) := by
-  letI : Subsingleton (ZMod 1) := zero_coefficients_subsingleton
+  let : Subsingleton (ZMod 1) := zero_coefficients_subsingleton
   exact Algebra.subsingleton (ZMod 1) (MvPolynomial ℕ (ZMod 1))
 
 private theorem zero_empty_to_nat_rename_surjective :
     Function.Surjective
       ((MvPolynomial.rename (R := ZMod 1) (Empty.elim : Empty → ℕ)).toRingHom) := by
-  letI : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
+  let : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
     zero_coefficients_target_subsingleton
   exact Function.surjective_to_subsingleton _
 

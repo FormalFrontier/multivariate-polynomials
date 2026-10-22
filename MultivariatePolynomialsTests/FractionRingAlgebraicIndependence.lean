@@ -59,8 +59,8 @@ example (p : MvPolynomial τ R) :
     AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]
 
 example : Function.Injective (algebraMap L K) := by
-  letI : Field L := IsFractionRing.toField (MvPolynomial τ R)
-  letI : IsDomain K := IsFractionRing.isDomain (MvPolynomial σ R)
+  let : Field L := IsFractionRing.toField (MvPolynomial τ R)
+  let : IsDomain K := IsFractionRing.isDomain (MvPolynomial σ R)
   exact (algebraMap L K).injective
 
 example (hsurj : Function.Surjective ρ) : IsEmpty {i : σ // i ∉ Set.range ρ} :=
@@ -70,10 +70,10 @@ example (hsurj : Function.Surjective ρ) : IsEmpty {i : σ // i ∉ Set.range ρ
 example (hsurj : Function.Surjective ρ) :
     AlgebraicIndependent L (fun i : {i : σ // i ∉ Set.range ρ} =>
       algebraMap (MvPolynomial σ R) K (X i.1)) := by
-  letI : IsEmpty {i : σ // i ∉ Set.range ρ} := ⟨fun i => i.2 (hsurj i.1)⟩
+  let : IsEmpty {i : σ // i ∉ Set.range ρ} := ⟨fun i => i.2 (hsurj i.1)⟩
   apply algebraicIndependent_empty_type_iff.mpr
-  letI : Field L := IsFractionRing.toField (MvPolynomial τ R)
-  letI : IsDomain K := IsFractionRing.isDomain (MvPolynomial σ R)
+  let : Field L := IsFractionRing.toField (MvPolynomial τ R)
+  let : IsDomain K := IsFractionRing.isDomain (MvPolynomial σ R)
   exact (algebraMap L K).injective
 
 end CompatibleScalars
@@ -144,8 +144,7 @@ private theorem identityFractionMap :
   apply IsLocalization.ringHom_ext (M := nonZeroDivisors (MvPolynomial ι ℤ))
   apply RingHom.ext
   intro p
-  simp [RingHom.comp_apply, IsFractionRing.map,
-    AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]
+  simp [IsFractionRing.map, AlgHom.toRingHom_eq_coe]
 
 example : IsEmpty {i : ι // i ∉ Set.range (id : ι → ι)} :=
   ⟨fun i => i.2 ⟨i.1, rfl⟩⟩

@@ -49,6 +49,21 @@ private theorem parabolaGraph_continuous :
     Continuous (MvPolynomial.ZariskiSpace.substitution (parabolaGraphHom K)) :=
   MvPolynomial.ZariskiSpace.continuous_substitution _
 
+private theorem parabolaGraph_preimage_zeroLocus :
+    MvPolynomial.ZariskiSpace.substitution (parabolaGraphHom K) ⁻¹'
+      MvPolynomial.ZariskiSpace.zeroLocus (parabolaIdeal K) = Set.univ := by
+  rw [MvPolynomial.ZariskiSpace.preimage_substitution_zeroLocus]
+  ext x
+  simp [MvPolynomial.ZariskiSpace.zeroLocus, parabolaIdeal,
+    Ideal.map_span, parabolaGraphHom]
+
+private theorem parabolaGraph_preimage_basicOpen :
+    MvPolynomial.ZariskiSpace.substitution (parabolaGraphHom K) ⁻¹'
+      MvPolynomial.ZariskiSpace.basicOpen (MvPolynomial.X (0 : Fin 2)) =
+      MvPolynomial.ZariskiSpace.basicOpen (MvPolynomial.X (0 : Fin 1)) := by
+  rw [MvPolynomial.ZariskiSpace.preimage_substitution_basicOpen]
+  simp [parabolaGraphHom]
+
 private theorem parabola_embedding :
     Topology.IsEmbedding (MvPolynomial.ZariskiSpace.zeroLocusClosedPoint (parabolaIdeal K)) :=
   MvPolynomial.ZariskiSpace.isEmbedding_zeroLocusClosedPoint _
@@ -148,14 +163,20 @@ private theorem parabolaPoint_membership [IsAlgClosed K] (t : K) :
     (⟨fun _ => t⟩ : MvPolynomial.ZariskiSpace K (Fin 1))
 
 /-- The unit ideal has no coordinate zeros, even without variables. -/
+@[deprecated MvPolynomial.ZariskiSpace.isEmpty_zeroLocus_top (since := "2026-10-21")]
 theorem unit_zeroLocus_empty {σ : Type*} :
     IsEmpty (MvPolynomial.ZariskiSpace.zeroLocus
-      (⊤ : Ideal (MvPolynomial σ K))) := by
-  constructor
-  intro x
-  have hx : x.val.toFun ∈ MvPolynomial.zeroLocus K
-      (⊤ : Ideal (MvPolynomial σ K)) := x.property
-  simp at hx
+      (⊤ : Ideal (MvPolynomial σ K))) :=
+  MvPolynomial.ZariskiSpace.isEmpty_zeroLocus_top
+
+private theorem empty_variable_unit_zeroLocus_eq_empty :
+    MvPolynomial.ZariskiSpace.zeroLocus (⊤ : Ideal (MvPolynomial (Fin 0) K)) = ∅ :=
+  MvPolynomial.ZariskiSpace.zeroLocus_top
+
+private theorem rational_infinite_unit_zeroLocus_empty :
+    IsEmpty (MvPolynomial.ZariskiSpace.zeroLocus
+      (⊤ : Ideal (MvPolynomial ℕ ℚ))) :=
+  MvPolynomial.ZariskiSpace.isEmpty_zeroLocus_top
 
 private theorem empty_variable_zeroLocus_nonempty :
     Nonempty (MvPolynomial.ZariskiSpace.zeroLocus

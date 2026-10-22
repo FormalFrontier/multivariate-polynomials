@@ -11,6 +11,7 @@ import Mathlib.RingTheory.Finiteness.Basic
 import Mathlib.RingTheory.Ideal.Maximal
 import Mathlib.RingTheory.QuasiFinite.Polynomial
 import Mathlib.RingTheory.RingHom.QuasiFinite
+import MultivariatePolynomials.RenameQuasiFinite
 
 /-!
 # Quasi-finite renaming and integer boundary models
@@ -21,11 +22,18 @@ nonzero source polynomial annihilates every target polynomial under the full
 renaming-induced action. With zero coefficients, even the map from no variables
 to one variable is quasi-finite.
 
-These proofs do not import the renaming criterion. The negative example uses
-Mathlib's obstruction to quasi-finiteness of a univariate polynomial algebra at
-any prime, together with a surjective evaluation and composition of ring maps.
-Quasi-finiteness means Mathlib's residue-field-fiber finiteness, without an
-additional `FiniteType` hypothesis.
+The three boundary data proofs below use Mathlib directly, not the renaming
+criteria. The negative example uses Mathlib's obstruction to quasi-finiteness
+of a univariate polynomial algebra at any prime, together with a surjective
+evaluation and composition of ring maps. Quasi-finiteness means Mathlib's
+residue-field-fiber finiteness, without an additional `FiniteType` hypothesis.
+
+The final private contract uses `MvPolynomial.rename_quasiFinite_iff_finite`
+to compare these independent data with the library API. It recovers failure of
+finiteness for the omitted integer variable, quasi-finiteness with a nonzero
+annihilator for the integer collision, and finiteness at the zero-coefficient
+boundary. The data proofs remain independent even though this module imports
+the comparison API.
 
 ## References
 
@@ -46,6 +54,8 @@ additional `FiniteType` hypothesis.
 namespace MultivariatePolynomialsTests.RenameQuasiFiniteModels
 
 open MvPolynomial
+
+/-! ## Independent boundary data -/
 
 /-- An omitted variable over the integers gives a non-quasi-finite map. -/
 private theorem int_empty_unit_data :
@@ -136,5 +146,29 @@ private theorem zero_coefficients_empty_unit_quasiFinite :
   apply RingHom.Finite.of_surjective
   intro p
   exact ⟨0, Subsingleton.elim _ _⟩
+
+/-! ## Comparison API contract -/
+
+/-- The quasi-finite/finite comparison respects the omitted-variable obstruction,
+the nonfaithful collision action and the zero-coefficient boundary. -/
+private theorem quasiFinite_finite_boundary_contract :
+    (¬ RingHom.Finite
+      (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom) ∧
+    (RingHom.QuasiFinite (rename (R := ℤ) (fun _ : Bool => ())).toRingHom ∧
+      ∃ a : MvPolynomial Bool ℤ, a ≠ 0 ∧
+        ∀ b : MvPolynomial Unit ℤ,
+          @SMul.smul (MvPolynomial Bool ℤ) (MvPolynomial Unit ℤ)
+            (rename (R := ℤ) (fun _ : Bool => ())).toRingHom.toAlgebra.toSMul a b = 0) ∧
+    RingHom.Finite
+      (rename (R := ZMod 1) (Empty.elim : Empty → Unit)).toRingHom := by
+  have hcollision := int_collision_data
+  refine ⟨?_, ⟨?_, hcollision.2.2.2.2⟩, ?_⟩
+  · intro hfinite
+    exact int_empty_unit_data.2
+      ((MvPolynomial.rename_quasiFinite_iff_finite (R := ℤ) _).mpr hfinite)
+  · exact (MvPolynomial.rename_quasiFinite_iff_finite (R := ℤ) _).mpr
+      hcollision.2.2.1
+  · exact (MvPolynomial.rename_quasiFinite_iff_finite (R := ZMod 1) _).mp
+      zero_coefficients_empty_unit_quasiFinite
 
 end MultivariatePolynomialsTests.RenameQuasiFiniteModels

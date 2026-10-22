@@ -93,6 +93,18 @@ def zeroLocus (I : Ideal (MvPolynomial σ K)) : Set (ZariskiSpace K σ) :=
 @[simp] theorem mem_zeroLocus {I : Ideal (MvPolynomial σ K)} {x : ZariskiSpace K σ} :
     x ∈ zeroLocus I ↔ x.toFun ∈ MvPolynomial.zeroLocus K I := Iff.rfl
 
+/-- The unit ideal has no coordinate zeros. -/
+@[simp] theorem zeroLocus_top :
+    zeroLocus (⊤ : Ideal (MvPolynomial σ K)) = ∅ := by
+  ext x
+  simp [zeroLocus]
+
+/-- The zero locus of the unit ideal is an empty type. -/
+theorem isEmpty_zeroLocus_top :
+    IsEmpty (zeroLocus (⊤ : Ideal (MvPolynomial σ K))) := by
+  rw [zeroLocus_top]
+  exact ⟨fun x => x.property⟩
+
 /-- The basic open set where a polynomial does not vanish. -/
 def basicOpen (p : MvPolynomial σ K) : Set (ZariskiSpace K σ) :=
   {x | aeval x.toFun p ≠ 0}
@@ -202,6 +214,14 @@ def substitution {τ : Type w}
     substitution f x i = aeval x.toFun (f (X i)) :=
   MvPolynomial.comap_apply f x.toFun i
 
+/-- Evaluating after substitution agrees with evaluating the substituted polynomial. -/
+@[simp] theorem aeval_substitution {τ : Type w}
+    (f : MvPolynomial σ K →ₐ[K] MvPolynomial τ K)
+    (x : ZariskiSpace K τ) (p : MvPolynomial σ K) :
+    aeval (substitution f x).toFun p = aeval x.toFun (f p) := by
+  exact congrArg (fun g : MvPolynomial σ K →ₐ[K] K => g p)
+    (MvPolynomial.aeval_unique ((aeval x.toFun).comp f)).symm
+
 @[simp] theorem substitution_id :
     substitution (AlgHom.id K (MvPolynomial σ K)) = id := by
   funext x
@@ -218,6 +238,41 @@ theorem substitution_comp {τ : Type w} {υ : Type*}
   apply ext
   intro i
   exact congrFun (MvPolynomial.comap_comp_apply f g x.toFun) i
+
+/-- The inverse image of a zero locus is the zero locus of the mapped ideal. -/
+@[simp] theorem preimage_substitution_zeroLocus {τ : Type w}
+    (f : MvPolynomial σ K →ₐ[K] MvPolynomial τ K)
+    (I : Ideal (MvPolynomial σ K)) :
+    substitution f ⁻¹' zeroLocus I = zeroLocus (Ideal.map f.toRingHom I) := by
+  ext x
+  change (∀ p ∈ I, aeval (substitution f x).toFun p = 0) ↔
+    ∀ p ∈ Ideal.map f.toRingHom I, aeval x.toFun p = 0
+  simp only [aeval_substitution]
+  constructor
+  · intro h p hp
+    have hI : I ≤ Ideal.comap f.toRingHom
+        (MvPolynomial.vanishingIdeal K {x.toFun}) := by
+      intro q hq
+      exact (Ideal.mem_comap (f := f.toRingHom)).mpr
+        ((MvPolynomial.mem_vanishingIdeal_singleton_iff x.toFun (f q)).mpr (h q hq))
+    exact (MvPolynomial.mem_vanishingIdeal_singleton_iff x.toFun p).mp
+      ((Ideal.map_le_iff_le_comap (f := f.toRingHom)).mpr hI hp)
+  · intro h p hp
+    have hmap : Ideal.map f.toRingHom I ≤
+        MvPolynomial.vanishingIdeal K {x.toFun} := by
+      intro q hq
+      exact (MvPolynomial.mem_vanishingIdeal_singleton_iff x.toFun q).mpr (h q hq)
+    exact (MvPolynomial.mem_vanishingIdeal_singleton_iff x.toFun (f p)).mp
+      ((Ideal.mem_comap (f := f.toRingHom)).mp
+        ((Ideal.map_le_iff_le_comap (f := f.toRingHom)).mp hmap hp))
+
+/-- The inverse image of a basic open is defined by the substituted polynomial. -/
+@[simp] theorem preimage_substitution_basicOpen {τ : Type w}
+    (f : MvPolynomial σ K →ₐ[K] MvPolynomial τ K)
+    (p : MvPolynomial σ K) :
+    substitution f ⁻¹' basicOpen p = basicOpen (f p) := by
+  ext x
+  simp only [Set.mem_preimage, mem_basicOpen, aeval_substitution]
 
 /-- Polynomial substitution is continuous in the polynomial Zariski topologies. -/
 theorem continuous_substitution {τ : Type w}

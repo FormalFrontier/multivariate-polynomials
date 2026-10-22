@@ -65,7 +65,7 @@ private theorem natSucc_not_isIntegral (R : Type u) [CommRing R] [Nontrivial R] 
       Polynomial.C.comp ε := by
     apply MvPolynomial.ringHom_ext
     · intro r
-      simp [ψ, ε, MvPolynomial.rename_C]
+      simp [ψ, ε]
     · intro n
       simp [ψ, ε]
   have hx := (h (MvPolynomial.X 0)).map ψ
@@ -145,7 +145,7 @@ private theorem zmodFour_nontrivial : Nontrivial (ZMod 4) :=
 /-- Nilpotents in the coefficients do not make successor renaming integral. -/
 private theorem zmodFour_natSucc_not_isIntegral :
     ¬ RingHom.IsIntegral ((MvPolynomial.rename (R := ZMod 4) Nat.succ).toRingHom) := by
-  letI : Nontrivial (ZMod 4) := zmodFour_nontrivial
+  let : Nontrivial (ZMod 4) := zmodFour_nontrivial
   exact natSucc_not_isIntegral (ZMod 4)
 
 /-- The unique function from no variables to one variable is not surjective. -/
@@ -169,7 +169,7 @@ private theorem int_empty_unit_not_isIntegral :
       Polynomial.C.comp ε := by
     apply MvPolynomial.ringHom_ext
     · intro r
-      simp [ψ, ε, MvPolynomial.rename_C]
+      simp [ψ, ε]
     · intro i
       exact Empty.elim i
   have hx := (h (MvPolynomial.X ())).map ψ
@@ -202,7 +202,7 @@ private theorem liftedInt_liftedSuccessor_not_isIntegral :
     ¬ RingHom.IsIntegral
       ((MvPolynomial.rename (R := ULift.{u} ℤ)
         (liftedSuccessor : ULift.{v} ℕ → ULift.{w} ℕ)).toRingHom) := by
-  letI : Nontrivial (ULift.{u} ℤ) := liftedInt_nontrivial
+  let : Nontrivial (ULift.{u} ℤ) := liftedInt_nontrivial
   intro h
   let ψ : MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℤ) →+* Polynomial (ULift.{u} ℤ) :=
     MvPolynomial.eval₂Hom Polynomial.C
@@ -215,7 +215,7 @@ private theorem liftedInt_liftedSuccessor_not_isIntegral :
       Polynomial.C.comp ε := by
     apply MvPolynomial.ringHom_ext
     · intro r
-      simp [ψ, ε, MvPolynomial.rename_C]
+      simp [ψ, ε]
     · intro n
       simp [ψ, ε, liftedSuccessor]
   have hx := (h (MvPolynomial.X (⟨0⟩ : ULift.{w} ℕ))).map ψ

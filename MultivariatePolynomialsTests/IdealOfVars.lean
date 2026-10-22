@@ -46,7 +46,7 @@ example :
     intro h
     have hzero := hd false (by simp)
     rw [← h] at hzero
-    simpa using hzero
+    simp at hzero
   have htwice : (C 2 * X true : MvPolynomial Bool ℤ) ∈
       Ideal.map C (Ideal.span ({2} : Set ℤ)) := by
     exact (Ideal.map C (Ideal.span ({2} : Set ℤ))).mul_mem_right (X true)

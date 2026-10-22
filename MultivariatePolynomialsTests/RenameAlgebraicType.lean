@@ -116,7 +116,7 @@ private theorem zmod_one_identity_not_isAlgebraic :
       inferInstance inferInstance
       (MvPolynomial.rename (R := ZMod 1) (id : ℕ → ℕ)).toRingHom.toAlgebra := by
   intro h
-  haveI : Nontrivial (ZMod 1) :=
+  have : Nontrivial (ZMod 1) :=
     ((MvPolynomial.isAlgebraic_rename_iff (R := ZMod 1) (id : ℕ → ℕ)).1 h).1
   exact zero_ne_one (Subsingleton.elim (0 : ZMod 1) 1)
 
@@ -127,7 +127,7 @@ private theorem zmod_one_empty_to_nat_not_isAlgebraic :
       (MvPolynomial.rename (R := ZMod 1)
         (Empty.elim : Empty → ℕ)).toRingHom.toAlgebra := by
   intro h
-  haveI : Nontrivial (ZMod 1) :=
+  have : Nontrivial (ZMod 1) :=
     ((MvPolynomial.isAlgebraic_rename_iff (R := ZMod 1) (Empty.elim : Empty → ℕ)).1 h).1
   exact zero_ne_one (Subsingleton.elim (0 : ZMod 1) 1)
 

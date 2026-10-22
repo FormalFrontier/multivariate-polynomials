@@ -28,7 +28,7 @@ private theorem variables_not_finite : ¬ Finite ℕ :=
   Infinite.not_finite
 
 private theorem isIntegrallyClosed : IsIntegrallyClosed (MvPolynomial ℕ ℚ) := by
-  letI : UniqueFactorizationMonoid (MvPolynomial ℕ ℚ) :=
+  let : UniqueFactorizationMonoid (MvPolynomial ℕ ℚ) :=
     MvPolynomial.uniqueFactorizationMonoid ℕ
   exact GCDMonoid.toIsIntegrallyClosed
 

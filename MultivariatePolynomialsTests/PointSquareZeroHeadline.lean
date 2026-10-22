@@ -44,7 +44,7 @@ private noncomputable def zeroRing_equivalence :
   MvPolynomial.pointSquareZeroAlgEquiv zeroRingPoints (by
     intro _ _ _
     have : (0 : ZMod 1) = 1 := Subsingleton.elim _ _
-    simpa [zeroRingPoints, this] using (isUnit_one : IsUnit (1 : ZMod 1)))
+    simp [zeroRingPoints, this])
 
 private def infiniteSeparatedPoints : ℕ → ℚ := fun n => n
 

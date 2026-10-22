@@ -65,12 +65,12 @@ private theorem zmod_four_data :
     rcases h.mem_or_mem (Ideal.mem_bot.mpr hmul) with hmem | hmem <;>
       exact hne (Ideal.mem_bot.mp hmem)
   · intro h
-    letI := h
+    let := h
     exact hne (show IsNilpotent (2 : ZMod 4) from ⟨2, hsq⟩).eq_zero
 
 private theorem zmod_one_data :
     ¬ (⊥ : Ideal (ZMod 1)).IsPrime ∧ IsReduced (ZMod 1) := by
-  letI : Subsingleton (ZMod 1) := ZMod.subsingleton_iff.mpr rfl
+  let : Subsingleton (ZMod 1) := ZMod.subsingleton_iff.mpr rfl
   constructor
   · intro h
     exact h.one_notMem (Ideal.mem_bot.mpr (Subsingleton.elim _ _))

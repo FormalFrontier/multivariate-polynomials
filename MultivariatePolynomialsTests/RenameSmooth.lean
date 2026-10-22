@@ -73,7 +73,8 @@ private theorem integer_variable_swap_smooth :
   exact RingHom.Smooth.of_bijective (renameEquiv ℤ (Equiv.swap true false)).bijective
 
 -- A collision is not flat, although no target variable is missed.
-private theorem integer_collision_not_smooth : ¬ (rename (R := ℤ) (fun _ : Fin 2 => (() : Unit))).toRingHom.Smooth := by
+private theorem integer_collision_not_smooth :
+    ¬ (rename (R := ℤ) (fun _ : Fin 2 => (() : Unit))).toRingHom.Smooth := by
   intro h
   rcases (rename_flat_iff (R := ℤ) (fun _ : Fin 2 => (() : Unit))).mp h.flat with hinj | hzero
   · have h01 : (0 : Fin 2) = 1 := hinj rfl
@@ -81,7 +82,8 @@ private theorem integer_collision_not_smooth : ¬ (rename (R := ℤ) (fun _ : Fi
   · exact (zero_ne_one : (0 : ℤ) ≠ 1) (hzero.elim 0 1)
 
 -- Infinitely many adjoined variables violate finite type, not injectivity.
-private theorem integer_infinite_adjoining_not_smooth : ¬ (rename (R := ℤ) (PEmpty.elim : PEmpty → ℕ)).toRingHom.Smooth := by
+private theorem integer_infinite_adjoining_not_smooth :
+    ¬ (rename (R := ℤ) (PEmpty.elim : PEmpty → ℕ)).toRingHom.Smooth := by
   intro h
   have hft := RingHom.FiniteType.of_finitePresentation h.finitePresentation
   rcases (finiteType_rename_iff (R := ℤ) (PEmpty.elim : PEmpty → ℕ)).mp hft with

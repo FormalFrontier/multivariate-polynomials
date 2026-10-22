@@ -55,11 +55,11 @@ private theorem int_nat_identity_isAlgebraic :
     @Algebra.IsAlgebraic (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ)
       inferInstance inferInstance
       (MvPolynomial.rename (R := ℤ) (id : ℕ → ℕ)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) :=
+  let : Algebra (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) :=
     (MvPolynomial.rename (R := ℤ) (id : ℕ → ℕ)).toRingHom.toAlgebra
   change Algebra.IsAlgebraic (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ)
-  haveI : Nontrivial (MvPolynomial ℕ ℤ) := inferInstance
-  haveI : Algebra.IsIntegral (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) :=
+  have : Nontrivial (MvPolynomial ℕ ℤ) := inferInstance
+  have : Algebra.IsIntegral (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) :=
     ⟨RingHom.isIntegral_of_surjective _
       (MvPolynomial.rename_surjective (R := ℤ) _ nat_identity_surjective)⟩
   exact Algebra.IsIntegral.isAlgebraic
@@ -82,11 +82,11 @@ private theorem int_projection_isAlgebraic :
     @Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
       inferInstance inferInstance
       (MvPolynomial.rename (R := ℤ) (Prod.fst : ℕ × Bool → ℕ)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
+  let : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
     (MvPolynomial.rename (R := ℤ) (Prod.fst : ℕ × Bool → ℕ)).toRingHom.toAlgebra
   change Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
-  haveI : Nontrivial (MvPolynomial (ℕ × Bool) ℤ) := inferInstance
-  haveI : Algebra.IsIntegral (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
+  have : Nontrivial (MvPolynomial (ℕ × Bool) ℤ) := inferInstance
+  have : Algebra.IsIntegral (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
     ⟨RingHom.isIntegral_of_surjective _
       (MvPolynomial.rename_surjective (R := ℤ) _ projection_surjective)⟩
   exact Algebra.IsIntegral.isAlgebraic
@@ -147,7 +147,7 @@ private theorem int_pairSucc_not_faithful :
       (@Algebra.toSMul (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
         inferInstance inferInstance
         (MvPolynomial.rename (R := ℤ) pairSucc).toRingHom.toAlgebra) := by
-  letI : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
+  let : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
     (MvPolynomial.rename (R := ℤ) pairSucc).toRingHom.toAlgebra
   change ¬ FaithfulSMul (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
   intro h
@@ -159,7 +159,7 @@ private theorem int_pairSucc_isAlgebraic :
     @Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
       inferInstance inferInstance
       (MvPolynomial.rename (R := ℤ) pairSucc).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
+  let : Algebra (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) :=
     (MvPolynomial.rename (R := ℤ) pairSucc).toRingHom.toAlgebra
   change Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ)
   exact Algebra.isAlgebraic_of_not_injective int_pairSucc_algebraMap_not_injective
@@ -221,7 +221,7 @@ private theorem zmodFour_pairSucc_algebraMap_not_injective :
       (@algebraMap (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4))
         inferInstance inferInstance
         (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra) := by
-  haveI : Nontrivial (ZMod 4) := zmodFour_nontrivial
+  have : Nontrivial (ZMod 4) := zmodFour_nontrivial
   intro h
   have hx : (MvPolynomial.X (0, false) : MvPolynomial (ℕ × Bool) (ZMod 4)) =
       MvPolynomial.X (0, true) := by
@@ -237,7 +237,7 @@ private theorem zmodFour_pairSucc_isAlgebraic :
     @Algebra.IsAlgebraic (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4))
       inferInstance inferInstance
       (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4)) :=
+  let : Algebra (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4)) :=
     (MvPolynomial.rename (R := ZMod 4) pairSucc).toRingHom.toAlgebra
   change Algebra.IsAlgebraic
     (MvPolynomial (ℕ × Bool) (ZMod 4)) (MvPolynomial ℕ (ZMod 4))
@@ -272,7 +272,7 @@ private theorem zmodFour_pairSucc_isAlgebraic_and_X_zero_not_isIntegral :
     hzero | hsub
   · obtain ⟨p, hp⟩ := hzero
     exact pairSucc_misses_zero p hp
-  · haveI : Nontrivial (ZMod 4) := zmodFour_nontrivial
+  · have : Nontrivial (ZMod 4) := zmodFour_nontrivial
     exact zero_ne_one (hsub.elim 0 1)
 
 end MvPolynomialRenameAlgebraicPositive

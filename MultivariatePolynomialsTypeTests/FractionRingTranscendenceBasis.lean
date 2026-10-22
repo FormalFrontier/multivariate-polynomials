@@ -180,8 +180,7 @@ private theorem identityFractionMap (ι : Type uτ) :
   apply IsLocalization.ringHom_ext (M := nonZeroDivisors (MvPolynomial ι ℤ))
   apply RingHom.ext
   intro p
-  simp [RingHom.comp_apply, IsFractionRing.map,
-    AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]
+  simp [IsFractionRing.map, AlgHom.toRingHom_eq_coe]
 
 private theorem identityComplement_empty (ι : Type uτ) :
     IsEmpty {i : ι // i ∉ Set.range (id : ι → ι)} :=
@@ -224,7 +223,7 @@ private theorem unitIdentity_stockBasis :
       (fun i : {i : Unit // i ∉ Set.range (id : Unit → Unit)} =>
         algebraMap (MvPolynomial Unit ℤ) (FractionRing (MvPolynomial Unit ℤ))
           (X i.1)) := by
-  letI := identityComplement_empty Unit
+  let := identityComplement_empty Unit
   exact empty_self_isTranscendenceBasis _
 
 private theorem emptyIdentity_adjoin_isAlgebraic :

@@ -73,7 +73,7 @@ private theorem not_isIntegral_rename_succ
     {R : Type u} [CommRing R] [Nontrivial R] :
     ¬ RingHom.IsIntegral ((MvPolynomial.rename (R := R) Nat.succ).toRingHom) := by
   intro h
-  haveI : Subsingleton R := (isIntegral_rename_succ_iff (R := R)).mp h
+  have : Subsingleton R := (isIntegral_rename_succ_iff (R := R)).mp h
   exact zero_ne_one (Subsingleton.elim (0 : R) 1)
 
 private theorem not_isIntegral_rename_pair_successor
@@ -85,7 +85,7 @@ private theorem not_isIntegral_rename_pair_successor
     (fun p : ℕ × Bool => p.1 + 1)).mp h with hf | hR
   · obtain ⟨p, hp⟩ := hf 0
     exact Nat.succ_ne_zero p.1 hp
-  · haveI : Subsingleton R := hR
+  · have : Subsingleton R := hR
     exact zero_ne_one (Subsingleton.elim (0 : R) 1)
 
 end MultivariatePolynomialsTests

@@ -33,9 +33,9 @@ Three integer points in infinitely many variables admit an explicit linear
 interpolant. A separate application obtains their simultaneous-evaluation
 surjectivity from `MvPolynomial.surjective_eval_family_iff` and their pairwise
 coordinate-difference ideals. The integer points `0, 2` and `0, 1, 2`
-distinguish the all-pairs condition from unequal-point and adjacent-pair conditions. Empty and singleton
-index types, a one-element coefficient ring, repeated points, and empty variables
-supply boundary examples.
+distinguish the all-pairs condition from unequal-point and adjacent-pair conditions.
+Empty and singleton index types, a one-element coefficient ring, repeated points, and
+empty variables supply boundary examples.
 
 ## Limitations
 
@@ -207,7 +207,7 @@ noncomputable section
 /-- Surjectivity of finite simultaneous evaluation and its pairwise ideal criterion. -/
 private def finiteEvaluationSurjectivityGoal
     {R : Type u} {σ : Type v} {ι : Type w}
-    [CommRing R] [Finite ι] (a : ι → σ → R) : Prop :=
+    [CommRing R] (a : ι → σ → R) : Prop :=
   Function.Surjective
     (fun p : MvPolynomial σ R => fun i : ι => MvPolynomial.eval (a i) p) ↔
     Pairwise (fun i j : ι =>
@@ -221,7 +221,7 @@ private def integerSimplexInterpolant (y : Fin 3 → ℤ) : MvPolynomial ℕ ℤ
 
 private theorem integerSimplexInterpolant_eval (y : Fin 3 → ℤ) (i : Fin 3) :
     eval (integerSimplexPoints i) (integerSimplexInterpolant y) = y i := by
-  fin_cases i <;> simp [integerSimplexInterpolant, integerSimplexPoints] <;> ring
+  fin_cases i <;> simp [integerSimplexInterpolant, integerSimplexPoints]
 
 private theorem integerSimplex_evaluation_surjective :
     Function.Surjective
@@ -377,7 +377,7 @@ private theorem integerRepeated_evaluation_obstruction :
   · intro h
     have ht := h (by decide : (0 : Fin 2) ≠ 1)
     have hb : (⊥ : Ideal ℤ) = ⊤ := by
-      simpa [integerRepeatedPoints, Set.range_const, Ideal.span_singleton_zero] using ht
+      simp [integerRepeatedPoints, Set.range_const] at ht
     exact bot_ne_top hb
 
 private theorem empty_variables_not_pairwise_span_eq_top (a : Fin 2 → Empty → ℤ) :

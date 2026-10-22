@@ -38,7 +38,7 @@ private theorem mixed_coeff_variable :
   have h : (0 : Fin 1 →₀ ℕ) ≠ Finsupp.single (0 : Fin 1) 1 := by
     intro h
     have hzero := congrArg (fun d : Fin 1 →₀ ℕ => d 0) h
-    simpa using hzero
+    simp at hzero
   simp [mixedPolynomial, MvPolynomial.coeff_C, h]
 
 private theorem mixed_coefficient_family :
@@ -116,7 +116,7 @@ example {R : Type u} {sigma : Type v} [CommSemiring R] :
     have hzero : ∀ r : R, r = 0 := fun r => h r (by simp)
     exact ⟨fun a b => (hzero a).trans (hzero b).symm⟩
   · intro h
-    letI := h
+    let := h
     intro r _
     exact Subsingleton.elim _ _
 

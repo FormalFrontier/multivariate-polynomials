@@ -229,6 +229,16 @@ weight-one-valuation naturality interfaces.
   collision participants. Both collision endpoints are counted. See the
   [finite-presentation section](#relative-finite-presentation-of-variable-renaming)
   for the coefficient-ring boundary and infinite-variable examples.
+- **Zero-variable presentations and semiring renaming.**
+  [`Algebra.FinitePresentation.of_surjective_algebraMap`](MultivariatePolynomials/FinitePresentation.lean)
+  gives a zero-variable presentation for a surjective scalar map from a
+  commutative semiring to any semiring, with finitely generated ideal kernel.
+  For commutative-semiring coefficients with subsingleton additive units,
+  [renaming reflects zero](MultivariatePolynomials/RenameFinitePresentationSemiring.lean)
+  and every surjective variable map is finitely presented over its full source
+  polynomial semiring. No cancellation, order, or finiteness assumption is needed.
+  This is Mathlib's ideal-kernel convention, not congruence-based semiring
+  finite presentation; a bottom ideal kernel need not imply injectivity.
 - **Variable renaming has an exact relative finite-type criterion.**
   [`MvPolynomial.finiteType_rename_iff`](MultivariatePolynomials/RenameFiniteType.lean)
   characterizes finite generation of the target polynomial algebra over the
@@ -257,9 +267,13 @@ weight-one-valuation naturality interfaces.
   the full source-polynomial action. Module finiteness supplies the positive
   direction; an omitted target variable gives a surjective evaluation onto
   `R[X]`, reducing the converse to Mathlib's polynomial local obstruction. The
-  [independent models](MultivariatePolynomialsTests/RenameQuasiFiniteModels.lean)
+  comparison `MvPolynomial.rename_quasiFinite_iff_finite` identifies
+  quasi-finiteness with finiteness of that same ring homomorphism. The
+  [independent boundary data and API contract](MultivariatePolynomialsTests/RenameQuasiFiniteModels.lean)
   contrast an omitted variable and a noninjective surjection over `ℤ`, and
-  include the zero-coefficient boundary.
+  include the zero-coefficient boundary. The three data proofs use Mathlib
+  directly, independently of the renaming criteria; the module also imports
+  the comparison API for a final private verification contract.
 - **Finite coefficient aggregation has an exact injectivity criterion.** For
   types `α`, `β` and `M` in independent universes, an additive commutative
   monoid `M`, and any index map `f : α → β`,
@@ -594,13 +608,24 @@ allow infinitely many missed variables and collisions.
 The [integer-coefficient applications](MultivariatePolynomialsTests/RenameFinitePresentationCriterion.lean)
 use this interface for successor and predecessor renaming and for the negative
 paired projection `ℕ × Bool → ℕ`. Separate
-[ring examples](MultivariatePolynomialsTests/RenameFinitePresentationModels.lean)
-construct finite presentations from Mathlib's APIs, including empty variable
-types in different universes, the zero ring `ZMod 1`, non-Noetherian sources,
-and the nonzero nilpotent `2` in `ZMod 4`.
+[ring models](MultivariatePolynomials/RenameFinitePresentationModels.lean)
+include the predecessor quotient equivalence identifying `X 0` and `X 1`,
+with explicit forward and inverse formulas, uniqueness, and coefficient
+naturality. Its equivalence is over the coefficient ring, while its finite
+presentation uses the full source polynomial ring. The examples retain empty
+variable types in different universes, the zero ring `ZMod 1`, non-Noetherian
+sources, and the nonzero nilpotent `2` in `ZMod 4`.
 
-The commutative-ring hypothesis is substantive. In the
-[natural-number example](MultivariatePolynomialsTests/RenameFinitePresentationSemiring.lean),
+[Empty-variable evaluation](MultivariatePolynomials/FinitePresentation.lean)
+identifies surjectivity and ideal-kernel finite generation with those of the
+scalar map. A surjective scalar map with finitely generated ideal kernel gives
+a zero-variable presentation, even for a noncommutative semiring target.
+
+The commutative-ring hypothesis is substantive. The
+[semiring renaming API](MultivariatePolynomials/RenameFinitePresentationSemiring.lean)
+assumes only that the additive units of the commutative coefficient semiring
+are subsingleton. It gives zero-reflection, bottom ideal kernel, and finite
+presentation for surjective variable maps. In its natural-number example,
 paired projection has bottom ideal kernel and a zero-variable finite presentation
 in Mathlib's existing class, although all infinitely many source indices collide.
 Bottom ideal kernel does not imply injectivity over this semiring. This
@@ -767,6 +792,9 @@ not a complete declaration inventory.
 | [`Regularity`](MultivariatePolynomials/Regularity.lean) | Differences of distinct variables are regular over every commutative ring, including the zero ring |
 | [`RenameFlatness`](MultivariatePolynomials/RenameFlatness.lean) | Full polynomial-ring renaming over a commutative ring is flat exactly when the variable map is injective or the coefficients are subsingleton |
 | [`RenameFinitePresentation`](MultivariatePolynomials/RenameFinitePresentation.lean) | Finite-presentation interface over the source polynomial ring: subsingleton coefficients or finite missed target variables and all source collision participants |
+| [`FinitePresentation`](MultivariatePolynomials/FinitePresentation.lean) | Empty-variable evaluation API and zero-variable finite presentation from a surjective scalar map with finitely generated ideal kernel over a commutative semiring |
+| [`RenameFinitePresentationModels`](MultivariatePolynomials/RenameFinitePresentationModels.lean) | Predecessor principal kernel and quotient equivalence, full-source finite presentation, and infinite-product projection obstruction over nontrivial commutative rings |
+| [`RenameFinitePresentationSemiring`](MultivariatePolynomials/RenameFinitePresentationSemiring.lean) | Zero-reflection and full-source finite presentation of surjective renaming for commutative semirings with subsingleton additive units; paired natural-number boundary example |
 | [`RenameModuleFinite`](MultivariatePolynomials/RenameModuleFinite.lean) | Finiteness of the full target module over the full source polynomial semiring under the explicit renaming action iff surjective variable map or subsingleton coefficients |
 | [`RenameIntegral`](MultivariatePolynomials/RenameIntegral.lean) | Integrality criterion for canonical renaming between full polynomial rings over any commutative ring: surjective variables or subsingleton coefficients |
 | [`RenameQuasiFinite`](MultivariatePolynomials/RenameQuasiFinite.lean) | Quasi-finiteness criterion for the original full polynomial-ring map over a commutative ring: surjective variables or subsingleton coefficients, without a finite-type hypothesis |

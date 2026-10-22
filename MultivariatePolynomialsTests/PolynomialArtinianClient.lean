@@ -90,7 +90,7 @@ private theorem nnreal_semiring_has_no_ring_extension :
   exact nnreal_one_has_no_additive_inverse ⟨_, hinverse⟩
 
 private theorem nnreal_coefficient_left_artinian : IsArtinianRing ℝ≥0 := by
-  letI : Finite (Ideal ℝ≥0) := nnreal_ideals_finite
+  let : Finite (Ideal ℝ≥0) := nnreal_ideals_finite
   exact (Finite.to_wellFoundedLT : WellFoundedLT (Ideal ℝ≥0))
 
 private theorem nnreal_polynomial_not_artinian :

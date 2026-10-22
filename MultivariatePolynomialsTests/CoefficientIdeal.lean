@@ -54,7 +54,7 @@ private theorem twiceVariable_coefficientIdeal_facts :
   · intro hzero
     have hc := congrArg (fun p : MvPolynomial Unit ℕ => p.coeff (Finsupp.single () 1)) hzero
     rw [coeff_C_mul, coeff_X_same, mul_one] at hc
-    simpa using hc
+    simp at hc
   · exact (Ideal.map (C : ℕ →+* MvPolynomial Unit ℕ)
       (Ideal.span ({2} : Set ℕ))).mul_mem_right (X ()) (Ideal.mem_map_of_mem C h2)
   · rw [hker]
@@ -64,7 +64,7 @@ private theorem twiceVariable_coefficientIdeal_facts :
   · rw [hker]
     intro hx
     have hc := (mem_map_C_iff_coeff_mem.mp hx) (Finsupp.single () 1)
-    exact hker1 (by simpa using hc)
+    exact hker1 (by simp at hc)
 
 private theorem intersectionOfTwoCoefficientIdeals :
     let I : Bool → Ideal ℕ := fun b => Ideal.span ({if b then 2 else 3} : Set ℕ)
@@ -86,7 +86,7 @@ private theorem intersectionOfTwoCoefficientIdeals :
       have hc := (mem_map_C_iff_coeff_mem.mp (h false)) (Finsupp.single () 1)
       rw [coeff_C_mul, coeff_X_same, mul_one] at hc
       simpa using hc
-    simpa [Ideal.mem_span_singleton] using h2
+    simp [Ideal.mem_span_singleton] at h2
 
 private theorem emptyIndexedIntersection_noVariables :
     Ideal.map (C : ℕ →+* MvPolynomial Empty ℕ)

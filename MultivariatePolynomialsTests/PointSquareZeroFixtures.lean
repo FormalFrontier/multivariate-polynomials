@@ -44,7 +44,7 @@ private theorem singleton_nontrivial :
       have hmem : (1 : ℤ[X]) ∈ RingHom.ker
           (Polynomial.evalRingHom (singletonPoints PUnit.unit)) :=
         Ideal.Quotient.eq_zero_iff_mem.mp hz
-      have heval : (1 : ℤ) = 0 := by simpa [RingHom.mem_ker] using hmem
+      have heval : (1 : ℤ) = 0 := by simp [RingHom.mem_ker] at hmem
       exact one_ne_zero heval
     have hzero : MvPolynomial.pointSquareZeroDelta singletonPoints PUnit.unit = 0 := by
       apply (TrivSqZeroExt.inr_injective (R := ℤ[X]))

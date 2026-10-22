@@ -90,7 +90,7 @@ private theorem int_some_not_isAlgebraic :
     ¬ @Algebra.IsAlgebraic (MvPolynomial PUnit ℤ) (MvPolynomial (Option PUnit) ℤ)
       inferInstance inferInstance
       (MvPolynomial.rename (R := ℤ) (some : PUnit → Option PUnit)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial PUnit ℤ) (MvPolynomial (Option PUnit) ℤ) :=
+  let : Algebra (MvPolynomial PUnit ℤ) (MvPolynomial (Option PUnit) ℤ) :=
     (MvPolynomial.rename (R := ℤ) (some : PUnit → Option PUnit)).toRingHom.toAlgebra
   intro h
   have hcomp :
@@ -128,14 +128,14 @@ private theorem zmodFour_nontrivial : Nontrivial (ZMod 4) :=
 /-- The square-zero element witnesses failure of reducedness. -/
 private theorem zmodFour_not_isReduced : ¬ IsReduced (ZMod 4) := by
   intro h
-  letI : IsReduced (ZMod 4) := h
+  let : IsReduced (ZMod 4) := h
   exact zmodFour_two_ne_zero (IsReduced.eq_zero (2 : ZMod 4)
     ⟨2, zmodFour_two_sq_eq_zero⟩)
 
 /-- The same element also rules out a domain structure. -/
 private theorem zmodFour_not_isDomain : ¬ IsDomain (ZMod 4) := by
   intro h
-  letI : IsDomain (ZMod 4) := h
+  let : IsDomain (ZMod 4) := h
   have hmul : (2 : ZMod 4) * 2 = 0 := by
     simpa only [pow_two] using zmodFour_two_sq_eq_zero
   rcases mul_eq_zero.mp hmul with hzero | hzero
@@ -164,7 +164,7 @@ private theorem zmodFour_optionEquivLeft_comp_rename :
 private theorem zmodFour_some_rename_not_surjective :
     ¬ Function.Surjective
       (MvPolynomial.rename (R := ZMod 4) (some : PUnit → Option PUnit)) := by
-  letI : Nontrivial (ZMod 4) := zmodFour_nontrivial
+  let : Nontrivial (ZMod 4) := zmodFour_nontrivial
   intro h
   obtain ⟨p, hp⟩ := h (MvPolynomial.X none)
   have hpoly : (Polynomial.C p : Polynomial (MvPolynomial PUnit (ZMod 4))) =
@@ -182,7 +182,7 @@ private theorem zmodFour_some_not_isAlgebraic :
     ¬ @Algebra.IsAlgebraic (MvPolynomial PUnit (ZMod 4))
       (MvPolynomial (Option PUnit) (ZMod 4)) inferInstance inferInstance
       (MvPolynomial.rename (R := ZMod 4) (some : PUnit → Option PUnit)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial PUnit (ZMod 4)) (MvPolynomial (Option PUnit) (ZMod 4)) :=
+  let : Algebra (MvPolynomial PUnit (ZMod 4)) (MvPolynomial (Option PUnit) (ZMod 4)) :=
     (MvPolynomial.rename (R := ZMod 4) (some : PUnit → Option PUnit)).toRingHom.toAlgebra
   intro h
   have hcomp :
@@ -217,13 +217,13 @@ private theorem zmodOne_id_not_isAlgebraic :
     ¬ @Algebra.IsAlgebraic (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1))
       inferInstance inferInstance
       (MvPolynomial.rename (R := ZMod 1) (id : ℕ → ℕ)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) :=
+  let : Algebra (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) :=
     (MvPolynomial.rename (R := ZMod 1) (id : ℕ → ℕ)).toRingHom.toAlgebra
-  letI : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
+  let : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
     Algebra.subsingleton (ZMod 1) (MvPolynomial ℕ (ZMod 1))
   intro h
-  letI : Algebra.IsAlgebraic (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) := h
-  letI : Nontrivial (MvPolynomial ℕ (ZMod 1)) :=
+  let : Algebra.IsAlgebraic (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) := h
+  let : Nontrivial (MvPolynomial ℕ (ZMod 1)) :=
     Algebra.nontrivial_of_isAlgebraic (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1))
   exact zero_ne_one (Subsingleton.elim (0 : MvPolynomial ℕ (ZMod 1)) 1)
 
@@ -243,7 +243,7 @@ private theorem empty_nat_not_surjective :
 private theorem zmodOne_empty_nat_rename_surjective :
     Function.Surjective
       (MvPolynomial.rename (R := ZMod 1) (Empty.elim : Empty → ℕ)) := by
-  letI : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
+  let : Subsingleton (MvPolynomial ℕ (ZMod 1)) :=
     Algebra.subsingleton (ZMod 1) (MvPolynomial ℕ (ZMod 1))
   exact Function.surjective_to_subsingleton _
 
@@ -252,13 +252,13 @@ private theorem zmodOne_empty_nat_not_isAlgebraic :
     ¬ @Algebra.IsAlgebraic (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1))
       inferInstance inferInstance
       (MvPolynomial.rename (R := ZMod 1) (Empty.elim : Empty → ℕ)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) :=
+  let : Algebra (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) :=
     (MvPolynomial.rename (R := ZMod 1) (Empty.elim : Empty → ℕ)).toRingHom.toAlgebra
-  letI : Subsingleton (MvPolynomial Empty (ZMod 1)) :=
+  let : Subsingleton (MvPolynomial Empty (ZMod 1)) :=
     Algebra.subsingleton (ZMod 1) (MvPolynomial Empty (ZMod 1))
   intro h
-  letI : Algebra.IsAlgebraic (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) := h
-  letI : Nontrivial (MvPolynomial Empty (ZMod 1)) :=
+  let : Algebra.IsAlgebraic (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) := h
+  let : Nontrivial (MvPolynomial Empty (ZMod 1)) :=
     Algebra.nontrivial_of_isAlgebraic
       (MvPolynomial Empty (ZMod 1)) (MvPolynomial ℕ (ZMod 1))
   exact zero_ne_one (Subsingleton.elim (0 : MvPolynomial Empty (ZMod 1)) 1)
@@ -286,16 +286,16 @@ private theorem lifted_zero_not_isAlgebraic {R : Type u} [CommRing R] [Subsingle
       (MvPolynomial (ULift.{w} ℕ) (ULift.{r} R)) inferInstance inferInstance
       (MvPolynomial.rename (R := ULift.{r} R)
         (liftedCopy : ULift.{v} ℕ → ULift.{w} ℕ)).toRingHom.toAlgebra := by
-  letI : Algebra (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
+  let : Algebra (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
       (MvPolynomial (ULift.{w} ℕ) (ULift.{r} R)) :=
     (MvPolynomial.rename (R := ULift.{r} R)
       (liftedCopy : ULift.{v} ℕ → ULift.{w} ℕ)).toRingHom.toAlgebra
-  letI : Subsingleton (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R)) :=
+  let : Subsingleton (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R)) :=
     Algebra.subsingleton (ULift.{r} R) (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
   intro h
-  letI : Algebra.IsAlgebraic (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
+  let : Algebra.IsAlgebraic (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
       (MvPolynomial (ULift.{w} ℕ) (ULift.{r} R)) := h
-  letI : Nontrivial (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R)) :=
+  let : Nontrivial (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R)) :=
     Algebra.nontrivial_of_isAlgebraic
       (MvPolynomial (ULift.{v} ℕ) (ULift.{r} R))
       (MvPolynomial (ULift.{w} ℕ) (ULift.{r} R))

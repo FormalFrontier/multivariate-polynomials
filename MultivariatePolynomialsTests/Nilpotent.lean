@@ -56,7 +56,7 @@ example : p ≠ 0 ∧ p ^ 2 = 0 ∧
   have hmon : Finsupp.single (1 : Fin 2) (1 : ℕ) ≠ Finsupp.single (0 : Fin 2) 1 := by
     intro h
     have he := congrArg (fun d : Fin 2 →₀ ℕ => d 0) h
-    simpa using he
+    simp at he
   intro hp
   have hc := congrArg
     (fun q : MvPolynomial (Fin 2) (ZMod 4 × ℕ) => q.coeff (Finsupp.single (0 : Fin 2) 1)) hp
@@ -75,7 +75,7 @@ example : IsReduced (MvPolynomial PEmpty (ZMod 1)) := inferInstance
 
 example (σ : Type v) : ¬ IsReduced (MvPolynomial σ (ZMod 4)) := by
   intro h
-  letI : IsReduced (ZMod 4) := (MvPolynomial.isReduced_iff (σ := σ)).mp h
+  let : IsReduced (ZMod 4) := (MvPolynomial.isReduced_iff (σ := σ)).mp h
   have hnil : IsNilpotent (2 : ZMod 4) := ⟨2, by decide⟩
   have hne : (2 : ZMod 4) ≠ 0 := by decide
   exact hne hnil.eq_zero

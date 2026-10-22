@@ -26,6 +26,11 @@ Here quasi-finiteness is Mathlib's finiteness of every residue-field fiber as a
 module over that residue field. Mathlib's predicate does not include a
 `FiniteType` hypothesis; no finite-type convention is added here.
 
+`MvPolynomial.rename_quasiFinite_iff_finite` identifies quasi-finiteness of a
+renaming with finiteness of that same ring homomorphism, hence with finite
+generation over the full source polynomial ring. This equivalence is specific
+to renaming; quasi-finite ring homomorphisms need not be finite in general.
+
 Module finiteness gives the positive direction. Over nontrivial coefficients,
 an omitted target variable gives a split surjective evaluation onto `R[X]`
 that kills every renamed variable. Composition and restriction of scalars
@@ -107,3 +112,15 @@ theorem MvPolynomial.rename_quasiFinite_iff
   · intro h
     exact RingHom.QuasiFinite.of_finite
       ((MvPolynomial.moduleFinite_rename_iff (R := R) f).mpr h)
+
+/-- Quasi-finiteness of a variable renaming is equivalent to finiteness of the
+same ring homomorphism. Thus its residue-field fibers are finite exactly when
+the full target polynomial ring is a finite module over the full source
+polynomial ring under `p • q = MvPolynomial.rename f p * q`. No `FiniteType`
+hypothesis or finiteness assumption on the variable types is needed. -/
+theorem MvPolynomial.rename_quasiFinite_iff_finite
+    {σ : Type u} {τ : Type v} {R : Type w} [CommRing R] (f : σ → τ) :
+    RingHom.QuasiFinite (MvPolynomial.rename (R := R) f).toRingHom ↔
+      RingHom.Finite (MvPolynomial.rename (R := R) f).toRingHom := by
+  exact (MvPolynomial.rename_quasiFinite_iff (R := R) f).trans
+    (MvPolynomial.moduleFinite_rename_iff (R := R) f).symm

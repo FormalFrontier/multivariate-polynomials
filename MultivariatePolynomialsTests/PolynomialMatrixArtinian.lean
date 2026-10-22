@@ -78,7 +78,7 @@ private theorem matrix_zmod_two_diagonal_units_ne :
   intro h
   have h00 := congrArg (fun M : Matrix (Fin 2) (Fin 2) (ZMod 2) => M 0 0) h
   have h10 : (1 : ZMod 2) = 0 := by
-    simpa [Matrix.single_apply] using h00
+    simp at h00
   exact one_ne_zero h10
 
 /-- The two off-diagonal matrix units do not commute. -/

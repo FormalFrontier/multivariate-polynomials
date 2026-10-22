@@ -90,7 +90,7 @@ private theorem integer_joint_pair (r s : ℤ) :
   have hp : (r, s) ∈ Set.range ((eval a).prod (eval b)) := by
     refine ⟨C r + C (s - r) * (-X false + X true), ?_⟩
     simp only [RingHom.prod_apply]
-    apply Prod.ext <;> simp <;> ring
+    apply Prod.ext <;> simp
   exact ⟨hp, (mem_range_eval_prod_iff a b r s).mp hp⟩
 
 end JointIntegerDifferences
