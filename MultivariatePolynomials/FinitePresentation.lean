@@ -77,8 +77,10 @@ theorem ker_aeval_of_isEmpty (x : ι → A) :
 scalar kernel is finitely generated. -/
 @[simp]
 theorem ker_aeval_fg_iff_of_isEmpty (x : ι → A) :
-    (RingHom.ker (aeval (R := R) x).toRingHom).FG ↔ (RingHom.ker (algebraMap R A)).FG := by
-  rw [ker_aeval_of_isEmpty]
+    (RingHom.ker (aeval (R := R) x)).FG ↔ (RingHom.ker (algebraMap R A)).FG := by
+  have hker := ker_aeval_of_isEmpty (R := R) x
+  simp only [AlgHom.toRingHom_eq_coe, RingHom.ker_coe_toRingHom] at hker
+  rw [hker]
   constructor
   · intro h
     have hmap := h.map (isEmptyAlgEquiv R ι).toRingEquiv.toRingHom

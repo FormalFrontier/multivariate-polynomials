@@ -48,7 +48,7 @@ theorem essFiniteType_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
   · intro hf
     rcases subsingleton_or_nontrivial R with hR | hR
     · exact Or.inl hR
-    letI : Nontrivial R := hR
+    let : Nontrivial R := hR
     let S : Finset τ := hf.finset.biUnion vars
     refine Or.inr (S.finite_toSet.subset ?_)
     intro j hj
@@ -58,7 +58,7 @@ theorem essFiniteType_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
     have hδ : δ ∘ f = (X : τ → MvPolynomial τ R) ∘ f := by
       funext i
       have hfi : f i ≠ j := fun h => hj ⟨i, h⟩
-      simp [δ, Function.comp_def, hfi]
+      simp [δ, hfi]
     have hcomp : e.comp (rename f) = rename f := by
       change (aeval δ).comp (rename f) = rename f
       rw [aeval_comp_rename, hδ, ← rename_eq_aeval]

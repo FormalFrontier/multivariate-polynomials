@@ -27,7 +27,8 @@ private theorem rename_succ_int_essFiniteType :
   exact h.essFiniteType
 
 -- Subsingleton coefficients allow infinitely many missed variables.
-private theorem rename_empty_essFiniteType_of_subsingleton {R : Type u} [CommRing R] [Subsingleton R] :
+private theorem rename_empty_essFiniteType_of_subsingleton
+    {R : Type u} [CommRing R] [Subsingleton R] :
     RingHom.EssFiniteType
       ((MvPolynomial.rename (R := R) (Empty.elim : Empty → ℕ)).toRingHom) := by
   apply RingHom.FiniteType.essFiniteType
