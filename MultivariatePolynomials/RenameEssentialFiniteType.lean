@@ -24,6 +24,15 @@ many variables. A missed variable outside that finite union can be sent to zero 
 endomorphism fixing both the renamed source and every essential generator, contradicting
 uniqueness. Sufficiency follows from finite type.
 
+## Worked applications
+
+The private applications below use the criterion's `.mpr` direction for positive results:
+successor renaming over `ℤ` misses only `0`, while `Empty → ℕ` is still essentially of
+finite type for subsingleton coefficients, despite missing infinitely many variables.
+For even-index renaming `n ↦ 2 * n` over `ℤ`, the `.mp` direction would imply finite type
+via `finiteType_rename_iff`, contradicting `not_finiteType_rename_even`: all odd indices
+are missed. These applications use the full source polynomial ring as scalars.
+
 ## References
 
 * `MultivariatePolynomials.RenameFiniteType`: the finite-type renaming criterion over the
@@ -89,5 +98,21 @@ private theorem essFiniteType_rename_succ_int :
   exact (essFiniteType_rename_iff (R := ℤ) Nat.succ).mpr
     ((finiteType_rename_iff (R := ℤ) Nat.succ).mp
       (finiteType_rename_succ (R := ℤ)))
+
+-- Subsingleton coefficients allow infinitely many missed variables.
+private theorem rename_empty_essFiniteType_of_subsingleton
+    {R : Type u} [CommRing R] [Subsingleton R] :
+    RingHom.EssFiniteType
+      ((MvPolynomial.rename (R := R) (Empty.elim : Empty → ℕ)).toRingHom) := by
+  exact (essFiniteType_rename_iff (R := R) (Empty.elim : Empty → ℕ)).mpr
+    (Or.inl inferInstance)
+
+private theorem not_essFiniteType_rename_even_int :
+    ¬ RingHom.EssFiniteType
+      ((rename (R := ℤ) (fun n : ℕ => 2 * n)).toRingHom) := by
+  intro h
+  exact not_finiteType_rename_even (R := ℤ)
+    ((finiteType_rename_iff (R := ℤ) (fun n : ℕ => 2 * n)).mpr
+      ((essFiniteType_rename_iff (R := ℤ) (fun n : ℕ => 2 * n)).mp h))
 
 end MvPolynomial

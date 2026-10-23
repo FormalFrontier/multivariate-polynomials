@@ -253,7 +253,11 @@ weight-one-valuation naturality interfaces.
   universes: `R` is subsingleton or `Set.Finite ((Set.range f)ᶜ)`. Scalars are
   `MvPolynomial σ R`, acting on `MvPolynomial τ R` by `p • q = rename f p * q`.
   Essential finite type is distinct from finite type, but their criteria
-  coincide for these maps.
+  coincide for these maps. The
+  [worked applications](MultivariatePolynomials/RenameEssentialFiniteType.lean)
+  contrast successor renaming over `ℤ` (only `0` is missed), `Empty → ℕ`
+  with subsingleton coefficients (infinitely many missed variables), and
+  even-index renaming over `ℤ`, which is not essentially of finite type.
 - **Module finiteness of variable renaming has a sharper criterion.** For any
   commutative semiring `R` and any map `f : σ → τ`, with all three types in
   independent universes,
