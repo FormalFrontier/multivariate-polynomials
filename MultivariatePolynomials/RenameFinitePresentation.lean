@@ -9,6 +9,10 @@ public import MultivariatePolynomials.RenameKernel
 public import Mathlib.RingTheory.FinitePresentation
 import MultivariatePolynomials.EvaluationIdeal
 public import MultivariatePolynomials.RenameComplement
+import Mathlib.Data.Bool.Basic
+import Mathlib.Data.Int.Basic
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Set.Finite.Basic
 
 @[expose] public section
 
@@ -21,6 +25,8 @@ algebra is characterized by subsingleton coefficients or the conjunction of two
 finiteness conditions: finitely many missed target variables and finitely many
 source indices participating in collisions. The latter set includes both
 endpoints of every collision, not just a chosen representative from each fibre.
+Worked applications over the integers below contrast missed variables with
+finite and infinite collision sets.
 
 The coefficient type and both variable types may have independent universes.
 Neither variable type need be finite, and the variable map need not be injective
@@ -44,6 +50,9 @@ from finite presentation defined using a kernel congruence of semirings.
   algebra in complementary variables with coefficients in the retained variables.
 * `MultivariatePolynomials.EvaluationIdeal`: the coordinate-difference
   description of evaluation kernels, applied at zero.
+* Mathlib, `Mathlib.Data.Set.Finite.Basic`: finite subsets and infinite universes.
+* Mathlib, `Mathlib.Data.Nat.Basic` and `Mathlib.Data.Bool.Basic`: predecessor
+  fibres and opposite Boolean coordinates.
 -/
 
 universe u v w
@@ -232,5 +241,53 @@ theorem finitePresentation_rename_iff {R : Type u} {σ : Type v} {τ : Type w}
         have hcomp : (i.comp q).FinitePresentation :=
           AlgHom.FinitePresentation.comp hifp hqfp
         rwa [hiq] at hcomp
+
+/-!
+## Worked applications over the integers
+
+Successor misses only `0` without collisions; predecessor is surjective with
+collision participants `0` and `1`. The surjection `ℕ × Bool → ℕ` has infinitely
+many collision participants and is not finitely presented over its source ring.
+-/
+
+private theorem finitePresentation_rename_succ_int :
+    @Algebra.FinitePresentation (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) _ _
+      (MvPolynomial.rename (R := ℤ) Nat.succ).toRingHom.toAlgebra := by
+  apply (MvPolynomial.finitePresentation_rename_iff (R := ℤ) Nat.succ).mpr
+  right
+  constructor
+  · refine (Set.finite_singleton (0 : ℕ)).subset ?_
+    intro n hn
+    cases n with
+    | zero => exact Set.mem_singleton 0
+    | succ n => exact (hn ⟨n, rfl⟩).elim
+  · refine Set.finite_empty.subset ?_
+    rintro i ⟨j, hij, h⟩
+    exact (hij (Nat.succ.inj h)).elim
+
+private theorem finitePresentation_rename_pred_int :
+    @Algebra.FinitePresentation (MvPolynomial ℕ ℤ) (MvPolynomial ℕ ℤ) _ _
+      (MvPolynomial.rename (R := ℤ) Nat.pred).toRingHom.toAlgebra := by
+  apply (MvPolynomial.finitePresentation_rename_iff (R := ℤ) Nat.pred).mpr
+  right
+  constructor
+  · refine Set.finite_empty.subset ?_
+    intro n hn
+    exact (hn ⟨n + 1, rfl⟩).elim
+  · refine ((Set.finite_singleton (1 : ℕ)).insert 0).subset ?_
+    rintro i ⟨j, hij, hpred⟩
+    cases i <;> cases j <;> simp_all
+
+private theorem not_finitePresentation_rename_fst_int :
+    ¬ @Algebra.FinitePresentation (MvPolynomial (ℕ × Bool) ℤ) (MvPolynomial ℕ ℤ) _ _
+      (MvPolynomial.rename (R := ℤ) (Prod.fst : ℕ × Bool → ℕ)).toRingHom.toAlgebra := by
+  intro hfp
+  rcases (MvPolynomial.finitePresentation_rename_iff
+    (R := ℤ) (Prod.fst : ℕ × Bool → ℕ)).mp hfp with hR | ⟨_, hfinite⟩
+  · exact (not_subsingleton ℤ) hR
+  · apply Set.infinite_univ (α := ℕ × Bool)
+    apply hfinite.subset
+    rintro ⟨n, b⟩ _
+    exact ⟨(n, !b), fun h => Bool.self_ne_not b (congrArg Prod.snd h), rfl⟩
 
 end MvPolynomial

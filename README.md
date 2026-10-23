@@ -228,12 +228,13 @@ weight-one-valuation naturality interfaces.
   give no such polynomial, even for identity renaming. This is weak algebraicity,
   not integrality or module finiteness. The coefficient and both variable types
   have independent universes, with no additional ring or finiteness hypotheses.
-  [Criterion applications](MultivariatePolynomialsTests/RenameAlgebraicType.lean)
-  use the public result. The four weak-algebraicity proofs in the
-  [positive models](MultivariatePolynomialsTests/RenameAlgebraicPositive.lean)
-  and the proofs in the [negative models](MultivariatePolynomialsTests/RenameAlgebraicNegative.lean)
-  use stock Mathlib directly. The positive models also include a shifted-projection
-  contrast over `ZMod 4`, whose missing-variable nonintegrality proof uses
+  [Criterion applications](MultivariatePolynomials/RenameAlgebraic.lean)
+  are colocated with the public result. The independent
+  [positive models](MultivariatePolynomials/RenameAlgebraic.lean)
+  and [negative models](MultivariatePolynomials/RenameAlgebraic.lean)
+  use stock Mathlib directly for algebraicity. The shifted-projection models over
+  the integers and `ZMod 4` use the existing integrality criterion for their
+  missing-variable nonintegrality proofs:
   [`MvPolynomial.isIntegral_X_rename_iff`](MultivariatePolynomials/RenameIntegral.lean).
 - **Finite presentation of commutative-ring variable renaming.**
   [`MvPolynomial.finitePresentation_rename_iff`](MultivariatePolynomials/RenameFinitePresentation.lean)
@@ -630,9 +631,11 @@ or finite-variable hypothesis is imposed. The collision set contains all
 source participants, not one representative per fibre. Subsingleton rings
 allow infinitely many missed variables and collisions.
 
-The [integer-coefficient applications](MultivariatePolynomialsTests/RenameFinitePresentationCriterion.lean)
-use this interface for successor and predecessor renaming and for the negative
-paired projection `ℕ × Bool → ℕ`. Separate
+The [worked integer-coefficient applications](MultivariatePolynomials/RenameFinitePresentation.lean#L246)
+contrast successor's missed variable `0` with predecessor's finite collision set
+`{0, 1}` and the surjective projection `ℕ × Bool → ℕ` with infinitely many
+collision participants. The first two are finitely presented over the source
+polynomial ring; the projection is not. Separate
 [ring models](MultivariatePolynomials/RenameFinitePresentationModels.lean)
 include the predecessor quotient equivalence identifying `X 0` and `X 1`,
 with explicit forward and inverse formulas, uniqueness, and coefficient
