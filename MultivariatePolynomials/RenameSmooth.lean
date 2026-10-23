@@ -25,7 +25,8 @@ Here `RingHom.Smooth` uses the algebra structure induced by the renaming
 homomorphism. Thus a source polynomial acts by multiplication by its renamed
 image; this is not smoothness merely over the coefficient ring. Coefficients and
 both variable types have independent universes, with empty and infinite variable
-types allowed.
+types allowed. For these variable-renaming homomorphisms, smoothness is also
+equivalent to flatness together with finite type.
 
 Smoothness implies flatness and finite presentation, hence the injectivity and
 finite-complement obstructions follow from the flatness and finite-type criteria.
@@ -98,5 +99,23 @@ theorem rename_smooth_iff {R : Type u} [CommRing R] {σ : Type v} {τ : Type w}
     · let : Subsingleton R := hR
       exact RingHom.Smooth.of_bijective
         (Function.bijective_of_subsingleton' ((rename (R := R) f).toRingHom))
+
+/-- For variable-renaming homomorphisms, smoothness over the full source polynomial
+ring is equivalent to flatness together with finite type. -/
+theorem rename_smooth_iff_flat_and_finiteType {R : Type u} [CommRing R]
+    {σ : Type v} {τ : Type w} (f : σ → τ) :
+    (rename (R := R) f).toRingHom.Smooth ↔
+      (rename (R := R) f).toRingHom.Flat ∧ (rename (R := R) f).toRingHom.FiniteType := by
+  rw [rename_smooth_iff, rename_flat_iff, RingHom.FiniteType, finiteType_rename_iff]
+  constructor
+  · rintro (⟨hf, hfinite⟩ | hR)
+    · exact ⟨Or.inl hf, Or.inr hfinite⟩
+    · exact ⟨Or.inr hR, Or.inl hR⟩
+  · rintro ⟨hflat, hft⟩
+    rcases hflat with hf | hR
+    · rcases hft with hR | hfinite
+      · exact Or.inr hR
+      · exact Or.inl ⟨hf, hfinite⟩
+    · exact Or.inr hR
 
 end MvPolynomial

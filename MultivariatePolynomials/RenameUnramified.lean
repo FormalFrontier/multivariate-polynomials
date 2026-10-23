@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import MultivariatePolynomials.Rename
+public import MultivariatePolynomials.RenameModuleFinite
 public import Mathlib.RingTheory.RingHom.Unramified
 import Mathlib.Algebra.MvPolynomial.PDeriv
 
@@ -13,8 +14,11 @@ import Mathlib.Algebra.MvPolynomial.PDeriv
 
 For a map `f : σ → τ` and a commutative ring `R`, variable renaming from
 `MvPolynomial σ R` to `MvPolynomial τ R` is formally unramified exactly when
-it is surjective. By `MvPolynomial.surjective_rename_iff`, this means that
-`f` is surjective or `R` is subsingleton. Collisions of variables are allowed.
+it is surjective. The direct criterion `MvPolynomial.formallyUnramified_rename_iff`
+expresses this as surjectivity of `f` or subsingleton coefficients. Equivalently,
+the full target polynomial ring is a finite module over the full source polynomial
+ring via renaming, as in `MvPolynomial.formallyUnramified_rename_iff_moduleFinite`.
+Collisions of variables are allowed.
 The coefficient and variable types may lie in independent universes; neither
 variable type is required to be finite or inhabited.
 
@@ -33,6 +37,8 @@ value on the omitted variable over a nontrivial coefficient ring.
 * Mathlib, `Mathlib.RingTheory.Kaehler.Basic`: factorization of derivations
   through Kähler differentials.
 * `MultivariatePolynomials.Rename`: the surjectivity criterion for renaming.
+* `MultivariatePolynomials.RenameModuleFinite`: the finite-module criterion with
+  scalars acting through renaming.
 -/
 
 @[expose] public section
@@ -89,5 +95,27 @@ theorem formallyUnramified_rename_iff_surjective (f : σ → τ) :
       exact one_ne_zero (by simpa only [pderiv_X_self] using hd)
   · intro h
     exact RingHom.FormallyUnramified.of_surjective h
+
+/-- Polynomial variable renaming is formally unramified exactly when the variable
+map is surjective or the coefficient ring is subsingleton. In particular, no
+injectivity assumption on the variable map is needed. -/
+theorem formallyUnramified_rename_iff (f : σ → τ) :
+    RingHom.FormallyUnramified (rename (R := R) f).toRingHom ↔
+      Function.Surjective f ∨ Subsingleton R :=
+  (formallyUnramified_rename_iff_surjective f).trans (surjective_rename_iff f)
+
+/-- For variable renaming, formal unramifiedness is equivalent to module finiteness
+of the full target polynomial ring over the full source polynomial ring. The
+source acts by multiplication by the renamed polynomial, not just by coefficients.
+This equivalence is special to renaming: both properties are characterized by
+surjectivity of the variable map or subsingleton coefficients. -/
+theorem formallyUnramified_rename_iff_moduleFinite (f : σ → τ) :
+    RingHom.FormallyUnramified (rename (R := R) f).toRingHom ↔
+      @Module.Finite (MvPolynomial σ R) (MvPolynomial τ R)
+        inferInstance inferInstance
+        (@Algebra.toModule (MvPolynomial σ R) (MvPolynomial τ R)
+          inferInstance inferInstance
+          (rename (R := R) f).toRingHom.toAlgebra) :=
+  (formallyUnramified_rename_iff f).trans (moduleFinite_rename_iff f).symm
 
 end MvPolynomial

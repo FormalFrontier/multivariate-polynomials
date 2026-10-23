@@ -6,6 +6,7 @@ module
 
 import MultivariatePolynomials.RenameFlatness
 import MultivariatePolynomials.RenameFiniteType
+import MultivariatePolynomials.RenameSmooth
 import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Data.ZMod.Defs
 import Mathlib.Logic.Equiv.Sum
@@ -15,8 +16,9 @@ import Mathlib.RingTheory.Smooth.Flat
 # Models of smooth and nonsmooth variable renaming
 
 These examples concern the canonical ring map, hence the full source-polynomial
-action, rather than just the coefficient-ring action. They do not use the
-smoothness criterion.
+action, rather than just the coefficient-ring action. The five model proofs
+remain independent of the smoothness criterion. A final contract uses the
+smoothness/flat finite-type comparison on the adjoining model.
 
 The integer examples adjoin one variable, swap two variables, collide two
 variables, and adjoin infinitely many variables. The collision has finite
@@ -100,5 +102,15 @@ private theorem zero_ring_infinite_adjoining_smooth :
   exact RingHom.Smooth.of_bijective
     (Function.bijective_of_subsingleton'
       ((rename (R := ZMod 1) (PEmpty.elim : PEmpty → ℕ)).toRingHom))
+
+-- The comparison recovers flatness and finite type from the independent smooth model.
+private theorem integer_adjoining_variable_flat_and_finiteType :
+    (rename (R := ℤ) (PEmpty.elim : PEmpty → Unit)).toRingHom.Flat ∧
+      (rename (R := ℤ) (PEmpty.elim : PEmpty → Unit)).toRingHom.FiniteType := by
+  constructor
+  · exact ((rename_smooth_iff_flat_and_finiteType (R := ℤ)
+      (PEmpty.elim : PEmpty → Unit)).mp integer_adjoining_variable_smooth).1
+  · exact ((rename_smooth_iff_flat_and_finiteType (R := ℤ)
+      (PEmpty.elim : PEmpty → Unit)).mp integer_adjoining_variable_smooth).2
 
 end MultivariatePolynomialsTests.RenameSmooth

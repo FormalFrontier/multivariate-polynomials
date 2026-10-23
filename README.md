@@ -73,6 +73,19 @@ weight-one-valuation naturality interfaces.
   [natural-number example](MultivariatePolynomialsTests/CoefficientIdeal.lean)
   separates `2 * X` from `X` for the proper extended ideal `(2)` and for
   coefficient reduction modulo two.
+- **Powers of augmented coefficient ideals.** For any commutative semiring
+  `R`, ideal `I`, natural number `n`, arbitrary variable type `σ`, and polynomial
+  `p`, [`MvPolynomial.mem_pow_comap_constantCoeff_iff_coeff_mem_pow`](MultivariatePolynomials/AugmentedIdealPowers.lean)
+  characterizes membership in `(I.comap constantCoeff) ^ n`: the coefficient
+  at each exponent `d` belongs to `I ^ (n - d.sum (fun _ k => k))`.
+  Subtraction is truncated in `ℕ`, so degrees at least `n` impose no
+  restriction, rather than vanishing. Coefficients and variables have
+  independent universes; empty or infinite variables and trivial coefficient
+  semirings are allowed. The bottom coefficient ideal recovers Mathlib's
+  variable-ideal power criterion. The
+  [integer and boundary examples](MultivariatePolynomialsTests/CoefficientVariableIdeal.lean)
+  apply the criterion to `2 * X ∈ (2, X)²`, contrast the constant `2`, and
+  include the zeroth power and empty variables.
 - **Primary coefficient ideals.** For any commutative ring `R`, ideal `I`
   and arbitrary variable type `σ`,
   [`MvPolynomial.isPrimary_map_C_iff`](MultivariatePolynomials/Primary.lean)
@@ -819,6 +832,7 @@ not a complete declaration inventory.
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
 | [`IdealFiniteGeneration`](MultivariatePolynomials/IdealFiniteGeneration.lean) | Ideal extension along a semiring homomorphism with a retraction preserves and reflects finite generation; arbitrary semirings and independent universes |
 | [`CoefficientIdeal`](MultivariatePolynomials/CoefficientIdeal.lean) | Coefficient submodule and extended-ideal identification over commutative semirings; membership, contraction and coefficient-map kernels |
+| [`AugmentedIdealPowers`](MultivariatePolynomials/AugmentedIdealPowers.lean) | Coefficient criterion for all powers of constant-coefficient pullback ideals over commutative semirings, with truncated total-degree deficits and agreement with the variable-ideal criterion |
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
