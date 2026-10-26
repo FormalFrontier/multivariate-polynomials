@@ -9,6 +9,7 @@ public import Mathlib.RingTheory.FiniteType
 import Mathlib.Algebra.MvPolynomial.Supported
 import Mathlib.Data.Nat.Init
 import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Data.ZMod.Basic
 
 @[expose] public section
 
@@ -36,6 +37,10 @@ by `finiteType_rename_even_iff`. For nontrivial coefficients,
 `not_finiteType_rename_even` gives the negative conclusion. This map renames
 indices; it sends `X n` to `X (2 * n)`, not to `(X n) ^ 2`.
 
+Applications below compare a noninjective surjective projection, the singleton
+generator for successor renaming, independently lifted empty variable types,
+and infinite missed sets over zero and nonreduced coefficient rings.
+
 ## References
 
 * Mathlib, `Mathlib.Algebra.MvPolynomial.Rename`: polynomial variable renaming.
@@ -47,6 +52,8 @@ indices; it sends `X n` to `X (2 * n)`, not to `(X n) ^ 2`.
 * Mathlib, `Mathlib.Data.Set.Finite.Basic`: finite initial segments and infinite
   ranges of injective maps.
 * Mathlib, `Mathlib.Data.Nat.Init`: separation of even and odd indices.
+* Mathlib, `Mathlib.Algebra.MvPolynomial.Basic`: polynomial induction.
+* Mathlib, `Mathlib.Data.ZMod.Basic`: zero and nonreduced coefficient rings.
 -/
 
 universe u v w
@@ -179,5 +186,154 @@ theorem not_finiteType_rename_even {R : Type u} [CommSemiring R] [Nontrivial R] 
       (rename (R := R) (fun n : ℕ => 2 * n)).toRingHom.toAlgebra := by
   rw [finiteType_rename_even_iff]
   exact not_subsingleton R
+
+/-!
+## Applications with infinite or empty variable types
+
+The projection identifies variables without missing any. Successor renaming
+misses exactly zero and needs the single relative generator `X 0`. These two
+examples use the non-ring coefficient semiring `ℕ`. Even-index renaming
+contrasts nontrivial coefficients with the zero semiring. Empty variable types
+and nonreduced coefficients give further boundary cases of the criterion.
+-/
+
+-- A surjective variable map may identify infinitely many pairs of variables.
+private theorem paired_projection :
+    Function.Surjective (Prod.fst : ℕ × Bool → ℕ) ∧
+      ¬ Function.Injective (Prod.fst : ℕ × Bool → ℕ) ∧
+      (Set.range (Prod.fst : ℕ × Bool → ℕ))ᶜ = ∅ ∧
+      @Algebra.FiniteType (MvPolynomial (ℕ × Bool) ℕ) (MvPolynomial ℕ ℕ) _ _
+        (rename (R := ℕ) (Prod.fst : ℕ × Bool → ℕ)).toRingHom.toAlgebra := by
+  have hsurj : Function.Surjective (Prod.fst : ℕ × Bool → ℕ) := by
+    intro n
+    exact ⟨(n, false), rfl⟩
+  refine ⟨hsurj, ?_, ?_, ?_⟩
+  · intro h
+    have hfalse : false = true := congrArg Prod.snd
+      (h (show Prod.fst (0, false) = Prod.fst (0, true) from rfl))
+    cases hfalse
+  · rw [Set.range_eq_univ.mpr hsurj, Set.compl_univ]
+  · let : Algebra (MvPolynomial (ℕ × Bool) ℕ) (MvPolynomial ℕ ℕ) :=
+      (rename (R := ℕ) (Prod.fst : ℕ × Bool → ℕ)).toRingHom.toAlgebra
+    exact Algebra.FiniteType.of_surjective
+      (Algebra.ofId (MvPolynomial (ℕ × Bool) ℕ) (MvPolynomial ℕ ℕ))
+      (rename_surjective _ hsurj)
+
+-- All positive-index variables are scalar images; only X 0 is adjoined.
+private theorem successor_over_nat :
+    (¬ ∃ n : ℕ, 1 + n = 0) ∧
+      (Set.range Nat.succ)ᶜ = ({0} : Set ℕ) ∧
+      @Algebra.FiniteType (MvPolynomial ℕ ℕ) (MvPolynomial ℕ ℕ) _ _
+        (rename (R := ℕ) Nat.succ).toRingHom.toAlgebra := by
+  refine ⟨?_, ?_, ?_⟩
+  · rintro ⟨n, hn⟩
+    exact Nat.succ_ne_zero n (by simpa only [Nat.add_comm] using hn)
+  · ext n
+    cases n <;> simp
+  · let : Algebra (MvPolynomial ℕ ℕ) (MvPolynomial ℕ ℕ) :=
+      (rename (R := ℕ) Nat.succ).toRingHom.toAlgebra
+    refine ⟨⟨{(X 0 : MvPolynomial ℕ ℕ)}, ?_⟩⟩
+    rw [Finset.coe_singleton]
+    let S : Subalgebra (MvPolynomial ℕ ℕ) (MvPolynomial ℕ ℕ) :=
+      Algebra.adjoin (MvPolynomial ℕ ℕ) ({X 0} : Set (MvPolynomial ℕ ℕ))
+    change S = ⊤
+    apply top_unique
+    intro p _hp
+    clear _hp
+    induction p using MvPolynomial.induction_on with
+    | C r =>
+        have hr := S.algebraMap_mem (C r)
+        change rename Nat.succ (C r) ∈ S at hr
+        simpa only [rename_C] using hr
+    | add p q hp hq => exact S.add_mem hp hq
+    | mul_X p n hp =>
+        apply S.mul_mem hp
+        cases n with
+        | zero => exact Algebra.subset_adjoin (Set.mem_singleton_iff.mpr rfl)
+        | succ n =>
+            have hn := S.algebraMap_mem (X n)
+            change rename Nat.succ (X n) ∈ S at hn
+            simpa only [rename_X] using hn
+
+-- The coefficient semiring need not be a ring, nontrivial, or Noetherian.
+private theorem finiteType_rename_add_two {R : Type u} [CommSemiring R] :
+    @Algebra.FiniteType (MvPolynomial ℕ R) (MvPolynomial ℕ R) _ _
+      (rename (R := R) (fun n : ℕ => n + 2)).toRingHom.toAlgebra :=
+  finiteType_rename_add 2
+
+private theorem even_index_coefficient_contrast :
+    (¬ @Algebra.FiniteType (MvPolynomial ℕ ℕ) (MvPolynomial ℕ ℕ) _ _
+      (rename (R := ℕ) (fun n : ℕ => 2 * n)).toRingHom.toAlgebra) ∧
+      @Algebra.FiniteType (MvPolynomial ℕ (ZMod 1)) (MvPolynomial ℕ (ZMod 1)) _ _
+        (rename (R := ZMod 1) (fun n : ℕ => 2 * n)).toRingHom.toAlgebra :=
+  ⟨not_finiteType_rename_even,
+    (finiteType_rename_even_iff (R := ZMod 1)).mpr inferInstance⟩
+
+-- The source, target, and coefficient universes remain independent.
+private theorem empty_rename_finiteType {R : Type u} [CommSemiring R] :
+    @Algebra.FiniteType (MvPolynomial PEmpty.{v + 1} R)
+      (MvPolynomial PEmpty.{w + 1} R) _ _
+      (rename (R := R)
+        (PEmpty.elim : PEmpty.{v + 1} → PEmpty.{w + 1})).toRingHom.toAlgebra := by
+  let : Algebra (MvPolynomial PEmpty.{v + 1} R) (MvPolynomial PEmpty.{w + 1} R) :=
+    (rename (R := R)
+      (PEmpty.elim : PEmpty.{v + 1} → PEmpty.{w + 1})).toRingHom.toAlgebra
+  exact Algebra.FiniteType.of_surjective
+    (Algebra.ofId (MvPolynomial PEmpty.{v + 1} R) (MvPolynomial PEmpty.{w + 1} R))
+    (rename_surjective _ (fun x => PEmpty.elim x))
+
+-- Over the zero semiring, infinitely many missed variables need no generators.
+private theorem empty_source_over_zero :
+    Set.Infinite ((Set.range (PEmpty.elim : PEmpty.{v + 1} → ℕ))ᶜ) ∧
+      @Algebra.FiniteType (MvPolynomial PEmpty.{v + 1} (ZMod 1))
+        (MvPolynomial ℕ (ZMod 1)) _ _
+        (rename (R := ZMod 1)
+          (PEmpty.elim : PEmpty.{v + 1} → ℕ)).toRingHom.toAlgebra := by
+  constructor
+  · have hr : Set.range (PEmpty.elim : PEmpty.{v + 1} → ℕ) = ∅ := by
+      ext n
+      constructor
+      · rintro ⟨i, _hi⟩
+        exact PEmpty.elim i
+      · intro hn
+        exact hn.elim
+    rw [hr, Set.compl_empty]
+    exact Set.infinite_univ
+  · let : Algebra (MvPolynomial PEmpty.{v + 1} (ZMod 1))
+        (MvPolynomial ℕ (ZMod 1)) :=
+      (rename (R := ZMod 1)
+        (PEmpty.elim : PEmpty.{v + 1} → ℕ)).toRingHom.toAlgebra
+    refine ⟨⟨∅, ?_⟩⟩
+    rw [Finset.coe_empty]
+    apply top_unique
+    intro p _hp
+    have hp : p = 0 := Subsingleton.elim _ _
+    rw [hp]
+    exact (Algebra.adjoin (MvPolynomial PEmpty.{v + 1} (ZMod 1))
+      (∅ : Set (MvPolynomial ℕ (ZMod 1)))).zero_mem
+
+-- A nonreduced coefficient ring still has the infinite-misses obstruction.
+-- Here the obstruction is an application of finiteType_rename_iff.
+private theorem singleton_source_over_zmod_four :
+    ((2 : ZMod 4) ≠ 0 ∧ (2 : ZMod 4) ^ 2 = 0) ∧
+      Set.Infinite ((Set.range (fun _ : Fin 1 => (0 : ℕ)))ᶜ) ∧
+      ¬ @Algebra.FiniteType (MvPolynomial (Fin 1) (ZMod 4))
+        (MvPolynomial ℕ (ZMod 4)) _ _
+        (rename (R := ZMod 4)
+          (fun _ : Fin 1 => (0 : ℕ))).toRingHom.toAlgebra := by
+  have hmissed : Set.Infinite ((Set.range (fun _ : Fin 1 => (0 : ℕ)))ᶜ) := by
+    intro h
+    have hu : (Set.univ : Set ℕ).Finite := by
+      simpa only [Set.union_compl_self] using
+        (Set.finite_range (fun _ : Fin 1 => (0 : ℕ))).union h
+    exact Set.infinite_univ hu
+  refine ⟨?_, hmissed, ?_⟩
+  · decide
+  · let : Nontrivial (ZMod 4) := ZMod.nontrivial_iff.mpr (by decide)
+    intro h
+    rcases (finiteType_rename_iff (R := ZMod 4)
+      (fun _ : Fin 1 => (0 : ℕ))).mp h with hR | hf
+    · exact not_subsingleton (ZMod 4) hR
+    · exact hmissed hf
 
 end MvPolynomial

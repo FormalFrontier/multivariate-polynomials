@@ -1,8 +1,9 @@
 # Multivariate polynomials
 
 This Lean library provides reusable results about variable ideals, homogeneous
-evaluation, substitution into disjoint blocks, coefficient extraction, linear
-evaluation and division, monic lifts, first-variable lexicographic degrees,
+evaluation, finite-support first-order expansion, substitution into disjoint blocks,
+coefficient extraction, linear evaluation and division, monic lifts,
+first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
 function fields. It also gives exact injectivity and recovery criteria for
 finite coefficient aggregation. Polynomial point quotients at pairwise
@@ -202,22 +203,30 @@ weight-one-valuation naturality interfaces.
   presentation, for the source-polynomial action induced by renaming.
   Coefficients and both variable types have independent universes; no
   finiteness or nontriviality hypothesis is imposed on them.
+  [`MvPolynomial.rename_smooth_iff_flat_and_finiteType`](MultivariatePolynomials/RenameSmooth.lean)
+  compares smoothness with flatness and finite type for these renamings.
+  Five concrete settings in the same file distinguish the collision/flatness
+  obstruction from the infinite-complement/finite-type obstruction and exhibit
+  the zero-ring exception. A derived application uses the comparison to extract
+  flatness and finite type from an independent one-variable extension over `ℤ`.
 - **Formal unramifiedness of variable renaming.** Over any commutative ring
   `R`, [`MvPolynomial.formallyUnramified_rename_iff_surjective`](MultivariatePolynomials/RenameUnramified.lean)
   says that `MvPolynomial.rename f`, as a homomorphism from the full source
   polynomial ring, is formally unramified exactly when it is surjective:
   equivalently, when `f` is surjective or `R` is subsingleton. The coefficient
   and variable types may lie in independent universes, and neither variable
-  type must be finite or inhabited. The [boundary examples](MultivariatePolynomialsTests/RenameUnramifiedModels.lean)
+  type must be finite or inhabited. The [private boundary models](MultivariatePolynomials/RenameUnramified.lean)
   include a collision of variables over the integers, an omitted variable over
-  the integers, and an omitted variable over `ZMod 1`.
+  the integers, and an omitted variable over `ZMod 1`. The collision uses
+  `MvPolynomial.formallyUnramified_rename_iff_moduleFinite`, with the full source
+  polynomial ring acting by multiplication by the renamed polynomial.
 - **Integrality of polynomial variable renaming.**
   Over any commutative ring `R`,
   [`MvPolynomial.isIntegral_rename_iff`](MultivariatePolynomials/RenameIntegral.lean)
   states that renaming between the full polynomial rings is integral exactly
   when the variable map is surjective or the coefficient ring is subsingleton.
   See the [integrality section](#integrality-of-polynomial-variable-renaming)
-  for the precise map, generality and independent models.
+  for the precise map, generality and applications.
 - **Algebraicity of polynomial variable renaming.**
   Over any commutative ring `R`,
   [`MvPolynomial.isAlgebraic_rename_iff`](MultivariatePolynomials/RenameAlgebraic.lean)
@@ -282,7 +291,8 @@ weight-one-valuation naturality interfaces.
   finite type: over nontrivial coefficients, `Nat.succ : ℕ → ℕ` misses only
   `0`, so its renaming is of finite type but is not module-finite. These are
   source-polynomial scalars, not coefficient-`R` scalars. See the
-  [criterion applications](MultivariatePolynomialsTests/RenameModuleFiniteCriterion.lean).
+  [applications beside the criterion](MultivariatePolynomials/RenameModuleFinite.lean),
+  including nonreduced and noncancellative coefficients and independent universe lifts.
 - **Quasi-finiteness of commutative-ring variable renaming.** For any
   commutative ring `R` and arbitrary `f : σ → τ`, with all three types in
   independent universes,
@@ -295,11 +305,11 @@ weight-one-valuation naturality interfaces.
   `R[X]`, reducing the converse to Mathlib's polynomial local obstruction. The
   comparison `MvPolynomial.rename_quasiFinite_iff_finite` identifies
   quasi-finiteness with finiteness of that same ring homomorphism. The
-  [independent boundary data and API contract](MultivariatePolynomialsTests/RenameQuasiFiniteModels.lean)
+  [boundary applications](MultivariatePolynomials/RenameQuasiFinite.lean)
   contrast an omitted variable and a noninjective surjection over `ℤ`, and
-  include the zero-coefficient boundary. The three data proofs use Mathlib
-  directly, independently of the renaming criteria; the module also imports
-  the comparison API for a final private verification contract.
+  include the same omitted-variable map over `ZMod 1`. In the collision case,
+  a nonzero source polynomial annihilates every target polynomial under the
+  full renaming-induced action.
 - **Finite coefficient aggregation has an exact injectivity criterion.** For
   types `α`, `β` and `M` in independent universes, an additive commutative
   monoid `M`, and any index map `f : α → β`,
@@ -603,13 +613,24 @@ criterion for finite **algebra** generation, not finite presentation,
 coefficient-module finiteness, or finite generation of the source polynomial
 kernel ideal.
 
-The [infinite-variable applications](MultivariatePolynomialsTests/RenameFiniteTypeCriterion.lean)
+The shift and even-index results and their
+[applications](MultivariatePolynomials/RenameFiniteType.lean)
 show that shifting natural-number indices by one or two is of finite type,
 whereas the even-index embedding `n ↦ 2 * n` is of finite type exactly when
 `R` is subsingleton. Its missed variables include the infinite injective image
 of `n ↦ 2 * n + 1`. This index embedding sends `X n` to `X (2 * n)`; it is not
 the substitution `X n ↦ (X n)²`. The criterion uses Mathlib's polynomial
 renaming, finite-support and algebra-adjoin APIs.
+
+The applications also exhibit the noninjective surjection `ℕ × Bool → ℕ`
+and successor renaming over the non-ring semiring `ℕ`. Successor misses exactly
+`0`; polynomial induction gives the relative singleton generator `X 0`.
+Surjective renaming proves finite type for the projection and for empty source
+and target variable types in independent universes. With coefficients `ZMod 1`,
+an empty source and infinitely many missed targets still need no generators.
+In contrast, the constant-zero map `Fin 1 → ℕ` over `ZMod 4` fails the criterion:
+infinitely many targets are missed, even though the nonzero coefficient `2`
+has square zero. This last obstruction uses the finite-type criterion.
 
 ## Relative finite presentation of variable renaming
 
@@ -694,25 +715,12 @@ with the same three independent universes. In particular, a collision may make
 the full-source algebra algebraic while a missing target variable remains
 nonintegral; the shifted-projection example over `ZMod 4` exhibits this contrast.
 
-The named
-[criterion applications](MultivariatePolynomialsTests/RenameIntegralCriterion.lean)
-derive their integrality conclusions from this equivalence. They include
-surjections, subsingleton coefficients, the noninjective
-projection `ℕ × Bool → ℕ`, empty-to-empty renaming, and successor renaming,
-which is integral exactly when the coefficients are subsingleton. They also
-include the noninjective, nonsurjective map `(n, b) ↦ n + 1`, whose renaming
-is nonintegral over nontrivial coefficients.
-
-Two separate independent model files are included:
-`MultivariatePolynomialsTests/RenameIntegralPositive.lean` and
-`MultivariatePolynomialsTests/RenameIntegralNegative.lean`. They give direct
-positive examples (including infinite and noninjective surjections, a nonzero
-nilpotent coefficient in `ZMod 4`, zero-ring boundaries and three independent
-lifted universes) and negative examples over
-nontrivial, possibly nonreduced rings, without applying the displayed equivalence.
-The negative controls include the noninjective, nonsurjective shifted projection
-`(n, b) ↦ n + 1`; its proof factors through successor rather than asserting
-transcendence over the full source ring. These models do not prove the headline.
+The private [applications beside the criteria](MultivariatePolynomials/RenameIntegral.lean)
+contrast projection with successor, empty targets with missed variables, and
+nonreduced coefficients with coefficient collapse. Independent universe lifts
+retain these distinctions. The successor examples apply the pointwise criterion
+directly to `X 1` and `X 0` through the renaming-induced algebra, rather than the
+default identity algebra on the same polynomial type.
 
 ## Use and check
 

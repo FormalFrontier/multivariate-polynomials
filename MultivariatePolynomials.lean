@@ -29,6 +29,7 @@ public import MultivariatePolynomials.LinearDivision
 public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal
+public import MultivariatePolynomials.Taylor
 public import MultivariatePolynomials.Interpolation
 public import MultivariatePolynomials.LagrangeComparison
 public import MultivariatePolynomials.QuotientClosedPoints

@@ -8,6 +8,7 @@ public import Mathlib.Algebra.MvPolynomial.Rename
 public import Mathlib.RingTheory.RingHom.QuasiFinite
 
 import Mathlib.Algebra.Polynomial.AlgebraMap
+import Mathlib.Data.ZMod.Defs
 import Mathlib.RingTheory.Ideal.Maximal
 import Mathlib.RingTheory.QuasiFinite.Polynomial
 import MultivariatePolynomials.RenameModuleFinite
@@ -47,6 +48,9 @@ Mathlib's polynomial obstruction at a maximal ideal.
   `Mathlib.RingTheory.RingHom.QuasiFinite`.
 * Johan Commelin's Mathlib finiteness API in
   `Mathlib.RingTheory.Finiteness.Basic`.
+* Mathlib's multivariate-polynomial API by Johannes Hölzl, Johan Commelin
+  and Mario Carneiro, and its induced-algebra action API by Kenny Lau and
+  Yury Kudryashov.
 * Formal Frontier Agents, the compositional polynomial obstruction.
   The evaluation section and factorization follow the proof patterns in this
   library's `RenameModuleFinite` and `RenameIntegral` modules.
@@ -124,3 +128,92 @@ theorem MvPolynomial.rename_quasiFinite_iff_finite
       RingHom.Finite (MvPolynomial.rename (R := R) f).toRingHom := by
   exact (MvPolynomial.rename_quasiFinite_iff (R := R) f).trans
     (MvPolynomial.moduleFinite_rename_iff (R := R) f).symm
+
+/-! ## Applications
+
+The following three boundaries concern the original full polynomial-ring map.
+An omitted variable over the integers obstructs both quasi-finiteness and
+finiteness. A collision, on the other hand, can give a finite, quasi-finite map
+with a nonzero source polynomial annihilating every target polynomial. Finally,
+the same omitted-variable map is quasi-finite and finite over `ZMod 1`: it still
+misses `()`, but the coefficient-ring exception in the criterion applies.
+-/
+
+namespace MvPolynomial
+
+/-- With integer coefficients, the map from no variables to one variable misses
+`()`, and its renaming is neither quasi-finite nor finite. -/
+private theorem empty_unit_int_boundary :
+    ¬ Function.Surjective (Empty.elim : Empty → Unit) ∧
+      ¬ RingHom.QuasiFinite
+        (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom ∧
+      ¬ RingHom.Finite
+        (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom := by
+  have hmiss : ¬ Function.Surjective (Empty.elim : Empty → Unit) := by
+    intro h
+    obtain ⟨i, _⟩ := h ()
+    exact Empty.elim i
+  have hnotqf : ¬ RingHom.QuasiFinite
+      (rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom := by
+    intro hqf
+    rcases (rename_quasiFinite_iff (R := ℤ) (Empty.elim : Empty → Unit)).mp hqf with
+      hsurj | hzero
+    · exact hmiss hsurj
+    · exact zero_ne_one (@Subsingleton.elim ℤ hzero 0 1)
+  refine ⟨hmiss, hnotqf, ?_⟩
+  intro hfinite
+  exact hnotqf
+    ((rename_quasiFinite_iff_finite (R := ℤ) (Empty.elim : Empty → Unit)).mpr hfinite)
+
+/-- Collapsing two integer variables to one is noninjective but surjective,
+finite and quasi-finite. The nonzero polynomial `X false - X true` kills every
+target polynomial under the induced full source-polynomial action. -/
+private theorem bool_unit_int_boundary :
+    ¬ Function.Injective (fun _ : Bool => ()) ∧
+      Function.Surjective (fun _ : Bool => ()) ∧
+      RingHom.Finite (rename (R := ℤ) (fun _ : Bool => ())).toRingHom ∧
+      RingHom.QuasiFinite (rename (R := ℤ) (fun _ : Bool => ())).toRingHom ∧
+      ∃ a : MvPolynomial Bool ℤ, a ≠ 0 ∧
+        ∀ b : MvPolynomial Unit ℤ,
+          @SMul.smul (MvPolynomial Bool ℤ) (MvPolynomial Unit ℤ)
+            (rename (R := ℤ) (fun _ : Bool => ())).toRingHom.toAlgebra.toSMul a b = 0 := by
+  let f : Bool → Unit := fun _ => ()
+  let φ : MvPolynomial Bool ℤ →+* MvPolynomial Unit ℤ :=
+    (rename (R := ℤ) f).toRingHom
+  have hf : Function.Surjective f := by
+    rintro ⟨⟩
+    exact ⟨false, rfl⟩
+  have hqf : φ.QuasiFinite :=
+    (rename_quasiFinite_iff (R := ℤ) f).mpr (Or.inl hf)
+  have hfinite : φ.Finite := (rename_quasiFinite_iff_finite (R := ℤ) f).mp hqf
+  refine ⟨?_, hf, hfinite, hqf, X false - X true, ?_, ?_⟩
+  · intro h
+    have hft : false = true := h (show f false = f true from rfl)
+    cases hft
+  · intro hz
+    have hX : (X false : MvPolynomial Bool ℤ) = X true := sub_eq_zero.mp hz
+    have hft : false = true := MvPolynomial.X_injective hX
+    cases hft
+  · intro b
+    change φ (X false - X true) * b = 0
+    simp [φ, f]
+
+/-- Over `ZMod 1`, the same map still misses `()`, but its renaming is
+quasi-finite and finite because the coefficients are subsingleton. -/
+private theorem empty_unit_zmod_one_boundary :
+    ¬ Function.Surjective (Empty.elim : Empty → Unit) ∧
+      RingHom.QuasiFinite
+        (rename (R := ZMod 1) (Empty.elim : Empty → Unit)).toRingHom ∧
+      RingHom.Finite
+        (rename (R := ZMod 1) (Empty.elim : Empty → Unit)).toRingHom := by
+  have hqf : RingHom.QuasiFinite
+      (rename (R := ZMod 1) (Empty.elim : Empty → Unit)).toRingHom :=
+    (rename_quasiFinite_iff (R := ZMod 1) (Empty.elim : Empty → Unit)).mpr
+      (Or.inr inferInstance)
+  refine ⟨?_, hqf,
+    (rename_quasiFinite_iff_finite (R := ZMod 1) (Empty.elim : Empty → Unit)).mp hqf⟩
+  intro h
+  obtain ⟨i, _⟩ := h ()
+  exact Empty.elim i
+
+end MvPolynomial

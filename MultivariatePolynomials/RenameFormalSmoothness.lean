@@ -9,6 +9,7 @@ public import Mathlib.RingTheory.RingHom.Smooth
 import MultivariatePolynomials.RenameComplement
 import Mathlib.Algebra.Module.Opposite
 import Mathlib.Algebra.TrivSqZeroExt.Ideal
+import Mathlib.Data.ZMod.Basic
 
 @[expose] public section
 
@@ -18,8 +19,12 @@ import Mathlib.Algebra.TrivSqZeroExt.Ideal
 Formal smoothness of a variable-renaming homomorphism is relative to the full
 source polynomial ring. The predicate `RingHom.FormallySmooth` uses the algebra
 structure induced by the homomorphism: a source variable `X i` acts through the
-target variable `X (f i)`. This differs from formal smoothness over the coefficient
+target variable `X (f i)`. More generally, the scalar action is
+`p • q = rename f p * q`. This differs from formal smoothness over the coefficient
 ring, which holds for every polynomial algebra and cannot detect collisions.
+Mathlib expresses formal smoothness by projectivity of the module of Kähler
+differentials and vanishing of the first cotangent homology; infinitesimal lifting
+is an equivalent criterion.
 
 Renaming is formally smooth exactly when its underlying map is injective, or
 equivalently when the variable map is injective or the coefficient ring is
@@ -164,6 +169,52 @@ theorem rename_formallySmooth_iff
       let : Subsingleton (MvPolynomial τ R) := Algebra.subsingleton R _
       exact RingHom.FormallySmooth.of_bijective
         ⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩
+
+/-!
+## Polynomial extensions and collisions
+
+Over `ℤ`, the inclusion `Fin.natAdd 1 : Fin 1 → Fin 2` makes the target a
+polynomial algebra in one extra variable over the full source polynomial ring.
+Indeed, compose renaming along
+`(finSumFinEquiv : Fin 1 ⊕ Fin 1 ≃ Fin 2).symm` with
+`sumAlgEquiv ℤ (Fin 1) (Fin 1)`. This equivalence sends every renamed source
+polynomial `p` to `C p`. Polynomial formal smoothness and invariance under ring
+equivalence therefore prove formal smoothness independently of the criteria.
+The range-and-complement proof above gives the same independent argument for an
+arbitrary injective variable map; the inclusion is its simplest finite instance.
+
+Collapsing two variables over `ℤ` illustrates why the base algebra matters:
+the target is formally smooth over the coefficients, but not over the full
+source polynomial ring with the renaming action. Independently, the collapse is
+surjective, hence of finite type; its Noetherian source makes it finitely
+presented. Formal smoothness would then imply smoothness and flatness, contrary
+to the full-source flatness criterion for a collision.
+-/
+example :
+    Algebra.FormallySmooth ℤ (MvPolynomial Unit ℤ) ∧
+      ¬ (rename (R := ℤ) (fun _ : Fin 2 => ())).toRingHom.FormallySmooth := by
+  refine ⟨inferInstance, ?_⟩
+  intro h
+  rcases (rename_formallySmooth_iff (R := ℤ) (fun _ : Fin 2 => ())).mp h with
+    hinj | hzero
+  · have h01 : (0 : Fin 2) = 1 := hinj rfl
+    exact (by decide : (0 : Fin 2) ≠ 1) h01
+  · exact (not_subsingleton ℤ) hzero
+
+/-!
+The same index map is noninjective over `ZMod 1`, but both polynomial rings are
+singletons. Thus the induced polynomial map is bijective and formally smooth,
+which explains the subsingleton alternative in the criterion.
+-/
+example :
+    ¬ Function.Injective (fun _ : Fin 2 => ()) ∧
+      (rename (R := ZMod 1) (fun _ : Fin 2 => ())).toRingHom.FormallySmooth := by
+  constructor
+  · intro hinj
+    have h01 : (0 : Fin 2) = 1 := hinj rfl
+    exact (by decide : (0 : Fin 2) ≠ 1) h01
+  · exact (rename_formallySmooth_iff (R := ZMod 1) (fun _ : Fin 2 => ())).mpr
+      (Or.inr inferInstance)
 
 /-- Variable renaming is formally smooth over the full source polynomial ring
 exactly when its underlying map on polynomial rings is injective. -/

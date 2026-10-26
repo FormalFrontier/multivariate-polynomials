@@ -8,6 +8,7 @@ public import MultivariatePolynomials.Rename
 public import MultivariatePolynomials.RenameModuleFinite
 public import Mathlib.RingTheory.RingHom.Unramified
 import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Data.ZMod.Basic
 
 /-!
 # Formal unramifiedness of polynomial variable renaming
@@ -34,6 +35,7 @@ value on the omitted variable over a nontrivial coefficient ring.
   ring homomorphisms and its consequence for surjective homomorphisms.
 * Mathlib, `Mathlib.Algebra.MvPolynomial.PDeriv`: partial differentiation and
   its vanishing outside the variables of a polynomial.
+* Mathlib, `Mathlib.Data.ZMod.Basic`: the zero coefficient ring `ZMod 1`.
 * Mathlib, `Mathlib.RingTheory.Kaehler.Basic`: factorization of derivations
   through Kähler differentials.
 * `MultivariatePolynomials.Rename`: the surjectivity criterion for renaming.
@@ -119,3 +121,55 @@ theorem formallyUnramified_rename_iff_moduleFinite (f : σ → τ) :
   (formallyUnramified_rename_iff f).trans (moduleFinite_rename_iff f).symm
 
 end MvPolynomial
+
+end
+
+/-!
+## Boundary models
+
+For `A = MvPolynomial σ R` and `B = MvPolynomial τ R`, the algebra structure
+is `(rename f).toRingHom.toAlgebra`, so the action is
+`p • q = rename f p * q`. Module finiteness means finite generation over `A`,
+not finite cardinality or finite generation over the coefficient ring alone.
+
+Over the integers, the constant map from `Bool` to `Unit` gives a formally
+unramified renaming despite identifying two variables. The finite-module comparison
+also applies to this surjection, with scalars from the full source polynomial ring.
+The map from `Empty` to `Unit` does not give a formally unramified renaming over
+the integers, but does over the zero coefficient ring `ZMod 1`. In the zero-ring
+case, failure of injectivity of a variable map would not imply failure of
+injectivity of its polynomial renaming.
+-/
+
+private theorem integer_collision_formallyUnramified :
+    (¬ Function.Injective (fun _ : Bool => ())) ∧
+      RingHom.FormallyUnramified
+        (MvPolynomial.rename (R := ℤ) (fun _ : Bool => ())).toRingHom := by
+  constructor
+  · intro h
+    have hfalse : (false : Bool) = true := h rfl
+    cases hfalse
+  · apply (MvPolynomial.formallyUnramified_rename_iff_moduleFinite
+      (R := ℤ) (fun _ : Bool => ())).2
+    apply (MvPolynomial.moduleFinite_rename_iff (R := ℤ) (fun _ : Bool => ())).2
+    left
+    intro t
+    exact ⟨false, Subsingleton.elim _ _⟩
+
+private theorem integer_omitted_variable_not_formallyUnramified :
+    ¬ RingHom.FormallyUnramified
+      (MvPolynomial.rename (R := ℤ) (Empty.elim : Empty → Unit)).toRingHom := by
+  intro h
+  have hs := (MvPolynomial.formallyUnramified_rename_iff (R := ℤ)
+    (Empty.elim : Empty → Unit)).1 h
+  rcases hs with hs | hR
+  · obtain ⟨e, _⟩ := hs ()
+    exact Empty.elim e
+  · exact zero_ne_one (hR.elim 0 1)
+
+private theorem zero_coefficients_omitted_variable_formallyUnramified :
+    RingHom.FormallyUnramified
+      (MvPolynomial.rename (R := ZMod 1) (Empty.elim : Empty → Unit)).toRingHom :=
+  (MvPolynomial.formallyUnramified_rename_iff
+    (R := ZMod 1) (Empty.elim : Empty → Unit)).2
+      (Or.inr (ZMod.subsingleton_iff.mpr rfl))
