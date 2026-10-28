@@ -11,9 +11,15 @@ public import MultivariatePolynomials.FractionRingFiniteVariables
 public import MultivariatePolynomials.PolynomialFractionTrace
 public import MultivariatePolynomials.IdealOfVars
 public import MultivariatePolynomials.CoefficientIdeal
+public import MultivariatePolynomials.CoefficientProduct
+public import MultivariatePolynomials.CoefficientProductJacobian
+public import MultivariatePolynomials.CoefficientProductSylvester
 public import MultivariatePolynomials.IdealExtension
 public import MultivariatePolynomials.AugmentedIdealPowers
 public import MultivariatePolynomials.CoefficientIdealSubtractive
+public import MultivariatePolynomials.CoefficientIdealPrime
+public import MultivariatePolynomials.CoefficientIdealMaximal
+public import MultivariatePolynomials.CoefficientIdealNat
 public import MultivariatePolynomials.MonomialIdeal
 public import MultivariatePolynomials.Primary
 public import MultivariatePolynomials.PrimaryDecomposition
@@ -45,6 +51,7 @@ public import MultivariatePolynomials.FiniteSupport
 public import MultivariatePolynomials.Rename
 public import MultivariatePolynomials.RenameKernel
 public import MultivariatePolynomials.RenameKernelProperties
+public import MultivariatePolynomials.RenameKernel.Examples
 public import MultivariatePolynomials.RenameFiniteType
 public import MultivariatePolynomials.RenameEssentialFiniteType
 public import MultivariatePolynomials.RenameComplement
@@ -65,6 +72,7 @@ public import MultivariatePolynomials.Nilpotent
 public import MultivariatePolynomials.IntegralCoefficients
 public import MultivariatePolynomials.Jacobson
 public import MultivariatePolynomials.PrimeSpectrum
+public import MultivariatePolynomials.FiniteSupport.Recovery
 
 /-!
 # Multivariate polynomials

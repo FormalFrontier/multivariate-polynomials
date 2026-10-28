@@ -7,6 +7,11 @@ module
 public import MultivariatePolynomials.IdealOfVars
 public import Mathlib.RingTheory.Polynomial.Basic
 
+import Mathlib.Algebra.EuclideanDomain.Int
+import Mathlib.Data.ZMod.Basic
+import Mathlib.NumberTheory.FrobeniusNumber
+import Mathlib.Data.Matrix.Basis
+
 /-!
 # Noetherian polynomial semirings
 
@@ -52,6 +57,9 @@ act on the left, so all ideal-membership arguments apply to left ideals.
   obstructs finite generation of a module over nontrivial coefficients.
 * `MultivariatePolynomials.IdealOfVars`: finite generation of ideals generated
   by subsets of variables over nontrivial commutative semirings.
+* Mathlib, `Mathlib.NumberTheory.FrobeniusNumber`: Noetherianity of the regular
+  natural-number semimodule.
+* Mathlib, `Mathlib.Data.Matrix.Basis`: matrix units and their products.
 -/
 
 @[expose] public section
@@ -89,6 +97,23 @@ theorem isNoetherian_iff
       exact isNoetherian_of_linearEquiv (isEmptyAlgEquiv R σ).toLinearEquiv.symm
     · let : Subsingleton R := hsub
       exact isNoetherian_of_subsingleton R (MvPolynomial σ R)
+
+-- Empty variables preserve the regular coefficient module. In particular, this
+-- applies to the natural-number semiring, using Mathlib's Frobenius provider.
+example : IsNoetherian ℕ (MvPolynomial Empty ℕ) := by
+  exact MvPolynomial.isNoetherian_iff.mpr ⟨inferInstance, Or.inl inferInstance⟩
+
+-- Trivial coefficients allow arbitrary variables, including infinitely many.
+example : IsNoetherian (ZMod 1) (MvPolynomial ℕ (ZMod 1)) := by
+  exact MvPolynomial.isNoetherian_iff.mpr ⟨inferInstance, Or.inr inferInstance⟩
+
+-- Two integer variables give a Noetherian polynomial ring for its self-action,
+-- but not for its coefficient action: even one variable is an obstruction.
+example : ¬ IsNoetherian ℤ (MvPolynomial (Fin 2) ℤ) := by
+  intro h
+  rcases (MvPolynomial.isNoetherian_iff.mp h).2 with hσ | hR
+  · exact hσ.false 0
+  · exact (not_subsingleton ℤ) hR
 
 /-- Over a nontrivial commutative semiring, Noetherianity of the multivariate
 polynomial semiring forces the variable type to be finite. This is a theorem,
@@ -137,6 +162,27 @@ theorem isNoetherianRing_iff_of_nontrivial
       IsNoetherianRing R ∧ Finite σ := by
   exact isNoetherianRing_iff.trans
     (and_congr_right fun _ => or_iff_left (not_subsingleton R))
+
+-- The coefficient condition is already known for ZMod 6, despite its nonzero
+-- zero divisors 2 and 3. Only finiteness of the variable type remains.
+example {σ : Type u} :
+    IsNoetherianRing (MvPolynomial σ (ZMod 6)) ↔ Finite σ := by
+  let : Fact (1 < 6) := ⟨by decide⟩
+  constructor
+  · intro h
+    exact (MvPolynomial.isNoetherianRing_iff_of_nontrivial.mp h).2
+  · intro h
+    exact MvPolynomial.isNoetherianRing_iff_of_nontrivial.mpr ⟨inferInstance, h⟩
+
+-- With infinitely many variables, the full criterion forces the coefficient
+-- ring to be trivial; no nontriviality premise is appropriate here.
+example {R : Type v} [CommRing R] [IsNoetherianRing (MvPolynomial ℕ R)] :
+    (1 : R) = 0 := by
+  have hsub : Subsingleton R :=
+    (MvPolynomial.isNoetherianRing_iff.mp
+      (inferInstance : IsNoetherianRing (MvPolynomial ℕ R))).2.resolve_left
+        Infinite.not_finite
+  exact @Subsingleton.elim R hsub 1 0
 
 end MvPolynomial
 
@@ -281,6 +327,20 @@ theorem isNoetherianRing_of_isNoetherianRing_eq_isNoetherianRing
     isNoetherianRing_of_isNoetherianRing (R := R) =
       Polynomial.isNoetherianRing (R := R) := by
   exact Subsingleton.elim _ _
+
+-- For the usual matrix multiplication, E01 * E10 and E10 * E01 differ at
+-- entry (0,0). Thus this Hilbert basis application uses genuinely noncommutative
+-- coefficients. The polynomial ring is Noetherian for its regular left action,
+-- not for the matrix coefficient action, even though the matrix ring is finite.
+example :
+    IsNoetherianRing
+      (Polynomial (Matrix (Fin 2) (Fin 2) (ZMod 2))) := by
+  let : IsNoetherianRing (Matrix (Fin 2) (Fin 2) (ZMod 2)) :=
+    isNoetherian_of_finite
+      (Matrix (Fin 2) (Fin 2) (ZMod 2))
+      (Matrix (Fin 2) (Fin 2) (ZMod 2))
+  exact Polynomial.isNoetherianRing_of_isNoetherianRing
+    (R := Matrix (Fin 2) (Fin 2) (ZMod 2))
 
 -- A zero coefficient at the generator's positive exponent forces the left
 -- multiplier's constant coefficient to vanish: there is no additive cancellation.

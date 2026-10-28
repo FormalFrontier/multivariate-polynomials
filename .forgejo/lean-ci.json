@@ -7,7 +7,9 @@
       "targets": [
         "MultivariatePolynomials",
         "MultivariatePolynomialsTests",
-        "MultivariatePolynomialsTests.EvaluationIdeal"
+        "MultivariatePolynomialsTests.EvaluationIdeal",
+        "MultivariatePolynomialsIdealTests",
+        "MultivariatePolynomialsAlgebraTests"
       ]
     }
   ],

@@ -178,6 +178,38 @@ theorem exists_eval₂_sub_eq_sum
     · simpa [hj] using hdj j
     · simp [hj, pderiv_eq_zero_of_notMem_vars hj]
 
+/-- The two-point error after subtracting the differential at `a` belongs to
+`I * J` if both points differ from `a` by elements of `I`, and from each other
+by elements of `J`, on the variables of the polynomial. -/
+theorem eval₂_sub_eval₂_sub_sum_pderiv_mem_mul
+    (I J : Ideal R) (φ : C →+* R) (a b c : σ → R) (p : MvPolynomial σ C)
+    (hb : ∀ i ∈ p.vars, b i - a i ∈ I)
+    (hc : ∀ i ∈ p.vars, c i - a i ∈ I)
+    (hbc : ∀ i ∈ p.vars, b i - c i ∈ J) :
+    eval₂ φ b p - eval₂ φ c p -
+      p.vars.sum (fun j => eval₂ φ a (pderiv j p) * (b j - c j)) ∈ I * J := by
+  classical
+  obtain ⟨d, _, hd, hdI⟩ := exists_eval₂_sub_eq_sum I φ a b c p hb hc
+  rw [hd, ← Finset.sum_sub_distrib]
+  apply (I * J).sum_mem
+  intro j hj
+  rw [← sub_mul]
+  exact Ideal.mul_mem_mul (hdI j) (hbc j hj)
+
+/-- When `I * J = ⊥`, the two-point evaluation difference is exactly the
+finite differential at `a`, under the same support-local ideal hypotheses. -/
+theorem eval₂_eq_eval₂_add_sum_pderiv_of_mul_eq_bot
+    (I J : Ideal R) (hIJ : I * J = ⊥) (φ : C →+* R) (a b c : σ → R)
+    (p : MvPolynomial σ C)
+    (hb : ∀ i ∈ p.vars, b i - a i ∈ I)
+    (hc : ∀ i ∈ p.vars, c i - a i ∈ I)
+    (hbc : ∀ i ∈ p.vars, b i - c i ∈ J) :
+    eval₂ φ b p = eval₂ φ c p +
+      p.vars.sum (fun j => eval₂ φ a (pderiv j p) * (b j - c j)) := by
+  have h := eval₂_sub_eval₂_sub_sum_pderiv_mem_mul I J φ a b c p hb hc hbc
+  rw [hIJ, Ideal.mem_bot] at h
+  exact (sub_eq_iff_eq_add.mp (sub_eq_zero.mp h)).trans (add_comm _ _)
+
 /-- The error after subtracting the finite evaluated differential belongs to
 `I ^ 2` when the coordinates differ by elements of `I` on `p.vars`. -/
 theorem eval₂_sub_eval₂_sub_sum_pderiv_mem_sq

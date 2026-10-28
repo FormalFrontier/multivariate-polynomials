@@ -10,9 +10,9 @@ import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.ZMod.Basic
 
 /-!
-# Injective and surjective polynomial renaming: examples
+# Polynomial renaming: coercion and boundary contracts
 
-These examples concern the actual renaming homomorphism from the full source
+These contracts concern the renaming homomorphism from the full source
 polynomial semiring to the full target polynomial semiring. Natural-number
 coefficients allow infinitely many variables without requiring a coefficient
 ring. Projection from paired variables is surjective despite identifying
@@ -21,30 +21,13 @@ variables. The same surjective maps work over the nonreduced ring `ZMod 4`.
 With coefficients `ZMod 1`, polynomial renaming is both injective and surjective
 even for a variable map which is neither. Empty variable types are also allowed.
 The lifted identity transport separates the coefficient, source-variable and
-target-variable universes.
+target-variable universes. These formalizations by Formal Frontier Agents use
+Mathlib’s renaming theorems and subsingleton instances.
 -/
 
 universe u v w
 
-namespace MultivariatePolynomialsTests
-
-private theorem natural_variable_types_infinite : Infinite ℕ ∧ Infinite (ℕ × Bool) :=
-  ⟨inferInstance, inferInstance⟩
-
-private theorem nat_coefficients_have_no_additive_inverse :
-    ¬ ∃ n : ℕ, 1 + n = 0 := by
-  rintro ⟨n, hn⟩
-  exact Nat.succ_ne_zero n (by simpa only [Nat.add_comm] using hn)
-
-private theorem nat_identity_rename_injective :
-    Function.Injective (MvPolynomial.rename (R := ℕ) (id : ℕ → ℕ) :
-      MvPolynomial ℕ ℕ → MvPolynomial ℕ ℕ) :=
-  MvPolynomial.rename_injective _ (fun _ _ h => h)
-
-private theorem nat_identity_rename_surjective :
-    Function.Surjective (MvPolynomial.rename (R := ℕ) (id : ℕ → ℕ) :
-      MvPolynomial ℕ ℕ → MvPolynomial ℕ ℕ) :=
-  MvPolynomial.rename_surjective _ (fun n => ⟨n, rfl⟩)
+namespace MvPolynomial
 
 private def natProjection : ℕ × Bool → ℕ := Prod.fst
 
@@ -185,4 +168,4 @@ private theorem lifted_identity_rename_surjective :
         MvPolynomial (ULift.{w} ℕ) (ULift.{u} ℕ)) :=
   MvPolynomial.rename_surjective _ lifted_identity_surjective
 
-end MultivariatePolynomialsTests
+end MvPolynomial

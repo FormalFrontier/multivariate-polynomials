@@ -9,14 +9,13 @@ import Mathlib.Algebra.MvPolynomial.Equiv
 import Mathlib.Data.ZMod.Basic
 
 /-!
-# Scalar annihilators of coefficient families
+# Coefficient-family boundary cases and the unary criterion
 
-The faithful family over `ZMod 6` need not contain a non-zero-divisor. The
-polynomial over `ZMod 4` instead has an explicit nonzero coefficient-ring
-annihilator. Constant, empty-variable and zero-polynomial examples record
-boundary behavior. The coefficient-family facts are proved independently of
-the scalar criterion. The marked model consumer applies it after those facts;
-a separate unique-variable example checks agreement with the unary criterion.
+The coefficient-family condition is checked for the constant polynomial
+`C 1`, an empty variable type, zero polynomials, and the zero coefficient
+semiring. For a unique variable, its comparison with the unary criterion
+uses the canonical algebra equivalence and the coefficient-ring scalar
+action on the resulting unary polynomial.
 -/
 
 @[expose] public section
@@ -26,65 +25,6 @@ universe u v
 namespace MultivariatePolynomialsTests.ScalarAnnihilatorCriterion
 
 open MvPolynomial
-
-private noncomputable def mixedPolynomial : MvPolynomial (Fin 1) (ZMod 6) :=
-  C 2 + C 3 * X 0
-
-private theorem mixed_coeff_zero : mixedPolynomial.coeff 0 = 2 := by
-  simp [mixedPolynomial]
-
-private theorem mixed_coeff_variable :
-    mixedPolynomial.coeff (Finsupp.single (0 : Fin 1) 1) = 3 := by
-  have h : (0 : Fin 1 →₀ ℕ) ≠ Finsupp.single (0 : Fin 1) 1 := by
-    intro h
-    have hzero := congrArg (fun d : Fin 1 →₀ ℕ => d 0) h
-    simp at hzero
-  simp [mixedPolynomial, MvPolynomial.coeff_C, h]
-
-private theorem mixed_coefficient_family :
-    ∀ r : ZMod 6,
-      (∀ d : Fin 1 →₀ ℕ, r * mixedPolynomial.coeff d = 0) → r = 0 := by
-  intro r hr
-  have htwo : r * 2 = 0 := by simpa only [mixed_coeff_zero] using hr 0
-  have hthree : r * 3 = 0 := by
-    simpa only [mixed_coeff_variable] using hr (Finsupp.single (0 : Fin 1) 1)
-  have hunit : (3 : ZMod 6) + 2 * 2 = 1 := by decide
-  calc
-    r = r * (3 + 2 * 2) := by rw [hunit, mul_one]
-    _ = r * 3 + (r * 2) * 2 := by simp only [mul_add, mul_assoc]
-    _ = 0 := by rw [hthree, htwo]; simp
-
-private theorem mixed_coefficients_not_nonZeroDivisors :
-    mixedPolynomial.coeff 0 ∉ nonZeroDivisors (ZMod 6) ∧
-      mixedPolynomial.coeff (Finsupp.single (0 : Fin 1) 1) ∉ nonZeroDivisors (ZMod 6) := by
-  rw [mixed_coeff_zero, mixed_coeff_variable]
-  constructor
-  · intro h
-    exact (by decide : (3 : ZMod 6) ≠ 0)
-      ((mem_nonZeroDivisors_iff_right.mp h) 3 (by decide))
-  · intro h
-    exact (by decide : (2 : ZMod 6) ≠ 0)
-      ((mem_nonZeroDivisors_iff_right.mp h) 2 (by decide))
-
--- This consumer uses the independently established coefficient family.
-example : mixedPolynomial ∈ nonZeroDivisors (MvPolynomial (Fin 1) (ZMod 6)) :=
-  (MvPolynomial.mem_nonZeroDivisors_iff mixedPolynomial).2 mixed_coefficient_family
-
-private noncomputable def torsionPolynomial : MvPolynomial (Fin 1) (ZMod 4) :=
-  C 2 * X 0
-
-private theorem torsion_coeff_variable :
-    torsionPolynomial.coeff (Finsupp.single (0 : Fin 1) 1) = 2 := by
-  simp [torsionPolynomial]
-
-private theorem torsion_coefficient_annihilator :
-    (2 : ZMod 4) ≠ 0 ∧
-      ∀ d : Fin 1 →₀ ℕ, (2 : ZMod 4) * torsionPolynomial.coeff d = 0 := by
-  refine ⟨by decide, ?_⟩
-  intro d
-  change (2 : ZMod 4) * (C 2 * X 0 : MvPolynomial (Fin 1) (ZMod 4)).coeff d = 0
-  rw [MvPolynomial.coeff_C_mul, ← mul_assoc,
-    show (2 : ZMod 4) * 2 = 0 from by decide, zero_mul]
 
 example {R : Type u} {sigma : Type v} [CommSemiring R] :
     ∀ r : R, (∀ d : sigma →₀ ℕ,

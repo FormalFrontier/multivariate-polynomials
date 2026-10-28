@@ -1,5 +1,9 @@
 {
   "version": 1,
-  "mode": "report",
-  "test_libraries": []
+  "mode": "required",
+  "test_libraries": [
+    "MultivariatePolynomialsTests",
+    "MultivariatePolynomialsIdealTests",
+    "MultivariatePolynomialsAlgebraTests"
+  ]
 }

@@ -5,6 +5,9 @@ Authors: Formal Frontier Agents
 module
 
 public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.RingTheory.Ideal.Colon
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.NormNum
 public import MultivariatePolynomials.IdealFiniteGeneration
 
 /-!
@@ -15,8 +18,8 @@ coefficients in that ideal. As an `R`-submodule, this extension is Mathlib's
 `MvPolynomial.coeffsIn`, for the canonical action `r • p = C r * p`.
 Extension along `C` preserves arbitrary intersections of coefficient ideals and
 reflects their inclusion and equality. Contraction along `C` recovers the
-coefficient ideal. The kernel of a map on coefficients is its coefficient kernel
-extended along `C`.
+coefficient ideal. Pullback along a map on coefficients commutes with extension
+along `C`; the coefficient-kernel identity is its zero-ideal specialization.
 
 More generally, extending ideals along a semiring homomorphism with a retraction
 preserves and reflects finite generation. This equivalence allows independent
@@ -26,11 +29,20 @@ The coefficient and variable universes are independent; for coefficient maps,
 the source and target coefficient universes are independent as well. No
 finiteness, nontriviality, cancellation or additive inverses are required.
 
+Extension along `C` also commutes with ideal colon, by testing constant
+generators and using coefficientwise membership. The arithmetic examples below
+show `(4) : (2) = (2)` over the integers and distinguish `2 * X` from a
+constant and from membership in the extension of `(4)`. They also cover empty
+variables, zero and top ideals, and the trivial coefficient ring.
+
 ## References
 
 * Mathlib's `Mathlib.Algebra.MvPolynomial.Basic`, by Johannes Hölzl,
   Johan Commelin and Mario Carneiro, supplies `coeffsIn`, its monomial-span
   characterization and its compatibility with submodule multiplication.
+* Kenny Lau's `Mathlib.RingTheory.Ideal.Colon` supplies colon membership
+  and reduction to span generators; Mathlib supplies `coeff_C_mul` and the
+  principal-ideal and cancellative-divisibility APIs used below.
 * Kenny Lau's `Mathlib.RingTheory.Ideal.Maps` supplies ideal extension,
   contraction and homomorphism kernels. His `Mathlib.RingTheory.Polynomial.Basic`
   contains the ring versions `MvPolynomial.mem_map_C_iff` and
@@ -42,6 +54,8 @@ finiteness, nontriviality, cancellation or additive inverses are required.
 * Mathlib's `Mathlib.RingTheory.Finiteness.Ideal` supplies `Ideal.FG.map`;
   applying it along a homomorphism and its retraction gives the
   finite-generation equivalence.
+* Mathlib's `coeff_map` identifies coefficients after a coefficient map; together
+  with coefficientwise extension membership this gives the pullback identity.
 * Mathlib's complete-lattice API supplies `sInf_eq_iInf'` and `sInf_image'`
   to express set intersections in terms of indexed intersections.
 -/
@@ -131,6 +145,14 @@ theorem map_C_injective :
 
 variable {F : Type*} [FunLike F R S] [RingHomClass F R S]
 
+/-- Pullback of a coefficient ideal extension along a coefficient map is the
+extension of its pullback. No injectivity or surjectivity is required. -/
+theorem comap_map_C_eq_map_C_comap (f : F) (J : Ideal S) :
+    (Ideal.map (C : S →+* MvPolynomial σ S) J).comap (map (f : R →+* S)) =
+      Ideal.map (C : R →+* MvPolynomial σ R) (J.comap f) := by
+  ext p
+  simp only [Ideal.mem_comap, mem_map_C_iff_coeff_mem, coeff_map, RingHom.coe_coe]
+
 /-- After restricting the polynomial kernel to the canonical coefficient
 scalars, it is the submodule of polynomials with coefficients in the kernel.
 This applies to any homomorphism class admitting a ring-homomorphism coercion. -/
@@ -144,13 +166,162 @@ theorem restrictScalars_ker_map (f : F) :
 
 /-- The ideal kernel of a polynomial coefficient map is the extension of the
 coefficient kernel along `C`. This generalizes `MvPolynomial.ker_map` from
-commutative rings to commutative semirings. The two submodule identifications
-`restrictScalars_ker_map` and `coeffsIn_eq_restrictScalars_map_C` recover the
-ideal equality because restriction of scalars is injective on submodules. -/
+commutative rings to commutative semirings, by specializing
+`comap_map_C_eq_map_C_comap` to the zero ideal. -/
 theorem ker_map_eq_map_C (f : F) :
     RingHom.ker (map (f : R →+* S) : MvPolynomial σ R →+* MvPolynomial σ S) =
       Ideal.map (C : R →+* MvPolynomial σ R) (RingHom.ker f) := by
-  apply Submodule.restrictScalars_injective R (MvPolynomial σ R) (MvPolynomial σ R)
-  rw [restrictScalars_ker_map, ← coeffsIn_eq_restrictScalars_map_C]
+  simpa only [Ideal.map_bot, RingHom.ker_eq_comap_bot] using
+    (comap_map_C_eq_map_C_comap (σ := σ) f (⊥ : Ideal S))
+
+private theorem emptyVariables_coefficientComap (f : F) (J : Ideal S) (r : R) :
+    (C r : MvPolynomial Empty R) ∈
+        (Ideal.map (C : S →+* MvPolynomial Empty S) J).comap (map (f : R →+* S)) ↔
+      f r ∈ J := by
+  rw [comap_map_C_eq_map_C_comap]
+  change r ∈ (Ideal.map (C : R →+* MvPolynomial Empty R) (J.comap f)).comap C ↔ _
+  rw [comap_map_C, Ideal.mem_comap]
+
+private theorem top_coefficientComap (f : F) :
+    (Ideal.map (C : S →+* MvPolynomial σ S) ⊤).comap (map (f : R →+* S)) = ⊤ := by
+  rw [comap_map_C_eq_map_C_comap, Ideal.comap_top, Ideal.map_top]
+
+private theorem trivialTarget_coefficientComap [Subsingleton S] (f : F) (J : Ideal S) :
+    (Ideal.map (C : S →+* MvPolynomial σ S) J).comap (map (f : R →+* S)) = ⊤ := by
+  rw [show J = ⊤ from Subsingleton.elim _ _, top_coefficientComap]
+
+private theorem trivialSource_coefficientComap [Subsingleton R] (f : F) (J : Ideal S) :
+    (Ideal.map (C : S →+* MvPolynomial σ S) J).comap (map (f : R →+* S)) = ⊤ := by
+  rw [comap_map_C_eq_map_C_comap]
+  exact Subsingleton.elim _ _
+
+/-- Extension of coefficient ideals along `C` commutes with ideal colon.
+The denominator of each colon is the underlying set of the corresponding
+ideal. This holds for arbitrary ideals over a commutative semiring. -/
+theorem map_C_colon (I J : Ideal R) :
+    (Ideal.map (C : R →+* MvPolynomial σ R) I).colon
+        (Ideal.map (C : R →+* MvPolynomial σ R) J : Set (MvPolynomial σ R)) =
+      Ideal.map (C : R →+* MvPolynomial σ R) (I.colon (J : Set R)) := by
+  change (Ideal.map (C : R →+* MvPolynomial σ R) I).colon
+    (Ideal.span ((C : R →+* MvPolynomial σ R) '' (J : Set R))) = _
+  rw [Ideal.colon_span]
+  ext p
+  simp only [Submodule.mem_colon, Set.forall_mem_image, smul_eq_mul,
+    mem_map_C_iff_coeff_mem]
+  constructor
+  · intro h d b hb
+    have hd := h hb d
+    rw [mul_comm p, coeff_C_mul, mul_comm b] at hd
+    exact hd
+  · intro h b hb d
+    rw [mul_comm p, coeff_C_mul, mul_comm b]
+    exact h d b hb
 
 end MvPolynomial
+
+open MvPolynomial
+
+private theorem integer_four_colon_two :
+    (Ideal.span ({4} : Set ℤ)).colon (Ideal.span ({2} : Set ℤ) : Set ℤ) =
+      Ideal.span ({2} : Set ℤ) := by
+  ext a
+  simp only [Ideal.mem_colon_span_singleton, Ideal.mem_span_singleton]
+  simpa only [show (2 : ℤ) * 2 = 4 from rfl] using
+    (mul_dvd_mul_iff_right (by norm_num : (2 : ℤ) ≠ 0) :
+      (2 : ℤ) * 2 ∣ a * 2 ↔ (2 : ℤ) ∣ a)
+
+private theorem integerPolynomialColon (σ : Type v) :
+    (Ideal.map (C : ℤ →+* MvPolynomial σ ℤ) (Ideal.span ({4} : Set ℤ))).colon
+        (Ideal.map (C : ℤ →+* MvPolynomial σ ℤ) (Ideal.span ({2} : Set ℤ)) :
+          Set (MvPolynomial σ ℤ)) =
+      Ideal.map (C : ℤ →+* MvPolynomial σ ℤ) (Ideal.span ({2} : Set ℤ)) := by
+  rw [map_C_colon, integer_four_colon_two]
+
+private theorem twiceVariable_integerColon_facts :
+    (C 2 * X () : MvPolynomial Unit ℤ) ∉
+        Set.range (C : ℤ →+* MvPolynomial Unit ℤ) ∧
+      (C 2 * X () : MvPolynomial Unit ℤ) ∈
+        (Ideal.map (C : ℤ →+* MvPolynomial Unit ℤ) (Ideal.span ({4} : Set ℤ))).colon
+          (Ideal.map (C : ℤ →+* MvPolynomial Unit ℤ) (Ideal.span ({2}
+            : Set ℤ)) : Set (MvPolynomial Unit ℤ)) ∧
+      (C 2 * X () : MvPolynomial Unit ℤ) ∉
+        Ideal.map (C : ℤ →+* MvPolynomial Unit ℤ) (Ideal.span ({4} : Set ℤ)) := by
+  have h2 : (2 : ℤ) ∈ Ideal.span ({2} : Set ℤ) := Ideal.subset_span (by simp)
+  have h2not4 : (2 : ℤ) ∉ Ideal.span ({4} : Set ℤ) := by
+    norm_num [Ideal.mem_span_singleton]
+  refine ⟨?_, ?_, ?_⟩
+  · rintro ⟨a, ha⟩
+    have hd : (Finsupp.single () 1 : Unit →₀ ℕ) ≠ 0 := by simp
+    have hc := congrArg (fun p : MvPolynomial Unit ℤ => p.coeff (Finsupp.single () 1)) ha
+    rw [coeff_C_of_ne_zero hd, coeff_C_mul, coeff_X_same, mul_one] at hc
+    norm_num at hc
+  · rw [integerPolynomialColon]
+    exact (Ideal.map (C : ℤ →+* MvPolynomial Unit ℤ)
+      (Ideal.span ({2} : Set ℤ))).mul_mem_right (X ()) (Ideal.mem_map_of_mem C h2)
+  · intro hp
+    have hc := (mem_map_C_iff_coeff_mem.mp hp) (Finsupp.single () 1)
+    exact h2not4 (by simpa only [coeff_C_mul, coeff_X_same, mul_one] using hc)
+
+private theorem emptyVariables_integerColon :
+    (C 2 : MvPolynomial Empty ℤ) ∈
+        (Ideal.map (C : ℤ →+* MvPolynomial Empty ℤ) (Ideal.span ({4} : Set ℤ))).colon
+          (Ideal.map (C : ℤ →+* MvPolynomial Empty ℤ) (Ideal.span ({2}
+            : Set ℤ)) : Set (MvPolynomial Empty ℤ)) ∧
+      (C 1 : MvPolynomial Empty ℤ) ∉
+        (Ideal.map (C : ℤ →+* MvPolynomial Empty ℤ) (Ideal.span ({4} : Set ℤ))).colon
+          (Ideal.map (C : ℤ →+* MvPolynomial Empty ℤ) (Ideal.span ({2}
+            : Set ℤ)) : Set (MvPolynomial Empty ℤ)) := by
+  simp only [integerPolynomialColon]
+  constructor
+  · exact Ideal.mem_map_of_mem C (Ideal.subset_span (by simp))
+  · intro h
+    have hc := (mem_map_C_iff_coeff_mem.mp h) 0
+    norm_num [Ideal.mem_span_singleton] at hc
+
+-- The non-surjective map from a semiring to the integers, with the proper
+-- nonzero ideal (2), gives a nonconstant member whose image is not zero.
+private theorem twiceVariable_coefficientComap :
+    (C 2 * X () : MvPolynomial Unit ℕ) ∈
+        Ideal.map (C : ℕ →+* MvPolynomial Unit ℕ)
+          ((Ideal.span ({2} : Set ℤ)).comap (Nat.castRingHom ℤ)) ∧
+      map (Nat.castRingHom ℤ) (C 2 * X () : MvPolynomial Unit ℕ) ≠ 0 ∧
+      map (Nat.castRingHom ℤ) (C 2 * X () : MvPolynomial Unit ℕ) ∉
+        Set.range (C : ℤ →+* MvPolynomial Unit ℤ) := by
+  have hmap : map (Nat.castRingHom ℤ) (C 2 * X () : MvPolynomial Unit ℕ) =
+      (C 2 * X () : MvPolynomial Unit ℤ) := by simp
+  refine ⟨?_, ?_, ?_⟩
+  · rw [← comap_map_C_eq_map_C_comap, Ideal.mem_comap]
+    have hm := twiceVariable_integerColon_facts.2.1
+    rw [integerPolynomialColon] at hm
+    simpa using hm
+  · rw [hmap]
+    intro h
+    apply twiceVariable_integerColon_facts.1
+    exact ⟨0, by simpa using h.symm⟩
+  · rw [hmap]
+    exact twiceVariable_integerColon_facts.1
+
+variable {R : Type u} {σ : Type v} [CommSemiring R]
+
+private theorem zeroDenominator (I : Ideal R) :
+    (Ideal.map (C : R →+* MvPolynomial σ R) I).colon
+        (Ideal.map (C : R →+* MvPolynomial σ R) (⊥ : Ideal R) : Set (MvPolynomial σ R)) = ⊤ := by
+  rw [map_C_colon, Submodule.colon_bot, Ideal.map_top]
+
+private theorem topNumerator (J : Ideal R) :
+    (Ideal.map (C : R →+* MvPolynomial σ R) (⊤ : Ideal R)).colon
+        (Ideal.map (C : R →+* MvPolynomial σ R) J : Set (MvPolynomial σ R)) = ⊤ := by
+  rw [map_C_colon, Submodule.top_colon, Ideal.map_top]
+
+private theorem topDenominator (I : Ideal R) :
+    (Ideal.map (C : R →+* MvPolynomial σ R) I).colon
+        (Ideal.map (C : R →+* MvPolynomial σ R) (⊤ : Ideal R) : Set (MvPolynomial σ R)) =
+      Ideal.map (C : R →+* MvPolynomial σ R) I := by
+  rw [map_C_colon, Submodule.top_coe, Submodule.colon_univ]
+
+private theorem trivialCoefficientColon (I J : Ideal (ZMod 1)) :
+    (Ideal.map (C : ZMod 1 →+* MvPolynomial Unit (ZMod 1)) I).colon
+        (Ideal.map (C : ZMod 1 →+* MvPolynomial Unit (ZMod 1)) J
+            : Set (MvPolynomial Unit (ZMod 1))) = ⊤ := by
+  rw [map_C_colon]
+  exact Subsingleton.elim _ _

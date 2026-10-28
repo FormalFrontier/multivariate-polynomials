@@ -17,33 +17,36 @@ import Mathlib.RingTheory.PrincipalIdealDomain
 /-!
 # Noetherian polynomial rings and their boundaries
 
-The examples distinguish empty variables, finite variables over the integers
-and a ring with zero divisors, infinite variables over the same nontrivial
+This module complements the worked applications beside the criteria in
+`MultivariatePolynomials.Noetherian`. It retains model fidelity, independent
+Noetherianity engines, coefficient-class and universe boundaries, and explicit
+provider versus instance-inference compatibility.
+
+The multivariate boundaries distinguish empty variables, finite variables over
+the integers and a ring with zero divisors, infinite variables over nontrivial
 Noetherian coefficient rings, and infinite variables over the trivial ring.
-The negative examples use the variable-ideal obstruction directly. Additional
-clients recover finiteness of variable subsets, eliminate the coefficient
-condition for `ZMod 6`, and recover the zero-ring condition with infinitely many
-variables.
+The negative examples use the variable-ideal obstruction directly. A further
+consumer recovers finiteness of arbitrary variable subsets.
 
-Univariate examples include the finite noncommutative ring of two-by-two
+Univariate boundaries include the finite noncommutative ring of two-by-two
 matrices over `ZMod 2`, the trivial ring `ZMod 1`, and the nontrivial ring
-`ZMod 4` with a nonzero nilpotent. The matrix ring is Noetherian for its regular
-left action, while its polynomial ring is infinite and is not Noetherian as a
-module over the coefficient ring. Polynomials over `MvPolynomial ℕ ℤ` remain
-non-Noetherian by descent to their coefficient ring. Clients of the univariate
-Hilbert basis statement use the three rings with their regular left actions.
+`ZMod 4` with a nonzero nilpotent. The matrix units verify noncommutativity;
+the polynomial ring is infinite and is not Noetherian as a module over the
+matrix coefficient ring. The corresponding self-Noetherian worked application
+is beside the Hilbert basis theorem. Explicit-provider and inference checks
+remain here, including iterated polynomials. Polynomials over `MvPolynomial ℕ ℤ`
+remain non-Noetherian by descent to their coefficient ring.
 
-Coefficient-module examples independently distinguish empty variables, nonempty
-variables with trivial coefficients, and the stronger obstruction from even
-finitely many nonempty variables with nontrivial coefficients. They use the
-integers, the Boolean ring `ZMod 2` with addition modulo two, the product ring
-`ℤ × ZMod 2` with zero divisors, and the non-ring commutative semiring `ℕ`.
-Empty-variable positives use the coefficient-linear equivalence directly;
-nonempty-variable negatives use existing polynomial or monomial-basis engines.
-Additional clients apply the combined coefficient-module criterion directly to
-empty natural coefficients, infinitely many variables with zero coefficients,
-and finite nonempty integer variables. A universe-polymorphic lifted variable
-with `ZMod 2` coefficients exercises independent variable and coefficient universes.
+Coefficient-module boundaries independently distinguish empty variables,
+nonempty variables with trivial coefficients, and the stronger obstruction from
+even finitely many nonempty variables with nontrivial coefficients. They use the
+integers, the Boolean ring `ZMod 2` with addition modulo two, the componentwise
+product ring `ℤ × ZMod 2` with zero divisors, and the non-ring commutative
+semiring `ℕ`. Empty-variable positives use the coefficient-linear equivalence
+directly; nonempty-variable negatives use polynomial or monomial-basis engines.
+The direct empty, trivial, and nonempty-coefficient worked applications are
+beside the combined criterion. A lifted variable with `ZMod 2` coefficients
+exercises independent variable and coefficient universes here.
 
 ## References
 
@@ -106,13 +109,6 @@ example : (2 : ZMod 6) ≠ 0 ∧ (3 : ZMod 6) ≠ 0 ∧ (2 : ZMod 6) * 3 = 0 := 
   decide
 
 -- Noetherian coefficients do not suffice for infinitely many variables.
-example : IsNoetherianRing ℤ ∧ ¬ IsNoetherianRing (MvPolynomial ℕ ℤ) := by
-  refine ⟨inferInstance, ?_⟩
-  intro h
-  let : IsNoetherianRing (MvPolynomial ℕ ℤ) := h
-  exact MvPolynomial.idealOfVars_not_fg ℤ ℕ
-    (Ideal.fg_of_isNoetherianRing (MvPolynomial.idealOfVars ℕ ℤ))
-
 example : IsNoetherianRing (ZMod 6) ∧
     ¬ IsNoetherianRing (MvPolynomial ℕ (ZMod 6)) := by
   refine ⟨inferInstance, ?_⟩
@@ -135,24 +131,6 @@ example {σ : Type u} {R : Type v} [CommSemiring R] [Nontrivial R]
     [IsNoetherianRing (MvPolynomial σ R)] (S : Set σ) : S.Finite := by
   let : Finite σ := MvPolynomial.finite_of_isNoetherianRing (σ := σ) (R := R)
   exact S.toFinite
-
--- For a known nontrivial Noetherian coefficient ring, only variable finiteness remains.
-example {σ : Type u} :
-    IsNoetherianRing (MvPolynomial σ (ZMod 6)) ↔ Finite σ := by
-  constructor
-  · intro h
-    exact (MvPolynomial.isNoetherianRing_iff_of_nontrivial.mp h).2
-  · intro h
-    exact MvPolynomial.isNoetherianRing_iff_of_nontrivial.mpr ⟨inferInstance, h⟩
-
--- The full criterion detects the trivial coefficient ring without a nontriviality premise.
-example {R : Type v} [CommRing R] [IsNoetherianRing (MvPolynomial ℕ R)] :
-    (1 : R) = 0 := by
-  have hsub : Subsingleton R :=
-    (MvPolynomial.isNoetherianRing_iff.mp
-      (inferInstance : IsNoetherianRing (MvPolynomial ℕ R))).2.resolve_left
-        Infinite.not_finite
-  exact @Subsingleton.elim R hsub 1 0
 
 -- The matrix multiplication is the usual row-by-column multiplication.
 private abbrev binaryMatrixRing := Matrix (Fin 2) (Fin 2) (ZMod 2)
@@ -202,11 +180,6 @@ private theorem zmod_one_one_eq_zero : (1 : ZMod 1) = 0 := by
 private theorem polynomial_zmod_one_subsingleton : Subsingleton (Polynomial (ZMod 1)) := by
   infer_instance
 
-private theorem polynomial_zmod_one_isNoetherianRing :
-    IsNoetherianRing (Polynomial (ZMod 1)) := by
-  let : Subsingleton (Polynomial (ZMod 1)) := polynomial_zmod_one_subsingleton
-  exact isNoetherian_of_subsingleton (Polynomial (ZMod 1)) (Polynomial (ZMod 1))
-
 private theorem zmod_four_coefficient_conditions :
     Nonempty (CommRing (ZMod 4)) ∧ Nontrivial (ZMod 4) ∧
       IsNoetherianRing (ZMod 4) := by
@@ -239,11 +212,6 @@ private theorem polynomial_infinite_integer_polynomial_not_isNoetherianRing :
   exact infinite_integer_polynomial_not_isNoetherianRing
     (isNoetherianRing_of_surjective (Polynomial (MvPolynomial ℕ ℤ)) (MvPolynomial ℕ ℤ)
       Polynomial.constantCoeff Polynomial.constantCoeff_surjective)
-
-private theorem binary_matrix_polynomial_isNoetherianRing :
-    IsNoetherianRing (Polynomial binaryMatrixRing) := by
-  let : IsNoetherianRing binaryMatrixRing := binary_matrix_isNoetherianRing
-  exact Polynomial.isNoetherianRing_of_isNoetherianRing (R := binaryMatrixRing)
 
 private theorem polynomial_zmod_one_isNoetherianRing_of_isNoetherianRing :
     IsNoetherianRing (Polynomial (ZMod 1)) := by
@@ -426,23 +394,8 @@ private theorem coefficient_unit_nat_not_noetherian :
   exact Polynomial.not_finite (R := ℕ)
     (inferInstance : Module.Finite ℕ (Polynomial ℕ))
 
--- Direct clients of the coefficient-module criterion, distinct from the
--- independent models above and the earlier finite-variable SELF positives.
-private theorem coefficient_nat_noetherian_empty :
-    IsNoetherian ℕ (MvPolynomial Empty ℕ) := by
-  exact MvPolynomial.isNoetherian_iff.mpr ⟨inferInstance, Or.inl inferInstance⟩
-
-private theorem coefficient_zmod_one_noetherian_infinite :
-    IsNoetherian (ZMod 1) (MvPolynomial ℕ (ZMod 1)) := by
-  exact MvPolynomial.isNoetherian_iff.mpr ⟨inferInstance, Or.inr inferInstance⟩
-
-private theorem coefficient_integer_not_noetherian_fin_two :
-    ¬ IsNoetherian ℤ (MvPolynomial (Fin 2) ℤ) := by
-  intro h
-  rcases (MvPolynomial.isNoetherian_iff.mp h).2 with hσ | hR
-  · exact hσ.false 0
-  · exact (not_subsingleton ℤ) hR
-
+-- The coefficient criterion also applies with independent variable and
+-- coefficient universes, retaining the chosen lifted variable.
 private theorem coefficient_zmod_two_not_noetherian_ulift :
     ¬ IsNoetherian (ZMod 2) (MvPolynomial (ULift.{u} Unit) (ZMod 2)) := by
   intro h

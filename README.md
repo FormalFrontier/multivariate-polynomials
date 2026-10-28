@@ -32,6 +32,32 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Prime coefficient extensions over commutative semirings.** For a commutative
+  semiring `R`, any variable type `σ` and ideal `I`, primality of `I` together
+  with `∀ a b : R, a ∈ I → a + b ∈ I → b ∈ I` implies primality of
+  `I.map MvPolynomial.C`,
+  by [`MvPolynomial.isPrime_map_C_of_subtractive`](MultivariatePolynomials/CoefficientIdealPrime.lean).
+  For nonempty `σ`, these conditions are also necessary, by
+  [`MvPolynomial.isPrime_map_C_iff`](MultivariatePolynomials/CoefficientIdealPrime.lean).
+
+- **Maximal coefficient extensions over commutative semirings.** For a commutative
+  semiring `R`, any variable type `σ` and ideal `I`,
+  `(I.map MvPolynomial.C).IsMaximal ↔ I.IsMaximal ∧ IsEmpty σ`, by
+  [`MvPolynomial.isMaximal_map_C_iff`](MultivariatePolynomials/CoefficientIdealMaximal.lean).
+  With nonempty `σ`, no coefficient extension is maximal. For proper `I`,
+  the constant-coefficient preimage is a strict intermediate ideal.
+
+- **Finite coefficient-product equations determine whole products.** For independent
+  commutative semirings `C` and `R`, an arbitrary homomorphism `φ : C →+* R`,
+  nominal sizes `m,n`, seeds `g,h : Polynomial C` and arbitrary target coefficient
+  point, [`MvPolynomial.eval₂Hom_coefficientProduct_eq_iff`](MultivariatePolynomials/CoefficientProduct.lean)
+  identifies the finite evaluated equations with equality of the entire ordinary
+  perturbed product to `T`. It assumes target-side bounds
+  `(g.map φ).natDegree ≤ m`, `(h.map φ).natDegree ≤ n`, `T.natDegree ≤ m + n`, and
+  `T.coeff (m + n) = (g.map φ).coeff m * (h.map φ).coeff n`. Zero sizes, mapped
+  degree drops and trivial semirings are included; no source degree bound or
+  injectivity of `φ` is required.
+
 - **Radicals of coefficient-ideal extensions.** For any commutative ring `R`,
   arbitrary variable type `σ` and ideal `I : Ideal R`,
   [`MvPolynomial.radical_map_C`](MultivariatePolynomials/IdealExtension.lean)
@@ -74,6 +100,14 @@ weight-one-valuation naturality interfaces.
   [natural-number example](MultivariatePolynomialsTests/CoefficientIdeal.lean)
   separates `2 * X` from `X` for the proper extended ideal `(2)` and for
   coefficient reduction modulo two.
+- **Square witnesses for failure of subtractivity.** Over any commutative
+  semiring `R`, for `i : σ` and `a b : R`,
+  [`MvPolynomial.subtractiveWitness`](MultivariatePolynomials/CoefficientIdealSubtractive.lean)
+  is `C a + C b * X i + C (a + b) * X i ^ 2`, with linear coefficient `b`.
+  Its square belongs to `I.map C` if `a ∈ I` and `a + b ∈ I`, while
+  `b ∉ I` excludes the witness itself. Thus a radical (in particular prime)
+  extension over nonempty variables forces subtractivity. Coefficient and
+  variable universes are independent; no finiteness or nontriviality is needed.
 - **Powers of augmented coefficient ideals.** For any commutative semiring
   `R`, ideal `I`, natural number `n`, arbitrary variable type `σ`, and polynomial
   `p`, [`MvPolynomial.mem_pow_comap_constantCoeff_iff_coeff_mem_pow`](MultivariatePolynomials/AugmentedIdealPowers.lean)
@@ -87,13 +121,17 @@ weight-one-valuation naturality interfaces.
   [integer and boundary examples](MultivariatePolynomialsTests/CoefficientVariableIdeal.lean)
   apply the criterion to `2 * X ∈ (2, X)²`, contrast the constant `2`, and
   include the zeroth power and empty variables.
-- **Primary coefficient ideals.** For any commutative ring `R`, ideal `I`
-  and arbitrary variable type `σ`,
+- **Primary coefficient ideals.** Over any commutative semiring `R`,
+  [`MvPolynomial.isPrimary_map_C_of_subtractive`](MultivariatePolynomials/Primary.lean)
+  extends a primary ideal `I` satisfying `a ∈ I → a + b ∈ I → b ∈ I` to a
+  primary coefficient ideal, for every variable type `σ`. When `σ` is nonempty,
+  [`MvPolynomial.isPrimary_map_C_iff_subtractive`](MultivariatePolynomials/Primary.lean)
+  proves that primaryness and this subtractivity condition are also necessary.
+  For a commutative ring, subtractivity is automatic, and
   [`MvPolynomial.isPrimary_map_C_iff`](MultivariatePolynomials/Primary.lean)
-  states that `I.map C` is primary exactly when `I` is primary, using
-  Mathlib's `Ideal.IsPrimary`. Coefficients and variables have independent
-  universes; empty variable types and the unit ideal are included, with no
-  Noetherian or nontriviality hypothesis. The
+  gives the equivalence without any restriction on `σ`. Coefficients and
+  variables have independent universes; empty variable types and the unit ideal
+  are included, with no Noetherian or nontriviality hypothesis. The
   [integer example](MultivariatePolynomialsTests/Primary.lean) extends the
   primary, nonradical ideal `(4)`.
 - **Supplied primary families and deletion irredundance.** For any commutative
@@ -501,15 +539,17 @@ weight-one-valuation naturality interfaces.
   distinguish these properties from coefficient self-Noetherianity and
   self-Artinianity, even for the infinite non-ring semiring `ℝ≥0` with finitely
   many ideals.
-- **Radical coefficient-ideal extensions force subtractivity.** For any
-  commutative semiring `R`, ideal `I`, and nonempty variable type `σ`,
-  [`MvPolynomial.mem_of_add_mem_of_isRadical_map_C`](MultivariatePolynomials/CoefficientIdealSubtractive.lean)
-  shows that radicality of `I.map C` forces `b ∈ I` whenever `a ∈ I` and
-  `a + b ∈ I`. The coefficient and variable universes are independent; no
-  properness, ring, domain or finiteness hypothesis is needed. The original
-  prime-extension theorem is a corollary, and the
-  [examples](MultivariatePolynomialsTests/CoefficientIdealSubtractive.lean)
-  apply both statements to the zero ideal over the natural numbers.
+- **Radical coefficient-ideal extensions are characterized by subtractivity.**
+  For any commutative semiring `R`, ideal `I`, and nonempty variable type `σ`,
+  [`MvPolynomial.isRadical_map_C_iff`](MultivariatePolynomials/CoefficientIdealSubtractive.lean)
+  says that `I.map C` is radical exactly when `I` is radical and satisfies
+  `a ∈ I → a + b ∈ I → b ∈ I`. The
+  [sufficiency theorem](MultivariatePolynomials/CoefficientIdealSubtractive.lean)
+  also allows empty variable types. The coefficient and variable universes are
+  independent; no properness, ring, domain, reducedness or finiteness hypothesis
+  is needed. The [examples](MultivariatePolynomialsTests/CoefficientIdealSubtractive.lean)
+  include the proper nonzero kernel of reduction `ℕ →+* ZMod 2` and the
+  original prime-extension and radical-extension necessity applications.
 - **Coefficient-and-variable ideals have an exact finite-generation criterion.**
   For any commutative semiring `R`, coefficient ideal `I`, and variable subset `S`,
   [`MvPolynomial.ideal_map_C_sup_span_X_image_fg_iff`](MultivariatePolynomials/IdealOfVars.lean)

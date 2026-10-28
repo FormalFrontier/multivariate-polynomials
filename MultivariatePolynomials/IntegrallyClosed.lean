@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import Mathlib.RingTheory.Polynomial.IsIntegral
+import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
 import Mathlib.RingTheory.Polynomial.UniqueFactorization
 
 /-!
@@ -72,3 +73,36 @@ private theorem isIntegrallyClosed_eq_of_uniqueFactorizationMonoid
   Subsingleton.elim _ _
 
 end MvPolynomial
+
+/-!
+## Iterating integral closure with infinitely many variables
+
+The ring `MvPolynomial ℕ (MvPolynomial ℕ ℚ)` is integrally closed although its
+outer variable type is infinite. First, Mathlib's arbitrary-variable unique
+factorization instance and `GCDMonoid.toIsIntegrallyClosed` show that the literal
+coefficient ring `MvPolynomial ℕ ℚ` is integrally closed. Applying the criterion
+above with that coefficient proof then adjoins the second family of variables.
+
+The two inputs below retain the independent unique-factorization/GCD proof and
+the infinitude witness; together they give this single iterated application.
+See `Mathlib.RingTheory.Polynomial.UniqueFactorization` and
+`Mathlib.Algebra.GCDMonoid.IntegrallyClosed` for the ring-theoretic inputs.
+-/
+
+namespace MvPolynomial.InfiniteIntegrallyClosed
+
+private theorem variables_not_finite : ¬ Finite ℕ :=
+  Infinite.not_finite
+
+private theorem isIntegrallyClosed : IsIntegrallyClosed (MvPolynomial ℕ ℚ) := by
+  let : UniqueFactorizationMonoid (MvPolynomial ℕ ℚ) :=
+    MvPolynomial.uniqueFactorizationMonoid ℕ
+  exact GCDMonoid.toIsIntegrallyClosed
+
+/-- Integral closure persists after adjoining a second infinite family of variables. -/
+private theorem iterated_isIntegrallyClosed :
+    (¬ Finite ℕ) ∧ IsIntegrallyClosed (MvPolynomial ℕ (MvPolynomial ℕ ℚ)) :=
+  ⟨variables_not_finite,
+    @MvPolynomial.isIntegrallyClosed (MvPolynomial ℕ ℚ) _ _ isIntegrallyClosed ℕ⟩
+
+end MvPolynomial.InfiniteIntegrallyClosed
