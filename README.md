@@ -134,19 +134,28 @@ weight-one-valuation naturality interfaces.
   are included, with no Noetherian or nontriviality hypothesis. The
   [integer example](MultivariatePolynomialsTests/Primary.lean) extends the
   primary, nonradical ideal `(4)`.
-- **Supplied primary families and deletion irredundance.** For any commutative
-  ring `R`, ideal `I`, family `Q : ι → Ideal R` and variable type `σ`,
+- **Supplied primary families and deletion irredundance.** Over a commutative
+  semiring `R`, for an ideal `I` and family `Q : ι → Ideal R`,
+  [`MvPolynomial.primary_family_map_C_iff_of_subtractive`](MultivariatePolynomials/PrimaryDecomposition.lean)
+  assumes `a ∈ Q i → a + b ∈ Q i → b ∈ Q i` for each component. For every variable
+  type `σ`, it equates `I.map C = ⨅ i, (Q i).map C` with all mapped components
+  primary to `I = ⨅ i, Q i` with all original components primary. For nonempty
+  `σ`, [`MvPolynomial.primary_family_map_C_iff_subtractive`](MultivariatePolynomials/PrimaryDecomposition.lean)
+  gives the exact equivalence with `I = ⨅ i, Q i` and componentwise primaryness
+  and subtractivity, recovering the latter from the mapped primary family.
+  The ring theorem
   [`MvPolynomial.primary_family_map_C_iff`](MultivariatePolynomials/PrimaryDecomposition.lean)
-  says that `I.map C = ⨅ i, (Q i).map C` with every mapped component primary
-  exactly when `I = ⨅ i, Q i` with every component primary. Over any commutative
-  semiring, [`MvPolynomial.irredundant_iInf_map_C_iff`](MultivariatePolynomials/PrimaryDecomposition.lean)
-  preserves and reflects the condition that, for every index, the intersection
-  of all other components is not contained in that component. The index may
-  be any sort; coefficient, variable and index universes are independent.
-  Empty families and variable types are allowed, with no finiteness or
-  Noetherian hypothesis. These are transport statements, not existence or
-  uniqueness results. The [integer model](MultivariatePolynomialsTests/PrimaryDecomposition.lean)
-  uses both for `(12) = (4) ∩ (3)`.
+  specializes the first equivalence using automatic subtractivity, for every `σ`.
+  The intersection itself need not be primary. Over any commutative semiring,
+  [`MvPolynomial.irredundant_iInf_map_C_iff`](MultivariatePolynomials/PrimaryDecomposition.lean)
+  preserves and reflects the condition that each intersection of the other
+  components is not contained in the omitted component, without subtractivity.
+  Indices may form any sort; coefficient, variable and index universes are
+  independent. Empty or infinite families are allowed, with no finiteness or
+  Noetherian hypothesis. These statements give no existence, uniqueness or
+  associated-prime claim. The
+  [integer model](MultivariatePolynomialsTests/PrimaryDecomposition.lean)
+  uses the ring equivalence and deletion irredundance for `(12) = (4) ∩ (3)`.
 
 - **Nilpotent coefficients and irreducible polynomial spectra.** For any
   commutative semiring `R` and arbitrary variable type `σ`,
