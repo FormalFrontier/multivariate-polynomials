@@ -17,6 +17,7 @@ public import MultivariatePolynomials.CoefficientIdeal
 public import MultivariatePolynomials.CoefficientProduct
 public import MultivariatePolynomials.CoefficientProductJacobian
 public import MultivariatePolynomials.CoefficientProductSylvester
+public import MultivariatePolynomials.ResultantCongruence
 public import MultivariatePolynomials.ResultantFactorization
 public import MultivariatePolynomials.IdealExtension
 public import MultivariatePolynomials.AugmentedIdealPowers
