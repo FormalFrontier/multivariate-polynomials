@@ -14,6 +14,24 @@ explains how to build the library. The
 [unchanged manifest](api-manifest.json) cover only the original six-module
 revision, not this expanded interface.
 
+## `MultivariatePolynomials.AddUnits`
+
+For `[NonUnitalNonAssocSemiring R]`, `AddUnits R` has a
+`NonUnitalNonAssocRing` structure with Mathlib's additive operations and
+`(a * b).val = a.val * b.val` (`AddUnits.val_mul`). Under
+`[NonUnitalSemiring R]` or `[NonUnitalCommSemiring R]`, the same operations
+form a `NonUnitalRing` or `NonUnitalCommRing`, respectively.
+
+`AddUnits.coeNonUnitalRingHom : AddUnits R →ₙ+* R` extends Mathlib's
+`AddUnits.coeHom`. For `[NonUnitalNonAssocRing S]` in an independent universe,
+`AddUnits.liftNonUnitalRingHom f` has value `f s` at `s`; its factorization
+law is `AddUnits.coeNonUnitalRingHom_comp_lift` and uniqueness is
+`AddUnits.liftNonUnitalRingHom_unique`. The construction is the inverse of
+`AddUnits.nonUnitalRingHomEquiv : (S →ₙ+* AddUnits R) ≃ (S →ₙ+* R)`.
+These homomorphisms do not preserve a multiplicative identity: for example,
+`ℤ →ₙ+* ℕ × ℤ`, `z ↦ (0, z)`, factors through the additive units even though
+`(0, 1) ≠ (1, 1)`.
+
 ## `MultivariatePolynomials.FractionRingFiniteVariables`
 
 Let `R` be an integral domain (`[CommRing R] [IsDomain R]`), and let

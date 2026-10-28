@@ -32,6 +32,21 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Factorization uniqueness from a regular crossed resultant.** Over any commutative
+  ring, let `G,G'` have degree at most `m` and `H,H'` degree at most `n`, with
+  `G.coeff m = G'.coeff m` and `H.coeff n = H'.coeff n`. If `G * H = G' * H'`
+  and `Polynomial.resultant G' H m n` is regular, then `G = G'` and `H = H'`, by
+  [`Polynomial.eq_and_eq_of_mul_eq_mul_of_isRegular_resultant`](MultivariatePolynomials/ResultantFactorization.lean).
+  Neither monicity nor positive nominal degrees are required, and the ring may have
+  zero divisors.
+
+- **Non-unital rings of additive units.** For a non-unital, non-associative semiring
+  `R`, the existing `AddUnits R` inherits multiplication and forms a non-unital,
+  non-associative ring. Associativity and commutativity are inherited when present.
+  For every non-unital, non-associative ring `S`, value inclusion induces
+  `(S →ₙ+* AddUnits R) ≃ (S →ₙ+* R)`, with a unique factorization through the
+  additive units. See [`AddUnits`](MultivariatePolynomials/AddUnits.lean).
+
 - **Nonconstant coefficients of polynomial units.** Over any commutative semiring
   `R`, every coefficient at a nonzero exponent of a unit in `MvPolynomial σ R`
   is additively invertible, by
@@ -887,6 +902,7 @@ not a complete declaration inventory.
 
 | Module (`MultivariatePolynomials.`) | Main interfaces |
 | --- | --- |
+| [`ResultantFactorization`](MultivariatePolynomials/ResultantFactorization.lean) | Sylvester-map injectivity and bounded factorization uniqueness from a regular crossed resultant |
 | [`FiniteSupport`](MultivariatePolynomials/FiniteSupport.lean) | Exact injectivity criterion for coefficient aggregation; total bivariate degree-and-support recovery iff subsingleton coefficients |
 | [`Rename`](MultivariatePolynomials/Rename.lean) | Injectivity and surjectivity of the full polynomial renaming map iff the variable map has the corresponding property or the coefficient semiring is subsingleton |
 | [`RenameKernel`](MultivariatePolynomials/RenameKernel.lean) | Over commutative rings, kernel presentation by equal-image variable differences; finite generation iff subsingleton coefficients or finitely many collision participants |

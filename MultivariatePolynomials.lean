@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import MultivariatePolynomials.AddUnits
 public import MultivariatePolynomials.ConstantUnits
 public import MultivariatePolynomials.UnitCoefficients
 public import MultivariatePolynomials.UniqueAlgEquiv
@@ -16,6 +17,7 @@ public import MultivariatePolynomials.CoefficientIdeal
 public import MultivariatePolynomials.CoefficientProduct
 public import MultivariatePolynomials.CoefficientProductJacobian
 public import MultivariatePolynomials.CoefficientProductSylvester
+public import MultivariatePolynomials.ResultantFactorization
 public import MultivariatePolynomials.IdealExtension
 public import MultivariatePolynomials.AugmentedIdealPowers
 public import MultivariatePolynomials.CoefficientIdealSubtractive
