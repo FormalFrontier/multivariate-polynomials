@@ -32,6 +32,12 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Nonconstant coefficients of polynomial units.** Over any commutative semiring
+  `R`, every coefficient at a nonzero exponent of a unit in `MvPolynomial σ R`
+  is additively invertible, by
+  [`MvPolynomial.isAddUnit_coeff_of_isUnit`](MultivariatePolynomials/UnitCoefficients.lean).
+  The variable type is arbitrary, including empty and infinite types.
+
 - **Prime coefficient extensions over commutative semirings.** For a commutative
   semiring `R`, any variable type `σ` and ideal `I`, primality of `I` together
   with `∀ a b : R, a ∈ I → a + b ∈ I → b ∈ I` implies primality of
