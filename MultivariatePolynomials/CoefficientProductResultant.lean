@@ -3,19 +3,22 @@ module
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Mathlib.RingTheory.Polynomial.Resultant.Basic
 public import MultivariatePolynomials.CoefficientProduct
+public import MultivariatePolynomials.CoefficientProductSylvester
 
 /-!
-# Coefficient-product Jacobian determinants with an empty block
+# Coefficient-product Jacobian determinants and resultants
 
 At an arbitrary target point, the evaluated partial-derivative matrix of
-`MvPolynomial.coefficientProduct` has determinant equal to a constant-coefficient
-power when either block has bound zero. These powers also equal the resultants
-of the mapped seeds with the same explicit nominal bounds.
+`MvPolynomial.coefficientProduct` has determinant equal to the resultant of the
+mapped, perturbed seeds at explicit nominal bounds, provided their target natural
+degrees satisfy those bounds.
 
-The source coefficients need only form a commutative semiring. The target is a
-commutative ring, and neither seed is subject to a degree bound. The statements
-include empty matrices and the zero ring; they do not identify a general
-coefficient-product Jacobian with a Sylvester matrix.
+When either block has bound zero, the determinant is a constant-coefficient
+power and equals the resultant of the mapped seeds with the same explicit
+nominal bounds, without degree restrictions on either seed.
+
+The source coefficients need only form a commutative semiring, and the target a
+commutative ring. The statements include empty matrices and the zero ring.
 -/
 
 @[expose] public section
@@ -151,5 +154,24 @@ theorem det_eval₂Hom_pderiv_coefficientProduct_zero_right_bound_eq_resultant
       (g.map φ).resultant (h.map φ) m 0 := by
   rw [det_eval₂Hom_pderiv_coefficientProduct_zero_right_bound,
     Polynomial.resultant_zero_right_deg, Polynomial.coeff_map]
+
+/-- The evaluated coefficient-product Jacobian determinant is the resultant of the
+mapped, perturbed seeds at explicit nominal bounds, assuming their target natural
+degrees satisfy those bounds. -/
+theorem det_eval₂Hom_pderiv_coefficientProduct_eq_resultant
+    {R : Type v} [CommRing R]
+    (m n : ℕ) (g h : Polynomial C) (φ : C →+* R)
+    (a : Fin (m + n) → R) :
+    let qa := ∑ s : Fin (m + n), a s • Polynomial.degreeLT.basisProd R m n s
+    let G := g.map φ + (qa.1 : Polynomial R)
+    let H := h.map φ + (qa.2 : Polynomial R)
+    ∀ _hG : G.natDegree ≤ m, ∀ _hH : H.natDegree ≤ n,
+      Matrix.det (fun r s : Fin (m + n) =>
+        eval₂Hom φ a (pderiv s (coefficientProduct m n g h r))) =
+      Polynomial.resultant (R := R) G H m n := by
+  dsimp only
+  intro hG hH
+  exact congrArg Matrix.det
+    (eval₂Hom_pderiv_coefficientProduct_eq_sylvester m n g h φ a hG hH)
 
 end MvPolynomial
