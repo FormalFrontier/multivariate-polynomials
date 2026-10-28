@@ -461,6 +461,18 @@ weight-one-valuation naturality interfaces.
   laws. The field and variables may inhabit different universes, and `I` may
   be the unit ideal or define a nonreduced quotient. This point-set result
   itself does not assert a topological or sheaf equivalence.
+- **The image of evaluating one polynomial at two points.**
+  Over any commutative ring `R`, for assignments `a b : σ → R` with independent
+  coefficient and variable universes,
+  [`MvPolynomial.mem_range_eval_prod_iff`](MultivariatePolynomials/EvaluationIdeal.lean)
+  characterizes value pairs `(r, s) : R × R` of one common polynomial by
+  `r - s ∈ Ideal.span (Set.range (fun i => a i - b i))`, without a
+  finite-variable, field or comaximality assumption. The
+  [examples](MultivariatePolynomialsTests/EvaluationIdealImage.lean)
+  contrast same-parity pairs at the one-variable integer points `0` and `2`
+  with all pairs at the two-variable points `(0, 0)` and `(2, 3)` despite
+  nonunit coordinate differences, and include empty-variable diagonal and
+  zero-ring boundaries.
 - **Finite simultaneous polynomial evaluation has an exact surjectivity criterion.**
   For any commutative ring `R`, arbitrary variable type `σ`, finite point-index
   type `ι` and family `a : ι → σ → R`,
@@ -915,7 +927,7 @@ not a complete declaration inventory.
 | [`LinearDivision`](MultivariatePolynomials/LinearDivision.lean) | Chosen linear division preserving coefficient ideals |
 | [`MonicLift`](MultivariatePolynomials/MonicLift.lean) | Monic lifts along surjective coefficient maps |
 | [`FirstVariableLex`](MultivariatePolynomials/FirstVariableLex.lean) | First-variable scalar coefficients and lexicographic degree |
-| [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels; two-point kernel images, sums and comaximality; contraction under substitution |
+| [`EvaluationIdeal`](MultivariatePolynomials/EvaluationIdeal.lean) | Evaluation kernels; common-polynomial value pairs via the coordinate-difference ideal; two-point kernel images, sums and comaximality; contraction under substitution |
 | [`Interpolation`](MultivariatePolynomials/Interpolation.lean) | Finite interpolation over commutative rings with a total-degree bound, under pairwise coordinate-difference ideals equal to the unit ideal |
 | [`LagrangeComparison`](MultivariatePolynomials/LagrangeComparison.lean) | Identification of bounded unique-variable field polynomials with Mathlib's Lagrange interpolant; comparison for finite-interpolation witnesses and the empty-zero choice |
 | [`QuotientClosedPoints`](MultivariatePolynomials/QuotientClosedPoints.lean) | Closed points of polynomial quotient spectra |
