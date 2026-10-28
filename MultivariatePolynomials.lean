@@ -73,6 +73,7 @@ public import MultivariatePolynomials.RenameFormalSmoothness
 public import MultivariatePolynomials.RenameSmooth
 public import MultivariatePolynomials.RenameQuasiFinite
 public import MultivariatePolynomials.Nilpotent
+public import MultivariatePolynomials.NilpotentAddUnits
 public import MultivariatePolynomials.IntegralCoefficients
 public import MultivariatePolynomials.Jacobson
 public import MultivariatePolynomials.PrimeSpectrum
