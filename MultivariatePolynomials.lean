@@ -4,6 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
+public import MultivariatePolynomials.ConstantUnits
 public import MultivariatePolynomials.UniqueAlgEquiv
 public import MultivariatePolynomials.FractionRingAlgebraicIndependence
 public import MultivariatePolynomials.FractionRingTranscendenceBasis

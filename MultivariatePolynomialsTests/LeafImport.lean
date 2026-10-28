@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import MultivariatePolynomials.IdealOfVars
+import MultivariatePolynomials.ConstantUnits
 import MultivariatePolynomials.IntegrallyClosed
 import MultivariatePolynomials.IdealExtension
 import Mathlib.Tactic.NormNum
@@ -13,7 +14,8 @@ import Mathlib.Tactic.NormNum
 # Direct-leaf clients
 
 Test-only declarations exercise variable ideals, integrally closed polynomial
-rings, and radicals of extended coefficient ideals through direct leaf imports.
+rings, constant units over the natural numbers, and radicals of extended
+coefficient ideals through direct leaf imports.
 The unequal-universe client checks that the coefficient and variable types need
 not lie in the same universe. The concrete variable-ideal client is public; the
 remaining clients are private by the module default. Over the integers,
@@ -31,6 +33,10 @@ extension itself; the top ideal provides a boundary case.
 -/
 
 universe u v
+
+example (σ : Type v) (n : ℕ) :
+    IsUnit (algebraMap ℕ (MvPolynomial σ ℕ) n) ↔ IsUnit n := by
+  simp only [isUnit_map_iff]
 
 theorem leafGeneric (k : Type u) (σ : Type v)
     [CommSemiring k] [Nontrivial k] [Infinite σ] :
