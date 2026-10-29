@@ -233,4 +233,11 @@ example :
     simp only [p, map_add, map_smulₛₗ, constantCoeff_C, hg]
     simp
 
+/-- The ideal `(xy, xz, yz)` needs exactly three polynomial generators.
+This is the example in Ravi Vakil, *The Rising Sea: Foundations of Algebraic Geometry*,
+Exercise 13.1.F(a). -/
+theorem spanFinrank_ideal : ideal.spanFinrank = 3 := by
+  simpa only [ideal, exponentSet_ncard] using
+    spanFinrank_ideal_span_monomial (R := ℂ) exponentSet_finite exponentSet_isAntichain
+
 end MvPolynomial.CoordinateAxes

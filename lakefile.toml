@@ -24,6 +24,11 @@ name = "algebraic-direct-limits"
 git = "https://github.com/FormalFrontier/algebraic-direct-limits.git"
 rev = "5959888b3d648cf1f72038459f63d804093d6c54"
 
+[[require]]
+name = "groupTheory"
+git = "https://github.com/FormalFrontier/group-theory.git"
+rev = "41da4c034205f7a6e701388a1adb82ca0875242f"
+
 [[lean_lib]]
 name = "MultivariatePolynomials"
 

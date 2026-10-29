@@ -4,7 +4,7 @@ Authors: Formal Frontier Agents
 -/
 module
 
-import MultivariatePolynomials.UnitSufficiency
+import MultivariatePolynomials.UnitCriterion
 import Mathlib.Data.ZMod.Basic
 
 /-!
@@ -25,14 +25,8 @@ automatic additive-invertibility conditions. -/
 private theorem ring_specialization {R : Type u} {σ : Type v} [CommRing R]
     (p : MvPolynomial σ R) :
     (IsUnit (p.coeff 0) ∧ ∀ d ≠ 0,
-      IsNilpotent (p.coeff d) ∧ IsAddUnit (p.coeff d)) ↔ IsUnit p := by
-  constructor
-  · rintro ⟨hc, hn⟩
-    exact isUnit_of_coeff_isNilpotent_isAddUnit p hc hn
-  · intro hp
-    obtain ⟨hc, hn⟩ := MvPolynomial.isUnit_iff.mp hp
-    exact ⟨hc, fun d hd =>
-      ⟨hn d hd, ⟨⟨p.coeff d, -(p.coeff d), by simp, by simp⟩, rfl⟩⟩⟩
+      IsNilpotent (p.coeff d) ∧ IsAddUnit (p.coeff d)) ↔ IsUnit p :=
+  (isUnit_coeff_zero_and_isNilpotent_isAddUnit_iff p).trans MvPolynomial.isUnit_iff.symm
 
 /-- A genuinely nonconstant polynomial meeting the criterion over a nonring. -/
 private theorem nonring_control :
@@ -64,7 +58,8 @@ private theorem nonring_control :
         simp [p, coeff_one, Ne.symm hd, Ne.symm hdm]
       rw [hz]
       exact ⟨⟨1, by simp⟩, by simp⟩
-  refine ⟨p, isUnit_of_coeff_isNilpotent_isAddUnit p hc hn, ?_, hc, hn⟩
+  have hp : IsUnit p := isUnit_iff_coeff_isNilpotent_isAddUnit.mpr ⟨hc, hn⟩
+  refine ⟨p, hp, ?_, isUnit_iff_coeff_isNilpotent_isAddUnit.mp hp⟩
   intro hp
   have hcoeff := congrArg (fun f : MvPolynomial Unit (ℕ × ZMod 4) => f.coeff m) hp
   rw [hpm, coeff_C_of_ne_zero hm] at hcoeff
@@ -82,13 +77,13 @@ private theorem one_not_isAddUnit_product : ¬ IsAddUnit (1 : ℕ × ZMod 4) := 
 /-- Empty variable types are included without a global decidable-equality premise. -/
 private theorem empty_variables {R : Type u} [CommSemiring R]
     (p : MvPolynomial Empty R) (hc : IsUnit (p.coeff 0)) : IsUnit p := by
-  apply isUnit_of_coeff_isNilpotent_isAddUnit p hc
+  refine isUnit_iff_coeff_isNilpotent_isAddUnit.mpr ⟨hc, ?_⟩
   intro d hd
   exact (hd (Subsingleton.elim d 0)).elim
 
 /-- The zero coefficient semiring is included. -/
 private theorem zero_semiring {σ : Type v} (p : MvPolynomial σ (ZMod 1)) : IsUnit p := by
-  apply isUnit_of_coeff_isNilpotent_isAddUnit p
+  refine isUnit_iff_coeff_isNilpotent_isAddUnit.mpr ⟨?_, ?_⟩
   · have h : p.coeff 0 = 1 := Subsingleton.elim _ _
     rw [h]
     exact isUnit_one

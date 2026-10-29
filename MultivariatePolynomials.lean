@@ -5,6 +5,7 @@ Authors: Formal Frontier Agents
 module
 
 public import MultivariatePolynomials.UnitSufficiency
+public import MultivariatePolynomials.UnitCriterion
 public import MultivariatePolynomials.AddUnits
 public import MultivariatePolynomials.ConstantUnits
 public import MultivariatePolynomials.UnitCoefficients

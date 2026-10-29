@@ -53,10 +53,16 @@ weight-one-valuation naturality interfaces.
   [`MvPolynomial.isAddUnit_coeff_of_isUnit`](MultivariatePolynomials/UnitCoefficients.lean).
   The variable type is arbitrary, including empty and infinite types.
 
-- **Polynomial unit sufficiency over commutative semirings.** For any commutative
-  semiring `R` and arbitrary variable type `σ`, a polynomial in `MvPolynomial σ R`
-  is a unit if its constant coefficient is a unit and its coefficient at every
-  nonzero exponent is both nilpotent and additively invertible, by
+- **Polynomial units over commutative semirings.** For any commutative semiring
+  `R` and arbitrary variable type `σ`, a polynomial in `MvPolynomial σ R` is a
+  unit if and only if its constant coefficient is a unit and its coefficient at
+  every nonzero exponent is both nilpotent and additively invertible, by
+  [`MvPolynomial.isUnit_iff_coeff_isNilpotent_isAddUnit`](MultivariatePolynomials/UnitCriterion.lean).
+  The coefficient and variable types have independent universes; empty variable
+  types and the zero semiring are included. The lemma
+  [`MvPolynomial.isUnit_coeff_zero_and_isNilpotent_isAddUnit_iff`](MultivariatePolynomials/UnitCriterion.lean)
+  identifies the coefficient conditions over a commutative ring with those in
+  Mathlib's `MvPolynomial.isUnit_iff`. The sufficiency direction remains available as
   [`MvPolynomial.isUnit_of_coeff_isNilpotent_isAddUnit`](MultivariatePolynomials/UnitSufficiency.lean).
 
 - **Prime coefficient extensions over commutative semirings.** For a commutative
@@ -627,8 +633,14 @@ weight-one-valuation naturality interfaces.
   antichains and variable types, and trivial coefficients, are allowed. The
   [coordinate-axes example](MultivariatePolynomialsTests/MonomialIdealGenerators.lean)
   records the three exponents of `(xy, xz, yz)` over `ℂ`, their antichain and
-  monomial presentation, and the ideal's nonzeroness and properness. This is
-  a coefficient-map interface, not a minimum-generator formula.
+  monomial presentation, and the ideal's nonzeroness and properness.
+  For **finite** `S` and **nontrivial** `R`,
+  [`MvPolynomial.spanFinrank_ideal_span_monomial`](MultivariatePolynomials/MonomialIdeal.lean)
+  proves that the ideal's minimum number of polynomial generators is `S.ncard`.
+  [`MvPolynomial.card_le_card_of_span_eq_ideal_span_monomial`](MultivariatePolynomials/MonomialIdeal.lean)
+  bounds every finite generating set, not only sets of monomials. This is
+  generation over the full polynomial semiring, not coefficient-module dimension.
+  The coordinate-axes example consequently has minimum number of generators three.
 - **Variable classes form the augmentation cotangent basis.** For any
   `(σ : Type u)` and `(R : Type v) [CommRing R]`,
   [`MvPolynomial.idealOfVarsCotangentBasis`](MultivariatePolynomials/Cotangent.lean)
@@ -878,9 +890,8 @@ library in the same project.
 
 For a source checkout, run the following commands from its root directory.
 The repository pins Lean `v4.34.0-rc2` and mathlib
-`83abb3e776bdefcbc447a1e44d0debe4010039e5` (eleven pinned package records in
-`lake-manifest.json`). Install the pinned toolchain and **successfully fetch
-the matching precompiled mathlib cache before building**:
+`83abb3e776bdefcbc447a1e44d0debe4010039e5`. Install the pinned toolchain and
+**successfully fetch the matching precompiled mathlib cache before building**:
 
 ```sh
 elan toolchain install leanprover/lean4:v4.34.0-rc2
@@ -930,6 +941,7 @@ not a complete declaration inventory.
 | [`FractionRingTranscendenceBasis`](MultivariatePolynomials/FractionRingTranscendenceBasis.lean) | Algebraicity over the source-fraction adjoin of omitted variables and the corresponding transcendence basis for injective renaming |
 | [`PolynomialFractionTrace`](MultivariatePolynomials/PolynomialFractionTrace.lean) | Krull dimension bounds through finite-stage preimages |
 | [`IdealOfVars`](MultivariatePolynomials/IdealOfVars.lean) | Finite-generation criteria for coefficient and variable ideals |
+| [`MonomialIdeal`](MultivariatePolynomials/MonomialIdeal.lean) | Antichain coefficient semilinear surjection; minimum generator count for finite antichains of monic monomials over nontrivial commutative semirings |
 | [`IdealFiniteGeneration`](MultivariatePolynomials/IdealFiniteGeneration.lean) | Ideal extension along a semiring homomorphism with a retraction preserves and reflects finite generation; arbitrary semirings and independent universes |
 | [`CoefficientIdeal`](MultivariatePolynomials/CoefficientIdeal.lean) | Coefficient submodule and extended-ideal identification over commutative semirings; membership, contraction and coefficient-map kernels |
 | [`AugmentedIdealPowers`](MultivariatePolynomials/AugmentedIdealPowers.lean) | Coefficient criterion for all powers of constant-coefficient pullback ideals over commutative semirings, with truncated total-degree deficits and agreement with the variable-ideal criterion |
@@ -972,12 +984,18 @@ not a complete declaration inventory.
   differences; Exercise 3.2.L (p. 109) gives the complex-axes localization
   generalized here; Exercise 3.2.P (pp. 110–111) motivates substitution of
   points; Exercise 6.7.E (PDF p. 199) motivates the infinite-variable ideal
-  theorem. These are not claims of exact source correspondence or of a proof
+  theorem. Exercise 13.1.F(a) motivates the minimum-generator formula for
+  finite antichains of monic monomials and the example `(xy, xz, yz)`.
+  These are not claims of exact source correspondence or of a proof
   of the full exercises.
 - [Mathlib](https://github.com/leanprover-community/mathlib4) supplies the
   multivariate-polynomial, ideal, homogeneity, substitution, localization,
   monomial-order, and linear-map APIs used throughout the library. The leaf
   modules identify the specific formalized dependencies.
+- [Group Theory](https://github.com/FormalFrontier/group-theory/tree/41da4c034205f7a6e701388a1adb82ca0875242f)
+  supplies the nilpotence-reflection bridge from the Grothendieck ring for
+  additively invertible semiring elements, used in the multivariate-polynomial
+  unit criterion.
 - [Algebraic Direct Limits](https://github.com/FormalFrontier/algebraic-direct-limits/tree/5959888b3d648cf1f72038459f63d804093d6c54)
   supplies the generic finite-capture bound for subsemiring preimage dimensions.
   The polynomial-fraction application and integer boundary examples are original
