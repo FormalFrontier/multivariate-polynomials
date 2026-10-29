@@ -12,6 +12,7 @@ public import Mathlib.Algebra.MvPolynomial.Basic
 A polynomial whose constant coefficient has a specified multiplicative inverse
 is a constant multiple of one plus a polynomial with zero constant coefficient.
 The remaining coefficients of the normalized polynomial are specified explicitly.
+The zero constant coefficient also characterizes the normalized tail uniquely.
 -/
 
 @[expose] public section
@@ -50,6 +51,50 @@ theorem exists_eq_C_mul_one_add_of_coeff_zero_mul_eq_one
     rw [coeff_C_mul]
     change b * (p.coeff.erase 0) d = b * p.coeff d
     rw [Finsupp.erase_ne hd]
+
+/-- A polynomial with a specified inverse constant coefficient has a unique
+zero-constant tail in its constant-term normalization. -/
+theorem existsUnique_eq_C_mul_one_add_of_coeff_zero_mul_eq_one
+    (p : MvPolynomial σ R) (b : R) (hb : p.coeff 0 * b = 1) :
+    ∃! q : MvPolynomial σ R,
+      q.coeff 0 = 0 ∧ p = MvPolynomial.C (p.coeff 0) * (1 + q) := by
+  classical
+  obtain ⟨q, hzero, hfactor, hcoeff⟩ :=
+    exists_eq_C_mul_one_add_of_coeff_zero_mul_eq_one p b hb
+  refine ⟨q, ⟨hzero, hfactor⟩, ?_⟩
+  intro r hr
+  apply MvPolynomial.ext
+  intro d
+  by_cases hd : d = 0
+  · subst d
+    exact hr.1.trans hzero.symm
+  · have hone : (1 : MvPolynomial σ R).coeff d = 0 := by
+      have h := MvPolynomial.coeff_C_of_ne_zero hd (1 : R)
+      simpa only [map_one] using h
+    have h := congrArg (fun f : MvPolynomial σ R => f.coeff d) hr.2
+    rw [coeff_C_mul] at h
+    change p.coeff d = p.coeff 0 * ((1 : MvPolynomial σ R).coeff d + r.coeff d) at h
+    rw [hone, zero_add] at h
+    calc
+      r.coeff d = 1 * r.coeff d := (one_mul _).symm
+      _ = (b * p.coeff 0) * r.coeff d := by rw [mul_comm b (p.coeff 0), hb]
+      _ = b * p.coeff d := by rw [mul_assoc, ← h]
+      _ = q.coeff d := (hcoeff d hd).symm
+
+/- Uniqueness recovers the coefficient formula for any zero-constant factorization. -/
+example
+    (p : MvPolynomial σ R) (b : R) (hb : p.coeff 0 * b = 1)
+    (q : MvPolynomial σ R) (hqzero : q.coeff 0 = 0)
+    (hqfactor : p = MvPolynomial.C (p.coeff 0) * (1 + q)) :
+    ∀ d : σ →₀ ℕ, d ≠ 0 → q.coeff d = b * p.coeff d := by
+  obtain ⟨r, hrzero, hrfactor, hrcoeff⟩ :=
+    MvPolynomial.exists_eq_C_mul_one_add_of_coeff_zero_mul_eq_one p b hb
+  obtain ⟨s, _, huniq⟩ :=
+    MvPolynomial.existsUnique_eq_C_mul_one_add_of_coeff_zero_mul_eq_one p b hb
+  have hqr : q = r :=
+    (huniq q ⟨hqzero, hqfactor⟩).trans (huniq r ⟨hrzero, hrfactor⟩).symm
+  rw [hqr]
+  exact hrcoeff
 
 end MvPolynomial
 
