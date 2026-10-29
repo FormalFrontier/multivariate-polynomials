@@ -53,6 +53,12 @@ weight-one-valuation naturality interfaces.
   [`MvPolynomial.isAddUnit_coeff_of_isUnit`](MultivariatePolynomials/UnitCoefficients.lean).
   The variable type is arbitrary, including empty and infinite types.
 
+- **Polynomial unit sufficiency over commutative semirings.** For any commutative
+  semiring `R` and arbitrary variable type `σ`, a polynomial in `MvPolynomial σ R`
+  is a unit if its constant coefficient is a unit and its coefficient at every
+  nonzero exponent is both nilpotent and additively invertible, by
+  [`MvPolynomial.isUnit_of_coeff_isNilpotent_isAddUnit`](MultivariatePolynomials/UnitSufficiency.lean).
+
 - **Prime coefficient extensions over commutative semirings.** For a commutative
   semiring `R`, any variable type `σ` and ideal `I`, primality of `I` together
   with `∀ a b : R, a ∈ I → a + b ∈ I → b ∈ I` implies primality of
