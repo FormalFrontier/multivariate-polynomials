@@ -8,6 +8,7 @@ public import MultivariatePolynomials.UnitSufficiency
 public import MultivariatePolynomials.UnitCriterion
 public import MultivariatePolynomials.AddUnits
 public import MultivariatePolynomials.ConstantUnits
+public import MultivariatePolynomials.Laurent.Basic
 public import MultivariatePolynomials.UnitCoefficients
 public import MultivariatePolynomials.UniqueAlgEquiv
 public import MultivariatePolynomials.FractionRingAlgebraicIndependence

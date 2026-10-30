@@ -947,6 +947,8 @@ not a complete declaration inventory.
 | [`AugmentedIdealPowers`](MultivariatePolynomials/AugmentedIdealPowers.lean) | Coefficient criterion for all powers of constant-coefficient pullback ideals over commutative semirings, with truncated total-degree deficits and agreement with the variable-ideal criterion |
 | [`Cotangent`](MultivariatePolynomials/Cotangent.lean) | Prescribed variable-class basis of the augmentation cotangent over arbitrary commutative coefficient rings; coordinates from linear coefficients |
 | [`Noetherian`](MultivariatePolynomials/Noetherian.lean) | Left-Noetherian Hilbert basis theorem; univariate coefficient-module Noetherianity iff subsingleton coefficients; multivariate self and coefficient-module criteria (direct import) |
+| [`Laurent/Basic`](MultivariatePolynomials/Laurent/Basic.lean) | Left multiplication by a unit takes any Laurent polynomial over an arbitrary semiring into the polynomial image |
+| [`Laurent/Noetherian`](MultivariatePolynomials/Laurent/Noetherian.lean) | Central Laurent polynomial rings over arbitrary left-Noetherian rings are left-Noetherian; noncommutative and zero coefficient rings are included (direct import) |
 | [`Artinian`](MultivariatePolynomials/Artinian.lean) | Univariate left self- and coefficient-module Artinianity iff subsingleton coefficients over any semiring, including noncommutative ones; multivariate self-module criterion over commutative semirings: Artinian coefficients and empty variables or trivial coefficients |
 | [`IntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean) | Integral closure of polynomial rings over integrally closed commutative domains, with arbitrary variable types and independent universes |
 | [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
@@ -1003,7 +1005,11 @@ not a complete declaration inventory.
   finite-fraction origins, and Mathlib's integer, field and ring-equivalence APIs.
 - [Coherent Modules](https://github.com/FormalFrontier/coherent-modules)
   supplies the canonical opposite-module and central-scalar action used by the
-  polynomial point quotient's trivial square-zero extension.
+  polynomial point quotient's trivial square-zero extension. It also supplies the
+  left-unit clearing criterion used for Laurent-ring Noetherianity; Plinth
+  assisted with the ideal-theoretic API. The Laurent argument reuses Mathlib's
+  central monomial units and this library's arbitrary-ring polynomial Hilbert
+  basis theorem.
 - Stefan Schröer, *A simple proof for Hochster's Theorem*,
   arXiv:2606.20016v1, §2, motivates the
   subset-weight-one valuation on polynomial function fields and indirectly
