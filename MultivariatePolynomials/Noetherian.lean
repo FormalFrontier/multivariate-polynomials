@@ -8,9 +8,12 @@ public import MultivariatePolynomials.IdealOfVars
 public import Mathlib.RingTheory.Polynomial.Basic
 
 import Mathlib.Algebra.EuclideanDomain.Int
+import Mathlib.Algebra.MonoidAlgebra.MapDomain
+import Mathlib.Data.Finsupp.Option
+import Mathlib.Data.Fintype.Option
+import Mathlib.Data.Matrix.Basis
 import Mathlib.Data.ZMod.Basic
 import Mathlib.NumberTheory.FrobeniusNumber
-import Mathlib.Data.Matrix.Basis
 
 /-!
 # Noetherian polynomial semirings
@@ -41,6 +44,11 @@ commutative-ring Hilbert basis theorem. The proof uses Mathlib's coefficient-ima
 ideals, stabilization of ascending chains of submodules, and the coefficient
 linear equivalence for bounded-degree polynomials. Powers of the central variable
 act on the left, so all ideal-membership arguments apply to left ideals.
+
+Finite induction extends this to finitely many central variables over an arbitrary
+left-Noetherian ring, via `AddMonoidAlgebra.isNoetherianRing_finsupp`. The proof
+uses Mathlib's finite-type induction and monoid-algebra coordinate/currying
+ring equivalences, not a separate ideal-theoretic argument.
 
 ## References
 
@@ -397,3 +405,37 @@ theorem not_isNoetherianRing_of_subsingleton_addUnits
   exact one_ne_zero h10
 
 end Polynomial
+
+namespace AddMonoidAlgebra
+
+/-- The additive monoid algebra on finitely many natural-number coordinates over
+an arbitrary left-Noetherian ring is left-Noetherian. The variables are central;
+the coefficients need not commute. This follows the finite-variable induction
+for Hilbert's basis theorem, using `Polynomial.isNoetherianRing_of_isNoetherianRing`
+and Mathlib's monoid-algebra equivalences. For commutative coefficients this is
+definitionally the usual `MvPolynomial` ring. -/
+theorem isNoetherianRing_finsupp
+    (A : Type u) [Ring A] [IsNoetherianRing A]
+    (σ : Type v) [Finite σ] :
+    IsNoetherianRing (AddMonoidAlgebra A (σ →₀ ℕ)) := by
+  classical
+  refine Finite.induction_empty_option
+    (P := fun τ : Type v => IsNoetherianRing (AddMonoidAlgebra A (τ →₀ ℕ))) ?_ ?_ ?_ σ
+  · intro α β e ih
+    let := ih
+    exact isNoetherianRing_of_ringEquiv _
+      (mapDomainRingEquiv A (Finsupp.domCongr e))
+  · exact isNoetherianRing_of_ringEquiv A
+      (uniqueRingEquiv (R := A) (PEmpty →₀ ℕ)).symm
+  · intro α _ ih
+    let := ih
+    let split : (Option α →₀ ℕ) ≃+ ℕ × (α →₀ ℕ) :=
+      { Finsupp.optionEquiv with
+        map_add' := fun f g => Prod.ext rfl (Finsupp.some_add f g) }
+    let e : AddMonoidAlgebra A (Option α →₀ ℕ) ≃+*
+        Polynomial (AddMonoidAlgebra A (α →₀ ℕ)) :=
+      (mapDomainRingEquiv A split).trans
+        (curryRingEquiv.trans (Polynomial.toFinsuppIso _).symm)
+    exact isNoetherianRing_of_ringEquiv _ e.symm
+
+end AddMonoidAlgebra

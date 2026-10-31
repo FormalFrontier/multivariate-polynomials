@@ -145,6 +145,13 @@ private theorem binary_matrix_coefficient_conditions :
 private theorem binary_matrix_isNoetherianRing : IsNoetherianRing binaryMatrixRing := by
   exact isNoetherian_of_finite binaryMatrixRing binaryMatrixRing
 
+-- Two central coordinates are allowed over these genuinely noncommutative
+-- coefficients; finite coordinates do not make the exponent monoid finite.
+private theorem binary_matrix_two_coordinates_isNoetherianRing :
+    IsNoetherianRing (AddMonoidAlgebra binaryMatrixRing (Fin 2 →₀ ℕ)) := by
+  let : IsNoetherianRing binaryMatrixRing := binary_matrix_isNoetherianRing
+  exact AddMonoidAlgebra.isNoetherianRing_finsupp binaryMatrixRing (Fin 2)
+
 private theorem binary_matrix_noncommutative :
     Matrix.single (0 : Fin 2) (1 : Fin 2) (1 : ZMod 2) *
         Matrix.single (1 : Fin 2) (0 : Fin 2) (1 : ZMod 2) ≠

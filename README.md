@@ -545,6 +545,11 @@ weight-one-valuation naturality interfaces.
   not required. On commutative rings,
   `Polynomial.isNoetherianRing_of_isNoetherianRing_eq_isNoetherianRing`
   identifies this proof with Mathlib's `Polynomial.isNoetherianRing`.
+  For any finite type `σ : Type v`, the named theorem
+  `AddMonoidAlgebra.isNoetherianRing_finsupp` proves left Noetherianity of
+  `AddMonoidAlgebra R (σ →₀ ℕ)`, with independently polymorphic universes.
+  It permits zero and noncommutative coefficient rings. For commutative rings,
+  this is definitionally `MvPolynomial σ R`.
   Here `IsNoetherianRing R` means `IsNoetherian R R` for the canonical left
   self-action. It does not assume `IsNoetherian R (Polynomial R)`: that
   coefficient-module property is false for every nontrivial coefficient ring.

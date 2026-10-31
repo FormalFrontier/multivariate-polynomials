@@ -14,7 +14,9 @@ project:
     division, existential monic lifts and scalar-top first-variable lex degree.
     The univariate Hilbert basis theorem holds for any left-Noetherian ring,
     without coefficient commutativity, using a central variable and the
-    canonical left self-module. Central Laurent polynomial rings over
+    canonical left self-module. The same holds for finitely many central
+    natural-number coordinates via AddMonoidAlgebra, with independent
+    coefficient and coordinate universes. Central Laurent polynomial rings over
     left-Noetherian rings are likewise left-Noetherian, including noncommutative
     and zero coefficient rings. The Laurent argument clears negative exponents
     by units and reuses the arbitrary-ring polynomial theorem.
