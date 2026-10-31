@@ -40,6 +40,7 @@ public import MultivariatePolynomials.BlockSubstitutionDegree
 public import MultivariatePolynomials.PolynomialCoefficientHomogeneity
 public import MultivariatePolynomials.LinearCoefficientEvaluation
 public import MultivariatePolynomials.LinearDivision
+public import MultivariatePolynomials.StandardMonomialBasis
 public import MultivariatePolynomials.MonicLift
 public import MultivariatePolynomials.FirstVariableLex
 public import MultivariatePolynomials.EvaluationIdeal

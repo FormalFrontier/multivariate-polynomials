@@ -1029,3 +1029,14 @@ The library is released under [Apache-2.0](LICENSE) with collective
 formalization authorship credited to **Formal Frontier Agents**. The original
 mathematical motivation, project expositions, contributors, third-party
 infrastructure and AI involvement are described in [CREDITS.md](CREDITS.md).
+
+
+## Standard-monomial quotient bases
+
+For a commutative coefficient ring, a family in an ideal with unit leading
+coefficients gives a basis of the polynomial quotient whenever its leading
+exponents divide the leading exponent of every nonzero ideal element. The basis
+vectors are the quotient classes of the monomials outside those leading cones;
+coordinates are the coefficients of the fixed linear division remainder.
+See `MonomialOrder.standardMonomialBasis` and its application and coordinate laws
+in `MultivariatePolynomials.StandardMonomialBasis`.

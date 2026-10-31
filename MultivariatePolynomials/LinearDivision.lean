@@ -30,7 +30,9 @@ namespace MonomialOrder
 
 open MvPolynomial
 
-variable {σ ι R : Type*} [CommRing R]
+universe u v w
+
+variable {σ : Type u} {ι : Type v} {R : Type w} [CommRing R]
 
 /-- The chosen witness on a basis monomial, with an explicit trivial reduced branch.
 Uses Antoine Chambert-Loir's `MonomialOrder.div` in Mathlib for the nontrivial branch. -/
