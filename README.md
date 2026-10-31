@@ -1040,3 +1040,19 @@ vectors are the quotient classes of the monomials outside those leading cones;
 coordinates are the coefficients of the fixed linear division remainder.
 See `MonomialOrder.standardMonomialBasis` and its application and coordinate laws
 in `MultivariatePolynomials.StandardMonomialBasis`.
+
+## Generic freeness of finite-type algebras
+
+[`GenericFreeness.lean`](MultivariatePolynomials/GenericFreeness.lean) proves
+that for any integral domain `A` and any commutative finite-type `A`-algebra `B`,
+there is a nonzero `a : A` such that
+`Localization.Away a ⊗[A] B` is free as a `Localization.Away a`-module, with
+the original algebra and canonical tensor scalar structures. Neither
+Noetherianity nor algebra finite presentation is required; the free module
+may have infinite rank or be zero.
+
+The proof selects finitely many leading divisors in the original polynomial
+ideal using Dickson's lemma, inverts their leading coefficients, and applies
+the standard-monomial basis to the extended ideal. Supporting APIs
+cover injective coefficient maps, coefficient localization, and canonical
+tensor base change of polynomial quotients.
