@@ -61,7 +61,13 @@ credited below.
   monic principal-ideal generators and root-existence theorems, together with
   the existing orbit quotient and standard equivalence constructors. It does
   not introduce another quotient, point carrier or choice mechanism, and it
-  does not require separability.
+  does not require separability. The normal-extension root-orbit and cardinality
+  results reuse Mathlib's normal-extension automorphism criterion
+  `Normal.minpoly_eq_iff_mem_orbit`, the conjugate-root/minimal-polynomial bridge
+  `isConjRoot_iff_mem_minpoly_rootSet`, and its polynomial root-set and
+  separable-degree APIs, including `Polynomial.natSepDegree_eq_of_splits` and
+  `Polynomial.natSepDegree_eq_natDegree_iff`. These results count distinct roots
+  without imposing separability on the extension.
 - [Minimal Primes](https://github.com/FormalFrontier/minimal-primes/tree/c069147fd1754e4a87be7e09003439f1d2250bfd)
   supplies the canonical maximal-spectrum embedding along surjective ring
   homomorphisms. The polynomial infinitude proofs were developed by Formal

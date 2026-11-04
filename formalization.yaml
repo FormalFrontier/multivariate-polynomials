@@ -7,7 +7,9 @@ project:
     coordinate-difference evaluation ideals, polynomial maximal-spectrum
     infinitude and the classification of univariate polynomial closed points
     by algebraic-closure automorphism orbits without separability,
-    homogeneous evaluation,
+    normal-extension automorphism orbits as minimal-polynomial root sets with
+    cardinality equal to separable degree and full degree exactly for separable
+    elements, homogeneous evaluation,
     disjoint-block substitution and its iteration,
     finite-variable origins of finite collections of polynomial fractions over
     integral domains in arbitrary fraction-ring representations,
@@ -33,6 +35,18 @@ project:
   license: Apache-2.0
 
 sources:
+  - title: "Mathlib"
+    authors:
+      - Mathlib Contributors
+    type: software
+    location: "https://github.com/leanprover-community/mathlib4"
+    relationship: background
+    note: >-
+      The normal-extension root-orbit and cardinality results reuse the normal
+      automorphism criterion Normal.minpoly_eq_iff_mem_orbit, the bridge
+      isConjRoot_iff_mem_minpoly_rootSet, and the polynomial root-set and
+      separable-degree APIs, including Polynomial.natSepDegree_eq_of_splits
+      and Polynomial.natSepDegree_eq_natDegree_iff.
   - title: "Minimal Primes"
     authors:
       - Formal Frontier Agents
@@ -120,7 +134,7 @@ sources:
 
 status:
   scope: >-
-    Fifty-one selected public declarations over sixteen leaves and the
+    Fifty-four selected public declarations over seventeen leaves and the
     aggregate: finite collections in an abstract fraction ring of MvPolynomial
     over an integral domain come from one finite-variable fraction ring,
     without a field coefficient or target hypothesis;
@@ -128,6 +142,11 @@ status:
     commutative ring, and the multivariate maximal spectrum is infinite exactly
     when the coefficient ring is nontrivial and either a variable exists or
     the coefficient maximal spectrum is infinite, with independent universes;
+    for independently universed fields K and L with their given Algebra K L
+    and Normal K L, the automorphism orbit of each x in L is the root set of
+    minpoly K x, its ncard is the polynomial's natSepDegree, and equality with
+    natDegree is equivalent to IsSeparable K x, without perfectness, separability of
+    the extension or finite-dimensionality;
     coordinate-difference ideals equal evaluation kernels over
     CommRing coefficients for arbitrary variables, with a vanishing membership
     criterion and a singleton-vanishing-ideal bridge over fields;
@@ -156,6 +175,12 @@ status:
     functional, or source-specific completion is claimed. See README.md and
     docs/API.md for the detailed module map and guides.
   main_results:
+    - declaration: Normal.orbit_eq_rootSet_minpoly
+      file: MultivariatePolynomials/PolynomialRootOrbits.lean
+    - declaration: Normal.ncard_orbit_eq_natSepDegree
+      file: MultivariatePolynomials/PolynomialRootOrbits.lean
+    - declaration: Normal.ncard_orbit_eq_natDegree_iff_isSeparable
+      file: MultivariatePolynomials/PolynomialRootOrbits.lean
     - declaration: MaximalSpectrum.infinite_polynomial
       file: MultivariatePolynomials/PrimeSpectrum.lean
     - declaration: MaximalSpectrum.infinite_mvPolynomial_iff

@@ -183,6 +183,37 @@ the constant-coefficient projection give the general results through Minimal
 Primes' canonical `MaximalSpectrum.comapEmbeddingOfSurjective`. The field
 argument and substitution-surjectivity lemma are private implementation details.
 
+## `MultivariatePolynomials.PolynomialRootOrbits`
+
+Import the [producer](../MultivariatePolynomials/PolynomialRootOrbits.lean) as
+`MultivariatePolynomials.PolynomialRootOrbits`. Let `K : Type u` and
+`L : Type v` be fields in independent universes, with their given
+`[Algebra K L]` and `[Normal K L]`, and let `x : L`. All three theorems use
+this same algebra structure, the automorphism action of `L ≃ₐ[K] L` on `L`,
+and the same minimal polynomial `minpoly K x`:
+
+- `Normal.orbit_eq_rootSet_minpoly` identifies
+  `MulAction.orbit (L ≃ₐ[K] L) x` with `(minpoly K x).rootSet L`.
+- `Normal.ncard_orbit_eq_natSepDegree` gives
+  `(MulAction.orbit (L ≃ₐ[K] L) x).ncard = (minpoly K x).natSepDegree`.
+- `Normal.ncard_orbit_eq_natDegree_iff_isSeparable` states that
+  `(MulAction.orbit (L ≃ₐ[K] L) x).ncard = (minpoly K x).natDegree` if and
+  only if `IsSeparable K x`.
+
+Normality supplies algebraicity. No perfectness of `K`, separability of the
+extension or finite-dimensionality is required. The orbit is finite, and
+`Set.ncard` counts distinct roots, not their multiplicities. Thus an
+inseparable element can have fewer conjugates than its minimal-polynomial
+degree; a singleton orbit does not imply `x ∈ Set.range (algebraMap K L)`.
+
+For an algebraic closure, these results describe the representatives of the
+orbits used by
+[`Polynomial.algAutOrbitEquivMaximalSpectrum`](../MultivariatePolynomials/PolynomialClosedPoints.lean).
+The [closed-point locus API](../MultivariatePolynomials/PolynomialClosedPointLoci.lean)
+separately describes evaluation kernels, their orbit fibres and the images of
+polynomial root loci. The root-orbit theorems themselves require only
+normality, not an algebraic closure or a choice of closed point.
+
 ## `MultivariatePolynomials.EvaluationIdeal`
 
 For arbitrary types of variables `σ` and a commutative ring `R`,
