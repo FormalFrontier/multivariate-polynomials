@@ -83,6 +83,7 @@ public import MultivariatePolynomials.NilpotentAddUnits
 public import MultivariatePolynomials.IntegralCoefficients
 public import MultivariatePolynomials.Jacobson
 public import MultivariatePolynomials.PrimeSpectrum
+public import MultivariatePolynomials.PolynomialClosedPointLoci
 public import MultivariatePolynomials.FiniteSupport.Recovery
 public import MultivariatePolynomials.ConstantTermNormalization
 

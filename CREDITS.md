@@ -55,6 +55,13 @@ credited below.
   `Submodule.spanRank` and `Submodule.spanFinrank`, semilinear image bounds,
   finitely supported function bases and the rank condition for nontrivial
   commutative semirings; it does not introduce another generator-count invariant.
+  The algebraic-closure orbit classification of polynomial closed points is
+  classical mathematics. Its formalization reuses Mathlib's `ConjRootClass`
+  quotient and minimal-polynomial API, normal-extension automorphism criterion,
+  monic principal-ideal generators and root-existence theorems, together with
+  the existing orbit quotient and standard equivalence constructors. It does
+  not introduce another quotient, point carrier or choice mechanism, and it
+  does not require separability.
 - [Minimal Primes](https://github.com/FormalFrontier/minimal-primes/tree/c069147fd1754e4a87be7e09003439f1d2250bfd)
   supplies the canonical maximal-spectrum embedding along surjective ring
   homomorphisms. The polynomial infinitude proofs were developed by Formal

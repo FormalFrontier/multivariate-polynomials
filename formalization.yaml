@@ -5,7 +5,9 @@ project:
   description: >-
     Reusable multivariate-polynomial results on infinite-variable ideals,
     coordinate-difference evaluation ideals, polynomial maximal-spectrum
-    infinitude, homogeneous evaluation,
+    infinitude and the classification of univariate polynomial closed points
+    by algebraic-closure automorphism orbits without separability,
+    homogeneous evaluation,
     disjoint-block substitution and its iteration,
     finite-variable origins of finite collections of polynomial fractions over
     integral domains in arbitrary fraction-ring representations,
