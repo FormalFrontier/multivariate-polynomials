@@ -32,6 +32,25 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Homogeneous coordinate-power certificates.**
+  For an arbitrarily indexed homogeneous family `p : J → MvPolynomial I R`
+  of common degree `d` over any commutative semiring, with finitely many
+  variables, the
+  [certificate module](MultivariatePolynomials/HomogeneousCertificates.lean)
+  states that radical membership of every variable gives finitely supported
+  coefficients `q : I → (J →₀ MvPolynomial I R)` and one common `M`, with
+  every `q i j` homogeneous of degree `M` and
+  `(q i).sum (fun j r => r * p j) = X i ^ (M + d)`. Over a field, the second
+  statement replaces radical membership by absence of nonzero common zeros
+  over the algebraic closure. The finite-index function-sum corollaries
+  `exists_homogeneous_sum_mul_eq_X_pow` and
+  `exists_homogeneous_sum_mul_eq_X_pow_of_forall_aeval_eq_zero` convert these
+  conclusions to `∑ j, q (i, j) * p j = X i ^ (M + d)` using
+  `Finsupp.sum_fintype`.
+  The variable, generator and coefficient universes are independent; empty
+  types, trivial semirings and degree zero are included. The
+  [coordinate-power and constant-one examples](MultivariatePolynomialsTests/HomogeneousCertificates.lean)
+  verify the hypotheses and explicit certificates independently of the core statements.
 - **Polynomial closed points and algebraic-closure orbits.** For independently
   universed fields `K` and `L` with their given `Algebra K L` and
   `IsAlgClosure K L`,
@@ -985,6 +1004,7 @@ not a complete declaration inventory.
 | [`IntegrallyClosed`](MultivariatePolynomials/IntegrallyClosed.lean) | Integral closure of polynomial rings over integrally closed commutative domains, with arbitrary variable types and independent universes |
 | [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
+| [`HomogeneousCertificates`](MultivariatePolynomials/HomogeneousCertificates.lean) | Arbitrarily indexed homogeneous coordinate-power certificates with finitely supported coefficients and finite-index function-sum corollaries |
 | [`GradeZero`](MultivariatePolynomials/GradeZero.lean) | The coefficient algebra equivalence with the original degree-zero homogeneous component over arbitrary commutative semirings |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |

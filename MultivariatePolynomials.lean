@@ -32,6 +32,7 @@ public import MultivariatePolynomials.MonomialIdeal
 public import MultivariatePolynomials.Primary
 public import MultivariatePolynomials.PrimaryDecomposition
 public import MultivariatePolynomials.HomogeneousEvaluation
+public import MultivariatePolynomials.HomogeneousCertificates
 public import MultivariatePolynomials.GradeZero
 public import MultivariatePolynomials.BlockSubstitution
 public import MultivariatePolynomials.IteratedBlockSubstitution
