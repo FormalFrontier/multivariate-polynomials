@@ -153,6 +153,36 @@ and `integer_subring_dimension_bound` use the headline;
 `not_dimension_bound_by_whole_fraction_stages` rejects the whole-field replacement.
 These names are in `PolynomialFractionTraceExamples`.
 
+## `MultivariatePolynomials.PrimeSpectrum`
+
+`PrimeSpectrum.irreducibleSpace_mvPolynomial_iff` preserves and reflects
+irreducibility of the prime spectrum over a commutative semiring, for any
+variable type, including the empty type.
+
+For a commutative ring `R`, the maximal-spectrum results are:
+
+```lean
+MaximalSpectrum.infinite_polynomial (R : Type u) [CommRing R] [Nontrivial R] :
+  Infinite (MaximalSpectrum (Polynomial R))
+
+MaximalSpectrum.infinite_mvPolynomial_iff (σ : Type v) (R : Type u) [CommRing R] :
+  Infinite (MaximalSpectrum (MvPolynomial σ R)) ↔
+    Nontrivial R ∧ (Nonempty σ ∨ Infinite (MaximalSpectrum R))
+```
+
+The univariate theorem applies even to finite coefficient fields. The
+multivariate criterion imposes no finiteness or nonemptiness condition on the
+independently-universed variable type. With empty variables it retains exactly
+the infinitude of the coefficient maximal spectrum; for the zero ring it is
+false for every variable type.
+
+The proof over a field uses Mathlib's finite-closed-point Jacobson-space
+criterion and the prime-spectrum T₁-to-field criterion. Residue fields,
+substitution of the univariate variable for every multivariate variable, and
+the constant-coefficient projection give the general results through Minimal
+Primes' canonical `MaximalSpectrum.comapEmbeddingOfSurjective`. The field
+argument and substitution-surjectivity lemma are private implementation details.
+
 ## `MultivariatePolynomials.EvaluationIdeal`
 
 For arbitrary types of variables `σ` and a commutative ring `R`,

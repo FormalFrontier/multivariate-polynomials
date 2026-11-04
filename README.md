@@ -32,6 +32,15 @@ weight-one-valuation naturality interfaces.
 
 ## Headline results
 
+- **Infinitely many maximal ideals of polynomial rings.** Every nontrivial
+  commutative ring `R` has infinitely many maximal ideals in `R[X]`, including
+  when `R` is a finite field, by
+  [`MaximalSpectrum.infinite_polynomial`](MultivariatePolynomials/PrimeSpectrum.lean).
+  For any commutative ring `R` and arbitrary variable type `σ`, the maximal
+  spectrum of `MvPolynomial σ R` is infinite exactly when `R` is nontrivial
+  and either `σ` is nonempty or the maximal spectrum of `R` is infinite, by
+  [`MaximalSpectrum.infinite_mvPolynomial_iff`](MultivariatePolynomials/PrimeSpectrum.lean).
+
 - **Factorization uniqueness from a regular crossed resultant.** Over any commutative
   ring, let `G,G'` have degree at most `m` and `H,H'` degree at most `n`, with
   `G.coeff m = G'.coeff m` and `H.coeff n = H'.coeff n`. If `G * H = G' * H'`

@@ -55,6 +55,14 @@ credited below.
   `Submodule.spanRank` and `Submodule.spanFinrank`, semilinear image bounds,
   finitely supported function bases and the rank condition for nontrivial
   commutative semirings; it does not introduce another generator-count invariant.
+- [Minimal Primes](https://github.com/FormalFrontier/minimal-primes/tree/c069147fd1754e4a87be7e09003439f1d2250bfd)
+  supplies the canonical maximal-spectrum embedding along surjective ring
+  homomorphisms. The polynomial infinitude proofs were developed by Formal
+  Frontier Agents and compose this API with Mathlib's finite-closed-point
+  Jacobson-space criterion, spectrum T₁-to-field criterion, residue fields
+  and polynomial evaluation. They build on David Kurniadi Angdinata's maximal
+  spectra, Devon Tuma's Jacobson rings, Andrew Yang's Jacobson spectra, and
+  Kenny Lau and contributors' ideal, quotient and polynomial infrastructure.
 - [Group Theory](https://github.com/FormalFrontier/group-theory/tree/41da4c034205f7a6e701388a1adb82ca0875242f)
   supplies `Algebra.GrothendieckAddGroup.isNilpotent_ofRingHom_iff`,
   reflecting nilpotence of additively invertible elements of a commutative

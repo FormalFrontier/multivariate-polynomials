@@ -29,6 +29,11 @@ name = "groupTheory"
 git = "https://github.com/FormalFrontier/group-theory.git"
 rev = "41da4c034205f7a6e701388a1adb82ca0875242f"
 
+[[require]]
+name = "minimal-primes"
+git = "https://github.com/FormalFrontier/minimal-primes.git"
+rev = "c069147fd1754e4a87be7e09003439f1d2250bfd"
+
 [[lean_lib]]
 name = "MultivariatePolynomials"
 
@@ -37,7 +42,7 @@ name = "MultivariatePolynomialsTests"
 leanOptions = { weak.linter.privateModule = false }
 roots = ["MultivariatePolynomialsTests.Taylor", "MultivariatePolynomialsTests.AddUnits", "MultivariatePolynomialsTests.IdealOfVars", "MultivariatePolynomialsTests.Axioms", "MultivariatePolynomialsTests.LeafImport", "MultivariatePolynomialsTests.ReadmeExample",
   "MultivariatePolynomialsTests.UnitSufficiency", "MultivariatePolynomialsTests.BlockSubstitutionLaws", "MultivariatePolynomialsTests.BlockSubstitutionDegree", "MultivariatePolynomialsTests.LinearCoefficientEvaluation", "MultivariatePolynomialsTests.FirstVariableLex", "MultivariatePolynomialsTests.QuotientClosedPoints", "MultivariatePolynomialsTests.ZariskiTopology", "MultivariatePolynomialsTests.LocalizedCoordinateQuotient", "MultivariatePolynomialsTests.PolynomialFractionTrace", "MultivariatePolynomialsTests.FiniteSupportModels", "MultivariatePolynomialsTests.FiniteSupportProfile", "MultivariatePolynomialsTests.RenameKernel", "MultivariatePolynomialsTests.RenameKernelCriterion", "MultivariatePolynomialsTests.RenameKernelProperties", "MultivariatePolynomialsTests.RenameFinitePresentationSemiring", "MultivariatePolynomialsTests.RenameFinitePresentationModels", "MultivariatePolynomialsTests.RenameNegative", "MultivariatePolynomialsTypeTests.RenameFlatness", "MultivariatePolynomialsTests.RenameFlatnessModels", "MultivariatePolynomialsTests.RenameBasis", "MultivariatePolynomialsTests.InfiniteIntegrallyClosed", "MultivariatePolynomialsTests.Jacobson", "MultivariatePolynomialsTests.MonomialIdealGenerators",
-  "MultivariatePolynomialsTests.ResultantCongruence"]
+  "MultivariatePolynomialsTests.ResultantCongruence", "MultivariatePolynomialsTests.PolynomialSpectrum"]
 
 [[lean_lib]]
 name = "MultivariatePolynomialsIdealTests"

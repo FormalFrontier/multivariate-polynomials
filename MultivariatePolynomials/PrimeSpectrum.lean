@@ -6,15 +6,30 @@ module
 
 public import MultivariatePolynomials.Nilpotent
 public import Mathlib.RingTheory.Spectrum.Prime.Topology
+public import MinimalPrimes.RingTheory.Spectrum.Maximal.Map
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Algebra.Polynomial.Degree.Operations
+import Mathlib.Algebra.Polynomial.Eval.Coeff
+import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Algebra.Polynomial.Monomial
+import Mathlib.RingTheory.Ideal.Quotient.Basic
+import Mathlib.RingTheory.Spectrum.Maximal.Topology
+import Mathlib.RingTheory.Spectrum.Prime.Jacobson
 import Mathlib.RingTheory.MvPolynomial.MonomialOrder
 import Mathlib.SetTheory.Cardinal.Order
 
 /-!
-# Irreducibility of the spectrum of a polynomial semiring
+# Prime and maximal spectra of polynomial rings
 
 The prime spectrum of a multivariate polynomial semiring is irreducible
 exactly when the prime spectrum of its coefficient semiring is irreducible.
 The variable type is arbitrary, including the empty type.
+
+A univariate polynomial ring over a nontrivial commutative ring has infinitely
+many maximal ideals. For an arbitrary variable type, the maximal spectrum is
+infinite exactly when the coefficient ring is nontrivial and either there is a
+variable or the coefficient ring already has infinitely many maximal ideals.
 
 The coefficient criterion `MvPolynomial.isNilpotent_iff_coeff` describes the
 polynomial nilradical. Irreducibility is detected by primality of this special
@@ -27,6 +42,12 @@ ideal, rather than by extending arbitrary prime ideals of a semiring.
   `PrimeSpectrum.irreducibleSpace_iff_isPrime_nilradical`.
 * `MultivariatePolynomials.Nilpotent`, for the coefficient criterion for
   polynomial nilpotents over commutative semirings.
+* Mathlib, `Mathlib.RingTheory.Spectrum.Prime.Jacobson` and
+  `Mathlib.RingTheory.Spectrum.Maximal.Topology`, for the Jacobson-space
+  argument giving infinitely many maximal ideals over a field.
+* Minimal Primes, `MinimalPrimes.RingTheory.Spectrum.Maximal.Map`, for
+  `MaximalSpectrum.comapEmbeddingOfSurjective`, used with residue fields,
+  polynomial evaluation and constant coefficients.
 -/
 
 @[expose] public section
@@ -128,3 +149,90 @@ theorem irreducibleSpace_mvPolynomial_iff (σ : Type v) (R : Type u) [CommSemiri
       exact hmul hcoeff
 
 end PrimeSpectrum
+
+private theorem infinite_polynomial_field (K : Type u) [Field K] :
+    Infinite (MaximalSpectrum (Polynomial K)) := by
+  classical
+  by_contra h
+  let : Finite (MaximalSpectrum (Polynomial K)) := not_infinite_iff_finite.mp h
+  have hclosed : (closedPoints (PrimeSpectrum (Polynomial K))).Finite := by
+    change {x : PrimeSpectrum (Polynomial K) | IsClosed ({x} : Set _)}.Finite
+    rw [← MaximalSpectrum.toPrimeSpectrum_range]
+    exact Set.finite_range _
+  let : DiscreteTopology (PrimeSpectrum (Polynomial K)) :=
+    JacobsonSpace.discreteTopology hclosed
+  have hfield : IsField (Polynomial K) :=
+    PrimeSpectrum.t1Space_iff_isField.mp inferInstance
+  exact Polynomial.not_isUnit_X
+    (isUnit_iff_exists_inv.mpr (hfield.mul_inv_cancel Polynomial.X_ne_zero))
+
+private theorem eval₂Hom_const_X_surjective
+    {σ : Type v} {R : Type u} [CommSemiring R] (i : σ) :
+    Function.Surjective
+      (MvPolynomial.eval₂Hom (Polynomial.C : R →+* Polynomial R)
+        (fun _ : σ => (Polynomial.X : Polynomial R))) := by
+  let s : Polynomial R →+* MvPolynomial σ R :=
+    Polynomial.eval₂RingHom MvPolynomial.C (MvPolynomial.X i)
+  have hs :
+      (MvPolynomial.eval₂Hom (Polynomial.C : R →+* Polynomial R)
+        (fun _ : σ => (Polynomial.X : Polynomial R))).comp s =
+        RingHom.id (Polynomial R) := by
+    apply Polynomial.ringHom_ext
+    · intro r
+      simp [s]
+    · simp [s]
+  intro p
+  exact ⟨s p, RingHom.congr_fun hs p⟩
+
+namespace MaximalSpectrum
+
+/-- A polynomial ring over a nontrivial commutative ring has infinitely many maximal ideals. -/
+theorem infinite_polynomial (R : Type u) [CommRing R] [Nontrivial R] :
+    Infinite (MaximalSpectrum (Polynomial R)) := by
+  obtain ⟨m, hm⟩ := Ideal.exists_maximal R
+  let : m.IsMaximal := hm
+  let : Field (R ⧸ m) := Ideal.Quotient.field m
+  let : Infinite (MaximalSpectrum (Polynomial (R ⧸ m))) := infinite_polynomial_field _
+  exact Infinite.of_injective _
+    (comapEmbeddingOfSurjective (Polynomial.mapRingHom (Ideal.Quotient.mk m))
+      (Polynomial.map_surjective _ Ideal.Quotient.mk_surjective)).injective
+
+/-- The maximal spectrum of a multivariable polynomial ring is infinite exactly when the
+coefficient ring is nontrivial and either a variable exists or its maximal spectrum is infinite. -/
+theorem infinite_mvPolynomial_iff (σ : Type v) (R : Type u) [CommRing R] :
+    Infinite (MaximalSpectrum (MvPolynomial σ R)) ↔
+      Nontrivial R ∧ (Nonempty σ ∨ Infinite (MaximalSpectrum R)) := by
+  constructor
+  · intro h
+    let : Infinite (MaximalSpectrum (MvPolynomial σ R)) := h
+    have hR : Nontrivial R := by
+      cases subsingleton_or_nontrivial R with
+      | inl hR =>
+          let : Subsingleton R := hR
+          obtain ⟨x⟩ := (inferInstance : Nonempty (MaximalSpectrum (MvPolynomial σ R)))
+          exact (x.isMaximal.ne_top (Subsingleton.elim _ _)).elim
+      | inr hR => exact hR
+    refine ⟨hR, ?_⟩
+    by_cases hσ : Nonempty σ
+    · exact Or.inl hσ
+    · right
+      let : IsEmpty σ := not_nonempty_iff.mp hσ
+      exact Infinite.of_injective _
+        (comapEmbeddingOfSurjective (MvPolynomial.isEmptyRingEquiv R σ).symm.toRingHom
+          (MvPolynomial.isEmptyRingEquiv R σ).symm.surjective).injective
+  · rintro ⟨hR, hσ | hbase⟩
+    · let : Nontrivial R := hR
+      obtain ⟨i⟩ := hσ
+      let : Infinite (MaximalSpectrum (Polynomial R)) := infinite_polynomial R
+      exact Infinite.of_injective _
+        (comapEmbeddingOfSurjective
+          (MvPolynomial.eval₂Hom (Polynomial.C : R →+* Polynomial R)
+            (fun _ : σ => (Polynomial.X : Polynomial R)))
+          (eval₂Hom_const_X_surjective i)).injective
+    · let : Infinite (MaximalSpectrum R) := hbase
+      exact Infinite.of_injective _
+        (comapEmbeddingOfSurjective
+          (MvPolynomial.constantCoeff : MvPolynomial σ R →+* R)
+          (fun r => ⟨MvPolynomial.C r, MvPolynomial.constantCoeff_C σ r⟩)).injective
+
+end MaximalSpectrum

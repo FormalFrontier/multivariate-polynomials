@@ -4,7 +4,8 @@ project:
   name: Multivariate Polynomials
   description: >-
     Reusable multivariate-polynomial results on infinite-variable ideals,
-    coordinate-difference evaluation ideals, homogeneous evaluation,
+    coordinate-difference evaluation ideals, polynomial maximal-spectrum
+    infinitude, homogeneous evaluation,
     disjoint-block substitution and its iteration,
     finite-variable origins of finite collections of polynomial fractions over
     integral domains in arbitrary fraction-ring representations,
@@ -30,6 +31,16 @@ project:
   license: Apache-2.0
 
 sources:
+  - title: "Minimal Primes"
+    authors:
+      - Formal Frontier Agents
+    type: software
+    location: "https://github.com/FormalFrontier/minimal-primes/tree/c069147fd1754e4a87be7e09003439f1d2250bfd"
+    relationship: background
+    note: >-
+      Supplies the canonical maximal-spectrum embedding along a surjective
+      ring homomorphism. The polynomial infinitude arguments compose this
+      embedding with Mathlib's Jacobson-space and polynomial APIs.
   - title: "Algebraic Direct Limits"
     authors:
       - Formal Frontier Agents
@@ -107,10 +118,14 @@ sources:
 
 status:
   scope: >-
-    Forty-nine selected public declarations over fifteen leaves and the
+    Fifty-one selected public declarations over sixteen leaves and the
     aggregate: finite collections in an abstract fraction ring of MvPolynomial
     over an integral domain come from one finite-variable fraction ring,
     without a field coefficient or target hypothesis;
+    the univariate polynomial maximal spectrum is infinite over any nontrivial
+    commutative ring, and the multivariate maximal spectrum is infinite exactly
+    when the coefficient ring is nontrivial and either a variable exists or
+    the coefficient maximal spectrum is infinite, with independent universes;
     coordinate-difference ideals equal evaluation kernels over
     CommRing coefficients for arbitrary variables, with a vanishing membership
     criterion and a singleton-vanishing-ideal bridge over fields;
@@ -139,6 +154,10 @@ status:
     functional, or source-specific completion is claimed. See README.md and
     docs/API.md for the detailed module map and guides.
   main_results:
+    - declaration: MaximalSpectrum.infinite_polynomial
+      file: MultivariatePolynomials/PrimeSpectrum.lean
+    - declaration: MaximalSpectrum.infinite_mvPolynomial_iff
+      file: MultivariatePolynomials/PrimeSpectrum.lean
     - declaration: MvPolynomial.exists_finset_fractionRing_map_range
       file: MultivariatePolynomials/FractionRingFiniteVariables.lean
     - declaration: MvPolynomial.ideal_span_X_sub_C_eq_ker_eval
