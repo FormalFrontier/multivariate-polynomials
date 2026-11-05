@@ -1,7 +1,8 @@
 # Multivariate polynomials
 
 This Lean library provides reusable results about variable ideals, homogeneous
-evaluation and height comparison, finite-support first-order expansion, substitution into disjoint blocks,
+evaluation and height comparison, polynomial maps on projective coordinate spaces,
+finite-support first-order expansion, substitution into disjoint blocks,
 coefficient extraction, linear evaluation and division, monic lifts,
 first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
@@ -44,6 +45,19 @@ weight-one-valuation naturality interfaces.
   bounds positive multiplicative height above and below by reciprocal constant
   factors, with comparison constant at least one. The coordinate universes are
   independent. Zero tuples, degree zero and empty coordinate types are included.
+
+- **Homogeneous polynomial maps on projective coordinate spaces.**
+  [`MvPolynomial.projectivize`](MultivariatePolynomials/Projectivization.lean)
+  sends a nonzero tuple's class to the class of its polynomial evaluation tuple.
+  The coefficients may lie in any commutative semiring equipped with a homomorphism
+  to the field of points. A common homogeneity degree and nonvanishing on nonzero
+  input tuples make this map well-defined; its values on these classes characterize
+  it uniquely. Coordinate variables induce the identity, and homogeneous
+  substitution induces composition. The coordinate types may be infinite or empty,
+  their universes are independent, and the degree may be zero. With coefficients
+  in the field of points, finite coordinates and admissible absolute values, the
+  [projective height comparisons](MultivariatePolynomials/Height/Projectivization.lean)
+  descend the tuple bounds under the same algebraic-closure common-zero condition.
 
 - **Homogeneous coordinate-power certificates.**
   For an arbitrarily indexed homogeneous family `p : J → MvPolynomial I R`
@@ -1019,6 +1033,8 @@ not a complete declaration inventory.
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`HomogeneousCertificates`](MultivariatePolynomials/HomogeneousCertificates.lean) | Arbitrarily indexed homogeneous coordinate-power certificates with finitely supported coefficients and finite-index function-sum corollaries |
 | [`Height/Homogeneous`](MultivariatePolynomials/Height/Homogeneous.lean) | Uniform logarithmic and positive multiplicative height comparison for finite homogeneous families with no nonzero common zero over an algebraic closure |
+| [`Projectivization`](MultivariatePolynomials/Projectivization.lean) | Homogeneous polynomial maps on existing projective coordinate spaces; class computation, characterization, identity and composition; geometric nonvanishing transfer |
+| [`Height/Projectivization`](MultivariatePolynomials/Height/Projectivization.lean) | Logarithmic and positive multiplicative height comparison on projective points under the algebraic-closure common-zero condition |
 | [`GradeZero`](MultivariatePolynomials/GradeZero.lean) | The coefficient algebra equivalence with the original degree-zero homogeneous component over arbitrary commutative semirings |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |

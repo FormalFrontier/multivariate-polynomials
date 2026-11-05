@@ -32,8 +32,10 @@ public import MultivariatePolynomials.MonomialIdeal
 public import MultivariatePolynomials.Primary
 public import MultivariatePolynomials.PrimaryDecomposition
 public import MultivariatePolynomials.HomogeneousEvaluation
+public import MultivariatePolynomials.Projectivization
 public import MultivariatePolynomials.HomogeneousCertificates
 public import MultivariatePolynomials.Height.Homogeneous
+public import MultivariatePolynomials.Height.Projectivization
 public import MultivariatePolynomials.GradeZero
 public import MultivariatePolynomials.BlockSubstitution
 public import MultivariatePolynomials.IteratedBlockSubstitution
@@ -112,7 +114,8 @@ including zero polynomials and trivial coefficients. Import
 `MultivariatePolynomials.UniqueAlgEquiv` directly for this degree identity.
 
 Public aggregate import for the variable-ideal non-finite-generation theorem,
-homogeneous-polynomial evaluation scaling laws, and disjoint-block polynomial
+homogeneous-polynomial evaluation scaling laws, polynomial maps on projective coordinate
+spaces and their height comparisons, and disjoint-block polynomial
 substitution and its evaluation and zero-locus laws, including exact total degree
 under no-zero-divisors coefficients and finite iteration
 through tuple-indexed disjoint blocks and structural laws for renaming,
@@ -149,6 +152,8 @@ minimum polynomial order, birational coordinates and a full residue field.
 Import the corresponding
 `MultivariatePolynomials.IdealOfVars`,
 `MultivariatePolynomials.HomogeneousEvaluation`,
+`MultivariatePolynomials.Projectivization`,
+`MultivariatePolynomials.Height.Projectivization`,
 `MultivariatePolynomials.GradeZero` (the coefficient algebra equivalence with the
 degree-zero component), or
 `MultivariatePolynomials.BlockSubstitution`,
