@@ -1,7 +1,7 @@
 # Multivariate polynomials
 
 This Lean library provides reusable results about variable ideals, homogeneous
-evaluation, finite-support first-order expansion, substitution into disjoint blocks,
+evaluation and height comparison, finite-support first-order expansion, substitution into disjoint blocks,
 coefficient extraction, linear evaluation and division, monic lifts,
 first-variable lexicographic degrees,
 and subset-weight-one valuations and their naturality on multivariate
@@ -31,6 +31,19 @@ declarations, including the localized-coordinate-quotient and
 weight-one-valuation naturality interfaces.
 
 ## Headline results
+
+- **Heights of homogeneous polynomial evaluations.** Over any field with
+  `Height.AdmissibleAbsValues`, a homogeneous polynomial family of common degree
+  `d`, with finite input and output coordinate types and no nonzero common zero
+  over an algebraic closure, has evaluation height uniformly comparable to the
+  input height raised to `d`. More precisely,
+  [`Height.exists_logHeight_eval_sub_mul_bound`](MultivariatePolynomials/Height/Homogeneous.lean)
+  bounds the difference between evaluation logarithmic height and `d` times input
+  logarithmic height, while
+  [`Height.exists_mulHeight_eval_bounds`](MultivariatePolynomials/Height/Homogeneous.lean)
+  bounds positive multiplicative height above and below by reciprocal constant
+  factors, with comparison constant at least one. The coordinate universes are
+  independent. Zero tuples, degree zero and empty coordinate types are included.
 
 - **Homogeneous coordinate-power certificates.**
   For an arbitrarily indexed homogeneous family `p : J → MvPolynomial I R`
@@ -1005,6 +1018,7 @@ not a complete declaration inventory.
 | [`UniqueAlgEquiv`](MultivariatePolynomials/UniqueAlgEquiv.lean) | Over any commutative semiring and unique variable type, the canonical univariate equivalence identifies natural degree with total degree, including zero and trivial coefficients |
 | [`HomogeneousEvaluation`](MultivariatePolynomials/HomogeneousEvaluation.lean) | Weighted and ordinary homogeneous evaluation laws |
 | [`HomogeneousCertificates`](MultivariatePolynomials/HomogeneousCertificates.lean) | Arbitrarily indexed homogeneous coordinate-power certificates with finitely supported coefficients and finite-index function-sum corollaries |
+| [`Height/Homogeneous`](MultivariatePolynomials/Height/Homogeneous.lean) | Uniform logarithmic and positive multiplicative height comparison for finite homogeneous families with no nonzero common zero over an algebraic closure |
 | [`GradeZero`](MultivariatePolynomials/GradeZero.lean) | The coefficient algebra equivalence with the original degree-zero homogeneous component over arbitrary commutative semirings |
 | [`BlockSubstitution`](MultivariatePolynomials/BlockSubstitution.lean) | Disjoint-block substitution and zero-locus laws |
 | [`IteratedBlockSubstitution`](MultivariatePolynomials/IteratedBlockSubstitution.lean) | Tuple-indexed iterates and conditional attained degrees |
